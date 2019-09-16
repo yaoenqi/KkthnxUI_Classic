@@ -34,7 +34,7 @@ local GetItemInfo = _G.GetItemInfo
 local GetItemQualityColor = _G.GetItemQualityColor
 local GetMoney = _G.GetMoney
 local GetNumBankSlots = _G.GetNumBankSlots
-local GetReagentBankCost = _G.GetReagentBankCost
+-- local GetReagentBankCost = _G.GetReagentBankCost
 local IsBattlePayItem = _G.IsBattlePayItem
 local IsShiftKeyDown = _G.IsShiftKeyDown
 local LE_ITEM_QUALITY_POOR = _G.LE_ITEM_QUALITY_POOR
@@ -47,7 +47,7 @@ local SOUNDKIT = _G.SOUNDKIT
 local SetItemButtonCount = _G.SetItemButtonCount
 local SetItemButtonDesaturated = _G.SetItemButtonDesaturated
 local SetItemButtonTexture = _G.SetItemButtonTexture
-local SortReagentBankBags = _G.SortReagentBankBags
+-- local SortReagentBankBags = _G.SortReagentBankBags
 local Token1, Token2, Token3 = _G.BackpackTokenFrameToken1, _G.BackpackTokenFrameToken2, _G.BackpackTokenFrameToken3
 local UIParent = _G.UIParent
 local hooksecurefunc = _G.hooksecurefunc
@@ -454,164 +454,164 @@ local function Stuffing_TooltipShow(self)
 	GameTooltip:Show()
 end
 
-local function Stuffing_CreateReagentContainer()
-	ReagentBankFrame:StripTextures()
+-- local function Stuffing_CreateReagentContainer()
+	-- ReagentBankFrame:StripTextures()
 
-	local Reagent = CreateFrame("Frame", "StuffingFrameReagent", UIParent)
-	local SwitchBankButton = CreateFrame("Button", nil, Reagent)
-	local NumRows, LastRowButton, NumButtons, LastButton = 0, ReagentBankFrameItem1, 1, ReagentBankFrameItem1
-	local Deposit = ReagentBankFrame.DespositButton
+	-- local Reagent = CreateFrame("Frame", "StuffingFrameReagent", UIParent)
+	-- local SwitchBankButton = CreateFrame("Button", nil, Reagent)
+	-- local NumRows, LastRowButton, NumButtons, LastButton = 0, ReagentBankFrameItem1, 1, ReagentBankFrameItem1
+	-- local Deposit = ReagentBankFrame.DespositButton
 
-	Reagent:SetWidth(((C["Inventory"].ButtonSize + C["Inventory"].ButtonSpace) * C["Inventory"].BankColumns) + 17)
-	Reagent:SetPoint("TOPLEFT", _G["StuffingFrameBank"], "TOPLEFT", 0, 0)
-	Reagent:CreateBorder()
-	Reagent:SetFrameStrata(_G["StuffingFrameBank"]:GetFrameStrata())
-	Reagent:SetFrameLevel(_G["StuffingFrameBank"]:GetFrameLevel() + 5)
-	Reagent:EnableMouse(true)
-	Reagent:SetMovable(true)
-	Reagent:SetClampedToScreen(true)
-	Reagent:SetClampRectInsets(0, 0, 0, -20)
-	Reagent:SetScript("OnMouseDown", function(self, button)
-		if IsShiftKeyDown() and button == "LeftButton" then
-			self:StartMoving()
-		end
-	end)
-	Reagent:SetScript("OnMouseUp", Reagent.StopMovingOrSizing)
+	-- Reagent:SetWidth(((C["Inventory"].ButtonSize + C["Inventory"].ButtonSpace) * C["Inventory"].BankColumns) + 17)
+	-- Reagent:SetPoint("TOPLEFT", _G["StuffingFrameBank"], "TOPLEFT", 0, 0)
+	-- Reagent:CreateBorder()
+	-- Reagent:SetFrameStrata(_G["StuffingFrameBank"]:GetFrameStrata())
+	-- Reagent:SetFrameLevel(_G["StuffingFrameBank"]:GetFrameLevel() + 5)
+	-- Reagent:EnableMouse(true)
+	-- Reagent:SetMovable(true)
+	-- Reagent:SetClampedToScreen(true)
+	-- Reagent:SetClampRectInsets(0, 0, 0, -20)
+	-- Reagent:SetScript("OnMouseDown", function(self, button)
+		-- if IsShiftKeyDown() and button == "LeftButton" then
+			-- self:StartMoving()
+		-- end
+	-- end)
+	-- Reagent:SetScript("OnMouseUp", Reagent.StopMovingOrSizing)
 
-	SwitchBankButton:SetSize(16, 16)
-	SwitchBankButton:CreateBorder()
-	SwitchBankButton:CreateInnerShadow()
-	SwitchBankButton:StyleButton(true)
-	SwitchBankButton:SetPoint("TOPRIGHT", -54, -7)
-	SwitchBankButton:SetNormalTexture("Interface\\ICONS\\achievement_guildperk_mobilebanking")
-	SwitchBankButton:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	SwitchBankButton:GetNormalTexture():SetAllPoints()
-	SwitchBankButton:SetPushedTexture("Interface\\ICONS\\achievement_guildperk_mobilebanking")
-	SwitchBankButton:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	SwitchBankButton:GetPushedTexture():SetAllPoints()
-	SwitchBankButton.ttText = L["Switch to Bank"]
-	SwitchBankButton:SetScript("OnEnter", Stuffing_TooltipShow)
-	SwitchBankButton:SetScript("OnLeave", Stuffing_TooltipHide)
-	SwitchBankButton:SetScript("OnClick", function()
-		Reagent:Hide()
-		_G["StuffingFrameBank"]:Show()
-		_G["StuffingFrameBank"]:SetAlpha(1)
-		_G["StuffingFrameBank"]:EnableMouse(true)
-		BankFrame_ShowPanel(BANK_PANELS[1].name)
-		PlaySound(PlaySoundKitID and "igbackpackopen" or SOUNDKIT.IG_BACKPACK_OPEN)
-	end)
+	-- SwitchBankButton:SetSize(16, 16)
+	-- SwitchBankButton:CreateBorder()
+	-- SwitchBankButton:CreateInnerShadow()
+	-- SwitchBankButton:StyleButton(true)
+	-- SwitchBankButton:SetPoint("TOPRIGHT", -54, -7)
+	-- SwitchBankButton:SetNormalTexture("Interface\\ICONS\\achievement_guildperk_mobilebanking")
+	-- SwitchBankButton:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
+	-- SwitchBankButton:GetNormalTexture():SetAllPoints()
+	-- SwitchBankButton:SetPushedTexture("Interface\\ICONS\\achievement_guildperk_mobilebanking")
+	-- SwitchBankButton:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
+	-- SwitchBankButton:GetPushedTexture():SetAllPoints()
+	-- SwitchBankButton.ttText = L["Switch to Bank"]
+	-- SwitchBankButton:SetScript("OnEnter", Stuffing_TooltipShow)
+	-- SwitchBankButton:SetScript("OnLeave", Stuffing_TooltipHide)
+	-- SwitchBankButton:SetScript("OnClick", function()
+		-- Reagent:Hide()
+		-- _G["StuffingFrameBank"]:Show()
+		-- _G["StuffingFrameBank"]:SetAlpha(1)
+		-- _G["StuffingFrameBank"]:EnableMouse(true)
+		-- BankFrame_ShowPanel(BANK_PANELS[1].name)
+		-- PlaySound(PlaySoundKitID and "igbackpackopen" or SOUNDKIT.IG_BACKPACK_OPEN)
+	-- end)
 
-	local SortReagentButton = CreateFrame("Button", nil, Reagent)
-	SortReagentButton:SetSize(16, 16)
-	SortReagentButton:CreateBorder()
-	SortReagentButton:CreateInnerShadow()
-	SortReagentButton:StyleButton(true)
-	SortReagentButton:SetPoint("TOPRIGHT", SwitchBankButton, -22, 0)
-	SortReagentButton:SetNormalTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
-	SortReagentButton:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	SortReagentButton:GetNormalTexture():SetAllPoints()
-	SortReagentButton:SetPushedTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
-	SortReagentButton:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	SortReagentButton:GetPushedTexture():SetAllPoints()
-	SortReagentButton:SetDisabledTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
-	SortReagentButton:GetDisabledTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	SortReagentButton:GetDisabledTexture():SetAllPoints()
-	SortReagentButton:GetDisabledTexture():SetDesaturated(1)
-	SortReagentButton.ttText = _G.BAG_FILTER_CLEANUP
-	SortReagentButton:SetScript("OnEnter", Stuffing_TooltipShow)
-	SortReagentButton:SetScript("OnLeave", Stuffing_TooltipHide)
-	SortReagentButton:SetScript("OnMouseUp", SortReagentBankBags)
+	-- local SortReagentButton = CreateFrame("Button", nil, Reagent)
+	-- SortReagentButton:SetSize(16, 16)
+	-- SortReagentButton:CreateBorder()
+	-- SortReagentButton:CreateInnerShadow()
+	-- SortReagentButton:StyleButton(true)
+	-- SortReagentButton:SetPoint("TOPRIGHT", SwitchBankButton, -22, 0)
+	-- SortReagentButton:SetNormalTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
+	-- SortReagentButton:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
+	-- SortReagentButton:GetNormalTexture():SetAllPoints()
+	-- SortReagentButton:SetPushedTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
+	-- SortReagentButton:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
+	-- SortReagentButton:GetPushedTexture():SetAllPoints()
+	-- SortReagentButton:SetDisabledTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
+	-- SortReagentButton:GetDisabledTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
+	-- SortReagentButton:GetDisabledTexture():SetAllPoints()
+	-- SortReagentButton:GetDisabledTexture():SetDesaturated(1)
+	-- SortReagentButton.ttText = _G.BAG_FILTER_CLEANUP
+	-- SortReagentButton:SetScript("OnEnter", Stuffing_TooltipShow)
+	-- SortReagentButton:SetScript("OnLeave", Stuffing_TooltipHide)
+	-- SortReagentButton:SetScript("OnMouseUp", SortReagentBankBags)
 
-	Deposit:SetParent(Reagent)
-	Deposit:ClearAllPoints()
-	Deposit:SetText("")
-	Deposit:SetSize(16, 16)
-	Deposit:CreateBorder()
-	Deposit:CreateInnerShadow()
-	Deposit:StyleButton(true)
-	Deposit:SetPoint("TOPLEFT", SwitchBankButton, "TOPRIGHT", 6, 0)
-	Deposit:SetNormalTexture("Interface\\ICONS\\misc_arrowdown")
-	Deposit:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	Deposit:GetNormalTexture():SetAllPoints()
-	Deposit:SetPushedTexture("Interface\\ICONS\\misc_arrowdown")
-	Deposit:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	Deposit:GetPushedTexture():SetAllPoints()
-	Deposit.ttText = _G.REAGENTBANK_DEPOSIT
-	Deposit:SetScript("OnEnter", Stuffing_TooltipShow)
-	Deposit:SetScript("OnLeave", Stuffing_TooltipHide)
-	Deposit:SetScript("OnClick", function()
-		PlaySound(PlaySoundKitID and "igmainmenuoption" or SOUNDKIT.IG_MAINMENU_OPTION)
-		DepositReagentBank()
-	end)
+	-- Deposit:SetParent(Reagent)
+	-- Deposit:ClearAllPoints()
+	-- Deposit:SetText("")
+	-- Deposit:SetSize(16, 16)
+	-- Deposit:CreateBorder()
+	-- Deposit:CreateInnerShadow()
+	-- Deposit:StyleButton(true)
+	-- Deposit:SetPoint("TOPLEFT", SwitchBankButton, "TOPRIGHT", 6, 0)
+	-- Deposit:SetNormalTexture("Interface\\ICONS\\misc_arrowdown")
+	-- Deposit:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
+	-- Deposit:GetNormalTexture():SetAllPoints()
+	-- Deposit:SetPushedTexture("Interface\\ICONS\\misc_arrowdown")
+	-- Deposit:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
+	-- Deposit:GetPushedTexture():SetAllPoints()
+	-- Deposit.ttText = _G.REAGENTBANK_DEPOSIT
+	-- Deposit:SetScript("OnEnter", Stuffing_TooltipShow)
+	-- Deposit:SetScript("OnLeave", Stuffing_TooltipHide)
+	-- Deposit:SetScript("OnClick", function()
+		-- PlaySound(PlaySoundKitID and "igmainmenuoption" or SOUNDKIT.IG_MAINMENU_OPTION)
+		-- DepositReagentBank()
+	-- end)
 
-	local Close = CreateFrame("Button", "StuffingCloseButtonReagent", Reagent, "UIPanelCloseButton")
-	Close:SetPoint("TOPRIGHT", 0, 1)
-	Close:SkinCloseButton()
-	Close:RegisterForClicks("AnyUp")
-	Close:SetScript("OnClick", function()
-		StuffingBank_OnHide()
-	end)
+	-- local Close = CreateFrame("Button", "StuffingCloseButtonReagent", Reagent, "UIPanelCloseButton")
+	-- Close:SetPoint("TOPRIGHT", 0, 1)
+	-- Close:SkinCloseButton()
+	-- Close:RegisterForClicks("AnyUp")
+	-- Close:SetScript("OnClick", function()
+		-- StuffingBank_OnHide()
+	-- end)
 
-	for i = 1, 98 do
-		local button = _G["ReagentBankFrameItem" .. i]
-		local icon = _G[button:GetName() .. "IconTexture"]
-		local count = _G[button:GetName() .. "Count"]
+	-- for i = 1, 98 do
+		-- local button = _G["ReagentBankFrameItem" .. i]
+		-- local icon = _G[button:GetName() .. "IconTexture"]
+		-- local count = _G[button:GetName() .. "Count"]
 
-		ReagentBankFrame:SetParent(Reagent)
-		ReagentBankFrame:ClearAllPoints()
-		ReagentBankFrame:SetAllPoints()
-		button:CreateBorder()
-		button:CreateInnerShadow()
-		button:StyleButton()
-		button:SetNormalTexture(nil)
-		button.IconBorder:SetAlpha(0)
+		-- ReagentBankFrame:SetParent(Reagent)
+		-- ReagentBankFrame:ClearAllPoints()
+		-- ReagentBankFrame:SetAllPoints()
+		-- button:CreateBorder()
+		-- button:CreateInnerShadow()
+		-- button:StyleButton()
+		-- button:SetNormalTexture(nil)
+		-- button.IconBorder:SetAlpha(0)
 
-		button:ClearAllPoints()
-		button:SetSize(C["Inventory"].ButtonSize, C["Inventory"].ButtonSize)
+		-- button:ClearAllPoints()
+		-- button:SetSize(C["Inventory"].ButtonSize, C["Inventory"].ButtonSize)
 
-		local _, _, _, quality = GetContainerItemInfo(-3, i)
-		local clink = GetContainerItemLink(-3, i)
-		if clink then
-			if quality and quality > 1 then
-				button:SetBackdropBorderColor(GetItemQualityColor(quality))
-			end
-		end
+		-- local _, _, _, quality = GetContainerItemInfo(-3, i)
+		-- local clink = GetContainerItemLink(-3, i)
+		-- if clink then
+			-- if quality and quality > 1 then
+				-- button:SetBackdropBorderColor(GetItemQualityColor(quality))
+			-- end
+		-- end
 
-		if i == 1 then
-			button:SetPoint("TOPLEFT", Reagent, "TOPLEFT", 10, -30)
-			LastRowButton = button
-			LastButton = button
-		elseif NumButtons == C["Inventory"].BankColumns then
-			button:SetPoint("TOPRIGHT", LastRowButton, "TOPRIGHT", 0, -(C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize))
-			button:SetPoint("BOTTOMLEFT", LastRowButton, "BOTTOMLEFT", 0, -(C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize))
-			LastRowButton = button
-			NumRows = NumRows + 1
-			NumButtons = 1
-		else
-			button:SetPoint("TOPRIGHT", LastButton, "TOPRIGHT", (C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize), 0)
-			button:SetPoint("BOTTOMLEFT", LastButton, "BOTTOMLEFT", (C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize), 0)
-			NumButtons = NumButtons + 1
-		end
+		-- if i == 1 then
+			-- button:SetPoint("TOPLEFT", Reagent, "TOPLEFT", 10, -30)
+			-- LastRowButton = button
+			-- LastButton = button
+		-- elseif NumButtons == C["Inventory"].BankColumns then
+			-- button:SetPoint("TOPRIGHT", LastRowButton, "TOPRIGHT", 0, -(C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize))
+			-- button:SetPoint("BOTTOMLEFT", LastRowButton, "BOTTOMLEFT", 0, -(C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize))
+			-- LastRowButton = button
+			-- NumRows = NumRows + 1
+			-- NumButtons = 1
+		-- else
+			-- button:SetPoint("TOPRIGHT", LastButton, "TOPRIGHT", (C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize), 0)
+			-- button:SetPoint("BOTTOMLEFT", LastButton, "BOTTOMLEFT", (C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize), 0)
+			-- NumButtons = NumButtons + 1
+		-- end
 
-		icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		icon:SetAllPoints()
+		-- icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		-- icon:SetAllPoints()
 
-		count:SetFontObject(BAGS_FONT)
-		count:SetPoint("BOTTOMRIGHT", 1, 1)
+		-- count:SetFontObject(BAGS_FONT)
+		-- count:SetPoint("BOTTOMRIGHT", 1, 1)
 
-		if (LastButton ~= button) then
-			LastButton = button
-		end
-	end
-	Reagent:SetHeight(((C["Inventory"].ButtonSize + C["Inventory"].ButtonSpace) * (NumRows + 1) + 40) - C["Inventory"].ButtonSpace)
+		-- if (LastButton ~= button) then
+			-- LastButton = button
+		-- end
+	-- end
+	-- Reagent:SetHeight(((C["Inventory"].ButtonSize + C["Inventory"].ButtonSpace) * (NumRows + 1) + 40) - C["Inventory"].ButtonSpace)
 
-	MoneyFrame_Update(ReagentBankFrame.UnlockInfo.CostMoneyFrame, GetReagentBankCost())
-	ReagentBankFrameUnlockInfo:StripTextures()
-	ReagentBankFrameUnlockInfo:SetAllPoints(Reagent)
-	ReagentBankFrameUnlockInfo:CreateBorder()
-	ReagentBankFrameUnlockInfo:SetFrameStrata("FULLSCREEN")
-	ReagentBankFrameUnlockInfoPurchaseButton:SkinButton()
-end
+	-- MoneyFrame_Update(ReagentBankFrame.UnlockInfo.CostMoneyFrame, GetReagentBankCost())
+	-- ReagentBankFrameUnlockInfo:StripTextures()
+	-- ReagentBankFrameUnlockInfo:SetAllPoints(Reagent)
+	-- ReagentBankFrameUnlockInfo:CreateBorder()
+	-- ReagentBankFrameUnlockInfo:SetFrameStrata("FULLSCREEN")
+	-- ReagentBankFrameUnlockInfoPurchaseButton:SkinButton()
+-- end
 
 function Stuffing:BagFrameSlotNew(p, slot)
 	for _, v in ipairs(self.bagframe_buttons) do
@@ -944,40 +944,40 @@ function Stuffing:CreateBagFrame(w)
 	end
 
 	if w == "Bank" then
-		f.reagentToggle = CreateFrame("Button", "StuffingReagentButton" .. w, f)
-		f.reagentToggle:SetSize(16, 16)
-		f.reagentToggle:CreateBorder()
-		f.reagentToggle:CreateInnerShadow()
-		f.reagentToggle:SetPoint("TOPRIGHT", f, -32, -7)
-		f.reagentToggle:SetNormalTexture("Interface\\Icons\\Achievement_GuildPerk_BountifulBags")
-		f.reagentToggle:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-		f.reagentToggle:GetNormalTexture():SetAllPoints()
-		f.reagentToggle:SetPushedTexture("Interface\\Icons\\Achievement_GuildPerk_BountifulBags")
-		f.reagentToggle:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-		f.reagentToggle:GetPushedTexture():SetAllPoints()
-		f.reagentToggle:StyleButton(nil, true)
-		f.reagentToggle.ttText = L["Reagents"]
-		f.reagentToggle:SetScript("OnEnter", Stuffing_TooltipShow)
-		f.reagentToggle:SetScript("OnLeave", Stuffing_TooltipHide)
-		f.reagentToggle:SetScript("OnClick", function()
-			BankFrame_ShowPanel(BANK_PANELS[2].name)
-			PlaySound(PlaySoundKitID and "igcharacterinfotab" or SOUNDKIT.IG_CHARACTER_INFO_TAB)
-			if not ReagentBankFrame.isMade then
-				Stuffing_CreateReagentContainer()
-				ReagentBankFrame.isMade = true
-			else
-				_G["StuffingFrameReagent"]:Show()
-			end
+		-- f.reagentToggle = CreateFrame("Button", "StuffingReagentButton" .. w, f)
+		-- f.reagentToggle:SetSize(16, 16)
+		-- f.reagentToggle:CreateBorder()
+		-- f.reagentToggle:CreateInnerShadow()
+		-- f.reagentToggle:SetPoint("TOPRIGHT", f, -32, -7)
+		-- f.reagentToggle:SetNormalTexture("Interface\\Icons\\Achievement_GuildPerk_BountifulBags")
+		-- f.reagentToggle:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
+		-- f.reagentToggle:GetNormalTexture():SetAllPoints()
+		-- f.reagentToggle:SetPushedTexture("Interface\\Icons\\Achievement_GuildPerk_BountifulBags")
+		-- f.reagentToggle:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
+		-- f.reagentToggle:GetPushedTexture():SetAllPoints()
+		-- f.reagentToggle:StyleButton(nil, true)
+		-- f.reagentToggle.ttText = L["Reagents"]
+		-- f.reagentToggle:SetScript("OnEnter", Stuffing_TooltipShow)
+		-- f.reagentToggle:SetScript("OnLeave", Stuffing_TooltipHide)
+		-- f.reagentToggle:SetScript("OnClick", function()
+			-- BankFrame_ShowPanel(BANK_PANELS[2].name)
+			-- PlaySound(PlaySoundKitID and "igcharacterinfotab" or SOUNDKIT.IG_CHARACTER_INFO_TAB)
+			-- if not ReagentBankFrame.isMade then
+				-- Stuffing_CreateReagentContainer()
+				-- ReagentBankFrame.isMade = true
+			-- else
+				-- _G["StuffingFrameReagent"]:Show()
+			-- end
 
-			_G["StuffingFrameBank"]:SetAlpha(0)
-			_G["StuffingFrameBank"]:EnableMouse(false)
-		end)
+			-- _G["StuffingFrameBank"]:SetAlpha(0)
+			-- _G["StuffingFrameBank"]:EnableMouse(false)
+		-- end)
 
 		f.bagsButton = CreateFrame("Button", nil, f)
 		f.bagsButton:SetSize(16, 16)
 		f.bagsButton:CreateBorder()
 		f.bagsButton:CreateInnerShadow()
-		f.bagsButton:SetPoint("RIGHT", f.reagentToggle, "LEFT", -5, 0)
+		f.bagsButton:SetPoint("TOPRIGHT", f, -32, -7)
 		f.bagsButton:SetNormalTexture("Interface\\Buttons\\Button-Backpack-Up")
 		f.bagsButton:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
 		f.bagsButton:GetNormalTexture():SetAllPoints()
@@ -1604,7 +1604,7 @@ function Stuffing:ADDON_LOADED(addon)
 	self:InitBags()
 
 	table_insert(UISpecialFrames, "StuffingFrameBags")
-	table_insert(UISpecialFrames, "StuffingFrameReagent")
+	-- table_insert(UISpecialFrames, "StuffingFrameReagent")
 
 	ToggleBackpack = Stuffing_Toggle
 	ToggleBag = Stuffing_Toggle
@@ -1646,24 +1646,24 @@ function Stuffing:PLAYERBANKSLOTS_CHANGED(id)
 	end
 end
 
-function Stuffing:PLAYERREAGENTBANKSLOTS_CHANGED()
-	for i = 1, 98 do
-		local button = _G["ReagentBankFrameItem" .. i]
-		if not button then
-			return
-		end
+-- function Stuffing:PLAYERREAGENTBANKSLOTS_CHANGED()
+	-- for i = 1, 98 do
+		-- local button = _G["ReagentBankFrameItem" .. i]
+		-- if not button then
+			-- return
+		-- end
 
-		local _, _, _, quality = GetContainerItemInfo(-3, i)
-		local clink = GetContainerItemLink(-3, i)
-		button:SetBackdropBorderColor()
+		-- local _, _, _, quality = GetContainerItemInfo(-3, i)
+		-- local clink = GetContainerItemLink(-3, i)
+		-- button:SetBackdropBorderColor()
 
-		if clink then
-			if quality and quality > 1 then
-				button:SetBackdropBorderColor(GetItemQualityColor(quality))
-			end
-		end
-	end
-end
+		-- if clink then
+			-- if quality and quality > 1 then
+				-- button:SetBackdropBorderColor(GetItemQualityColor(quality))
+			-- end
+		-- end
+	-- end
+-- end
 
 function Stuffing:BAG_UPDATE(id)
 	self:BagSlotUpdate(id)
@@ -1707,9 +1707,9 @@ function Stuffing:BANKFRAME_OPENED()
 end
 
 function Stuffing:BANKFRAME_CLOSED()
-	if StuffingFrameReagent then
-		StuffingFrameReagent:Hide()
-	end
+	-- if StuffingFrameReagent then
+		-- StuffingFrameReagent:Hide()
+	-- end
 
 	if self.bankFrame then
 		self.bankFrame:Hide()
