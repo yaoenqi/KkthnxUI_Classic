@@ -69,7 +69,7 @@ local function PostUpdateClassPower(element, _, max, diff)
 	end
 	-- Update Color If This Is Combo Points
 	if (max) then
-		if (not UnitHasVehicleUI("player")) and (K.Class == "ROGUE" or K.Class == "DRUID") then
+		if (K.Class == "ROGUE" or K.Class == "DRUID") then
 			local numColors = #ComboColor
 			for index = 1, max do
 				local Bar = element[index]
@@ -105,7 +105,7 @@ local function PostUpdateNameplateClassPower(element, _, max, diff)
 	end
 	-- Update Color If This Is Combo Points
 	if (max) then
-		if (not UnitHasVehicleUI("player")) and (K.Class == "ROGUE" or K.Class == "DRUID") then
+		if (K.Class == "ROGUE" or K.Class == "DRUID") then
 			local numColors = #ComboColor
 			for index = 1, max do
 				local Bar = element[index]
@@ -125,18 +125,16 @@ end
 -- Post Update Classpower Texture
 local function UpdateClassPowerColor(element)
 	local r, g, b
-	if (not UnitHasVehicleUI("player")) then
-		if (K.Class == "MONK") then
-			r, g, b = 181/255 * 0.7, 255/255, 234/255 * 0.7
-		elseif (K.Class == "WARLOCK") then
-			r, g, b = 148/255, 130/255, 201/255
-		elseif (K.Class == "PALADIN") then
-			r, g, b = unpack(K.Colors.power.HOLY_POWER)
-		elseif (K.Class == "MAGE") then
-			r, g, b = 0, 157/255, 1
-		else
-			r, g, b = 195/255, 202/255, 217/255
-		end
+	if (K.Class == "MONK") then
+		r, g, b = 181/255 * 0.7, 255/255, 234/255 * 0.7
+	elseif (K.Class == "WARLOCK") then
+		r, g, b = 148/255, 130/255, 201/255
+	elseif (K.Class == "PALADIN") then
+		r, g, b = unpack(K.Colors.power.HOLY_POWER)
+	elseif (K.Class == "MAGE") then
+		r, g, b = 0, 157/255, 1
+	else
+		r, g, b = 195/255, 202/255, 217/255
 	end
 
 	for index = 1, #element do
