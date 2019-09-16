@@ -483,11 +483,11 @@ K:RegisterEvent("ADDON_LOADED", addonStyled)
 Module:RegisterTooltips("KkthnxUI", function()
 	local tooltips = {
 		_G.AutoCompleteBox,
-		_G.BattlePetTooltip,
+		-- _G.BattlePetTooltip,
 		_G.ChatMenu,
 		_G.EmbeddedItemTooltip,
 		_G.EmoteMenu,
-		_G.FloatingBattlePetTooltip,
+		-- _G.FloatingBattlePetTooltip,
 		_G.FloatingGarrisonFollowerAbilityTooltip,
 		_G.FloatingGarrisonFollowerTooltip,
 		_G.FloatingGarrisonMissionTooltip,
@@ -565,15 +565,15 @@ Module:RegisterTooltips("KkthnxUI", function()
 		end
 	end)
 
-	if IsAddOnLoaded("BattlePetBreedID") then
-		hooksecurefunc("BPBID_SetBreedTooltip", function(parent)
-			if parent == FloatingBattlePetTooltip then
-				Module.ReskinTooltip(BPBID_BreedTooltip2)
-			else
-				Module.ReskinTooltip(BPBID_BreedTooltip)
-			end
-		end)
-	end
+	-- if IsAddOnLoaded("BattlePetBreedID") then
+		-- hooksecurefunc("BPBID_SetBreedTooltip", function(parent)
+			-- if parent == FloatingBattlePetTooltip then
+				-- Module.ReskinTooltip(BPBID_BreedTooltip2)
+			-- else
+				-- Module.ReskinTooltip(BPBID_BreedTooltip)
+			-- end
+		-- end)
+	-- end
 
 	if IsAddOnLoaded("MethodDungeonTools") then
 		local styledMDT
