@@ -5,6 +5,9 @@
 
    <Include file="Blizzard\ObjectiveTracker.lua" />
 
+   <Include file="Addons\DBM.lua" />
+   <Include file="Addons\Details.lua" />
+
    <!-- <Include file="Addons\DBM.lua" />
    <Include file="Addons\Details.lua" />
    <Include file="Addons\ExtraQuestButton.lua" />

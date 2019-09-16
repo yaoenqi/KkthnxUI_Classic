@@ -936,7 +936,15 @@ local function ShowGroup(group)
 	end
 
 	GroupPages[group]:Show()
-	KkthnxUIConfigFrameTitle.Text:SetText(KkthnxUIConfig[Locale]["GroupNames"][group] or group)
+	do
+		local msg = KkthnxUIConfig
+		and KkthnxUIConfig[Locale]
+		and KkthnxUIConfig[Locale]["GroupNames"]
+		and KkthnxUIConfig[Locale]["GroupNames"][group]
+		or group
+		KkthnxUIConfigFrameTitle.Text:SetText(msg)
+	end
+	-- KkthnxUIConfigFrameTitle.Text:SetText(KkthnxUIConfig[Locale]["GroupNames"][group] or group)
 	KkthnxUIConfigFrameTitle.Text:SetTextColor(68 / 255, 136 / 255, 255 / 255)
 
 	if GroupPages[group].Slider then
@@ -1196,7 +1204,15 @@ function KkthnxUIConfig:CreateConfigWindow()
 			Button.Text:SetFont(C["Media"].Font, 12)
 			Button.Text:SetShadowOffset(s, -s/2)
 			Button.Text:SetPoint("CENTER", Button)
-			Button.Text:SetText(KkthnxUIConfig[Locale]["GroupNames"][Group] or Group)
+			do
+				local msg = KkthnxUIConfig
+				and KkthnxUIConfig[Locale]
+				and KkthnxUIConfig[Locale]["GroupNames"]
+				and KkthnxUIConfig[Locale]["GroupNames"][Group]
+				or Group
+				Button.Text:SetText(msg)
+			end
+			-- Button.Text:SetText(KkthnxUIConfig[Locale]["GroupNames"][Group] or Group)
 
 			Button.Active = Button:CreateTexture(nil, "ARTWORK")
 			Button.Active:SetAlpha(0.3)
