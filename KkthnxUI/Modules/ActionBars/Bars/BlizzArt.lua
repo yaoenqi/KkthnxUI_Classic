@@ -94,14 +94,14 @@ function Module:HideBlizz()
 	end
 	hooksecurefunc("MultiActionBar_UpdateGridVisibility", ToggleButtonGrid)
 
-	-- Unregister Talent Event
-	if _G.PlayerTalentFrame then
-		_G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-	else
-		hooksecurefunc("TalentFrame_LoadUI", function()
-			_G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-		end)
-	end
+	-- -- Unregister Talent Event
+	-- if _G.PlayerTalentFrame then
+		-- _G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	-- else
+		-- hooksecurefunc("TalentFrame_LoadUI", function()
+			-- _G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+		-- end)
+	-- end
 
 	-- -- Update Token Panel
 	-- local function updateToken()
