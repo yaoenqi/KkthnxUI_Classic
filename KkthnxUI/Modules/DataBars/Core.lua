@@ -115,28 +115,28 @@ function Module:SetupReputation()
 	reputation.Text = rtext
 end
 
-function Module:SetupAzerite()
-	local azerite = CreateFrame("Statusbar", "KkthnxUI_AzeriteBar", self.Container)
-	azerite:SetStatusBarTexture(self.DatabaseTexture)
-	azerite:SetStatusBarColor(C["DataBars"].AzeriteColor[1], C["DataBars"].AzeriteColor[2], C["DataBars"].AzeriteColor[3])
-	azerite:SetSize(C["DataBars"].Width, C["DataBars"].Height)
-	azerite:CreateBorder()
+-- function Module:SetupAzerite()
+	-- local azerite = CreateFrame("Statusbar", "KkthnxUI_AzeriteBar", self.Container)
+	-- azerite:SetStatusBarTexture(self.DatabaseTexture)
+	-- azerite:SetStatusBarColor(C["DataBars"].AzeriteColor[1], C["DataBars"].AzeriteColor[2], C["DataBars"].AzeriteColor[3])
+	-- azerite:SetSize(C["DataBars"].Width, C["DataBars"].Height)
+	-- azerite:CreateBorder()
 
-	local aspark = azerite:CreateTexture(nil, "OVERLAY")
-	aspark:SetTexture(C["Media"].Spark_16)
-	aspark:SetHeight(C["DataBars"].Height)
-	aspark:SetBlendMode("ADD")
-	aspark:SetPoint("CENTER", azerite:GetStatusBarTexture(), "RIGHT", 0, 0)
+	-- local aspark = azerite:CreateTexture(nil, "OVERLAY")
+	-- aspark:SetTexture(C["Media"].Spark_16)
+	-- aspark:SetHeight(C["DataBars"].Height)
+	-- aspark:SetBlendMode("ADD")
+	-- aspark:SetPoint("CENTER", azerite:GetStatusBarTexture(), "RIGHT", 0, 0)
 
-	local atext = azerite:CreateFontString(nil, "OVERLAY")
-	atext:SetFontObject(self.DatabaseFont)
-	atext:SetFont(select(1, atext:GetFont()), 11, select(3, atext:GetFont()))
-	atext:SetPoint("CENTER")
+	-- local atext = azerite:CreateFontString(nil, "OVERLAY")
+	-- atext:SetFontObject(self.DatabaseFont)
+	-- atext:SetFont(select(1, atext:GetFont()), 11, select(3, atext:GetFont()))
+	-- atext:SetPoint("CENTER")
 
-	self.Bars.Azerite = azerite
-	azerite.Spark = aspark
-	azerite.Text = atext
-end
+	-- self.Bars.Azerite = azerite
+	-- azerite.Spark = aspark
+	-- azerite.Text = atext
+-- end
 
 function Module:SetupHonor()
 	local honor = CreateFrame("StatusBar", "KkthnxUI_HonorBar", self.Container)
@@ -259,28 +259,28 @@ function Module:UpdateExperience()
 	end
 end
 
-function Module:UpdateAzerite(event, unit)
-	if (event == "UNIT_INVENTORY_CHANGED" and unit ~= "player") then
-		return
-	end
+-- function Module:UpdateAzerite(event, unit)
+	-- if (event == "UNIT_INVENTORY_CHANGED" and unit ~= "player") then
+		-- return
+	-- end
 
-	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-	if not azeriteItemLocation or C_AzeriteItem_GetPowerLevel(azeriteItemLocation) == 50 then
-		self.Bars.Azerite:Hide()
-	elseif azeriteItemLocation then
-		self.Bars.Azerite:Show()
+	-- local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
+	-- if not azeriteItemLocation or C_AzeriteItem_GetPowerLevel(azeriteItemLocation) == 50 then
+		-- self.Bars.Azerite:Hide()
+	-- elseif azeriteItemLocation then
+		-- self.Bars.Azerite:Show()
 
-		local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
+		-- local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
+		-- local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 
-		self.Bars.Azerite:SetMinMaxValues(0, totalLevelXP)
-		self.Bars.Azerite:SetValue(xp)
+		-- self.Bars.Azerite:SetMinMaxValues(0, totalLevelXP)
+		-- self.Bars.Azerite:SetValue(xp)
 
-		if C["DataBars"].Text then
-			self.Bars.Azerite.Text:SetText(string_format("%s - %s%% [%s]", K.ShortValue(xp), math_floor(xp / totalLevelXP * 100), currentLevel))
-		end
-	end
-end
+		-- if C["DataBars"].Text then
+			-- self.Bars.Azerite.Text:SetText(string_format("%s - %s%% [%s]", K.ShortValue(xp), math_floor(xp / totalLevelXP * 100), currentLevel))
+		-- end
+	-- end
+-- end
 
 function Module:UpdateHonor(event, unit)
 	if not C["DataBars"].TrackHonor then
