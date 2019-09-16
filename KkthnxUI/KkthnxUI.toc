@@ -1,0 +1,26 @@
+## Interface: 11302
+## Name: KkthnxUI Classic
+## Title: |cff4488ffKkthnxUI|r Classic
+## Notes: |cff666666By Josh "Kkthnx" Russell|r |n|n|cffffffffA simple User Interface replacement |nAddOn for World of Warcraft.|r|r|n|n|cff4488ffThis addon supports:|r Classic |cff666666Patch: 1.13.2|r|n|n
+## Author: Kkthnx
+## Version: 9.06
+## DefaultState: Enabled
+## SavedVariables: KkthnxUIData
+## SavedVariablesPerCharacter: KkthnxUIDataPerChar
+## OptionalDeps: KkthnxUI_Config, DBM, Recount, Skada, WeakAuras, RealMobHealth
+## X-Category: Interface Enhancements
+## X-Credits: Alza, Azilroka, Blazeflack, Caellian, Caith, Darth Predator, Elv, Firestorm Community, Goldpaw, Haleth, Haste, Hungtar, Hydra, Ishtara, KkthnxUI Community, LightSpark, Magicnachos, Merathilis, Nightcracker, P3lim, Rav99, Roth, Shestak, Simpy, Sticklord, Tekkub, Tohveli, Tukz, Tulla, Tuller, oUF Team
+## X-Thanks: MaxtorCoder, Elliot, Jubaleth
+## X-Curse-Packaged-Version: 9.06
+## X-Curse-Project-ID: 95528
+## X-Curse-Project-Name: KkthnxUI
+## X-WoWI-ID: 24615
+## X-Discord: https://discord.gg/YUmxqQm
+## X-BugReport: https://github.com/kkthnx-wow/KkthnxUI_Classic/issues/new
+## X-License: The MIT License (MIT)
+## X-Localizations: enUS
+## X-oUF: oUFKkthnxUI
+## X-Website: https://github.com/kkthnx-wow/KkthnxUI_Classic
+
+# -- Load Core File
+KkthnxUI.xml

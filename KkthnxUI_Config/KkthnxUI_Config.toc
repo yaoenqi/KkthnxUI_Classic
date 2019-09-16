@@ -1,0 +1,16 @@
+## Interface: 11302
+## Name: KkthnxUI Config
+## Title: |cff4488ffKkthnxUI Config|r Classic
+## Notes: Options for KkthnxUI Classic
+## Author: Kkthnx
+## Version: 9.06
+## DefaultState: Enabled
+## SavedVariables: KkthnxUIConfigShared, KkthnxUIConfigPerAccount
+## SavedVariablesPerCharacter: KkthnxUIConfigNotShared
+## RequiredDeps: KkthnxUI
+
+# -- Load Core File
+KkthnxUI_Config.lua
+
+# -- Load Locales
+Locales\enUS.lua
