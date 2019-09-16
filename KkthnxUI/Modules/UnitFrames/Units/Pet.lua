@@ -37,6 +37,7 @@ function Module:CreatePet()
 	self.Health.colorSmooth = false
 	self.Health.colorClass = true
 	self.Health.colorReaction = true
+	self.Health.colorHappiness = K.Class == "HUNTER"
 	self.Health.frequentUpdates = false
 
 	self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")
