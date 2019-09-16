@@ -33,7 +33,7 @@ function Module:HyperLink_SetPet(link)
 	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT", -3, 5)
 	GameTooltip:Show()
 	local _, speciesID, level, breedQuality, maxHealth, power, speed = string_split(":", link)
-	BattlePetToolTip_Show(tonumber(speciesID), tonumber(level), tonumber(breedQuality), tonumber(maxHealth), tonumber(power), tonumber(speed))
+	-- BattlePetToolTip_Show(tonumber(speciesID), tonumber(level), tonumber(breedQuality), tonumber(maxHealth), tonumber(power), tonumber(speed))
 end
 
 function Module:HyperLink_GetSectionInfo(id)
@@ -78,8 +78,8 @@ end
 
 function Module:HyperLink_OnEnter(link, ...)
 	local linkType = string_match(link, "^([^:]+)")
-	if linkType and linkType == "battlepet" then
-		Module.HyperLink_SetPet(self, link)
+	-- if linkType and linkType == "battlepet" then
+		-- Module.HyperLink_SetPet(self, link)
 	elseif linkType and linkType == "journal" then
 		Module.HyperLink_SetJournal(self, link)
 	elseif linkType and linkTypes[linkType] then
@@ -92,7 +92,7 @@ function Module:HyperLink_OnEnter(link, ...)
 end
 
 function Module:HyperLink_OnLeave(_, ...)
-	BattlePetTooltip:Hide()
+	-- BattlePetTooltip:Hide()
 	GameTooltip:Hide()
 
 	if orig2[self] then
