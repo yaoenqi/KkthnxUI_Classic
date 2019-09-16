@@ -80,7 +80,7 @@ function Module:HyperLink_OnEnter(link, ...)
 	local linkType = string_match(link, "^([^:]+)")
 	-- if linkType and linkType == "battlepet" then
 		-- Module.HyperLink_SetPet(self, link)
-	elseif linkType and linkType == "journal" then
+	if linkType and linkType == "journal" then
 		Module.HyperLink_SetJournal(self, link)
 	elseif linkType and linkTypes[linkType] then
 		Module.HyperLink_SetTypes(self, link)
