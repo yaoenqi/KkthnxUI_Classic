@@ -53,7 +53,9 @@ function Module:CreatePlayer()
 	self.Health.colorHappiness = K.Class == "HUNTER"
 	self.Health.frequentUpdates = true
 
-	K.SmoothBar(self.Health)
+	if C["Unitframe"].Smooth then
+		K.SmoothBar(self.Health)
+	end
 
 	self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")
 	self.Health.Value:SetFontObject(UnitframeFont)
@@ -70,7 +72,9 @@ function Module:CreatePlayer()
 	self.Power.colorPower = true
 	self.Power.frequentUpdates = true
 
-	K.SmoothBar(self.Power)
+	if C["Unitframe"].Smooth then
+		K.SmoothBar(self.Power)
+	end
 
 	self.Power.Value = self.Power:CreateFontString(nil, "OVERLAY")
 	self.Power.Value:SetPoint("CENTER", self.Power, "CENTER", 0, 0)

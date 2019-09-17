@@ -151,7 +151,9 @@ function Module:CreateNameplates(unit)
 	self.Health.colorDisconnected = true
 	self.Health.frequentUpdates = true
 
-	K.SmoothBar(self.Health)
+	if C["Nameplates"].Smooth then
+		K.SmoothBar(self.Health)
+	end
 
 	self.Power = CreateFrame("StatusBar", nil, self)
 	self.Power:SetFrameStrata(self:GetFrameStrata())
@@ -167,7 +169,9 @@ function Module:CreateNameplates(unit)
 	self.Power.colorPower = true
 	self.Power.PostUpdate = Module.DisplayNameplatePowerAndCastBar
 
-	K.SmoothBar(self.Power)
+	if C["Nameplates"].Smooth then
+		K.SmoothBar(self.Power)
+	end
 
 	if C["Nameplates"].HealthValue == true then
 		self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")

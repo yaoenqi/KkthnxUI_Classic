@@ -1,6 +1,9 @@
 local K, C = unpack(select(2, ...))
 local Module = K:GetModule("Blizzard")
 
+local headerString = QUEST_LOG.." %s/%s"
+local MAX_QUESTLOG_QUESTS = MAX_QUESTLOG_QUESTS or 20
+
 local function SetupQuestTrackerMover()
     -- Mover for quest tracker
 	local frame = CreateFrame("Frame", "KkthnxUIQuestMover", UIParent)
@@ -62,14 +65,14 @@ local function SetupQuestTrackerMover()
 	local header = CreateFrame("Frame", nil, frame)
 	header:SetAllPoints(frame)
 	header:Hide()
-	K.CreateFontString(header, 14, QUEST_LOG, true, "TOPLEFT", 0, 8)
+	header.Text = K.CreateFontString(header, 14, QUEST_LOG, true, "TOPLEFT", 0, 15)
 
 	local bg = header:CreateTexture(nil, "ARTWORK")
 	bg:SetTexture("Interface\\LFGFrame\\UI-LFG-SEPARATOR")
 	bg:SetTexCoord(0, .66, 0, .31)
 	bg:SetVertexColor(K.r, K.g, K.b, .8)
-	bg:SetPoint("TOPLEFT", -15, 13)
-	bg:SetSize(200, 30)
+	bg:SetPoint("TOPLEFT", 0, 20)
+	bg:SetSize(250, 30)
 
 	-- ModernQuestWatch, Ketho
 	local function onMouseUp(self)
@@ -111,9 +114,9 @@ local function SetupQuestTrackerMover()
 				text:SetTextColor(.8, .8, .8)
 			end
 		else
-			self.headerText:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b) -- 1, .82, 0
+			self.headerText:SetTextColor(1, .8, 0)
 			for _, text in ipairs(self.objectiveTexts) do
-				text:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b) -- 1, 1, 1
+				text:SetTextColor(1, 1, 1)
 			end
 		end
 	end
@@ -138,6 +141,8 @@ local function SetupQuestTrackerMover()
 
 	hooksecurefunc("QuestWatch_Update", function()
 		header:SetShown(tracker:IsShown())
+		local numQuests = select(2, GetNumQuestLogEntries())
+		header.Text:SetFormattedText(headerString, numQuests, MAX_QUESTLOG_QUESTS)
 
 		local watchTextIndex = 1
 		for i = 1, GetNumQuestWatches() do

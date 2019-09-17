@@ -246,7 +246,7 @@ C["Nameplates"] = {
 	["OverlapV"] = 1.2,
 	["QuestInfo"] = true,
 	["SelectedScale"] = 1.4,
-	-- ["Smooth"] = false,
+	["Smooth"] = false,
 	["TankMode"] = false,
 	["Threat"] = false,
 	["TrackAuras"] = true,
@@ -370,7 +370,7 @@ C["Unitframe"] = {
 	["PortraitTimers"] = false,
 	["ShowPlayerLevel"] = true,
 	["ShowPlayerName"] = false,
-	-- ["Smooth"] = false,
+	["Smooth"] = false,
 	["Swingbar"] = false,
 	["SwingbarTimer"] = false,
 	["TargetCastbarHeight"] = 24,
@@ -469,9 +469,8 @@ end
 
 -- Worldmap
 C["WorldMap"] = {
-	["AlphaWhenMoving"] = 0.35,
 	["Coordinates"] = true,
-	["FadeWhenMoving"] = true,
-	["SmallWorldMap"] = true,
 	["WorldMapPlus"] = false,
+	["MapScale"] = 0.7,
+	["MapFader"] = true,
 }

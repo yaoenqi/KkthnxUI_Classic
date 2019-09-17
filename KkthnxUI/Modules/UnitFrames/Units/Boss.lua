@@ -32,7 +32,9 @@ function Module:CreateBoss()
 	self.Health.colorReaction = true
 	self.Health.frequentUpdates = false
 
-	K.SmoothBar(self.Health)
+	if C["Unitframe"].Smooth then
+		K.SmoothBar(self.Health)
+	end
 
 	self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")
 	self.Health.Value:SetFontObject(UnitframeFont)

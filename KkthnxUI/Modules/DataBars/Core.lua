@@ -164,11 +164,11 @@ function Module:SetupHonor()
 end
 
 function Module:UpdateReputation()
-	local ID, isFriend, friendText, standingLabel
+	local ID, standingLabel
 	local isCapped
 	local name, reaction, min, max, value = GetWatchedFactionInfo()
 
-	if reaction == MAX_REPUTATION_REACTION then
+	if reaction == _G.MAX_REPUTATION_REACTION then
 		-- max rank, make it look like a full bar
 		min, max, value = 0, 1, 1
 		isCapped = true
@@ -186,16 +186,10 @@ function Module:UpdateReputation()
 		self.Bars.Reputation:SetMinMaxValues(min, max)
 		self.Bars.Reputation:SetValue(value)
 
-		for i = 1, numFactions do
-			local factionName, _, standingID, _, _, _, _, _, _, _, _, _, _, factionID = GetFactionInfo(i)
-			local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID)
+		for i=1, numFactions do
+			local factionName, _, standingID = GetFactionInfo(i)
 			if factionName == name then
-				if friendID ~= nil then
-					isFriend = true
-					friendText = friendTextLevel
-				else
-					ID = standingID
-				end
+				ID = standingID
 			end
 		end
 
@@ -212,9 +206,9 @@ function Module:UpdateReputation()
 
 		if C["DataBars"].Text then
 			if isCapped then
-				text = string_format("%s: [%s]", name, isFriend and friendText or standingLabel)
+				text = string_format("%s: [%s]", name, standingLabel)
 			else
-				text = string_format("%s: %s - %d%% [%s]", name, K.ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
+				text = string_format("%s: %s - %d%% [%s]", name, K.ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), standingLabel)
 			end
 
 			self.Bars.Reputation.Text:SetText(text)
@@ -343,33 +337,17 @@ function Module:OnEnter()
 	end
 
 	if GetWatchedFactionInfo() then
-		if (not IsPlayerMaxLevel() and not IsXPUserDisabled()) then
+		if (not IsPlayerMaxLevel()) then
 			GameTooltip:AddLine(" ")
 		end
 
-		local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
-		if factionID and C_Reputation_IsFactionParagon(factionID) then
-			local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
-			if currentValue and threshold then
-				min, max = 0, threshold
-				value = currentValue % threshold
-				if hasRewardPending then
-					value = value + threshold
-				end
-			end
-		end
-
+		local name, reaction, min, max, value = GetWatchedFactionInfo()
 		if name then
 			GameTooltip:AddLine(name)
 
-			local friendID, friendTextLevel, _
-			if factionID then
-				friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID)
-			end
-
-			GameTooltip:AddDoubleLine(STANDING..":", (friendID and friendTextLevel) or _G["FACTION_STANDING_LABEL" .. reaction], 1, 1, 1)
-			if reaction ~= MAX_REPUTATION_REACTION or C_Reputation_IsFactionParagon(factionID) then
-				GameTooltip:AddDoubleLine(REPUTATION..":", string_format("%d / %d (%d%%)", value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
+			GameTooltip:AddDoubleLine(STANDING..':', _G['FACTION_STANDING_LABEL'..reaction], 1, 1, 1)
+			if reaction ~= _G.MAX_REPUTATION_REACTION then
+				GameTooltip:AddDoubleLine(REPUTATION..':', string_format("%d / %d (%d%%)", value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
 			end
 			GameTooltip:AddDoubleLine("|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:218:318|t "..L["Left Click"], L["Toggle Reputation"], 1, 1, 1)
 		end
@@ -395,20 +373,20 @@ function Module:OnEnter()
 	-- 	end)
 	-- end
 
-	if C["DataBars"].TrackHonor then
-		if IsPlayerMaxLevel() and UnitIsPVP("player") then
-			GameTooltip:AddLine(" ")
+	-- if C["DataBars"].TrackHonor then
+	-- 	if IsPlayerMaxLevel() and UnitIsPVP("player") then
+	-- 		GameTooltip:AddLine(" ")
 
-			local current = UnitHonor("player")
-			local max = UnitHonorMax("player")
-			local level = UnitHonorLevel("player")
+	-- 		local current = UnitHonor("player")
+	-- 		local max = UnitHonorMax("player")
+	-- 		local level = UnitHonorLevel("player")
 
-			GameTooltip:AddDoubleLine(HONOR.." "..LEVEL, level)
-			GameTooltip:AddDoubleLine(L["Honor XP"], string_format(" %d / %d (%d%%)", current, max, current/max * 100), 1, 1, 1)
-			GameTooltip:AddDoubleLine(L["Honor Remaining"], string_format(" %d (%d%% - %d "..L["Bars"]..")", max - current, (max - current) / max * 100, 20 * (max - current) / max), 1, 1, 1)
-			GameTooltip:AddDoubleLine("|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:321:421|t "..L["Right Click"], L["Toggle PvP"], 1, 1, 1)
-		end
-	end
+	-- 		GameTooltip:AddDoubleLine(HONOR.." "..LEVEL, level)
+	-- 		GameTooltip:AddDoubleLine(L["Honor XP"], string_format(" %d / %d (%d%%)", current, max, current/max * 100), 1, 1, 1)
+	-- 		GameTooltip:AddDoubleLine(L["Honor Remaining"], string_format(" %d (%d%% - %d "..L["Bars"]..")", max - current, (max - current) / max * 100, 20 * (max - current) / max), 1, 1, 1)
+	-- 		GameTooltip:AddDoubleLine("|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:321:421|t "..L["Right Click"], L["Toggle PvP"], 1, 1, 1)
+	-- 	end
+	-- end
 
 	GameTooltip:Show()
 end
@@ -437,7 +415,7 @@ function Module:OnClick(_, clicked)
 			end
 		end
 	elseif clicked == "MiddleButton" then
-		if not IsPlayerMaxLevel() and not IsXPUserDisabled() then
+		if not IsPlayerMaxLevel() then
 			local cur, max = GetUnitXP("player")
 
 			if IsInGroup(LE_PARTY_CATEGORY_HOME) then
