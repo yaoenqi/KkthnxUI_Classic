@@ -7,15 +7,15 @@ end
 
 local _G = _G
 local pairs = _G.pairs
-local string_match = _G.string.match
-local tonumber = _G.tonumber
+-- local string_match = _G.string.match
+-- local tonumber = _G.tonumber
 
-local C_Timer_After = _G.C_Timer.After
+-- local C_Timer_After = _G.C_Timer.After
 local CreateFrame = _G.CreateFrame
-local GetItemInfo = _G.GetItemInfo
+-- local GetItemInfo = _G.GetItemInfo
 local GetLocale = _G.GetLocale
-local GetSpellInfo = _G.GetSpellInfo
-local PanelTemplates_GetSelectedTab = _G.PanelTemplates_GetSelectedTab
+-- local GetSpellInfo = _G.GetSpellInfo
+-- local PanelTemplates_GetSelectedTab = _G.PanelTemplates_GetSelectedTab
 local blizzardCollectgarbage = _G.collectgarbage
 local hooksecurefunc = _G.hooksecurefunc
 
@@ -156,42 +156,6 @@ do
 
 	K:RegisterEvent("ADDON_LOADED", fixGuildNews)
 	K:RegisterEvent("ADDON_LOADED", fixCommunitiesNews)
-end
-
--- Fix TradeSkill Search
-do
-	hooksecurefunc("ChatEdit_InsertLink", function(text) -- Shift-Clicked
-		-- Change From SearchBox:HasFocus to :IsShown Again
-		if text and _G.TradeSkillFrame and _G.TradeSkillFrame:IsShown() then
-			local spellId = string_match(text, "enchant:(%d+)")
-			local spell = GetSpellInfo(spellId)
-			local item = GetItemInfo(string_match(text, "item:(%d+)") or 0)
-			local search = spell or item
-			if not search then
-				return
-			end
-
-			-- Search Needs To Be Lowercase For .SetRecipeItemNameFilter
-			_G.TradeSkillFrame.SearchBox:SetText(search)
-
-			-- Jump To The Recipe
-			if spell then -- Can Only Select Recipes On The Learned Tab
-				if PanelTemplates_GetSelectedTab(_G.TradeSkillFrame.RecipeList) == 1 then
-					_G.TradeSkillFrame:SelectRecipe(tonumber(spellId))
-				end
-			elseif item then
-				C_Timer_After(.2, function() -- Wait A Bit Or We Cant Select The Recipe Yet
-					for _, v in pairs(_G.TradeSkillFrame.RecipeList.dataList) do
-						if v.name == item then
-							-- TradeSkillFrame.RecipeList:RefreshDisplay() -- Didnt Seem To Help
-							_G.TradeSkillFrame:SelectRecipe(v.recipeID)
-							return
-						end
-					end
-				end)
-			end
-		end
-	end)
 end
 
 do
