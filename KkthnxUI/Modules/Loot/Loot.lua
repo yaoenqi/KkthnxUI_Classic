@@ -169,7 +169,10 @@ function Module.LOOT_SLOT_CLEARED(_, slot)
 		return
 	end
 
-	lootFrame.slots[slot]:Hide()
+	if lootFrame.slots[slot] then
+		lootFrame.slots[slot]:Hide()
+	end
+
 	anchorSlots(lootFrame)
 end
 
@@ -279,7 +282,7 @@ function Module.LOOT_OPENED(_, autoloot)
 		if color then
 			slot.name:SetTextColor(color.r, color.g, color.b)
 		end
-		slot.icon:SetTexture([[Interface\Icons\INV_Misc_Herb_AncientLichen]])
+		slot.icon:SetTexture([[Interface\Icons\Inv_misc_questionmark]])
 
 		w = max(w, slot.name:GetStringWidth())
 
@@ -298,6 +301,14 @@ function Module.LOOT_OPENED(_, autoloot)
 	lootFrame:SetWidth(max(w, t))
 end
 
+function Module.OPEN_MASTER_LOOT_LIST()
+	ToggleDropDownMenu(1, nil, GroupLootDropDown, lootFrame.slots[LootFrame.selectedSlot], 0, 0)
+end
+
+function Module.UPDATE_MASTER_LOOT_LIST()
+	UIDropDownMenu_Refresh(GroupLootDropDown)
+end
+
 function Module:OnEnable()
 	if C["Loot"].Enable ~= true then
 		return
@@ -309,6 +320,7 @@ function Module:OnEnable()
 	lootFrameHolder:SetHeight(22)
 
 	lootFrame = CreateFrame("Button", "KkthnxLootFrame", lootFrameHolder)
+	lootFrame:Hide()
 	lootFrame:SetClampedToScreen(true)
 	lootFrame:SetPoint("TOPLEFT")
 	lootFrame:SetSize(256, 64)
@@ -327,6 +339,8 @@ function Module:OnEnable()
 	K:RegisterEvent("LOOT_OPENED", self.LOOT_OPENED)
 	K:RegisterEvent("LOOT_SLOT_CLEARED", self.LOOT_SLOT_CLEARED)
 	K:RegisterEvent("LOOT_CLOSED", self.LOOT_CLOSED)
+	K:RegisterEvent("OPEN_MASTER_LOOT_LIST", self.OPEN_MASTER_LOOT_LIST)
+	K:RegisterEvent("UPDATE_MASTER_LOOT_LIST", self.UPDATE_MASTER_LOOT_LIST)
 
 	if (GetCVar("lootUnderMouse") == "0") then
 		K.Mover(lootFrameHolder, "LootFrame", "LootFrame", {"TOPLEFT", 36, -195})
@@ -334,6 +348,23 @@ function Module:OnEnable()
 
 	LootFrame:UnregisterAllEvents()
 	table_insert(UISpecialFrames, "KkthnxLootFrame")
+
+	function _G.GroupLootDropDown_GiveLoot()
+		if LootFrame.selectedQuality >= MASTER_LOOT_THREHOLD then
+			local dialog = StaticPopup_Show("CONFIRM_LOOT_DISTRIBUTION", ITEM_QUALITY_COLORS[LootFrame.selectedQuality].hex..LootFrame.selectedItemName..FONT_COLOR_CODE_CLOSE, self:GetText())
+			if dialog then
+				dialog.data = self.value
+			end
+		else
+			GiveMasterLoot(LootFrame.selectedSlot, self.value)
+		end
+		CloseDropDownMenus()
+	end
+
+	K.PopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].OnAccept = function(data)
+		GiveMasterLoot(LootFrame.selectedSlot, data)
+	end
+	StaticPopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].preferredIndex = 3
 
 	self:CreateGroupLoot()
 	self:CreateAutoConfirm()

@@ -122,7 +122,6 @@ local menuList = {
 	{text = CLOSE, notCheckable = true, func = function() end},
 }
 
-
 do
 	local raidIconFunc = function(x)
 		x = x ~= "" and _G["RAID_TARGET_"..x]

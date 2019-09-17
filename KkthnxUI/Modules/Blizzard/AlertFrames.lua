@@ -27,8 +27,6 @@ function Module:AlertFrame_UpdateAnchor()
 
 	self:ClearAllPoints()
 	self:SetPoint(POSITION, parentFrame)
-	GroupLootContainer:ClearAllPoints()
-	GroupLootContainer:SetPoint(POSITION, parentFrame)
 end
 
 function Module:UpdatGroupLootContainer()
@@ -114,5 +112,4 @@ function Module:CreateAlertFrames()
 	end)
 
 	hooksecurefunc(AlertFrame, "UpdateAnchors", Module.AlertFrame_UpdateAnchor)
-	hooksecurefunc("GroupLootContainer_Update", Module.UpdatGroupLootContainer)
 end

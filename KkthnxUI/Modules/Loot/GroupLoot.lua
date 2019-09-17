@@ -27,7 +27,6 @@ local IsShiftKeyDown = _G.IsShiftKeyDown
 local NEED = _G.NEED
 local PASS = _G.PASS
 local RAID_CLASS_COLORS = _G.RAID_CLASS_COLORS
-local ROLL_DISENCHANT = _G.ROLL_DISENCHANT
 local ResetCursor = _G.ResetCursor
 local RollOnLoot = _G.RollOnLoot
 local SetDesaturation = _G.SetDesaturation
@@ -55,7 +54,7 @@ local function HideTip2()
 	ResetCursor()
 end
 
-local rolltypes = {[1] = "need", [2] = "greed", [3] = "disenchant", [0] = "pass"}
+local rolltypes = {[1] = "need", [2] = "greed", [0] = "pass"}
 local function SetTip(frame)
 	GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
 	GameTooltip:SetText(frame.tiptext)
@@ -216,11 +215,9 @@ function Module:CreateRollFrame()
 
 	local need, needtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Dice-Up", "Interface\\Buttons\\UI-GroupLoot-Dice-Highlight", "Interface\\Buttons\\UI-GroupLoot-Dice-Down", 1, NEED, "LEFT", frame.button, "RIGHT", 5, -1)
 	local greed, greedtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Coin-Up", "Interface\\Buttons\\UI-GroupLoot-Coin-Highlight", "Interface\\Buttons\\UI-GroupLoot-Coin-Down", 2, GREED, "LEFT", need, "RIGHT", 0, -1)
-	local de, detext
-	de, detext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-DE-Up", "Interface\\Buttons\\UI-GroupLoot-DE-Highlight", "Interface\\Buttons\\UI-GroupLoot-DE-Down", 3, ROLL_DISENCHANT, "LEFT", greed, "RIGHT", 0, -1)
-	local pass, passtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Pass-Up", nil, "Interface\\Buttons\\UI-GroupLoot-Pass-Down", 0, PASS, "LEFT", de or greed, "RIGHT", 0, 2)
-	frame.needbutt, frame.greedbutt, frame.disenchantbutt = need, greed, de
-	frame.need, frame.greed, frame.pass, frame.disenchant = needtext, greedtext, passtext, detext
+	local pass, passtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Pass-Up", nil, "Interface\\Buttons\\UI-GroupLoot-Pass-Down", 0, PASS, "LEFT", greed, "RIGHT", 0, 2)
+	frame.needbutt, frame.greedbutt = need, greed
+	frame.need, frame.greed, frame.pass = needtext, greedtext, passtext
 
 	local bind = frame:CreateFontString()
 	bind:SetPoint("LEFT", pass, "RIGHT", 3, 1)
@@ -275,9 +272,8 @@ function Module.START_LOOT_ROLL(_, rollID, time)
 	f.need:SetText(0)
 	f.greed:SetText(0)
 	f.pass:SetText(0)
-	f.disenchant:SetText(0)
 
-	local texture, name, _, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
+	local texture, name, _, quality, bop, canNeed, canGreed = GetLootRollItemInfo(rollID)
 
 	f.button.icon:SetTexture(texture)
 	f.button.link = GetLootRollItemLink(rollID)
@@ -294,15 +290,8 @@ function Module.START_LOOT_ROLL(_, rollID, time)
 		f.greedbutt:Disable()
 	end
 
-	if canDisenchant then
-		f.disenchantbutt:Enable()
-	else
-		f.disenchantbutt:Disable()
-	end
-
 	SetDesaturation(f.needbutt:GetNormalTexture(), not canNeed)
 	SetDesaturation(f.greedbutt:GetNormalTexture(), not canGreed)
-	SetDesaturation(f.disenchantbutt:GetNormalTexture(), not canDisenchant)
 
 	if canNeed then
 		f.needbutt:SetAlpha(1)
@@ -314,12 +303,6 @@ function Module.START_LOOT_ROLL(_, rollID, time)
 		f.greedbutt:SetAlpha(1)
 	else
 		f.greedbutt:SetAlpha(0.2)
-	end
-
-	if canDisenchant then
-		f.disenchantbutt:SetAlpha(1)
-	else
-		f.disenchantbutt:SetAlpha(0.2)
 	end
 
 	f.fsbind:SetText(bop and "BoP" or "BoE")
