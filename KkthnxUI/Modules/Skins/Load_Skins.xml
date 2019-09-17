@@ -3,8 +3,6 @@
    <!-- Load_Skins -->
    <Include file="Core.lua" />
 
-   <Include file="Blizzard\ObjectiveTracker.lua" />
-
    <Include file="Addons\DBM.lua" />
    <Include file="Addons\Details.lua" />
 

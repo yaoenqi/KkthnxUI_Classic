@@ -23,7 +23,6 @@ local GetLocale = _G.GetLocale
 local GetNumAddOns = _G.GetNumAddOns
 local GetRealmName = _G.GetRealmName
 local GetScreenResolutions = _G.GetScreenResolutions
-local GetSpecialization = _G.GetSpecialization
 local LOCALIZED_CLASS_NAMES_MALE = _G.LOCALIZED_CLASS_NAMES_MALE
 local LibStub = _G.LibStub
 local RAID_CLASS_COLORS = _G.RAID_CLASS_COLORS
@@ -55,7 +54,6 @@ K.Name = UnitName("player")
 K.LocalizedClass, K.Class, K.ClassID = UnitClass("player")
 K.LocalizedRace, K.Race = UnitRace("player")
 K.Faction, K.LocalizedFaction = UnitFactionGroup("player")
---K.Spec = GetSpecialization() or 0
 K.Level = UnitLevel("player")
 K.Client = GetLocale()
 K.Realm = GetRealmName()
@@ -74,7 +72,6 @@ K.Welcome = "|cff4488ffKkthnxUI "..K.Version.." "..K.Client.."|r - /helpui"
 K.ScanTooltip = CreateFrame("GameTooltip", "KkthnxUI_ScanTooltip", _G.UIParent, "GameTooltipTemplate")
 K.WowPatch, K.WowBuild, K.WowRelease, K.TocVersion = GetBuildInfo()
 K.WowBuild = tonumber(K.WowBuild)
-K.IsPTR = GetBuildInfo and K.WowBuild >= 29634
 K.InfoColor = "|cff4488ff"
 K.CodeDebug = false -- Don't touch this, unless you know what you are doing?
 

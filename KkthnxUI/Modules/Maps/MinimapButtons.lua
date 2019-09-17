@@ -82,7 +82,7 @@ function Module:CreateRecycleBin()
 	local function CollectRubbish()
 		for _, child in ipairs({Minimap:GetChildren()}) do
 			local name = child:GetName()
-			if name and not blackList[name] and not string_match(string_upper(name), "HANDYNOTES") then
+			if name and not blackList[name] and not string_match(string_upper(name), "HANDYNOTES") and not string_match(string_upper(name), "GUIDELIME") then
 				if child:GetObjectType() == "Button" or string_match(string_upper(name), "BUTTON") then
 					child:SetParent(bin)
 					child:SetSize(22, 22)

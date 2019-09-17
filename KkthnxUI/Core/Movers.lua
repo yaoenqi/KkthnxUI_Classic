@@ -235,6 +235,6 @@ _G.SlashCmdList["KKUI_MOVEUI"] = function()
 	CreateConsole()
 	UnlockElements()
 end
-_G.SLASH_MOVEUI1 = "/moveui"
-_G.SLASH_MOVEUI2 = "/mui"
-_G.SLASH_MOVEUI3 = "/mm"
+_G.SLASH_KKUI_MOVEUI1 = "/moveui"
+_G.SLASH_KKUI_MOVEUI2 = "/mui"
+_G.SLASH_KKUI_MOVEUI3 = "/mm"
