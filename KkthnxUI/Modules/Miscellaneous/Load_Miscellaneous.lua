@@ -403,42 +403,63 @@ end
 
 -- ALT+RightClick to buy a stack
 do
-	local cache = {}
-	local itemLink, id
+    local old_MerchantItemButton_OnModifiedClick = _G.MerchantItemButton_OnModifiedClick
+    local cache = {}
+    function MerchantItemButton_OnModifiedClick(self, ...)
+        if IsAltKeyDown() then
+            local id = self:GetID()
+            local itemLink = GetMerchantItemLink(id)
+            if not itemLink then return end
+            local name, _, quality, _, _, _, _, maxStack, _, texture = GetItemInfo(itemLink)
+            if maxStack and maxStack > 1 then
+                if not cache[itemLink] then
+                    StaticPopupDialogs["BUY_STACK"] = {
+                        text = "Stack Buying Check",
+                        button1 = YES,
+                        button2 = NO,
+                        OnAccept = function()
+                            _G.BuyMerchantItem(id, GetMerchantItemMaxStack(id))
+                            cache[itemLink] = true
+                        end,
+                        hideOnEscape = 1,
+                        hasItemFrame = 1,
+                    }
 
-	StaticPopupDialogs["BUY_STACK"] = {
-		text = "Stack Buying Check",
-		button1 = YES,
-		button2 = NO,
-		OnAccept = function()
-			if not itemLink then return end
-			BuyMerchantItem(id, GetMerchantItemMaxStack(id))
-			cache[itemLink] = true
-			itemLink = nil
-		end,
-		hideOnEscape = 1,
-		hasItemFrame = 1,
-	}
+                    local r, g, b = GetItemQualityColor(quality or 1)
+                    StaticPopup_Show("BUY_STACK", " ", " ", {["texture"] = texture, ["name"] = name, ["color"] = {r, g, b, 1}, ["link"] = itemLink, ["index"] = id, ["count"] = maxStack})
+                else
+                    _G.BuyMerchantItem(id, GetMerchantItemMaxStack(id))
+                end
+            end
+        end
 
-	local _MerchantItemButton_OnModifiedClick = MerchantItemButton_OnModifiedClick
-	function MerchantItemButton_OnModifiedClick(self, ...)
-		if IsAltKeyDown() then
-			id = self:GetID()
-			itemLink = GetMerchantItemLink(id)
-			if not itemLink then return end
-			local name, _, quality, _, _, _, _, maxStack, _, texture = GetItemInfo(itemLink)
-			if maxStack and maxStack > 1 then
-				if not cache[itemLink] then
-					local r, g, b = GetItemQualityColor(quality or 1)
-					StaticPopup_Show("BUY_STACK", " ", " ", {["texture"] = texture, ["name"] = name, ["color"] = {r, g, b, 1}, ["link"] = itemLink, ["index"] = id, ["count"] = maxStack})
-				else
-					BuyMerchantItem(id, GetMerchantItemMaxStack(id))
-				end
-			end
-		end
+        old_MerchantItemButton_OnModifiedClick(self, ...)
+    end
+end
 
-		_MerchantItemButton_OnModifiedClick(self, ...)
-	end
+-- Fix Drag Collections taint
+do
+    local done
+    local function setupMisc(event, addon)
+        if event == "ADDON_LOADED" and addon == "Blizzard_Collections" then
+            _G.CollectionsJournal:HookScript("OnShow", function()
+                if not done then
+                    if InCombatLockdown() then
+                        K:RegisterEvent("PLAYER_REGEN_ENABLED", setupMisc)
+                    else
+                        K.CreateMoverFrame(_G.CollectionsJournal)
+                    end
+                    done = true
+                end
+            end)
+            K:UnregisterEvent(event, setupMisc)
+        elseif event == "PLAYER_REGEN_ENABLED" then
+            K.CreateMoverFrame(_G.CollectionsJournal)
+            K:UnregisterEvent(event, setupMisc)
+        end
+    end
+
+    K:RegisterEvent("ADDON_LOADED", setupMisc)
 end
 
 -- Select target when click on raid units
@@ -535,7 +556,7 @@ function Module:OnEnable()
     self:CreateChatBubble()
     -- self:CreateDurabilityFrame()
     -- self:CreateEnchantScroll()
-    -- self:CreateImprovedMail()
+    self:CreateImprovedMail()
     -- self:CreateImprovedStats()
     -- self:CreateKillingBlow()
     -- self:CreateMerchantItemLevel()
