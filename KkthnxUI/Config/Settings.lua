@@ -148,18 +148,18 @@ C["DataText"] = {
 	["Time24Hr"] = GetCurrentRegion() ~= 1
 }
 
-C["Filger"] = {
-	["BuffSize"] = 36,
-	["CooldownSize"] = 30,
-	["DisableCD"] = false,
-	["DisablePvP"] = false,
-	["Expiration"] = false,
-	["Enable"] = false,
-	["MaxTestIcon"] = 5,
-	["PvPSize"] = 60,
-	["ShowTooltip"] = false,
-	["TestMode"] = false,
-}
+-- C["Filger"] = {
+-- 	["BuffSize"] = 36,
+-- 	["CooldownSize"] = 30,
+-- 	["DisableCD"] = false,
+-- 	["DisablePvP"] = false,
+-- 	["Expiration"] = false,
+-- 	["Enable"] = false,
+-- 	["MaxTestIcon"] = 5,
+-- 	["PvPSize"] = 60,
+-- 	["ShowTooltip"] = false,
+-- 	["TestMode"] = false,
+-- }
 
 -- General
 C["General"] = {

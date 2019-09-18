@@ -152,62 +152,62 @@ function Module:CreateTarget()
 	end
 
 	if (C["Unitframe"].Castbars) then
-		-- self.Castbar = CreateFrame("StatusBar", "TargetCastbar", self)
-		-- self.Castbar:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 400)
-		-- self.Castbar:SetStatusBarTexture(UnitframeTexture)
-		-- self.Castbar:SetSize(C["Unitframe"].TargetCastbarWidth, C["Unitframe"].TargetCastbarHeight)
-		-- self.Castbar:SetClampedToScreen(true)
-		-- self.Castbar:CreateBorder()
+		self.Castbar = CreateFrame("StatusBar", "TargetCastbar", self)
+		self.Castbar:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 400)
+		self.Castbar:SetStatusBarTexture(UnitframeTexture)
+		self.Castbar:SetSize(C["Unitframe"].TargetCastbarWidth, C["Unitframe"].TargetCastbarHeight)
+		self.Castbar:SetClampedToScreen(true)
+		self.Castbar:CreateBorder()
 
-		-- self.Castbar.Spark = self.Castbar:CreateTexture(nil, "OVERLAY")
-		-- self.Castbar.Spark:SetTexture(C["Media"].Spark_128)
-		-- self.Castbar.Spark:SetSize(64, self.Castbar:GetHeight())
-		-- self.Castbar.Spark:SetBlendMode("ADD")
+		self.Castbar.Spark = self.Castbar:CreateTexture(nil, "OVERLAY")
+		self.Castbar.Spark:SetTexture(C["Media"].Spark_128)
+		self.Castbar.Spark:SetSize(64, self.Castbar:GetHeight())
+		self.Castbar.Spark:SetBlendMode("ADD")
 
-		-- self.Castbar.Shield = self.Castbar:CreateTexture(nil, "OVERLAY")
-		-- self.Castbar.Shield:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Textures\\CastBorderShield")
-		-- self.Castbar.Shield:SetTexCoord(0, 0.84375, 0, 1)
-		-- self.Castbar.Shield:SetSize(C["Unitframe"].TargetCastbarHeight * 0.84375, C["Unitframe"].TargetCastbarHeight)
-		-- self.Castbar.Shield:SetPoint("RIGHT", self.Castbar, 26, 0)
-		-- self.Castbar.Shield:SetVertexColor(0.5, 0.5, 0.7)
+		self.Castbar.Shield = self.Castbar:CreateTexture(nil, "OVERLAY")
+		self.Castbar.Shield:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Textures\\CastBorderShield")
+		self.Castbar.Shield:SetTexCoord(0, 0.84375, 0, 1)
+		self.Castbar.Shield:SetSize(C["Unitframe"].TargetCastbarHeight * 0.84375, C["Unitframe"].TargetCastbarHeight)
+		self.Castbar.Shield:SetPoint("RIGHT", self.Castbar, 26, 0)
+		self.Castbar.Shield:SetVertexColor(0.5, 0.5, 0.7)
 
-		-- self.Castbar.Time = self.Castbar:CreateFontString(nil, "OVERLAY", UnitframeFont)
-		-- self.Castbar.Time:SetPoint("RIGHT", -3.5, 0)
-		-- self.Castbar.Time:SetTextColor(0.84, 0.75, 0.65)
-		-- self.Castbar.Time:SetJustifyH("RIGHT")
+		self.Castbar.Time = self.Castbar:CreateFontString(nil, "OVERLAY", UnitframeFont)
+		self.Castbar.Time:SetPoint("RIGHT", -3.5, 0)
+		self.Castbar.Time:SetTextColor(0.84, 0.75, 0.65)
+		self.Castbar.Time:SetJustifyH("RIGHT")
 
-		-- self.Castbar.decimal = "%.2f"
+		self.Castbar.decimal = "%.2f"
 
-		-- self.Castbar.OnUpdate = Module.OnCastbarUpdate
-		-- self.Castbar.PostCastStart = Module.PostCastStart
-		-- self.Castbar.PostChannelStart = Module.PostCastStart
-		-- self.Castbar.PostCastStop = Module.PostCastStop
-		-- self.Castbar.PostChannelStop = Module.PostChannelStop
-		-- self.Castbar.PostCastFailed = Module.PostCastFailed
-		-- self.Castbar.PostCastInterrupted = Module.PostCastFailed
-		-- self.Castbar.PostCastInterruptible = Module.PostUpdateInterruptible
-		-- self.Castbar.PostCastNotInterruptible = Module.PostUpdateInterruptible
+		self.Castbar.OnUpdate = Module.OnCastbarUpdate
+		self.Castbar.PostCastStart = Module.PostCastStart
+		self.Castbar.PostChannelStart = Module.PostCastStart
+		self.Castbar.PostCastStop = Module.PostCastStop
+		self.Castbar.PostChannelStop = Module.PostChannelStop
+		self.Castbar.PostCastFailed = Module.PostCastFailed
+		self.Castbar.PostCastInterrupted = Module.PostCastFailed
+		self.Castbar.PostCastInterruptible = Module.PostUpdateInterruptible
+		self.Castbar.PostCastNotInterruptible = Module.PostUpdateInterruptible
 
-		-- self.Castbar.Text = self.Castbar:CreateFontString(nil, "OVERLAY", UnitframeFont)
-		-- self.Castbar.Text:SetPoint("LEFT", 3.5, 0)
-		-- self.Castbar.Text:SetPoint("RIGHT", self.Castbar.Time, "LEFT", -3.5, 0)
-		-- self.Castbar.Text:SetTextColor(0.84, 0.75, 0.65)
-		-- self.Castbar.Text:SetJustifyH("LEFT")
-		-- self.Castbar.Text:SetWordWrap(false)
+		self.Castbar.Text = self.Castbar:CreateFontString(nil, "OVERLAY", UnitframeFont)
+		self.Castbar.Text:SetPoint("LEFT", 3.5, 0)
+		self.Castbar.Text:SetPoint("RIGHT", self.Castbar.Time, "LEFT", -3.5, 0)
+		self.Castbar.Text:SetTextColor(0.84, 0.75, 0.65)
+		self.Castbar.Text:SetJustifyH("LEFT")
+		self.Castbar.Text:SetWordWrap(false)
 
-		-- self.Castbar.Button = CreateFrame("Frame", nil, self.Castbar)
-		-- self.Castbar.Button:SetSize(20, 20)
-		-- self.Castbar.Button:CreateBorder()
-		-- self.Castbar.Button:CreateInnerShadow()
+		self.Castbar.Button = CreateFrame("Frame", nil, self.Castbar)
+		self.Castbar.Button:SetSize(20, 20)
+		self.Castbar.Button:CreateBorder()
+		self.Castbar.Button:CreateInnerShadow()
 
-		-- self.Castbar.Icon = self.Castbar.Button:CreateTexture(nil, "ARTWORK")
-		-- self.Castbar.Icon:SetSize(C["Unitframe"].TargetCastbarHeight, C["Unitframe"].TargetCastbarHeight)
-		-- self.Castbar.Icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-		-- self.Castbar.Icon:SetPoint("BOTTOMRIGHT", self.Castbar, "BOTTOMLEFT", -6, 0)
+		self.Castbar.Icon = self.Castbar.Button:CreateTexture(nil, "ARTWORK")
+		self.Castbar.Icon:SetSize(C["Unitframe"].TargetCastbarHeight, C["Unitframe"].TargetCastbarHeight)
+		self.Castbar.Icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+		self.Castbar.Icon:SetPoint("BOTTOMRIGHT", self.Castbar, "BOTTOMLEFT", -6, 0)
 
-		-- self.Castbar.Button:SetAllPoints(self.Castbar.Icon)
+		self.Castbar.Button:SetAllPoints(self.Castbar.Icon)
 
-		-- K.Mover(self.Castbar, "TargetCastBar", "TargetCastBar", {"BOTTOM", UIParent, "BOTTOM", 0, 400})
+		K.Mover(self.Castbar, "TargetCastBar", "TargetCastBar", {"BOTTOM", UIParent, "BOTTOM", 0, 400})
 	end
 
 	-- HealPredictionAndAbsorb

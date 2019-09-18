@@ -166,7 +166,7 @@ function Install:PrintStep(PageNum)
 	if (not Text) then
 		self:Hide()
 		if (PageNum > self.MaxStepNumber) then
-			PlaySound(11466) -- A_BLCKTMPLE_Illidan_04
+			PlaySound(2847)
 			ReloadUI()
 		end
 		return
@@ -356,7 +356,7 @@ function Install:Launch()
 	self.SkipButton.Text:SetText(format("|cff%02x%02x%02x%s|r", K.Color.r * 255, K.Color.g * 255, K.Color.b * 255, L["Skip Install"]))
 	self.SkipButton:SetScript("OnClick", function()
 		_G.KkthnxUIData[GetRealmName()][UnitName("player")].InstallComplete = true
-		PlaySound(19092) -- VO_PCGoblinMale_Cry
+		PlaySound(6916) -- VO_PCGoblinMale_Cry
 		ReloadUI()
 	end)
 
@@ -447,6 +447,10 @@ Install:SetScript("OnEvent", function(self, _, name)
 
 	if (not _G.KkthnxUIData[playerRealm][playerName]["Mover"]) then
 		_G.KkthnxUIData[playerRealm][playerName]["Mover"] = _G.KkthnxUIData[playerRealm][playerName]["Mover"] or {}
+	end
+
+	if (not _G.KkthnxUIData[playerRealm][playerName]["TempAnchor"]) then
+		_G.KkthnxUIData[playerRealm][playerName]["TempAnchor"] = _G.KkthnxUIData[playerRealm][playerName]["TempAnchor"] or {}
 	end
 
 	if (_G.KkthnxUIData and _G.KkthnxUIData[playerRealm] and _G.KkthnxUIData[playerRealm][playerName] and _G.KkthnxUIData[playerRealm][playerName].Movers) then

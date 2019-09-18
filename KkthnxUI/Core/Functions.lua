@@ -380,6 +380,7 @@ function K.CreateMoverFrame(self, parent, saved)
 	self:SetScript("OnDragStart", function()
 		frame:StartMoving()
 	end)
+
 	self:SetScript("OnDragStop", function()
 		frame:StopMovingOrSizing()
 		if not saved then
