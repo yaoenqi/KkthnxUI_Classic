@@ -137,7 +137,7 @@ function K.CreateFontString(self, size, text, classcolor, anchor, x, y)
 	fs:SetWordWrap(false)
 
 	if classcolor and type(classcolor) == "boolean" then
-		fs:SetTextColor(1, 1, 1)
+		fs:SetTextColor(K.r, K.g, K.b)
 	elseif classcolor == "system" then
 		fs:SetTextColor(1, .8, 0)
 	end

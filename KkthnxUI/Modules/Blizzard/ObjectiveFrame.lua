@@ -65,7 +65,7 @@ local function SetupQuestTrackerMover()
 	local header = CreateFrame("Frame", nil, frame)
 	header:SetAllPoints(frame)
 	header:Hide()
-	header.Text = K.CreateFontString(header, 14, QUEST_LOG, true, "TOPLEFT", 0, 15)
+	header.Text = K.CreateFontString(header, 14, QUEST_LOG, "system", "TOPLEFT", 0, 15)
 
 	local bg = header:CreateTexture(nil, "ARTWORK")
 	bg:SetTexture("Interface\\LFGFrame\\UI-LFG-SEPARATOR")
