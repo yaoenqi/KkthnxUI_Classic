@@ -8,18 +8,14 @@ local string_format = _G.string.format
 local table_wipe = _G.table.wipe
 
 local C_Timer_After = _G.C_Timer.After
-local CanGuildBankRepair = _G.CanGuildBankRepair
 local CanMerchantRepair = _G.CanMerchantRepair
 local GetContainerItemInfo = _G.GetContainerItemInfo
 local GetContainerItemLink = _G.GetContainerItemLink
 local GetContainerNumSlots = _G.GetContainerNumSlots
-local GetGuildBankWithdrawMoney = _G.GetGuildBankWithdrawMoney
 local GetItemInfo = _G.GetItemInfo
 local GetMoney = _G.GetMoney
 local GetRepairAllCost = _G.GetRepairAllCost
-local IsInGuild = _G.IsInGuild
 local IsShiftKeyDown = _G.IsShiftKeyDown
-local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = _G.LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY or 140
 
 do -- Auto Sell Junk
 	local sellCount, stop, cache = 0, true, {}
@@ -84,54 +80,29 @@ do -- Auto Sell Junk
 	K:RegisterEvent("MERCHANT_CLOSED", updateSelling)
 end
 
-do -- AutoRepair
-	local isShown, isBankEmpty, autoRepair, repairAllCost, canRepair
-	local function delayFunc()
-		if isBankEmpty then
-			autoRepair(true)
-		else
-			print(string_format("%s:|r %s", L["Guild Repair"], K.FormatMoney(repairAllCost)))
-		end
-	end
+do
+	-- Auto repair
+	local isShown
 
-	function autoRepair(override)
-		if isShown and not override then
-			return
-		end
-
+	local function autoRepair(override)
+		if isShown and not override then return end
 		isShown = true
-		isBankEmpty = false
 
 		local myMoney = GetMoney()
-		repairAllCost, canRepair = GetRepairAllCost()
+		local repairAllCost, canRepair = GetRepairAllCost()
 
 		if canRepair and repairAllCost > 0 then
-			if (not override) and C["Inventory"].AutoRepair.Value == "GUILD" and IsInGuild() and CanGuildBankRepair() and GetGuildBankWithdrawMoney() >= repairAllCost then
-				_G.RepairAllItems(true)
+			if myMoney > repairAllCost then
+				RepairAllItems()
+				K.Print(string_format("%s %s", L["Repair Cost"], K.FormatMoney(repairAllCost)))
 			else
-				if myMoney > repairAllCost then
-					_G.RepairAllItems()
-					K.Print(string_format("%s %s", L["Repair Cost"], K.FormatMoney(repairAllCost)))
-					return
-				else
-					K.Print(L["Not Enough Money"])
-					return
-				end
+				K.Print(L["Not Enough Money"])
 			end
-
-			C_Timer_After(0.5, delayFunc)
-		end
-	end
-
-	local function checkBankFund(_, msgType)
-		if msgType == LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY then
-			isBankEmpty = true
 		end
 	end
 
 	local function merchantClose()
 		isShown = false
-		K:UnregisterEvent("UI_ERROR_MESSAGE", checkBankFund)
 		K:UnregisterEvent("MERCHANT_CLOSED", merchantClose)
 	end
 
@@ -139,11 +110,8 @@ do -- AutoRepair
 		if IsShiftKeyDown() or C["Inventory"].AutoRepair.Value == "NONE" or not CanMerchantRepair() then
 			return
 		end
-
 		autoRepair()
-		K:RegisterEvent("UI_ERROR_MESSAGE", checkBankFund)
 		K:RegisterEvent("MERCHANT_CLOSED", merchantClose)
 	end
-
 	K:RegisterEvent("MERCHANT_SHOW", merchantShow)
 end
