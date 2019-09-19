@@ -86,23 +86,10 @@ function Module:UpdateSettings()
 		if not C["Minimap"].Calendar then
 			GameTimeFrame:Hide()
 		else
-			GameTimeFrame:Hide()
-			-- GameTimeFrame:SetParent(Minimap)
-			-- GameTimeFrame:SetScale(0.6)
-			-- GameTimeFrame:ClearAllPoints()
-			-- GameTimeFrame:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", -3, -3)
-			-- GameTimeFrame:SetHitRectInsets(0, 0, 0, 0)
-			-- GameTimeFrame:GetNormalTexture():SetTexCoord(0, 1, 0, 1)
-			-- GameTimeFrame:SetNormalTexture("Interface\\Addons\\KkthnxUI\\Media\\Textures\\Calendar.blp")
-			-- GameTimeFrame:SetPushedTexture(nil)
-			-- GameTimeFrame:SetHighlightTexture(nil)
-
-			-- local GameTimeFont = GameTimeFrame:GetFontString()
-			-- GameTimeFont:ClearAllPoints()
-			-- GameTimeFont:SetPoint("CENTER", 0, -6)
-			-- GameTimeFont:SetFontObject("KkthnxUIFont")
-			-- GameTimeFont:SetFont(select(1, GameTimeFont:GetFont()), 20, select(3, GameTimeFont:GetFont()))
-			-- GameTimeFont:SetShadowOffset(0, 0)
+			GameTimeFrame:ClearAllPoints()
+			GameTimeFrame:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", 0, 0)
+			GameTimeFrame:SetScale(0.6)
+			GameTimeFrame:Show()
 		end
 	end
 
@@ -240,8 +227,6 @@ function Module:OnEnable()
 	Minimap:ClearAllPoints()
 	Minimap:SetPoint("CENTER", MinimapFrameHolder, "CENTER", 0, 0)
 	Minimap:SetMaskTexture(C["Media"].Blank)
-	-- Minimap:SetQuestBlobRingAlpha(0)
-	-- Minimap:SetArchBlobRingAlpha(0)
 	Minimap:CreateBorder()
 	Minimap:CreateInnerShadow(nil, 0.4)
 	Minimap:SetScale(1.0)
@@ -251,18 +236,24 @@ function Module:OnEnable()
 	_G.MinimapBorderTop:SetParent(UIHider)
 	_G.MiniMapMailBorder:SetParent(UIHider)
 	_G.MinimapNorthTag:SetParent(UIHider)
-	--_G.MiniMapTracking:SetParent(UIHider)
-	-- _G.MiniMapTrackingButton:SetParent(UIHider)
 	_G.MinimapZoneTextButton:SetParent(UIHider)
 	_G.MinimapZoomIn:SetParent(UIHider)
 	_G.MinimapZoomOut:SetParent(UIHider)
 	_G.MiniMapMailIcon:SetTexture("Interface\\Addons\\KkthnxUI\\Media\\Textures\\Mail")
 	_G.MinimapToggleButton:Hide()
 
-	-- Hide the BlopRing on Minimap
 	MinimapCluster:EnableMouse(false)
-	-- Minimap:SetArchBlobRingScalar(0)
-	-- Minimap:SetQuestBlobRingScalar(0)
+
+	-- Tracking icon
+	if MiniMapTrackingFrame then
+		MiniMapTrackingFrame:SetScale(.7)
+		MiniMapTrackingFrame:ClearAllPoints()
+		MiniMapTrackingFrame:SetPoint("BOTTOMLEFT", Minimap, 0, 5)
+		MiniMapTrackingBorder:Hide()
+		MiniMapTrackingIcon:SetTexCoord(unpack(K.TexCoords))
+		-- MiniMapTrackingIcon:CreateBorder()
+		-- MiniMapTrackingIcon:SetBackdropBorderColor(K.r, K.g, K.b)
+	end
 
 	if QueueStatusMinimapButtonBorder then
 		QueueStatusMinimapButtonBorder:SetAlpha(0)
@@ -271,10 +262,6 @@ function Module:OnEnable()
 	end
 
 	_G.MiniMapWorldMapButton:SetParent(K.UIFrameHider)
-
-	-- MiniMapInstanceDifficulty:SetParent(Minimap)
-	-- GuildInstanceDifficulty:SetParent(Minimap)
-	-- MiniMapChallengeMode:SetParent(Minimap)
 
 	if TimeManagerClockButton then
 		TimeManagerClockButton:Kill()

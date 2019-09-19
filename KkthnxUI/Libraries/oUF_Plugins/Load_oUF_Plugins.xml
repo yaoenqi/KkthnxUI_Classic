@@ -5,9 +5,9 @@
    <Script file="oUF_Swing.lua"/>
    <!-- <Script file="oUF_HealerSpecs.lua"/> -->
    <!-- <Script file="oUF_AuraWatch.lua"/> -->
-   <!-- <Script file="oUF_CombatFader.lua"/> -->
+   <Script file="oUF_CombatFader.lua"/>
    <!-- <Script file="oUF_DebuffHighlight.lua"/> -->
-   <!-- <Script file="oUF_GlobalCooldown.lua"/> -->
+   <Script file="oUF_GlobalCooldown.lua"/>
    <!-- <Script file="oUF_LootSpecIndicator.lua"/> -->
    <!-- <Script file="oUF_Offline.lua"/> -->
    <!-- <Script file="oUF_PVPSpecIcons.lua"/> -->

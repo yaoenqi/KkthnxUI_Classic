@@ -296,6 +296,6 @@ function Module:CreateRaid()
 
 	self.Range = {
 		insideAlpha = 1,
-		outsideAlpha = 0.3,
+		outsideAlpha = 0.3
 	}
 end

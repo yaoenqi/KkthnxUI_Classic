@@ -106,8 +106,6 @@ function Module:CreateRepeatFilter(_, text, sender)
 	end
 end
 
-
-
 function Module:CreateTalentFilter(_, msg, ...)
 	if msg then
 		for _, filter in ipairs(K.TalentChatSpam) do
@@ -138,7 +136,6 @@ function Module:FilterEventSpam(_, msg, ...)
 	return false, msg, ...
 end
 
-
 function Module:CreatePrivateFilterList()
 	-- This is to clear away startup messages that has no events connected to them
 	local AddMessage = ChatFrame1.AddMessage
@@ -159,8 +156,7 @@ end
 local function isItemHasLevel(link)
 	local name, _, rarity, level, _, _, _, _, _, _, _, classID = GetItemInfo(link)
 	if name and level and rarity > 1 and (classID == LE_ITEM_CLASS_WEAPON or classID == LE_ITEM_CLASS_ARMOR) then
-		local itemLevel = K.GetItemLevel(link)
-		return name, itemLevel
+		return name, level
 	end
 end
 
@@ -178,7 +174,7 @@ local itemCache = {}
 local function convertItemLevel(link)
 	if itemCache[link] then return itemCache[link] end
 
-	local itemLink = string.match(link, "|Hitem:.-|h")
+	local itemLink = string_match(link, "|Hitem:.-|h")
 	if itemLink then
 		local name, itemLevel = isItemHasLevel(itemLink)
 		if name and itemLevel then

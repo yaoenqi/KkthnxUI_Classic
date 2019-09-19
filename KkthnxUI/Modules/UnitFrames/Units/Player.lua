@@ -461,10 +461,5 @@ function Module:CreatePlayer()
 	-- self.LootSpecIndicator.Border:SetAllPoints(self.LootSpecIndicator)
 	-- K.CreateBorder(self.LootSpecIndicator.Border)
 
-	self.ThreatIndicator = {
-		IsObjectType = function() end,
-		Override = Module.UpdateThreat,
-	}
-
 	self.CombatFade = C["Unitframe"].CombatFade
 end

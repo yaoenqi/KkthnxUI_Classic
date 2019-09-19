@@ -62,9 +62,7 @@ C["Automation"] = {
 	["AutoReward"] = false,
 	["AutoTabBinder"] = false,
 	["BlockMovies"] = false,
-	["DeclinePetDuel"] = false,
 	["DeclinePvPDuel"] = false,
-	["ScreenShot"] = false,
 	["WhisperInvite"] = "inv",
 }
 
@@ -76,7 +74,6 @@ C["Inventory"] = {
 	["BankColumns"] = 17,
 	["ButtonSize"] = 32,
 	["ButtonSpace"] = 6,
-	["DetailedReport"] = false,
 	["Enable"] = true,
 	["ItemLevel"] = false,
 	["JunkIcon"] = true,
@@ -127,15 +124,15 @@ C["Chat"] = {
 
 -- DataBars
 C["DataBars"] = {
-	["AzeriteColor"] = {.901, .8, .601},
+	--["AzeriteColor"] = {.901, .8, .601},
 	["Enable"] = true,
 	["ExperienceColor"] = {0, 0.4, 1, .8},
 	["Height"] = 12,
-	["HonorColor"] = {240/255, 114/255, 65/255},
+	--["HonorColor"] = {240/255, 114/255, 65/255},
 	["MouseOver"] = false,
 	["RestedColor"] = {1, 0, 1, 0.2},
 	["Text"] = true,
-	["TrackHonor"] = false,
+	--["TrackHonor"] = false,
 	["Width"] = 180,
 }
 
@@ -220,7 +217,6 @@ C["Misc"] = {
 	["ColorPicker"] = false,
 	["EnhancedFriends"] = false,
 	["GemEnchantInfo"] = false,
-	["ImprovedStats"] = false,
 	["ItemLevel"] = false,
 	["KillingBlow"] = false,
 	["ProfessionTabs"] = false,
@@ -246,8 +242,6 @@ C["Nameplates"] = {
 	["QuestInfo"] = true,
 	["SelectedScale"] = 1.4,
 	["Smooth"] = false,
-	["TankMode"] = false,
-	["Threat"] = false,
 	["TrackAuras"] = true,
 	["Width"] = 140,
 	["TargetArrowMark"] = {

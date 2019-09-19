@@ -14,5 +14,4 @@ function Module:OnEnable()
     self:CreateAutoResurrect()
     self:CreateAutoReward()
     self:CreateAutoWhisperInvite()
-    self:CreateAutoScreenshot()
 end

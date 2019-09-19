@@ -427,11 +427,6 @@ function Module:Install()
 	ChatFrame_RemoveChannel(_G.ChatFrame1, TRADE)
 	ChatFrame_AddChannel(_G.ChatFrame3, TRADE)
 
-	if _G.GetBuildInfo and K.WowBuild == 28153 and K.Realm == "Sethraliss" and _G.GetLocale() == "enUS" or _G.GetLocale() == "enGB" then
-		ChatFrame_RemoveChannel(_G.ChatFrame1, "world_en")
-		ChatFrame_AddChannel(_G.ChatFrame3, "world_en")
-	end
-
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
 	chatGroup = {"SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "ACHIEVEMENT", "GUILD_ACHIEVEMENT", "COMMUNITIES_CHANNEL"}
 	for i = 1, _G.MAX_WOW_CHAT_CHANNELS do
@@ -446,6 +441,7 @@ function Module:Install()
 	ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255) -- General
 	ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255) -- Trade
 	ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255) -- Local Defense
+
 
 	if K.Name == "Kkthnx" and K.Realm == "Sethraliss" and not InCombatLockdown() then
 		SetCVar("scriptErrors", 1)

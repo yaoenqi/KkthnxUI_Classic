@@ -7,34 +7,23 @@ local pairs = pairs
 local string_format = string.format
 local select = select
 
-local ARTIFACT_POWER = _G.ARTIFACT_POWER
 local backupColor = _G.FACTION_BAR_COLORS[1]
--- local C_AzeriteItem_FindActiveAzeriteItem = _G.C_AzeriteItem.FindActiveAzeriteItem
--- local C_AzeriteItem_GetAzeriteItemXPInfo = _G.C_AzeriteItem.GetAzeriteItemXPInfo
--- local C_AzeriteItem_GetPowerLevel = _G.C_AzeriteItem.GetPowerLevel
--- local C_Reputation_GetFactionParagonInfo = _G.C_Reputation.GetFactionParagonInfo
--- local C_Reputation_IsFactionParagon = _G.C_Reputation.IsFactionParagon
 local CreateFrame = _G.CreateFrame
 local FACTION_BAR_COLORS = _G.FACTION_BAR_COLORS
 local FactionStandingLabelUnknown = _G.UNKNOWN
 local GameTooltip = _G.GameTooltip
 local GetExpansionLevel = _G.GetExpansionLevel
 local GetFactionInfo = _G.GetFactionInfo
-local GetFriendshipReputation = _G.GetFriendshipReputation
 local GetNumFactions = _G.GetNumFactions
 local GetPetExperience = _G.GetPetExperience
 local GetRestrictedAccountData = _G.GetRestrictedAccountData
 local GetWatchedFactionInfo = _G.GetWatchedFactionInfo
 local GetXPExhaustion = _G.GetXPExhaustion
-local HONOR = _G.HONOR
-local IsXPUserDisabled = _G.IsXPUserDisabled
 local LEVEL = _G.LEVEL
 local MAX_PLAYER_LEVEL_TABLE = _G.MAX_PLAYER_LEVEL_TABLE
-local MAX_REPUTATION_REACTION = _G.MAX_REPUTATION_REACTION
 local REPUTATION = _G.REPUTATION
 local STANDING = _G.STANDING
 local UnitHonor = _G.UnitHonor
-local UnitHonorLevel = _G.UnitHonorLevel
 local UnitHonorMax = _G.UnitHonorMax
 local UnitIsPVP = _G.UnitIsPVP
 local UnitLevel = _G.UnitLevel
@@ -113,54 +102,6 @@ function Module:SetupReputation()
 	self.Bars.Reputation = reputation
 	reputation.Spark = rspark
 	reputation.Text = rtext
-end
-
--- function Module:SetupAzerite()
-	-- local azerite = CreateFrame("Statusbar", "KkthnxUI_AzeriteBar", self.Container)
-	-- azerite:SetStatusBarTexture(self.DatabaseTexture)
-	-- azerite:SetStatusBarColor(C["DataBars"].AzeriteColor[1], C["DataBars"].AzeriteColor[2], C["DataBars"].AzeriteColor[3])
-	-- azerite:SetSize(C["DataBars"].Width, C["DataBars"].Height)
-	-- azerite:CreateBorder()
-
-	-- local aspark = azerite:CreateTexture(nil, "OVERLAY")
-	-- aspark:SetTexture(C["Media"].Spark_16)
-	-- aspark:SetHeight(C["DataBars"].Height)
-	-- aspark:SetBlendMode("ADD")
-	-- aspark:SetPoint("CENTER", azerite:GetStatusBarTexture(), "RIGHT", 0, 0)
-
-	-- local atext = azerite:CreateFontString(nil, "OVERLAY")
-	-- atext:SetFontObject(self.DatabaseFont)
-	-- atext:SetFont(select(1, atext:GetFont()), 11, select(3, atext:GetFont()))
-	-- atext:SetPoint("CENTER")
-
-	-- self.Bars.Azerite = azerite
-	-- azerite.Spark = aspark
-	-- azerite.Text = atext
--- end
-
-function Module:SetupHonor()
-	local honor = CreateFrame("StatusBar", "KkthnxUI_HonorBar", self.Container)
-	honor:SetStatusBarTexture(self.DatabaseTexture)
-	honor:SetStatusBarColor(C["DataBars"].HonorColor[1], C["DataBars"].HonorColor[2], C["DataBars"].HonorColor[3])
-	honor:SetSize(C["DataBars"].Width, C["DataBars"].Height)
-	honor:CreateBorder()
-
-	local hspark = honor:CreateTexture(nil, "OVERLAY")
-	hspark:SetTexture(C["Media"].Spark_16)
-	hspark:SetHeight(C["DataBars"].Height)
-	hspark:SetBlendMode("ADD")
-	hspark:SetPoint("CENTER", honor:GetStatusBarTexture(), "RIGHT", 0, 0)
-
-	local htext = honor:CreateFontString(nil, "OVERLAY")
-	htext:SetFontObject(self.DatabaseFont)
-	htext:SetFont(select(1, htext:GetFont()), 11, select(3, htext:GetFont()))
-	htext:SetWidth(C["DataBars"].Width - 6)
-	htext:SetWordWrap(false)
-	htext:SetPoint("CENTER")
-
-	self.Bars.Honor = honor
-	honor.Spark = hspark
-	honor.Text = htext
 end
 
 function Module:UpdateReputation()
@@ -253,67 +194,6 @@ function Module:UpdateExperience()
 	end
 end
 
--- function Module:UpdateAzerite(event, unit)
-	-- if (event == "UNIT_INVENTORY_CHANGED" and unit ~= "player") then
-		-- return
-	-- end
-
-	-- local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-	-- if not azeriteItemLocation or C_AzeriteItem_GetPowerLevel(azeriteItemLocation) == 50 then
-		-- self.Bars.Azerite:Hide()
-	-- elseif azeriteItemLocation then
-		-- self.Bars.Azerite:Show()
-
-		-- local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-		-- local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
-
-		-- self.Bars.Azerite:SetMinMaxValues(0, totalLevelXP)
-		-- self.Bars.Azerite:SetValue(xp)
-
-		-- if C["DataBars"].Text then
-			-- self.Bars.Azerite.Text:SetText(string_format("%s - %s%% [%s]", K.ShortValue(xp), math_floor(xp / totalLevelXP * 100), currentLevel))
-		-- end
-	-- end
--- end
-
-function Module:UpdateHonor(event, unit)
-	if not C["DataBars"].TrackHonor then
-		self.Bars.Honor:Hide()
-		return
-	end
-
-	if event == "PLAYER_FLAGS_CHANGED" and unit ~= "player" then
-		return
-	end
-
-	local showHonor = true
-	if not UnitIsPVP("player") then
-		showHonor = false
-	elseif UnitLevel("player") < _G.MAX_PLAYER_LEVEL then
-		showHonor = false
-	end
-
-	if not showHonor then
-		self.Bars.Honor:Hide()
-	else
-		self.Bars.Honor:Show()
-
-		local current = UnitHonor("player")
-		local max = UnitHonorMax("player")
-
-		if max == 0 then
-			max = 1
-		end
-
-		self.Bars.Honor:SetMinMaxValues(0, max)
-		self.Bars.Honor:SetValue(current)
-
-		if C["DataBars"].Text then
-			self.Bars.Honor.Text:SetText(string_format("%s - %d%%", K.ShortValue(current), current / max * 100))
-		end
-	end
-end
-
 function Module:OnEnter()
 	GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 	GameTooltip:ClearLines()
@@ -352,41 +232,6 @@ function Module:OnEnter()
 			GameTooltip:AddDoubleLine("|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:218:318|t "..L["Left Click"], L["Toggle Reputation"], 1, 1, 1)
 		end
 	end
-
-	-- if C_AzeriteItem_FindActiveAzeriteItem() then
-	-- 	if (not IsPlayerMaxLevel() and not IsXPUserDisabled()) or GetWatchedFactionInfo() then
-	-- 		GameTooltip:AddLine(" ")
-	-- 	end
-
-	-- 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-	-- 	local azeriteItem = Item:CreateFromItemLocation(azeriteItemLocation)
-	-- 	local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-	-- 	local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
-	-- 	local xpToNextLevel = totalLevelXP - xp
-
-	-- 	self.itemDataLoadedCancelFunc = azeriteItem:ContinueWithCancelOnItemLoad(function()
-	-- 		local azeriteItemName = azeriteItem:GetItemName()
-
-	-- 		GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItemName.." ("..currentLevel..")", nil, nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
-	-- 		GameTooltip:AddDoubleLine(L["AP"], string_format(" %d / %d (%d%%)", xp, totalLevelXP, xp / totalLevelXP * 100), 1, 1, 1)
-	-- 		GameTooltip:AddDoubleLine(L["Remaining"], string_format(" %d (%d%% - %d "..L["Bars"]..")", xpToNextLevel, xpToNextLevel / totalLevelXP * 100, 10 * xpToNextLevel / totalLevelXP), 1, 1, 1)
-	-- 	end)
-	-- end
-
-	-- if C["DataBars"].TrackHonor then
-	-- 	if IsPlayerMaxLevel() and UnitIsPVP("player") then
-	-- 		GameTooltip:AddLine(" ")
-
-	-- 		local current = UnitHonor("player")
-	-- 		local max = UnitHonorMax("player")
-	-- 		local level = UnitHonorLevel("player")
-
-	-- 		GameTooltip:AddDoubleLine(HONOR.." "..LEVEL, level)
-	-- 		GameTooltip:AddDoubleLine(L["Honor XP"], string_format(" %d / %d (%d%%)", current, max, current/max * 100), 1, 1, 1)
-	-- 		GameTooltip:AddDoubleLine(L["Honor Remaining"], string_format(" %d (%d%% - %d "..L["Bars"]..")", max - current, (max - current) / max * 100, 20 * (max - current) / max), 1, 1, 1)
-	-- 		GameTooltip:AddDoubleLine("|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:321:421|t "..L["Right Click"], L["Toggle PvP"], 1, 1, 1)
-	-- 	end
-	-- end
 
 	GameTooltip:Show()
 end
@@ -429,8 +274,6 @@ end
 function Module.OnUpdate()
 	Module:UpdateExperience()
 	Module:UpdateReputation()
-	-- Module:UpdateAzerite()
-	Module:UpdateHonor()
 
 	if C["DataBars"].MouseOver then
 		Module.Container:SetAlpha(0.25)
@@ -478,8 +321,6 @@ function Module:OnEnable()
 
 	self:SetupExperience()
 	self:SetupReputation()
-	-- self:SetupAzerite()
-	self:SetupHonor()
 	self:OnUpdate()
 
 	K:RegisterEvent("PLAYER_ENTERING_WORLD", self.OnUpdate)
@@ -489,9 +330,7 @@ function Module:OnEnable()
 	K:RegisterEvent("DISABLE_XP_GAIN", self.OnUpdate)
 	K:RegisterEvent("ENABLE_XP_GAIN", self.OnUpdate)
 	K:RegisterEvent("UPDATE_FACTION", self.OnUpdate)
-	-- K:RegisterEvent("AZERITE_ITEM_EXPERIENCE_CHANGED", self.OnUpdate)
 	K:RegisterEvent("UNIT_INVENTORY_CHANGED", self.OnUpdate)
-	-- K:RegisterEvent("HONOR_XP_UPDATE", self.OnUpdate)
 	K:RegisterEvent("PLAYER_FLAGS_CHANGED", self.OnUpdate)
 
 	K.Mover(self.Container, "DataBars", "DataBars", {"TOP", "Minimap", "BOTTOM", 0, -6}, C["DataBars"].Width, self.Container:GetHeight())

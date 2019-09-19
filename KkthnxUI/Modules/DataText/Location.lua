@@ -3,6 +3,22 @@ if C["DataText"].System ~= true then
 	return
 end
 
+local _G = _G
+local string_format = _G.string.format
+local unpack = _G.unpack
+
+local COMBAT_ZONE = _G.COMBAT_ZONE
+local CONTESTED_TERRITORY = _G.CONTESTED_TERRITORY
+local FACTION_CONTROLLED_TERRITORY = _G.FACTION_CONTROLLED_TERRITORY
+local FACTION_STANDING_LABEL4 = _G.FACTION_STANDING_LABEL4
+local FREE_FOR_ALL_TERRITORY = _G.FREE_FOR_ALL_TERRITORY
+local GetSubZoneText = _G.GetSubZoneText
+local GetZonePVPInfo = _G.GetZonePVPInfo
+local GetZoneText = _G.GetZoneText
+local InCombatLockdown = _G.InCombatLockdown
+local IsInInstance = _G.IsInInstance
+local SANCTUARY_TERRITORY = _G.SANCTUARY_TERRITORY
+
 local module = K:GetModule("Infobar")
 local info = module:RegisterInfobar("KkthnxUILocation", {"TOP", Minimap, "TOP", 0, -4})
 
@@ -13,7 +29,7 @@ local zoneInfo = {
 	hostile = {FACTION_CONTROLLED_TERRITORY, {0.84, 0.03, 0.03}},
 	contested = {CONTESTED_TERRITORY, {0.9, 0.85, 0.05}},
 	combat = {COMBAT_ZONE, {0.84, 0.03, 0.03}},
-	neutral = {format(FACTION_CONTROLLED_TERRITORY, FACTION_STANDING_LABEL4), {0.9, 0.85, 0.05}}
+	neutral = {string_format(FACTION_CONTROLLED_TERRITORY, FACTION_STANDING_LABEL4), {0.9, 0.85, 0.05}}
 }
 
 local subzone, zone, pvpType, faction
@@ -34,7 +50,7 @@ info.onEvent = function(self)
 	local r, g, b = unpack(zoneInfo[pvpType][2])
 	self.text:SetText((subzone ~= "") and subzone or zone)
 	self.text:SetTextColor(r, g, b)
-	self.text:SetWidth(Minimap:GetWidth() - 20)
+	self.text:SetWidth(Minimap:GetWidth() - 36)
 end
 
 info.onEnter = function(self)
@@ -47,13 +63,13 @@ info.onEnter = function(self)
 		if subzone and subzone ~= zone then
 			GameTooltip:AddLine(subzone, r, g, b)
 		end
-		GameTooltip:AddLine(format(zoneInfo[pvpType][1], faction or ""), r, g, b)
+		GameTooltip:AddLine(string_format(zoneInfo[pvpType][1], faction or ""), r, g, b)
 	end
 
 	GameTooltip:Show()
 end
 
-info.onLeave = function(self)
+info.onLeave = function()
 	GameTooltip:Hide()
 end
 

@@ -29,7 +29,7 @@
 	<!-- Auras -->
 	<Include file="Modules\Auras\Load_Auras.xml" />
 	<!-- Automation -->
-	<!-- <Include file="Modules\Automation\Load_Automation.xml" /> -->
+	<Include file="Modules\Automation\Load_Automation.xml" />
 	<!-- Blizzard -->
 	<Include file="Modules\Blizzard\Load_Blizzard.xml" />
 	<!-- Chat -->

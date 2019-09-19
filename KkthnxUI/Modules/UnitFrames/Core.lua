@@ -387,7 +387,7 @@ function Module:UpdateQuestUnit(_, unit)
 end
 
 local LibClassicCasterino = LibStub('LibClassicCasterino', true)
-if(LibClassicCasterino) then
+if (LibClassicCasterino) then
 	UnitChannelInfo = function(unit)
 		return LibClassicCasterino:UnitChannelInfo(unit)
 	end

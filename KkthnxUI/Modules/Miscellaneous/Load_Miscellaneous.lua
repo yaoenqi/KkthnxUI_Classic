@@ -235,28 +235,25 @@ end
 
 -- TradeFrame hook
 function Module:TradeTargetInfo()
-    local infoText = _G.TradeFrame:CreateFontString(nil, "OVERLAY")
-    infoText:SetFont(C["Media"].Font, 14, "")
-    infoText:SetShadowOffset(1.25, -1.25)
-    infoText:SetWordWrap(false)
-    infoText:ClearAllPoints()
-    infoText:SetPoint("TOP", _G.TradeFrameRecipientNameText, "BOTTOM", 0, -8)
+	local infoText = K.CreateFontString(TradeFrame, 14, "")
+	infoText:ClearAllPoints()
+	infoText:SetPoint("TOP", TradeFrameRecipientNameText, "BOTTOM", 0, -5)
 
-    local function updateColor()
-        local r, g, b = K.UnitColor("NPC")
-        _G.TradeFrameRecipientNameText:SetTextColor(r, g, b)
+	local function updateColor()
+		local r, g, b = K.UnitColor("NPC")
+		TradeFrameRecipientNameText:SetTextColor(r, g, b)
 
-        local guid = UnitGUID("NPC")
-        if not guid then return end
-        local text = "|cffff0000"..L["Stranger"]
-        if BNGetGameAccountInfoByGUID(guid) or IsCharacterFriend(guid) then
-            text = "|cffffff00"..FRIEND
-        elseif IsGuildMember(guid) then
-            text = "|cff00ff00"..GUILD
-        end
-        infoText:SetText(text)
-    end
-    hooksecurefunc("TradeFrame_Update", updateColor)
+		local guid = UnitGUID("NPC")
+		if not guid then return end
+		local text = "|cffff0000"..L["Stranger"]
+		if BNGetGameAccountInfoByGUID(guid) or C_FriendList.IsFriend(guid) then
+			text = "|cffffff00"..FRIEND
+		elseif IsGuildMember(guid) then
+			text = "|cff00ff00"..GUILD
+		end
+		infoText:SetText(text)
+	end
+	hooksecurefunc("TradeFrame_Update", updateColor)
 end
 
 -- ALT+RightClick to buy a stack
@@ -328,21 +325,6 @@ do
     K:RegisterEvent("ADDON_LOADED", setupMisc)
 end
 
--- Make It Only Split Stacks With Shift-RightClick If The Tradeskillframe Is Open
--- Shift-LeftClick Should Be Reserved For The Search Box
-do
-    local function hideSplitFrame(_, button)
-        if _G.TradeSkillFrame and _G.TradeSkillFrame:IsShown() then
-            if button == "LeftButton" then
-                _G.StackSplitFrame:Hide()
-            end
-        end
-    end
-
-    hooksecurefunc("ContainerFrameItemButton_OnModifiedClick", hideSplitFrame)
-    hooksecurefunc("MerchantItemButton_OnModifiedClick", hideSplitFrame)
-end
-
 -- Show BID and highlight price
 do
     local function setupMisc(event, addon)
@@ -384,6 +366,60 @@ do
     K:RegisterEvent("ADDON_LOADED", setupMisc)
 end
 
+-- Add friend and guild invite on target menu
+function Module:MenuButton_OnClick(info)
+	local name, server = UnitName(info.unit)
+	if server and server ~= "" then name = name.."-"..server end
+
+	if info.value == "name" then
+		if MailFrame:IsShown() then
+			MailFrameTab_OnClick(nil, 2)
+			SendMailNameEditBox:SetText(name)
+			SendMailNameEditBox:HighlightText()
+		else
+			local editBox = ChatEdit_ChooseBoxForSend()
+			local hasText = (editBox:GetText() ~= "")
+			ChatEdit_ActivateChat(editBox)
+			editBox:Insert(name)
+			if not hasText then editBox:HighlightText() end
+		end
+	elseif info.value == "guild" then
+		GuildInvite(name)
+	end
+end
+
+function Module:MenuButton_Show(_, unit)
+	if UIDROPDOWNMENU_MENU_LEVEL > 1 then return end
+
+	if unit and (unit == "target" or string.find(unit, "party") or string.find(unit, "raid")) then
+		local info = UIDropDownMenu_CreateInfo()
+		info.text = Module.MenuButtonList["name"]
+		info.arg1 = {value = "name", unit = unit}
+		info.func = Module.MenuButton_OnClick
+		info.notCheckable = true
+		UIDropDownMenu_AddButton(info)
+
+		if IsInGuild() and UnitIsPlayer(unit) and not UnitCanAttack("player", unit) and not UnitIsUnit("player", unit) then
+			info = UIDropDownMenu_CreateInfo()
+			info.text = Module.MenuButtonList["guild"]
+			info.arg1 = {value = "guild", unit = unit}
+			info.func = Module.MenuButton_OnClick
+			info.notCheckable = true
+			UIDropDownMenu_AddButton(info)
+		end
+	end
+end
+
+function Module:CreateEnhancedMenu()
+	--if not C["Misc"]["EnhancedMenu"] then return end
+
+	Module.MenuButtonList = {
+		["name"] = COPY_NAME,
+		["guild"] = gsub(CHAT_GUILD_INVITE_SEND, HEADER_COLON, ""),
+	}
+	hooksecurefunc("UnitPopup_ShowMenu", Module.MenuButton_Show)
+end
+
 function Module:OnEnable()
     self:CreateAFKCam()
     self:CreateChatBubble()
@@ -402,6 +438,7 @@ function Module:OnEnable()
     -- self:ExtendInstance()
     self:TradeTargetInfo()
     -- self:VehicleSeatMover()
+    self:CreateEnhancedMenu()
 
     -- Instant delete
     hooksecurefunc(StaticPopupDialogs["DELETE_GOOD_ITEM"], "OnShow", function(self)

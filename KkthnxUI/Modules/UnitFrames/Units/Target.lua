@@ -338,4 +338,9 @@ function Module:CreateTarget()
 	self.Highlight:SetVertexColor(.6, .6, .6)
 	self.Highlight:SetBlendMode("ADD")
 	self.Highlight:Hide()
+
+	self.Range = {
+		insideAlpha = 1,
+		outsideAlpha = 0.3
+	}
 end

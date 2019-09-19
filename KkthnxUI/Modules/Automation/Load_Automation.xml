@@ -12,5 +12,4 @@
    <Script file="AutoRelease.lua" />
    <Script file="AutoResurrect.lua" />
    <Script file="AutoReward.lua" />
-   <Script file="AutoScreenshot.lua" />
 </Ui>
