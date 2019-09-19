@@ -14,7 +14,7 @@ Also, make sure the game is closed when moving new files into the addon director
 ## Report bugs, suggest features, development progress
 Bug reports and feature suggestions are all done through GitHub's Issue tracker linked below. If you're looking for the current development status of the current or next version of the UI, you can check that out at Kkthnx's GitHub project pages.
 
-* [BugTracker](https://github.com/Kkthnx/KkthnxUI/issues/new)
+* [BugTracker](https://github.com/kkthnx-wow/KkthnxUI_Classic/issues/new)
 
 ## Join the community
 There are thousands of users, but most are content to simply download and use the interface without further ado. If you wish to get more involved though, have some questions you can't find answers to anywhere else or simply just wish to stop by and say hello, we have both a [discord](https://discordapp.com/) server and a facebook page.
@@ -33,4 +33,4 @@ Donations are welcome, but not required to use the UI at all. Donations help me 
 Regards
 Josh *"Kkthnx"* Russell
 
-![wowscrnshot_102318_092304](https://user-images.githubusercontent.com/40672673/47636479-d26ae700-db2e-11e8-98d3-a236b85b67dc.jpg)
+![kImHzGh](https://user-images.githubusercontent.com/40672673/65215792-c0fb3800-da7c-11e9-9152-40bfafda5300.jpg)
