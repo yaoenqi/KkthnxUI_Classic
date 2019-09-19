@@ -19,9 +19,6 @@ local GetThreatStatusColor = _G.GetThreatStatusColor
 local UnitIsUnit = _G.UnitIsUnit
 local UnitPowerType = _G.UnitPowerType
 local UnitThreatSituation = _G.UnitThreatSituation
-local UnitPower = _G.UnitPower
-local UnitPowerMax = _G.UnitPowerMax
-local UnitIsConnected = _G.UnitIsConnected
 
 local function UpdateThreat(self, _, unit)
 	if unit ~= self.unit then
@@ -88,7 +85,9 @@ function Module:CreateRaid()
 	self.Health.colorReaction = true
 	self.Health.frequentUpdates = true
 
-	K.SmoothBar(self.Health)
+	if C["Raid"].Smooth then
+		K.SmoothBar(self.Health)
+	end
 
 	if C["Raid"].ManabarShow then
 		self.Power = CreateFrame("StatusBar", nil, self)
@@ -103,7 +102,9 @@ function Module:CreateRaid()
         self.Power.Smooth = true
 		self.Power.frequentUpdates = false
 
-		K.SmoothBar(self.Power)
+		if C["Raid"].Smooth then
+			K.SmoothBar(self.Power)
+		end
 
 		self.Power.Background = self.Power:CreateTexture(nil, "BORDER")
 		self.Power.Background:SetAllPoints(self.Power)

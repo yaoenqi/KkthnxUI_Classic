@@ -223,7 +223,6 @@ C["Misc"] = {
 	["ImprovedStats"] = false,
 	["ItemLevel"] = false,
 	["KillingBlow"] = false,
-	["NoTalkingHead"] = false,
 	["ProfessionTabs"] = false,
 	["PvPEmote"] = false,
 	["SlotDurability"] = false,
@@ -295,7 +294,6 @@ C["Skins"] = {
 	["Details"] = false,
 	["Hekili"] = false,
 	["Skada"] = false,
-	["TalkingHeadBackdrop"] = true,
 	["WeakAuras"] = false,
 }
 
@@ -432,7 +430,7 @@ C["Raid"] = {
 	["ShowGroupText"] = true,
 	["ShowNotHereTimer"] = true,
 	["ShowRolePrefix"] = false,
-	-- ["Smooth"] = false,
+	["Smooth"] = false,
 	["TargetHighlight"] = false,
 	["Width"] = 66,
 	["RaidLayout"] = {

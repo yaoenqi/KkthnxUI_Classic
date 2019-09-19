@@ -6,6 +6,9 @@
    <Include file="Addons\DBM.lua" />
    <Include file="Addons\Details.lua" />
 
+   <Include file="Blizzard\Character.lua" />
+   <Include file="Blizzard\Inspect.lua" />
+
    <!-- <Include file="Addons\DBM.lua" />
    <Include file="Addons\Details.lua" />
    <Include file="Addons\ExtraQuestButton.lua" />

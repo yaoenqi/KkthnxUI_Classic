@@ -10,10 +10,10 @@ local CreateFrame = _G.CreateFrame
 local hooksecurefunc = _G.hooksecurefunc
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
-local parentFrame
+local AlertFrameMover
 
 function Module:AlertFrame_UpdateAnchor()
-	local y = select(2, parentFrame:GetCenter())
+	local y = select(2, AlertFrameMover:GetCenter())
 	local screenHeight = UIParent:GetTop()
 	if y > screenHeight/2 then
 		POSITION = "TOP"
@@ -26,7 +26,7 @@ function Module:AlertFrame_UpdateAnchor()
 	end
 
 	self:ClearAllPoints()
-	self:SetPoint(POSITION, parentFrame)
+	self:SetPoint(POSITION, AlertFrameMover)
 end
 
 function Module:UpdatGroupLootContainer()
@@ -96,9 +96,12 @@ function Module:CreateAlertFrames()
 		return
 	end
 
-	parentFrame = CreateFrame("Frame", "parentFrame", UIParent)
-	parentFrame:SetSize(200, 30)
-	K.Mover(parentFrame, "AlertFrames", "AlertFrames", {"TOP", UIParent, 0, -40})
+	AlertFrameMover = CreateFrame("Frame", "AlertFrameMover", UIParent)
+	AlertFrameMover:SetWidth(180)
+	AlertFrameMover:SetHeight(20)
+	AlertFrameMover:SetPoint("TOP", UIParent, "TOP", 0, -40)
+
+	K.Mover(AlertFrameMover, "AlertFrameMover", "AlertFrameMover", {"TOP", UIParent, 0, -40})
 
 	GroupLootContainer:EnableMouse(false)
 	GroupLootContainer.ignoreFramePositionManager = true

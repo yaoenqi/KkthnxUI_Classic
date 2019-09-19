@@ -1,4 +1,4 @@
-local K, C = unpack(select(2, ...))
+local K, C, L = unpack(select(2, ...))
 local Module = K:GetModule("ActionBar")
 local FilterConfig = K.ActionBars.leaveVehicle
 
@@ -21,7 +21,7 @@ function Module:CreateLeaveVehicle()
 	frame.Pos = {"BOTTOM", UIParent, "BOTTOM", 260, 4}
 
 	-- The Button
-	local button = CreateFrame("Button", "KkthnxUI_LeaveVehicleButton", frame)
+	local button = CreateFrame("Button", "KkthnxUI_LeaveVehicleButton", frame, "SecureActionButtonTemplate")
 	table_insert(buttonList, button) -- Add The Button Object To The List
 	button:SetSize(FilterConfig.size, FilterConfig.size)
 	button:SetPoint("BOTTOMLEFT", frame, padding, padding)
@@ -35,25 +35,38 @@ function Module:CreateLeaveVehicle()
 	button:GetPushedTexture():SetTexture("Interface\\Vehicles\\UI-Vehicles-Button-Exit-Down")
 	K.CreateBorder(button)
 	button:CreateInnerShadow()
+	button:SetAttribute("type", "macro")
+	button:SetAttribute("macrotext", "/leavevehicle [target=vehicle,exists,canexitvehicle]\n/dismount [mounted]")
 
-	local function updateVisibility()
+	button:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:ClearLines()
+
 		if UnitOnTaxi("player") then
-			button:Show()
+			GameTooltip:AddLine(TAXI_CANCEL)
+			GameTooltip:AddLine(TAXI_CANCEL_DESCRIPTION)
+		elseif IsMounted() then
+			GameTooltip:AddLine(BINDING_NAME_DISMOUNT)
+			GameTooltip:AddLine(L["%s to dismount."]:format(L["Left Click"]))
 		else
-			button:Hide()
-			button:UnlockHighlight()
+			GameTooltip:AddLine(LEAVE_VEHICLE)
+			GameTooltip:AddLine(L["%s to leave the vehicle."]:format(L["Left Click"]))
 		end
-	end
-	hooksecurefunc("MainMenuBarVehicleLeaveButton_Update", updateVisibility)
 
-	local function onClick(self)
-		if not UnitOnTaxi("player") then self:Hide() return end
-		TaxiRequestEarlyLanding()
-		self:LockHighlight()
-	end
-	button:SetScript("OnClick", onClick)
-	button:SetScript("OnEnter", MainMenuBarVehicleLeaveButton_OnEnter)
+		GameTooltip:Show()
+	end)
+
 	button:SetScript("OnLeave", K.HideTooltip)
+
+	-- Gotta do this the unsecure way, no macros exist for this yet.
+	button:HookScript("OnClick", function(self, button)
+		if (UnitOnTaxi("player") and (not InCombatLockdown())) then
+			TaxiRequestEarlyLanding()
+		end
+	end)
+
+	-- Frame Visibility
+	RegisterAttributeDriver(frame, "state-visibility", "[target=vehicle,exists,canexitvehicle][mounted]show;hide")
 
 	-- Create Drag Frame And Drag Functionality
 	if K.ActionBars.userPlaced then

@@ -7,14 +7,12 @@
     <Script file="AltPowerBar.lua"/>
     <Script file="BlizzBugFixes.lua"/>
     <Script file="ColorPicker.lua"/>
-    <Script file="CommandBar.lua"/>
     <Script file="ErrorFilter.lua"/>
     <Script file="Fonts.lua"/>
     <Script file="MirrorBars.lua"/>
     <Script file="NoTutorials.lua"/>
     <Script file="ObjectiveFrame.lua"/>
     <Script file="RaidUtility.lua"/>
-    <Script file="TalkingHeadFrame.lua"/>
     <Script file="TimerTracker.lua"/>
     <Script file="UIWidgets.lua"/>
 </Ui>

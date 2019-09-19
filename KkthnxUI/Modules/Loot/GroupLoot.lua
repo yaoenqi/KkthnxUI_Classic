@@ -246,9 +246,9 @@ local function GetFrame()
 
 	local f = Module:CreateRollFrame()
 	if pos == "TOP" then
-		f:SetPoint("TOP", next(Module.RollBars) and Module.RollBars[#Module.RollBars] or AlertFrameHolder, "BOTTOM", 0, -4)
+		f:SetPoint("TOP", next(Module.RollBars) and Module.RollBars[#Module.RollBars] or AlertFrameMover, "BOTTOM", 0, -4)
 	else
-		f:SetPoint("BOTTOM", next(Module.RollBars) and Module.RollBars[#Module.RollBars] or AlertFrameHolder, "TOP", 0, 4)
+		f:SetPoint("BOTTOM", next(Module.RollBars) and Module.RollBars[#Module.RollBars] or AlertFrameMover, "TOP", 0, 4)
 	end
 
 	table.insert(Module.RollBars, f)
@@ -382,3 +382,38 @@ function Module:CreateGroupLoot()
 	UIParent:UnregisterEvent("START_LOOT_ROLL")
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 end
+
+SlashCmdList.TESTROLL = function()
+	local f = GetFrame()
+	local items = {19019, 22811, 20530, 19972}
+	if f:IsShown() then
+		f:Hide()
+	else
+		local item = items[math.random(1, #items)]
+		local _, _, quality, _, _, _, _, _, _, texture = GetItemInfo(item)
+		local r, g, b = GetItemQualityColor(quality or 1)
+
+		f.button.icon:SetTexture(texture)
+		f.button.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+
+		f.fsloot:SetText(GetItemInfo(item))
+		f.fsloot:SetVertexColor(r, g, b)
+
+		f.status:SetMinMaxValues(0, 100)
+		f.status:SetValue(math.random(50, 90))
+		f.status:SetStatusBarColor(r, g, b, 0.7)
+		f.status.bg:SetColorTexture(r, g, b)
+
+		f:SetBackdropBorderColor(r, g, b, 0.7)
+		f.button:SetBackdropBorderColor(r, g, b, 0.7)
+
+		f.need:SetText(0)
+		f.greed:SetText(0)
+		f.pass:SetText(0)
+
+		f.button.link = "item:"..item..":0:0:0:0:0:0:0"
+		f:Show()
+	end
+end
+SLASH_TESTROLL1 = "/testroll"
+SLASH_TESTROLL2 = "/еуыекщдд"

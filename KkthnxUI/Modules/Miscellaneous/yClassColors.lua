@@ -1,4 +1,5 @@
-local K = unpack(select(2, ...))
+local K, C = unpack(select(2, ...))
+if C["Misc"].EnhancedFriends ~= true then return end
 
 -- Sourced: yClassColors (yleaf)
 -- Edited: KkthnxUI (Kkthnx)
