@@ -8,6 +8,7 @@
 
    <Include file="Blizzard\Character.lua" />
    <Include file="Blizzard\Inspect.lua" />
+   <Include file="Blizzard\SpellBook.lua" />
 
    <!-- <Include file="Addons\DBM.lua" />
    <Include file="Addons\Details.lua" />
