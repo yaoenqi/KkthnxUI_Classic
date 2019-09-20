@@ -1,5 +1,4 @@
 local K, C, L = unpack(select(2, ...))
-local ModuleSort = K:GetModule("Sort")
 
 -- Sourced (by Hungtar, editor Tukz then Kkthnx)
 
@@ -842,9 +841,7 @@ function Stuffing:SearchUpdate(str)
 		end
 
 		if b.name then
-			--local _, setName = GetContainerItemEquipmentSetInfo(b.bag, b.slot)
-			--local _ setName
-			setName = setName or ""
+			local setName = setName or ""
 
 			local ilink = GetContainerItemLink(b.bag, b.slot)
 			local class, subclass, _, equipSlot = select(6, GetItemInfo(ilink))
@@ -1021,11 +1018,15 @@ function Stuffing:CreateBagFrame(w)
 		f.sortButton:SetScript("OnEnter", Stuffing_TooltipShow)
 		f.sortButton:SetScript("OnLeave", Stuffing_TooltipHide)
 		f.sortButton:SetScript("OnMouseUp", function()
-			-- if StuffingFrameBags and StuffingFrameBags:IsShown() then
+			if InCombatLockdown() then
+				K.Print("You cannot sort your bag in combat")
+
+				return
+			end
+
 			if Stuffing.frame:IsShown() then
-				f:UnregisterAllEvents() -- Unregister to prevent unnecessary updates
-				f.registerUpdate = true -- Set variable that indicates this bag should be updated when sorting is done
-				ModuleSort:CommandDecorator(ModuleSort.SortBags, "bank")()
+				SetSortBagsRightToLeft(C["Inventory"].SortInverted)
+				SortBankBags()
 			end
 		end)
 
@@ -1374,9 +1375,16 @@ function Stuffing:InitBags()
 	f.sortButton:SetScript("OnEnter", Stuffing_TooltipShow)
 	f.sortButton:SetScript("OnLeave", Stuffing_TooltipHide)
 	f.sortButton:SetScript("OnMouseUp", function()
-		f:UnregisterAllEvents() -- Unregister To Prevent Unnecessary Updates
-		f.registerUpdate = true -- Set Variable That Indicates This Bag Should Be Updated When Sorting Is Done
-		ModuleSort:CommandDecorator(ModuleSort.SortBags, "bags")()
+		if InCombatLockdown() then
+			K.Print("You cannot sort your bag in combat")
+
+			return
+		end
+
+		if Stuffing.frame:IsShown() then
+			SetSortBagsRightToLeft(C["Inventory"].SortInverted)
+			SortBags()
+		end
 	end)
 
 	-- Vendor Grays
