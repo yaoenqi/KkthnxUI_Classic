@@ -4,7 +4,7 @@ local Module = K:GetModule("Automation")
 
 local AcceptGroup = _G.AcceptGroup
 local BNGetGameAccountInfoByGUID = _G.BNGetGameAccountInfoByGUID
-local IsCharacterFriend = _G.IsCharacterFriend
+local IsCharacterFriend = _G.C_FriendList.IsFriend
 local IsGuildMember = _G.IsGuildMember
 local IsInGroup = _G.IsInGroup
 local LFGInvitePopup = _G.LFGInvitePopup
