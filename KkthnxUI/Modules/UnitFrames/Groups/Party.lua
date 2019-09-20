@@ -276,10 +276,13 @@ function Module:CreateParty()
 	self.ReadyCheckIndicator:SetSize(20, 20)
 	self.ReadyCheckIndicator:SetPoint("LEFT", 0, 0)
 
-	self.PortraitTimer = CreateFrame("Frame", "$parentPortraitTimer", self.Health)
-	self.PortraitTimer:CreateInnerShadow()
-	self.PortraitTimer:SetFrameLevel(6) -- Watch me
-	self.PortraitTimer:SetInside(self.Portrait, 1, 1)
+	if C["Party"].PortraitTimers then
+		self.PortraitTimer = CreateFrame("Frame", "$parentPortraitTimer", self.Health)
+		self.PortraitTimer:CreateInnerShadow()
+		self.PortraitTimer:SetFrameLevel(6) -- Watch me
+		self.PortraitTimer:SetInside(self.Portrait, 1, 1)
+		self.PortraitTimer:Hide()
+	end
 
 	self.PhaseIndicator = self:CreateTexture(nil, "OVERLAY")
 	self.PhaseIndicator:SetSize(22, 22)

@@ -11,7 +11,7 @@
    <!-- <Script file="oUF_LootSpecIndicator.lua"/> -->
    <!-- <Script file="oUF_Offline.lua"/> -->
    <!-- <Script file="oUF_PVPSpecIcons.lua"/> -->
-   <!-- <Script file="oUF_PortraitTimers.lua"/> -->
+   <Script file="oUF_PortraitTimers.lua"/>
    <!-- <Script file="oUF_RaidDebuffs.lua"/> -->
    <!-- <Script file="oUF_Trinkets.lua"/> -->
 </Ui>

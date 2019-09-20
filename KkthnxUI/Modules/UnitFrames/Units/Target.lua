@@ -297,10 +297,13 @@ function Module:CreateTarget()
 		self.FloatingCombatFeedback.abbreviateNumbers = true
 	end
 
-	self.PortraitTimer = CreateFrame("Frame", "$parentPortraitTimer", self.Health)
-	self.PortraitTimer:CreateInnerShadow()
-	self.PortraitTimer:SetFrameLevel(5) -- Watch me
-	self.PortraitTimer:SetInside(self.Portrait, 1, 1)
+	if C["Unitframe"].PortraitTimers then
+		self.PortraitTimer = CreateFrame("Frame", "$parentPortraitTimer", self.Health)
+		self.PortraitTimer:CreateInnerShadow()
+		self.PortraitTimer:SetFrameLevel(5) -- Watch me
+		self.PortraitTimer:SetInside(self.Portrait, 1, 1)
+		self.PortraitTimer:Hide()
+	end
 
 	self.PvPIndicator = self:CreateTexture(nil, "OVERLAY")
 	self.PvPIndicator:SetSize(30, 33)

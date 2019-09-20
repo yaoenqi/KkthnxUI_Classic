@@ -425,10 +425,13 @@ function Module:CreatePlayer()
 		self.DebuffHighlightFilterTable = K.DebuffHighlightColors
 	end
 
-	self.PortraitTimer = CreateFrame("Frame", "$parentPortraitTimer", self.Health)
-	self.PortraitTimer:CreateInnerShadow()
-	self.PortraitTimer:SetFrameLevel(5) -- Watch me
-	self.PortraitTimer:SetInside(self.Portrait, 1, 1)
+	if C["Unitframe"].PortraitTimers then
+		self.PortraitTimer = CreateFrame("Frame", "$parentPortraitTimer", self.Health)
+		self.PortraitTimer:CreateInnerShadow()
+		self.PortraitTimer:SetFrameLevel(5) -- Watch me
+		self.PortraitTimer:SetInside(self.Portrait, 1, 1)
+		self.PortraitTimer:Hide()
+	end
 
 	if C["Unitframe"].GlobalCooldown then
 		self.GlobalCooldown = CreateFrame("Frame", nil, self.Health)
@@ -445,15 +448,6 @@ function Module:CreatePlayer()
 	self.Highlight:SetVertexColor(.6, .6, .6)
 	self.Highlight:SetBlendMode("ADD")
 	self.Highlight:Hide()
-
-	-- self.LootSpecIndicator = self.Overlay:CreateTexture("$parentSpecIcon")
-	-- self.LootSpecIndicator:SetTexCoord(unpack(K.TexCoords))
-    -- self.LootSpecIndicator:SetSize(16, 16)
-    -- self.LootSpecIndicator:SetPoint("TOPRIGHT", self.Portrait, 10, 4)
-
-	-- self.LootSpecIndicator.Border = CreateFrame("Frame", nil, self.Overlay)
-	-- self.LootSpecIndicator.Border:SetAllPoints(self.LootSpecIndicator)
-	-- K.CreateBorder(self.LootSpecIndicator.Border)
 
 	self.CombatFade = C["Unitframe"].CombatFade
 end
