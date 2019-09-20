@@ -100,12 +100,12 @@ SlashCmdList["KKUI_UIPROFILES"] = function(msg)
 	end
 
 	if KkthnxUIConfigPerAccount then
-		K.Print(L["Commands"].ConfigPerAccount)
+		K.Print(L["ConfigPerAccount"])
 		return
 	end
 
 	if not msg or msg == "" then
-		print(L["Commands"].ProfileInfo)
+		print(L["ProfileInfo"])
 	else
 		local IsConfigLoaded = IsAddOnLoaded("KkthnxUI_Config")
 		-- Split the msg into multiple arguments.
