@@ -274,9 +274,9 @@ function Module:CreateTarget()
 	self.Level:SetFontObject(UnitframeFont)
 	self:Tag(self.Level, "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]")
 
-	self.QuestIndicator = self.Overlay:CreateTexture(nil, "OVERLAY")
-	self.QuestIndicator:SetPoint("TOPLEFT", self.Overlay, "TOPLEFT", 0, 8)
-	self.QuestIndicator:SetSize(16, 16)
+	-- self.QuestIndicator = self.Overlay:CreateTexture(nil, "OVERLAY")
+	-- self.QuestIndicator:SetPoint("TOPLEFT", self.Overlay, "TOPLEFT", 0, 8)
+	-- self.QuestIndicator:SetSize(16, 16)
 
 	if C["Unitframe"].CombatText then
 		local parentFrame = CreateFrame("Frame", nil, UIParent)

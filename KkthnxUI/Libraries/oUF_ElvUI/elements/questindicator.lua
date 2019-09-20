@@ -39,14 +39,12 @@ local function Update(self, event, unit)
 		element:PreUpdate()
 	end
 
-	-- local isQuestBoss = UnitIsQuestBoss(unit)
-	-- if(isQuestBoss) then
-	-- 	element:Show()
-	-- else
-	-- 	element:Hide()
-	-- end
-
-	element:Hide()
+	local isQuestBoss = UnitIsQuestBoss(unit)
+	if(isQuestBoss) then
+		element:Show()
+	else
+		element:Hide()
+	end
 
 	--[[ Callback: QuestIndicator:PostUpdate(isQuestBoss)
 	Called after the element has been updated.
