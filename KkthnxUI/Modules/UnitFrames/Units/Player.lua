@@ -113,13 +113,7 @@ function Module:CreatePlayer()
 		self.Buffs = CreateFrame("Frame", self:GetName().."Buffs", self)
 
 		if K.Class == "ROGUE"
-		or K.Class == "DRUID"
-		or K.Class == "MAGE"
-		or K.Class == "MONK"
-		or K.Class == "DEATHKNIGHT"
-		or K.Class == "SHAMAN"
-		or K.Class == "PALADIN"
-		or K.Class == "WARLOCK" then
+		or K.Class == "DRUID" then
 			self.Buffs:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -26)
 		else
 			self.Buffs:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -6)

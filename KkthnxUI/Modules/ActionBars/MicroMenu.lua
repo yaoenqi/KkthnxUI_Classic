@@ -4,12 +4,8 @@ local Module = K:GetModule("ActionBar")
 local _G = _G
 local assert = assert
 
-local C_StorePublic_IsEnabled = _G.C_StorePublic.IsEnabled
 local CharacterMicroButton = _G.CharacterMicroButton
 local CreateFrame = _G.CreateFrame
-local GetCurrentRegionName = _G.GetCurrentRegionName
-local GuildMicroButton = _G.GuildMicroButton
-local GuildMicroButtonTabard = _G.GuildMicroButtonTabard
 local InCombatLockdown = _G.InCombatLockdown
 local MICRO_BUTTONS = _G.MICRO_BUTTONS
 local MainMenuBarPerformanceBar = _G.MainMenuBarPerformanceBar
@@ -192,6 +188,7 @@ function Module:CreateMicroMenu()
 	microBar.visibility:SetScript("OnShow", function()
 		microBar:Show()
 	end)
+
 	microBar.visibility:SetScript("OnHide", function()
 		microBar:Hide()
 	end)

@@ -349,9 +349,13 @@ function Module:SetDefaultChatFramesPositions()
 		if ID == 1 then
 			FCF_SetWindowName(Frame, GENERAL)
 		elseif ID == 2 then
-			FCF_SetWindowName(Frame, _G.GUILD_EVENT_LOG)
+			FCF_SetWindowName(Frame, GUILD_EVENT_LOG)
 		elseif ID == 3 then
-			FCF_SetWindowName(Frame, LOOT .. " / " .. TRADE)
+			FCF_SetWindowName(Frame, WHISPER)
+		elseif ID == 4 then
+			FCF_SetWindowName(Frame, TRADE)
+		elseif ID == 5 then
+			FCF_SetWindowName(Frame, LOOT)
 		end
 
 		if (not Frame.isLocked) then
@@ -400,54 +404,120 @@ function Module:SetChatFramePosition()
 end
 
 function Module:Install()
-	-- Create our custom chatframes
+	-- General
 	FCF_ResetChatWindows()
 	FCF_SetLocked(ChatFrame1, 1)
+	FCF_SetWindowName(ChatFrame1, GENERAL)
+	ChatFrame1:Show()
+
+	-- Combat Log
 	FCF_DockFrame(ChatFrame2)
 	FCF_SetLocked(ChatFrame2, 1)
-	FCF_OpenNewWindow(LOOT)
-	FCF_DockFrame(ChatFrame3)
+	FCF_SetWindowName(ChatFrame2, GUILD_EVENT_LOG)
+	ChatFrame2:Show()
+
+	-- Whispers
+	FCF_OpenNewWindow(WHISPER)
 	FCF_SetLocked(ChatFrame3, 1)
+	FCF_DockFrame(ChatFrame3)
+	ChatFrame3:Show()
 
-	-- keys taken from `ChatTypeGroup` but doesnt add: "OPENING", "TRADESKILLS", "PET_INFO", "COMBAT_MISC_INFO", "COMMUNITIES_CHANNEL", "PET_BATTLE_COMBAT_LOG", "PET_BATTLE_INFO", "TARGETICONS"
-	local chatGroup = {"SYSTEM", "CHANNEL", "SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "MONSTER_SAY", "MONSTER_YELL", "MONSTER_EMOTE", "MONSTER_WHISPER", "MONSTER_BOSS_EMOTE", "MONSTER_BOSS_WHISPER", "ERRORS", "AFK", "DND", "IGNORED", "BG_HORDE", "BG_ALLIANCE", "BG_NEUTRAL", "ACHIEVEMENT", "GUILD_ACHIEVEMENT", "BN_WHISPER", "BN_INLINE_TOAST_ALERT"}
-	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame1)
-	for _, v in ipairs(chatGroup) do
-		ChatFrame_AddMessageGroup(_G.ChatFrame1, v)
-	end
+	-- Trade
+	FCF_OpenNewWindow(TRADE)
+	FCF_SetLocked(ChatFrame4, 1)
+	FCF_DockFrame(ChatFrame4)
+	ChatFrame4:Show()
 
-	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
-	chatGroup = {"COMBAT_XP_GAIN", "COMBAT_HONOR_GAIN", "COMBAT_FACTION_CHANGE", "SKILL", "LOOT", "CURRENCY", "MONEY"}
-	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame3)
-	for _, v in ipairs(chatGroup) do
-		ChatFrame_AddMessageGroup(_G.ChatFrame3, v)
-	end
+	-- Loot
+	FCF_OpenNewWindow(LOOT)
+	FCF_SetLocked(ChatFrame5, 1)
+	FCF_DockFrame(ChatFrame5)
+	ChatFrame5:Show()
 
-	ChatFrame_AddChannel(_G.ChatFrame1, GENERAL)
-	ChatFrame_RemoveChannel(_G.ChatFrame1, TRADE)
-	ChatFrame_AddChannel(_G.ChatFrame3, TRADE)
+	-- General
+	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
+	ChatFrame_RemoveChannel(ChatFrame1, TRADE)
+	ChatFrame_RemoveChannel(ChatFrame1, GENERAL)
+	ChatFrame_RemoveChannel(ChatFrame1, "LocalDefense")
+	ChatFrame_RemoveChannel(ChatFrame1, "GuildRecruitment")
+	ChatFrame_RemoveChannel(ChatFrame1, "LookingForGroup")
 
-	-- set the chat groups names in class color to enabled for all chat groups which players names appear
-	chatGroup = {"SAY", "EMOTE", "YELL", "WHISPER", "PARTY", "PARTY_LEADER", "RAID", "RAID_LEADER", "RAID_WARNING", "INSTANCE_CHAT", "INSTANCE_CHAT_LEADER", "GUILD", "OFFICER", "ACHIEVEMENT", "GUILD_ACHIEVEMENT", "COMMUNITIES_CHANNEL"}
-	for i = 1, _G.MAX_WOW_CHAT_CHANNELS do
-		table_insert(chatGroup, "CHANNEL"..i)
-	end
+	ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
+	ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "YELL")
+	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD")
+	ChatFrame_AddMessageGroup(ChatFrame1, "OFFICER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD_ACHIEVEMENT")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
+	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
+	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
+	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT")
+	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT_LEADER")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BG_ALLIANCE")
+	ChatFrame_AddMessageGroup(ChatFrame1, "BG_NEUTRAL")
+	ChatFrame_AddMessageGroup(ChatFrame1, "SYSTEM")
+	ChatFrame_AddMessageGroup(ChatFrame1, "ERRORS")
+	ChatFrame_AddMessageGroup(ChatFrame1, "AFK")
+	ChatFrame_AddMessageGroup(ChatFrame1, "DND")
+	ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
+	ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
 
-	for _, v in ipairs(chatGroup) do
-		ToggleChatColorNamesByClassGroup(true, v)
-	end
+	-- Whispers
+	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
+	ChatFrame_AddMessageGroup(ChatFrame3, "WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame3, "BN_WHISPER")
+	ChatFrame_AddMessageGroup(ChatFrame3, "BN_CONVERSATION")
 
-	-- Adjust Chat Colors
-	ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255) -- General
-	ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255) -- Trade
-	ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255) -- Local Defense
+	-- Trade
+	ChatFrame_RemoveAllMessageGroups(ChatFrame4)
+	ChatFrame_AddChannel(ChatFrame4, TRADE)
+	ChatFrame_AddChannel(ChatFrame4, GENERAL)
 
+	-- Loot
+	ChatFrame_RemoveAllMessageGroups(ChatFrame5)
+	ChatFrame_AddMessageGroup(ChatFrame5, "COMBAT_XP_GAIN")
+	ChatFrame_AddMessageGroup(ChatFrame5, "COMBAT_HONOR_GAIN")
+	ChatFrame_AddMessageGroup(ChatFrame5, "COMBAT_FACTION_CHANGE")
+	ChatFrame_AddMessageGroup(ChatFrame5, "LOOT")
+	ChatFrame_AddMessageGroup(ChatFrame5, "MONEY")
+	ChatFrame_AddMessageGroup(ChatFrame5, "SKILL")
 
-	if K.Name == "Kkthnx" and K.Realm == "Sethraliss" and not InCombatLockdown() then
-		SetCVar("scriptErrors", 1)
-	end
+	-- Enable Classcolor (Move back to install later)
+	ToggleChatColorNamesByClassGroup(true, "SAY")
+	ToggleChatColorNamesByClassGroup(true, "EMOTE")
+	ToggleChatColorNamesByClassGroup(true, "YELL")
+	ToggleChatColorNamesByClassGroup(true, "GUILD")
+	ToggleChatColorNamesByClassGroup(true, "OFFICER")
+	ToggleChatColorNamesByClassGroup(true, "GUILD_ACHIEVEMENT")
+	ToggleChatColorNamesByClassGroup(true, "ACHIEVEMENT")
+	ToggleChatColorNamesByClassGroup(true, "WHISPER")
+	ToggleChatColorNamesByClassGroup(true, "PARTY")
+	ToggleChatColorNamesByClassGroup(true, "PARTY_LEADER")
+	ToggleChatColorNamesByClassGroup(true, "RAID")
+	ToggleChatColorNamesByClassGroup(true, "RAID_LEADER")
+	ToggleChatColorNamesByClassGroup(true, "RAID_WARNING")
+	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND")
+	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND_LEADER")
+	ToggleChatColorNamesByClassGroup(true, "CHANNEL1")
+	ToggleChatColorNamesByClassGroup(true, "CHANNEL2")
+	ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
+	ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
+	ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
+	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT")
+	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT_LEADER")
 
 	DEFAULT_CHAT_FRAME:SetUserPlaced(true)
+
+	FCF_SelectDockFrame(ChatFrame1)
 
 	self:SetDefaultChatFramesPositions()
 end
@@ -601,7 +671,7 @@ function Module:OnEnable()
 	if CombatLogButton then
 		local CombatLogFontContainer = _G.ChatFrame2 and _G.ChatFrame2.FontStringContainer
 		CombatLogButton:StripTextures()
-		CombatLogButton:CreateShadow()
+		CombatLogButton:CreateShadow(true)
 		if CombatLogFontContainer then
 			CombatLogButton:ClearAllPoints()
 			CombatLogButton:SetPoint("BOTTOMLEFT", CombatLogFontContainer, "TOPLEFT", -1, 1)

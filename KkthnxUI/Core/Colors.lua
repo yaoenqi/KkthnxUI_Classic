@@ -126,6 +126,11 @@ oUF.colors.class = {
 	["WARRIOR"] = {0.78, 0.61, 0.43},
 }
 
+RAID_CLASS_COLORS["SHAMAN"].r = 0
+RAID_CLASS_COLORS["SHAMAN"].g = 0.44
+RAID_CLASS_COLORS["SHAMAN"].b = 0.87
+RAID_CLASS_COLORS["SHAMAN"].colorStr = "ff0070DE"
+
 oUF.colors.totems = {
 	[1] = oUF.colors.class[K.Class], -- Totem 1
 	[2] = oUF.colors.class[K.Class], -- Totem 2

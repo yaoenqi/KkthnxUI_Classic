@@ -311,7 +311,7 @@ function Module:StatusBar_OnValueChanged(value)
 	end
 
 	if not self.text then
-		self.text = K.CreateFontString(self, 11, "")
+		self.text = K.CreateFontString(self, 11, nil, "")
 	end
 
 	if value > 0 and max == 1 then

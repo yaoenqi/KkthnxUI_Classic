@@ -74,12 +74,12 @@ function Module:CreateItemString(frame, strType)
 	for index, slot in pairs(inspectSlots) do
 		if index ~= 4 then
 			local slotFrame = _G[strType..slot.."Slot"]
-			slotFrame.iLvlText = K.CreateFontString(slotFrame, 12)
+			slotFrame.iLvlText = K.CreateFontString(slotFrame, 12, nil, "OUTLINE")
 			slotFrame.iLvlText:ClearAllPoints()
 			slotFrame.iLvlText:SetPoint("BOTTOMLEFT", slotFrame, 1, 1)
 
 			local relF, x, y = Module:GetSlotAnchor(index)
-			slotFrame.enchantText = K.CreateFontString(slotFrame, 12)
+			slotFrame.enchantText = K.CreateFontString(slotFrame, 12, nil, "OUTLINE")
 			slotFrame.enchantText:ClearAllPoints()
 			slotFrame.enchantText:SetPoint(relF, slotFrame, x, y)
 			slotFrame.enchantText:SetTextColor(0, 1, 0)

@@ -24,7 +24,6 @@ local GetScreenWidth = _G.GetScreenWidth
 local GetSpellTexture = _G.GetSpellTexture
 local InCombatLockdown = _G.InCombatLockdown
 local IsAltKeyDown = _G.IsAltKeyDown
-local IsCharacterFriend = _G.IsCharacterFriend
 local IsGuildMember = _G.IsGuildMember
 local NO = _G.NO
 local PVPReadyDialog = _G.PVPReadyDialog
@@ -235,7 +234,7 @@ end
 
 -- TradeFrame hook
 function Module:TradeTargetInfo()
-	local infoText = K.CreateFontString(TradeFrame, 14, "")
+	local infoText = K.CreateFontString(TradeFrame, 14, nil, "")
 	infoText:ClearAllPoints()
 	infoText:SetPoint("TOP", TradeFrameRecipientNameText, "BOTTOM", 0, -5)
 

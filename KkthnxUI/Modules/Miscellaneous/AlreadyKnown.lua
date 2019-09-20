@@ -1,4 +1,4 @@
-local K = unpack(select(2, ...))
+local K, C, L = unpack(select(2, ...))
 
 -- Sourced: AlreadyKnown (villiv)
 -- Edited: KkthnxUI (Kkthnx)
@@ -6,17 +6,12 @@ local K = unpack(select(2, ...))
 local _G = _G
 local string_find = _G.string.find
 local string_match = _G.string.match
-local string_split = _G.string.split
-local math_ceil = _G.math.ceil
 
 local CreateFrame = _G.CreateFrame
 local GetAuctionItemInfo = _G.GetAuctionItemInfo
 local GetAuctionItemLink = _G.GetAuctionItemLink
 local GetBuybackItemInfo = _G.GetBuybackItemInfo
 local GetBuybackItemLink = _G.GetBuybackItemLink
-local GetCurrentGuildBankTab = _G.GetCurrentGuildBankTab
-local GetGuildBankItemInfo = _G.GetGuildBankItemInfo
-local GetGuildBankItemLink = _G.GetGuildBankItemLink
 local GetItemInfo = _G.GetItemInfo
 local GetMerchantItemInfo = _G.GetMerchantItemInfo
 local GetMerchantItemLink = _G.GetMerchantItemLink
@@ -35,51 +30,32 @@ local knowables, knowns = {
 }, {}
 local tooltip = CreateFrame("GameTooltip", "AlreadyKnownTooltip", nil, "GameTooltipTemplate")
 
-local function isPetCollected(speciesID)
-	if not speciesID or speciesID == 0 then
-		return
-	end
-
-	local numOwned = _G.C_PetJournal.GetNumCollectedInfo(speciesID)
-	if numOwned > 0 then
-		return true
-	end
-end
-
-local function IsAlreadyKnown(link, index)
+local function IsAlreadyKnown(link)
 	if not link then
 		return
 	end
 
-	if string_match(link, "battlepet:") then
-		local speciesID = select(2, string_split(":", link))
-		return isPetCollected(speciesID)
-	elseif string_match(link, "item:") then
+	if string_match(link, "item:") then
 		local name, _, _, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(link)
 		if not name then
 			return
 		end
 
-		if itemClassID == _G.LE_ITEM_CLASS_BATTLEPET and index then
-			local speciesID = tooltip:SetGuildBankItem(GetCurrentGuildBankTab(), index)
-			return isPetCollected(speciesID)
-		else
-			if knowns[link] then
+		if knowns[link] then
+			return true
+		end
+
+		if not knowables[itemClassID] then
+			return
+		end
+
+		K.ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+		K.ScanTooltip:SetHyperlink(link)
+		for i = 1, K.ScanTooltip:NumLines() do
+			local text = _G[K.ScanTooltip:GetName().."TextLeft"..i]:GetText() or ""
+			if string_find(text, _G.COLLECTED) or text == _G.ITEM_SPELL_KNOWN then
+				knowns[link] = true
 				return true
-			end
-
-			if not knowables[itemClassID] then
-				return
-			end
-
-			tooltip:SetOwner(UIParent, "ANCHOR_NONE")
-			tooltip:SetHyperlink(link)
-			for i = 1, tooltip:NumLines() do
-				local text = _G[tooltip:GetName().."TextLeft"..i]:GetText() or ""
-				if string_find(text, _G.COLLECTED) or text == _G.ITEM_SPELL_KNOWN then
-					knowns[link] = true
-					return true
-				end
 			end
 		end
 	end
@@ -127,39 +103,6 @@ local function MerchantFrame_UpdateBuybackInfo()
 	end
 end
 hooksecurefunc("MerchantFrame_UpdateBuybackInfo", MerchantFrame_UpdateBuybackInfo)
-
--- GuildBank Frame
-local function GuildBankFrame_Update()
-	if _G.GuildBankFrame.mode ~= "bank" then
-		return
-	end
-
-	local tab = GetCurrentGuildBankTab()
-	for i = 1, _G.MAX_GUILDBANK_SLOTS_PER_TAB do
-		local index = _G.mod(i, _G.NUM_SLOTS_PER_GUILDBANK_GROUP)
-		if index == 0 then
-			index = _G.NUM_SLOTS_PER_GUILDBANK_GROUP
-		end
-
-		local button = _G["GuildBankColumn"..math_ceil((i - 0.5) / _G.NUM_SLOTS_PER_GUILDBANK_GROUP).."Button"..index]
-		if button and button:IsShown() then
-			local texture, _, locked = GetGuildBankItemInfo(tab, i)
-			if texture and not locked then
-				if IsAlreadyKnown(GetGuildBankItemLink(tab, i), i) then
-					_G.SetItemButtonTextureVertexColor(button, COLOR.r, COLOR.g, COLOR.b)
-				else
-					_G.SetItemButtonTextureVertexColor(button, 1, 1, 1)
-				end
-			end
-		end
-	end
-end
-
-local isBlizzard_GuildBankUILoaded
-if IsAddOnLoaded("Blizzard_GuildBankUI") then
-	isBlizzard_GuildBankUILoaded = true
-	hooksecurefunc("GuildBankFrame_Update", GuildBankFrame_Update)
-end
 
 -- Auction Frame
 local function AuctionFrameBrowse_Update()
@@ -230,24 +173,21 @@ if IsAddOnLoaded("Blizzard_AuctionUI") then
 end
 
 -- For LoD AddOns
-if not (isBlizzard_GuildBankUILoaded and isBlizzard_AuctionUILoaded) then
+if not (isBlizzard_AuctionUILoaded) then
 	local function OnEvent(self, event, addonName)
-		if addonName == "Blizzard_GuildBankUI" then
-			isBlizzard_GuildBankUILoaded = true
-			hooksecurefunc("GuildBankFrame_Update", GuildBankFrame_Update)
-		elseif addonName == "Blizzard_AuctionUI" then
+		if addonName == "Blizzard_AuctionUI" then
 			isBlizzard_AuctionUILoaded = true
 			hooksecurefunc("AuctionFrameBrowse_Update", AuctionFrameBrowse_Update)
 			hooksecurefunc("AuctionFrameBid_Update", AuctionFrameBid_Update)
 			hooksecurefunc("AuctionFrameAuctions_Update", AuctionFrameAuctions_Update)
 		end
 
-		if isBlizzard_GuildBankUILoaded and isBlizzard_AuctionUILoaded then
+		if isBlizzard_AuctionUILoaded then
 			self:UnregisterEvent(event)
 			self:SetScript("OnEvent", nil)
 			OnEvent = nil
 		end
 	end
-	tooltip:SetScript("OnEvent", OnEvent)
-	tooltip:RegisterEvent("ADDON_LOADED")
+	K.ScanTooltip:SetScript("OnEvent", OnEvent)
+	K.ScanTooltip:RegisterEvent("ADDON_LOADED")
 end
