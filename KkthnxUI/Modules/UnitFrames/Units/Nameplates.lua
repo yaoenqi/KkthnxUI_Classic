@@ -356,14 +356,15 @@ function Module:CreateNameplates(unit)
 
 	if C["Nameplates"].QuestInfo then
 		self.questIcon = self:CreateTexture(nil, "OVERLAY", nil, 2)
-		self.questIcon:SetPoint("LEFT", self, "RIGHT", -1, 0)
-		self.questIcon:SetSize(20, 20)
+		self.questIcon:SetPoint("LEFT", self, "RIGHT", 2, 0)
+		self.questIcon:SetSize(16, 16)
 		self.questIcon:SetAtlas("adventureguide-microbutton-alert")
 		self.questIcon:Hide()
 
-		self.questCount = self:CreateFontString(nil, "OVERLAY")
-		self.questCount:SetFontObject(Font)
-		self.questCount:SetPoint("LEFT", self.questIcon, "RIGHT", -4, 0)
+		self.questCount  = K.CreateFontString(self, 11, "", nil, "LEFT", 0, 0)
+		self.questCount:SetPoint("LEFT", self.questIcon, "RIGHT", 0, 0)
+
+		self:RegisterEvent("QUEST_LOG_UPDATE", Module.UpdateQuestIndicator, true)
 	end
 
 	local iconFrame = CreateFrame("Frame", nil, self)

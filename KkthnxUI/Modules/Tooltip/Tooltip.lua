@@ -5,7 +5,6 @@ local _G = _G
 local string_find = _G.string.find
 local string_format = _G.string.format
 local string_upper = _G.string.upper
-local unpack = _G.unpack
 local string_len = _G.string.len
 
 local AFK = _G.AFK
@@ -26,7 +25,6 @@ local ICON_LIST = _G.ICON_LIST
 local INTERACTIVE_SERVER_LABEL = _G.INTERACTIVE_SERVER_LABEL or "(#)"
 local ITEM_QUALITY3_DESC = _G.ITEM_QUALITY3_DESC
 local InCombatLockdown = _G.InCombatLockdown
-local IsAddOnLoaded = _G.IsAddOnLoaded
 local IsInGuild = _G.IsInGuild
 local IsShiftKeyDown = _G.IsShiftKeyDown
 local LEVEL = _G.LEVEL
@@ -42,7 +40,6 @@ local UnitClassification = _G.UnitClassification
 local UnitCreatureType = _G.UnitCreatureType
 local UnitExists = _G.UnitExists
 local UnitFactionGroup = _G.UnitFactionGroup
--- local UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned
 local UnitIsAFK = _G.UnitIsAFK
 local UnitIsConnected = _G.UnitIsConnected
 local UnitIsDND = _G.UnitIsDND
@@ -53,6 +50,7 @@ local UnitIsUnit = _G.UnitIsUnit
 local UnitLevel = _G.UnitLevel
 local UnitName = _G.UnitName
 local UnitPVPName = _G.UnitPVPName
+local UnitPlayerControlled = _G.UnitPlayerControlled
 local UnitRace = _G.UnitRace
 local UnitRealmRelationship = _G.UnitRealmRelationship
 local YOU = _G.YOU
@@ -79,8 +77,8 @@ function Module:GetUnit()
 end
 
 function Module:HideLines()
-    for i = 3, self:NumLines() do
-        local tiptext = _G["GameTooltipTextLeft"..i]
+	for i = 3, self:NumLines() do
+		local tiptext = _G["GameTooltipTextLeft"..i]
 		local linetext = tiptext:GetText()
 		if linetext then
 			if linetext == PVP then
@@ -102,7 +100,7 @@ function Module:HideLines()
 				end
 			end
 		end
-    end
+	end
 end
 
 function Module:GetLevelLine()
@@ -128,7 +126,7 @@ function Module:InsertFactionFrame(faction)
 		local f = self:CreateTexture(nil, "OVERLAY")
 		f:SetPoint("TOPRIGHT", 0, -4)
 		f:SetBlendMode("ADD")
-		f:SetSize(32, 32)
+		f:SetSize(34, 34)
 		self.factionFrame = f
 	end
 
@@ -157,9 +155,11 @@ function Module:OnTooltipSetUnit()
 	local unit = Module.GetUnit(self)
 	local isShiftKeyDown = IsShiftKeyDown()
 	if UnitExists(unit) then
+		local r, g, b = K.UnitColor(unit)
 		local hexColor = K.RGBToHex(K.UnitColor(unit))
 		local ricon = GetRaidTargetIndex(unit)
 		local text = GameTooltipTextLeft1:GetText()
+
 		if ricon and ricon > 8 then
 			ricon = nil
 		end
@@ -173,9 +173,11 @@ function Module:OnTooltipSetUnit()
 			local name, realm = UnitName(unit)
 			local pvpName = UnitPVPName(unit)
 			local relationship = UnitRealmRelationship(unit)
+
 			if not C["Tooltip"].HideTitle and pvpName then
 				name = pvpName
 			end
+
 			if realm and realm ~= "" then
 				if isShiftKeyDown or not C["Tooltip"].HideRealm then
 					name = name.."-"..realm
@@ -240,13 +242,14 @@ function Module:OnTooltipSetUnit()
 				end
 				GameTooltipTextLeft2:SetText("<"..guildName.."> "..rank.."("..rankIndex..")")
 			end
-		end
 
-		local line1 = GameTooltipTextLeft1:GetText()
-		GameTooltipTextLeft1:SetFormattedText("%s", hexColor..line1)
+			local line1 = GameTooltipTextLeft1:GetText()
+			GameTooltipTextLeft1:SetFormattedText("%s", hexColor..line1)
+		end
 
 		local alive = not UnitIsDeadOrGhost(unit)
 		local level = UnitLevel(unit)
+
 		if level then
 			local boss
 			if level == -1 then
@@ -279,7 +282,14 @@ function Module:OnTooltipSetUnit()
 		end
 
 		if alive then
-			GameTooltipStatusBar:SetStatusBarColor(K.UnitColor(unit))
+			GameTooltipStatusBar:SetStatusBarColor(r, g, b)
+
+			if GameTooltipStatusBar.text then
+				if RealMobHealth and RealMobHealth.UnitHasHealthData(unit) then
+					local value, max = RealMobHealth.GetUnitHealth(unit)
+					GameTooltipStatusBar.text:SetText(value.." / "..max)
+				end
+			end
 		else
 			GameTooltipStatusBar:Hide()
 		end
@@ -287,38 +297,31 @@ function Module:OnTooltipSetUnit()
 		GameTooltipStatusBar:SetStatusBarColor(0, .9, 0)
 	end
 
-	Module.InspectUnitSpecAndLevel(self)
+	-- Module.InspectUnitSpecAndLevel(self)
 end
 
 function Module:StatusBar_OnValueChanged(value)
-	if self:IsForbidden() or not value then return end
-
-	local unit = select(2, self:GetParent():GetUnit())
-	if(not unit) then
-		local GMF = GetMouseFocus()
-		if(GMF and GMF.GetAttribute and GMF:GetAttribute("unit")) then
-			unit = GMF:GetAttribute("unit")
-		end
+	if self:IsForbidden() or not value then
+		return
 	end
 
-	local _, max = self:GetMinMaxValues()
+	local min, max = self:GetMinMaxValues()
+	if (value < min) or (value > max) then
+		return
+	end
 
 	if not self.text then
 		self.text = K.CreateFontString(self, 11, "")
 	end
 
-	if (value > 0 and max == 1) then
-		self.text:SetFormattedText("%d%%", math.floor(value * 100))
-		self:SetStatusBarColor(0.6, 0.6, 0.6)
-	elseif (value == 0 or (unit and UnitIsDeadOrGhost(unit))) then
-		self.text:SetText(_G.DEAD)
+	if value > 0 and max == 1 then
+		self.text:SetFormattedText("%d%%", value * 100)
 	else
-		if unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) and RealMobHealth then
-			local c, m, _, _ = RealMobHealth.GetUnitHealth(unit);
-			self.text:SetText(c.." / "..m)
-		else
-			self.text:SetText(value.." / "..max)
+		local unit = Module.GetUnit(GameTooltip)
+		if RealMobHealth and RealMobHealth.UnitHasHealthData(unit) then
+			value, max = RealMobHealth.GetUnitHealth(unit)
 		end
+		self.text:SetText(value.." / "..max)
 	end
 end
 
@@ -357,18 +360,18 @@ function Module:GameTooltip_ShowProgressBar()
 end
 
 -- Anchor and mover
-local mover
+local GameTooltip_Mover
 function Module:GameTooltip_SetDefaultAnchor(parent)
 	if C["Tooltip"].Cursor then
 		self:SetOwner(parent, "ANCHOR_CURSOR_RIGHT")
 	else
-		if not mover then
-			mover = K.Mover(self, "Tooltip", "GameTooltip", {"BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -182, 36}, 240, 120)
+		if not GameTooltip_Mover then
+			GameTooltip_Mover = K.Mover(self, "Tooltip", "GameTooltip", {"BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -182, 36}, 240, 120)
 		end
 
 		self:SetOwner(parent, "ANCHOR_NONE")
 		self:ClearAllPoints()
-		self:SetPoint("BOTTOMRIGHT", mover)
+		self:SetPoint("BOTTOMRIGHT", GameTooltip_Mover)
 	end
 end
 
@@ -486,38 +489,22 @@ K:RegisterEvent("ADDON_LOADED", addonStyled)
 
 Module:RegisterTooltips("KkthnxUI", function()
 	local tooltips = {
-		_G.AutoCompleteBox,
-		-- _G.BattlePetTooltip,
 		_G.ChatMenu,
-		_G.EmbeddedItemTooltip,
 		_G.EmoteMenu,
-		-- _G.FloatingBattlePetTooltip,
-		_G.FloatingGarrisonFollowerAbilityTooltip,
-		_G.FloatingGarrisonFollowerTooltip,
-		_G.FloatingGarrisonMissionTooltip,
-		_G.FloatingGarrisonShipyardFollowerTooltip,
-		_G.FloatingPetBattleAbilityTooltip,
-		_G.FriendsTooltip,
+		_G.LanguageMenu,
+		_G.VoiceMacroMenu,
 		_G.GameTooltip,
-		_G.GarrisonFollowerAbilityTooltip,
-		_G.GarrisonFollowerTooltip,
-		_G.GarrisonShipyardFollowerTooltip,
-		_G.GeneralDockManagerOverflowButtonList,
-		_G.IMECandidatesFrame,
+		_G.EmbeddedItemTooltip,
+		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
 		_G.ItemRefShoppingTooltip2,
-		_G.ItemRefTooltip,
-		_G.LanguageMenu,
-		_G.NamePlateTooltip,
-		_G.QueueStatusFrame,
-		_G.ReputationParagonTooltip,
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
-		_G.VoiceMacroMenu,
-		_G.WorldMapCompareTooltip1,
-		_G.WorldMapCompareTooltip2,
-		_G.WorldMapCompareTooltip3,
-		_G.WorldMapTooltip,
+		_G.AutoCompleteBox,
+		_G.FriendsTooltip,
+		_G.GeneralDockManagerOverflowButtonList,
+		_G.NamePlateTooltip,
+		_G.IMECandidatesFrame
 	}
 	for _, f in pairs(tooltips) do
 		f:HookScript("OnShow", Module.ReskinTooltip)
@@ -568,27 +555,6 @@ Module:RegisterTooltips("KkthnxUI", function()
 			Module.ReskinTooltip(LootBarToolTip)
 		end
 	end)
-
-	-- if IsAddOnLoaded("BattlePetBreedID") then
-		-- hooksecurefunc("BPBID_SetBreedTooltip", function(parent)
-			-- if parent == FloatingBattlePetTooltip then
-				-- Module.ReskinTooltip(BPBID_BreedTooltip2)
-			-- else
-				-- Module.ReskinTooltip(BPBID_BreedTooltip)
-			-- end
-		-- end)
-	-- end
-
-	if IsAddOnLoaded("MethodDungeonTools") then
-		local styledMDT
-		hooksecurefunc(MethodDungeonTools, "ShowInterface", function()
-			if not styledMDT then
-				Module.ReskinTooltip(MethodDungeonTools.tooltip)
-				Module.ReskinTooltip(MethodDungeonTools.pullTooltip)
-				styledMDT = true
-			end
-		end)
-	end
 end)
 
 Module:RegisterTooltips("Blizzard_DebugTools", function()
@@ -597,51 +563,4 @@ Module:RegisterTooltips("Blizzard_DebugTools", function()
 	FrameStackTooltip:SetScale(UIParent:GetScale())
 	EventTraceTooltip:SetParent(UIParent)
 	EventTraceTooltip:SetFrameStrata("TOOLTIP")
-end)
-
-Module:RegisterTooltips("Blizzard_Collections", function()
-	PetJournalPrimaryAbilityTooltip:HookScript("OnShow", Module.ReskinTooltip)
-	PetJournalSecondaryAbilityTooltip:HookScript("OnShow", Module.ReskinTooltip)
-	PetJournalPrimaryAbilityTooltip.Delimiter1:SetHeight(1)
-	PetJournalPrimaryAbilityTooltip.Delimiter1:SetColorTexture(0, 0, 0)
-	PetJournalPrimaryAbilityTooltip.Delimiter2:SetHeight(1)
-	PetJournalPrimaryAbilityTooltip.Delimiter2:SetColorTexture(0, 0, 0)
-end)
-
-Module:RegisterTooltips("Blizzard_GarrisonUI", function()
-	local gt = {
-		GarrisonMissionMechanicTooltip,
-		GarrisonMissionMechanicFollowerCounterTooltip,
-		GarrisonShipyardMapMissionTooltip,
-		GarrisonBonusAreaTooltip,
-		GarrisonBuildingFrame.BuildingLevelTooltip,
-		GarrisonFollowerAbilityWithoutCountersTooltip,
-		GarrisonFollowerMissionAbilityWithoutCountersTooltip
-	}
-	for _, f in pairs(gt) do
-		f:HookScript("OnShow", Module.ReskinTooltip)
-	end
-end)
-
-Module:RegisterTooltips("Blizzard_PVPUI", function()
-	ConquestTooltip:HookScript("OnShow", Module.ReskinTooltip)
-end)
-
-Module:RegisterTooltips("Blizzard_Contribution", function()
-	ContributionBuffTooltip:HookScript("OnShow", Module.ReskinTooltip)
-	ContributionBuffTooltip.Icon:SetTexCoord(unpack(K.TexCoords))
-	ContributionBuffTooltip.Border:SetAlpha(0)
-end)
-
-Module:RegisterTooltips("Blizzard_EncounterJournal", function()
-	EncounterJournalTooltip:HookScript("OnShow", Module.ReskinTooltip)
-	EncounterJournalTooltip.Item1.icon:SetTexCoord(unpack(K.TexCoords))
-	EncounterJournalTooltip.Item1.IconBorder:SetAlpha(0)
-	EncounterJournalTooltip.Item2.icon:SetTexCoord(unpack(K.TexCoords))
-	EncounterJournalTooltip.Item2.IconBorder:SetAlpha(0)
-end)
-
-Module:RegisterTooltips("Blizzard_Calendar", function()
-	CalendarContextMenu:HookScript("OnShow", Module.ReskinTooltip)
-	CalendarInviteStatusContextMenu:HookScript("OnShow", Module.ReskinTooltip)
 end)

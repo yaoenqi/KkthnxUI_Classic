@@ -19,18 +19,20 @@ local AFK = _G.AFK
 local ALTERNATE_POWER_INDEX = _G.ALTERNATE_POWER_INDEX
 local DEAD = _G.DEAD
 local DND = _G.DND
+local GHOST = _G.GetLocale() == "deDE" and "Geist" or _G.GetSpellInfo(8326)
+local GROUP = _G.GROUP
 local GetNumGroupMembers = _G.GetNumGroupMembers
 local GetQuestGreenRange = _G.GetQuestGreenRange
 local GetRaidRosterInfo = _G.GetRaidRosterInfo
 local GetThreatStatusColor = _G.GetThreatStatusColor
-local GHOST = _G.GetLocale() == "deDE" and "Geist" or _G.GetSpellInfo(8326)
-local GROUP = _G.GROUP
 local HEALER = _G.HEALER
 local IsInGroup = _G.IsInGroup
 local IsInRaid = _G.IsInRaid
 local MAX_RAID_MEMBERS = _G.MAX_RAID_MEMBERS or 40
 local PLAYER_OFFLINE = _G.PLAYER_OFFLINE
 local TANK = _G.TANK
+local UNITNAME_SUMMON_TITLE17 = _G.UNITNAME_SUMMON_TITLE17
+local UNKNOWN = _G.UNKNOWN
 local UnitBattlePetLevel = _G.UnitBattlePetLevel
 local UnitClass = _G.UnitClass
 local UnitClassification = _G.UnitClassification
@@ -42,9 +44,9 @@ local UnitHealth = _G.UnitHealth
 local UnitHealthMax = _G.UnitHealthMax
 local UnitIsAFK = _G.UnitIsAFK
 local UnitIsConnected = _G.UnitIsConnected
+local UnitIsDND = _G.UnitIsDND
 local UnitIsDead = _G.UnitIsDead
 local UnitIsDeadOrGhost = _G.UnitIsDeadOrGhost
-local UnitIsDND = _G.UnitIsDND
 local UnitIsFriend = _G.UnitIsFriend
 local UnitIsGhost = _G.UnitIsGhost
 local UnitIsGroupAssistant = _G.UnitIsGroupAssistant
@@ -53,23 +55,38 @@ local UnitIsPlayer = _G.UnitIsPlayer
 local UnitIsRaidOfficer = _G.UnitIsRaidOfficer
 local UnitIsUnit = _G.UnitIsUnit
 local UnitLevel = _G.UnitLevel
-local UNITNAME_SUMMON_TITLE17 = _G.UNITNAME_SUMMON_TITLE17
 local UnitPower = _G.UnitPower
 local UnitPowerMax = _G.UnitPowerMax
 local UnitPowerType = _G.UnitPowerType
 local UnitReaction = _G.UnitReaction
 local UnitStagger = _G.UnitStagger
-local UNKNOWN = _G.UNKNOWN
-local RealMobHealth = _G.RealMobHealth
+
+local GetUnitHealth
+local function updateHealthAPI(event)
+	if RealMobHealth then
+		GetUnitHealth = RealMobHealth.GetUnitHealth
+	end
+
+	K:UnregisterEvent(event, updateHealthAPI)
+end
+K:RegisterEvent("PLAYER_ENTERING_WORLD", updateHealthAPI)
 
 local function UnitHealthValues(unit)
-	if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
-		local c, m, _, _ = RealMobHealth.GetUnitHealth(unit);
-		return c, m
+	if GetUnitHealth and RealMobHealth.UnitHasHealthData(unit) then
+		return GetUnitHealth(unit)
 	else
 		return UnitHealth(unit), UnitHealthMax(unit)
 	end
 end
+
+-- local function UnitHealthValues(unit)
+-- 	if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
+-- 		local c, m, _, _ = RealMobHealth.GetUnitHealth(unit)
+-- 		return c, m
+-- 	else
+-- 		return UnitHealth(unit), UnitHealthMax(unit)
+-- 	end
+-- end
 
 local function UnitName(unit)
 	local name, realm = _G.UnitName(unit)

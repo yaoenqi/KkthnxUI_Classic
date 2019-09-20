@@ -8,7 +8,6 @@ local IsCharacterFriend = _G.IsCharacterFriend
 local IsGuildMember = _G.IsGuildMember
 local IsInGroup = _G.IsInGroup
 local LFGInvitePopup = _G.LFGInvitePopup
-local QueueStatusMinimapButton = _G.QueueStatusMinimapButton
 local StaticPopupSpecial_Hide = _G.StaticPopupSpecial_Hide
 local StaticPopup_Hide = _G.StaticPopup_Hide
 
@@ -16,7 +15,7 @@ local hideStatic
 function Module.AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 	if event == "PARTY_INVITE_REQUEST" then
 		-- Prevent Losing Que Inside LFD If Someone Invites You To Group
-		if QueueStatusMinimapButton:IsShown() or IsInGroup() or (not inviterGUID or inviterGUID == "") then
+		if IsInGroup() or (not inviterGUID or inviterGUID == "") then
 			return
 		end
 

@@ -74,6 +74,13 @@ local classify = {
 	worldboss = {0, 1, 0},
 }
 
+local LibClassicCasterino = LibStub('LibClassicCasterino', true)
+if (LibClassicCasterino) then
+	UnitChannelInfo = function(unit)
+		return LibClassicCasterino:UnitChannelInfo(unit)
+	end
+end
+
 local auraBlackList = {
 	[113942] = true, -- Demonic: Gateway
 	[117870] = true, -- Touch of The Titans
@@ -321,12 +328,28 @@ function Module:UpdateUnitClassify(unit)
 	end
 end
 
-function Module:UpdateQuestUnit(_, unit)
-	if (not self.frameType == "FRIENDLY_NPC" or not self.frameType == "ENEMY_NPC") and (not C["Nameplates"].QuestInfo) then
+-- Quest progress
+local isInInstance
+local function CheckInstanceStatus()
+	isInInstance = IsInInstance()
+end
+
+function Module:QuestIconCheck()
+	if not C["Nameplates"].QuestInfo then
 		return
 	end
 
-	if IsInInstance() or self.frameType == "PLAYER" then
+	CheckInstanceStatus()
+	K:RegisterEvent("PLAYER_ENTERING_WORLD", CheckInstanceStatus)
+end
+
+local unitTip = CreateFrame("GameTooltip", "KkthnxUIQuestUnitTip", nil, "GameTooltipTemplate")
+function Module:UpdateQuestUnit(_, unit)
+	if not C["Nameplates"].QuestInfo then
+		return
+	end
+
+	if isInInstance then
 		self.questIcon:Hide()
 		self.questCount:SetText("")
 		return
@@ -335,11 +358,11 @@ function Module:UpdateQuestUnit(_, unit)
 	unit = unit or self.unit
 
 	local isLootQuest, questProgress
-	K.ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
-	K.ScanTooltip:SetUnit(unit)
+	unitTip:SetOwner(UIParent, "ANCHOR_NONE")
+	unitTip:SetUnit(unit)
 
-	for i = 2, K.ScanTooltip:NumLines() do
-		local textLine = _G[K.ScanTooltip:GetName().."TextLeft"..i]
+	for i = 2, unitTip:NumLines() do
+		local textLine = _G[unitTip:GetName().."TextLeft"..i]
 		local text = textLine:GetText()
 		if textLine and text then
 			local r, g, b = textLine:GetTextColor()
@@ -386,10 +409,90 @@ function Module:UpdateQuestUnit(_, unit)
 	end
 end
 
-local LibClassicCasterino = LibStub('LibClassicCasterino', true)
-if (LibClassicCasterino) then
-	UnitChannelInfo = function(unit)
-		return LibClassicCasterino:UnitChannelInfo(unit)
+function Module:UpdateForQuestie(name)
+	local data = name and QuestieTooltips.tooltipLookup["u_"..name]
+	if data then
+		local foundObjective, progressText
+		for _, tooltip in pairs(data) do
+			local questID = tooltip.Objective.QuestData.Id
+			QuestieQuest:UpdateQuest(questID)
+			if qCurrentQuestlog[questID] then
+				foundObjective = true
+				if tooltip.Objective.Needed then
+					progressText = tooltip.Objective.Needed - tooltip.Objective.Collected
+					if progressText == 0 then
+						foundObjective = nil
+					end
+					break
+				end
+			end
+		end
+		if foundObjective then
+			self.questIcon:Show()
+			self.questCount:SetText(progressText)
+		end
+	end
+end
+
+function Module:UpdateCodexQuestUnit(name)
+	if name and CodexMap.tooltips[name] then
+		for _, meta in pairs(CodexMap.tooltips[name]) do
+			local questData = meta["quest"]
+			if questData then
+				for questId = 1, GetNumQuestLogEntries() do
+					local title, _, _, _, _, complete = GetQuestLogTitle(questId)
+					if questData == title then
+						local objectives = GetNumQuestLeaderBoards(questId)
+						local foundObjective, progressText = nil
+						if objectives then
+							for i = 1, objectives do
+								local text, type, complete = GetQuestLogLeaderBoard(i, questId)
+								if type == "monster" then
+									local _, _, monsterName, objNum, objNeeded = string_find(text, Codex:SanitizePattern(QUEST_MONSTERS_KILLED))
+									if meta["spawn"] == monsterName then
+										progressText = objNeeded - objNum
+										foundObjective = true
+										break
+									end
+								elseif table.getn(meta["item"]) > 0 and type == "item" and meta["dropRate"] then
+									local _, _, itemName, objNum, objNeeded = string_find(text, Codex:SanitizePattern(QUEST_OBJECTS_FOUND))
+									for mid, item in pairs(meta["item"]) do
+										if item == itemName then
+											progressText = objNeeded - objNum
+											foundObjective = true
+											break
+										end
+									end
+								end
+							end
+						end
+
+						if foundObjective and progressText > 0 then
+							self.questIcon:Show()
+							self.questCount:SetText(progressText)
+						elseif not foundObjective and meta["questLevel"] and meta["texture"] then
+							self.questIcon:Show()
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+function Module:UpdateQuestIndicator()
+	if not C["Nameplates"].QuestInfo then
+		return
+	end
+
+	self.questIcon:Hide()
+	self.questCount:SetText("")
+
+	local name = self.unitName
+	if QuestieTooltips then
+		Module.UpdateForQuestie(self, name)
+	elseif CodexMap then
+		Module.UpdateCodexQuestUnit(self, name)
 	end
 end
 
@@ -1027,7 +1130,7 @@ function Module:NameplatesCallback(nameplate, event, unit)
 		end
 	end
 
-	Module.UpdateQuestUnit(nameplate, event, unit)
+	Module.UpdateQuestIndicator(nameplate)
 	Module.UpdateNameplateTarget(nameplate)
 	Module.UpdateUnitClassify(nameplate, unit)
 end
@@ -1553,6 +1656,7 @@ function Module:OnEnable()
 		K:RegisterEvent("PLAYER_REGEN_DISABLED", self.PLAYER_REGEN_DISABLED)
 		self:PLAYER_REGEN_ENABLED()
 		self:SetNameplateCVars()
+		self:QuestIconCheck()
 
 		-- Disable The Default Class Resource Bars
 		for _,object in pairs({
