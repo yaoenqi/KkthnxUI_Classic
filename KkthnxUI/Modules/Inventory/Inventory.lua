@@ -16,29 +16,23 @@ local tonumber = _G.tonumber
 
 local BankFrameItemButton_Update = _G.BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = _G.BankFrameItemButton_UpdateLocked
-local CURRENCY = _G.CURRENCY
 local C_NewItems_IsNewItem = _G.C_NewItems.IsNewItem
 local CloseBankFrame = _G.CloseBankFrame
 local CooldownFrame_Set = _G.CooldownFrame_Set
 local CreateFrame = _G.CreateFrame
 local GameTooltip = _G.GameTooltip
 local GetContainerItemCooldown = _G.GetContainerItemCooldown
-local GetContainerItemEquipmentSetInfo = _G.GetContainerItemEquipmentSetInfo
 local GetContainerItemInfo = _G.GetContainerItemInfo
 local GetContainerItemLink = _G.GetContainerItemLink
-local GetContainerItemQuestInfo = _G.GetContainerItemQuestInfo
 local GetContainerNumFreeSlots = _G.GetContainerNumFreeSlots
 local GetContainerNumSlots = _G.GetContainerNumSlots
 local GetItemInfo = _G.GetItemInfo
 local GetItemQualityColor = _G.GetItemQualityColor
 local GetMoney = _G.GetMoney
 local GetNumBankSlots = _G.GetNumBankSlots
--- local GetReagentBankCost = _G.GetReagentBankCost
 local IsBattlePayItem = _G.IsBattlePayItem
 local IsShiftKeyDown = _G.IsShiftKeyDown
 local LE_ITEM_QUALITY_POOR = _G.LE_ITEM_QUALITY_POOR
-local MAX_WATCHED_TOKENS = _G.MAX_WATCHED_TOKENS
-local MoneyFrame_Update = _G.MoneyFrame_Update
 local NEW_ITEM_ATLAS_BY_QUALITY = _G.NEW_ITEM_ATLAS_BY_QUALITY
 local PlaySound = _G.PlaySound
 local SEARCH = _G.SEARCH
@@ -46,8 +40,6 @@ local SOUNDKIT = _G.SOUNDKIT
 local SetItemButtonCount = _G.SetItemButtonCount
 local SetItemButtonDesaturated = _G.SetItemButtonDesaturated
 local SetItemButtonTexture = _G.SetItemButtonTexture
--- local SortReagentBankBags = _G.SortReagentBankBags
-local Token1, Token2, Token3 = _G.BackpackTokenFrameToken1, _G.BackpackTokenFrameToken2, _G.BackpackTokenFrameToken3
 local UIParent = _G.UIParent
 local hooksecurefunc = _G.hooksecurefunc
 
@@ -57,94 +49,83 @@ local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local ST_NORMAL = 1
 local ST_FISHBAG = 2
 local ST_SPECIAL = 3
+local ST_QUIVER = 4
+local ST_SOULBAG = 5
 local bag_bars = 0
-local Ticker
 local Profit = 0
 local Spent = 0
-local unusable
+local Unusable
 local resetCountersFormatter = strjoin("", "|cffaaaaaa", "Reset Counters: Hold Shift + Left Click", "|r")
 local resetInfoFormatter = strjoin("", "|cffaaaaaa", "Reset Data: Hold Shift + Right Click", "|r")
 
-if K.Class == "DEATHKNIGHT" then
-	unusable = { -- weapon, armor, dual-wield
-		{LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_STAFF,LE_ITEM_WEAPON_UNARMED, LE_ITEM_WEAPON_DAGGER, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
-		{LE_ITEM_ARMOR_SHIELD}
-	}
-elseif K.Class == "DEMONHUNTER" then
-	unusable = {
-		{LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_MACE1H, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_STAFF, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
-		{LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD}
-	}
-elseif K.Class == "DRUID" then
-	unusable = {
-		{LE_ITEM_WEAPON_AXE1H, LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_SWORD1H, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
-		{LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD},
-		true
-	}
-elseif K.Class == "HUNTER" then
-	unusable = {
-		{LE_ITEM_WEAPON_MACE1H, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_WAND},
-		{LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD}
-	}
-elseif K.Class == "MAGE" then
-	unusable = {
-		{LE_ITEM_WEAPON_AXE1H, LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_MACE1H, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_UNARMED, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW},
-		{LE_ITEM_ARMOR_LEATHER, LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD},
-		true
-	}
-elseif K.Class == "MONK" then
-	unusable = {
-		{LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_DAGGER, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
-		{LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD}
-	}
-elseif K.Class == "PALADIN" then
-	unusable = {
-		{LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_STAFF, LE_ITEM_WEAPON_UNARMED, LE_ITEM_WEAPON_DAGGER, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
-		{},
-		true
-	}
-elseif K.Class == "PRIEST" then
-	unusable = {
-		{LE_ITEM_WEAPON_AXE1H, LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD1H, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_UNARMED, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW},
-		{LE_ITEM_ARMOR_LEATHER, LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD},
-		true
-	}
-elseif K.Class == "ROGUE" then
-	unusable = {
-		{LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_STAFF, LE_ITEM_WEAPON_WAND},
-		{LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD}
-	}
-elseif K.Class == "SHAMAN" then
-	unusable = {
-		{LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD1H, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
-		{LE_ITEM_ARMOR_PLATE}
-	}
-elseif K.Class == "WARLOCK" then
-	unusable = {
-		{LE_ITEM_WEAPON_AXE1H, LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_MACE1H, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_UNARMED, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW},
-		{LE_ITEM_ARMOR_LEATHER, LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD},
-		true
-	}
-elseif K.Class == "WARRIOR" then
-	unusable = {{LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_WAND}, {}}
-else
-	unusable = {{}, {}}
-end
-
-local _unusable = {}
-
-for i, class in ipairs({LE_ITEM_CLASS_WEAPON, LE_ITEM_CLASS_ARMOR}) do
-	local list = {}
-	for _, subclass in ipairs(unusable[i]) do
-		list[subclass] = true
+do
+	if K.Class == 'DRUID' then
+		Unusable = {
+			{LE_ITEM_WEAPON_AXE1H, LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_SWORD1H, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
+			{LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD},
+			true
+		}
+	elseif K.Class == 'HUNTER' then
+		Unusable = {
+			{LE_ITEM_WEAPON_MACE1H, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_WAND},
+			{LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD}
+		}
+	elseif K.Class == 'MAGE' then
+		Unusable = {
+			{LE_ITEM_WEAPON_AXE1H, LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_MACE1H, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_UNARMED, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW},
+			{LE_ITEM_ARMOR_LEATHER, LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD},
+			true
+		}
+	elseif K.Class == 'PALADIN' then
+		Unusable = {
+			{LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_STAFF, LE_ITEM_WEAPON_UNARMED, LE_ITEM_WEAPON_DAGGER, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
+			{},
+			true
+		}
+	elseif K.Class == 'PRIEST' then
+		Unusable = {
+			{LE_ITEM_WEAPON_AXE1H, LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD1H, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_UNARMED, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW},
+			{LE_ITEM_ARMOR_LEATHER, LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD},
+			true
+		}
+	elseif K.Class == 'ROGUE' then
+		Unusable = {
+			{LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_STAFF, LE_ITEM_WEAPON_WAND},
+			{LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD}
+		}
+	elseif K.Class == 'SHAMAN' then
+		Unusable = {
+			{LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD1H, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW, LE_ITEM_WEAPON_WAND},
+			{LE_ITEM_ARMOR_PLATE}
+		}
+	elseif K.Class == 'WARLOCK' then
+		Unusable = {
+			{LE_ITEM_WEAPON_AXE1H, LE_ITEM_WEAPON_AXE2H, LE_ITEM_WEAPON_BOWS, LE_ITEM_WEAPON_GUNS, LE_ITEM_WEAPON_MACE1H, LE_ITEM_WEAPON_MACE2H, LE_ITEM_WEAPON_POLEARM, LE_ITEM_WEAPON_SWORD2H, LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_UNARMED, LE_ITEM_WEAPON_THROWN, LE_ITEM_WEAPON_CROSSBOW},
+			{LE_ITEM_ARMOR_LEATHER, LE_ITEM_ARMOR_MAIL, LE_ITEM_ARMOR_PLATE, LE_ITEM_ARMOR_SHIELD},
+			true
+		}
+	elseif K.Class == 'WARRIOR' then
+		Unusable = {{LE_ITEM_WEAPON_WARGLAIVE, LE_ITEM_WEAPON_WAND}, {}}
+	else
+		Unusable = {{}, {}}
 	end
 
-	_unusable[class] = list
+	_unusable = {}
+	_cannotDual = Unusable[3]
+
+	for i, class in ipairs({LE_ITEM_CLASS_WEAPON, LE_ITEM_CLASS_ARMOR}) do
+		local list = {}
+		for _, subclass in ipairs(Unusable[i]) do
+			list[subclass] = true
+		end
+
+		_unusable[class] = list
+	end
 end
 
 local function IsClassUnusable(class, subclass, slot)
 	if class and subclass and _unusable[class] then
-		return slot ~= "" and _unusable[class][subclass] or slot == "INVTYPE_WEAPONOFFHAND" and unusable[3]
+		return slot ~= '' and _unusable[class][subclass] or slot == 'INVTYPE_WEAPONOFFHAND' and _cannotDual
 	end
 end
 
@@ -269,11 +250,9 @@ end
 -- Bag slot stuff
 local trashButton = {}
 local trashBag = {}
-
 function Stuffing:SlotUpdate(b)
 	local texture, count, locked, quality, _, _, _, _, noValue = GetContainerItemInfo(b.bag, b.slot)
 	local clink = GetContainerItemLink(b.bag, b.slot)
-	--local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(b.bag, b.slot)
 	local isQuestItem, questId, isActiveQuest
 	if b.itemClassID == LE_ITEM_CLASS_QUESTITEM then isQuestItem = true end
 
@@ -290,11 +269,6 @@ function Stuffing:SlotUpdate(b)
 		b.frame.text:SetText("")
 	end
 
-	-- if b.frame.Azerite then
-	-- 	b.frame.Azerite:Hide()
-	-- end
-	-- b.frame:UpdateItemContextMatching() -- Update Scrap items
-
 	b.frame.isJunk = (quality and quality== LE_ITEM_QUALITY_POOR) and not noValue
 	if b.frame.JunkIcon then
 		if b.frame.isJunk and C["Inventory"].JunkIcon then
@@ -303,21 +277,6 @@ function Stuffing:SlotUpdate(b)
 			b.frame.JunkIcon:Hide()
 		end
 	end
-
-	-- if b.frame.UpgradeIcon then
-	-- 	b.frame.UpgradeIcon:ClearAllPoints()
-	-- 	b.frame.UpgradeIcon:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\UpgradeIcon")
-	-- 	b.frame.UpgradeIcon:SetPoint("BOTTOMRIGHT", 6, -3)
-	-- 	b.frame.UpgradeIcon:SetSize(C["Inventory"].ButtonSize / 1.4, C["Inventory"].ButtonSize / 1.4)
-	-- 	b.frame.UpgradeIcon:SetTexCoord(0, 1, 0, 1)
-
-	-- 	local itemIsUpgrade = _G.IsContainerItemAnUpgrade(b.frame:GetParent():GetID(), b.frame:GetID())
-	-- 	if not itemIsUpgrade or itemIsUpgrade == nil then
-	-- 		b.frame.UpgradeIcon:SetShown(false)
-	-- 	else
-	-- 		b.frame.UpgradeIcon:SetShown(itemIsUpgrade or true)
-	-- 	end
-	-- end
 
 	local newItemTexture = b.frame.NewItemTexture
 	local battlePayTexture = b.frame.BattlepayItemTexture
@@ -381,7 +340,7 @@ function Stuffing:SlotUpdate(b)
 		end
 
 		if C["Inventory"].ItemLevel then
-			if b.link and b.level and b.rarity > 1 and (b.subType == EJ_LOOT_SLOT_FILTER_ARTIFACT_RELIC or b.itemClassID  == LE_ITEM_CLASS_WEAPON or b.itemClassID == LE_ITEM_CLASS_ARMOR) then
+			if b.link and b.level and b.rarity > 1 and (b.subType == EJ_LOOT_SLOT_FILTER_ARTIFACT_RELIC or b.itemClassID == LE_ITEM_CLASS_WEAPON or b.itemClassID == LE_ITEM_CLASS_ARMOR) then
 				local level = K.GetItemLevel(b.link, b.bagID, b.slotID) or b.level
 				local color = BAG_ITEM_QUALITY_COLORS[b.rarity]
 				b.frame.text:SetText(level)
@@ -390,10 +349,6 @@ function Stuffing:SlotUpdate(b)
 				b.frame.text:SetText("")
 			end
 		end
-
-		-- if b.frame.Azerite and C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID(clink) then
-		-- 	b.frame.Azerite:Show()
-		-- end
 
 		if (IsItemUnusable(clink) or b.level and b.level > K.Level) and not locked then
 			_G[b.frame:GetName().."IconTexture"]:SetVertexColor(1, 0.1, 0.1)
@@ -452,165 +407,6 @@ local function Stuffing_TooltipShow(self)
 
 	GameTooltip:Show()
 end
-
--- local function Stuffing_CreateReagentContainer()
-	-- ReagentBankFrame:StripTextures()
-
-	-- local Reagent = CreateFrame("Frame", "StuffingFrameReagent", UIParent)
-	-- local SwitchBankButton = CreateFrame("Button", nil, Reagent)
-	-- local NumRows, LastRowButton, NumButtons, LastButton = 0, ReagentBankFrameItem1, 1, ReagentBankFrameItem1
-	-- local Deposit = ReagentBankFrame.DespositButton
-
-	-- Reagent:SetWidth(((C["Inventory"].ButtonSize + C["Inventory"].ButtonSpace) * C["Inventory"].BankColumns) + 17)
-	-- Reagent:SetPoint("TOPLEFT", _G["StuffingFrameBank"], "TOPLEFT", 0, 0)
-	-- Reagent:CreateBorder()
-	-- Reagent:SetFrameStrata(_G["StuffingFrameBank"]:GetFrameStrata())
-	-- Reagent:SetFrameLevel(_G["StuffingFrameBank"]:GetFrameLevel() + 5)
-	-- Reagent:EnableMouse(true)
-	-- Reagent:SetMovable(true)
-	-- Reagent:SetClampedToScreen(true)
-	-- Reagent:SetClampRectInsets(0, 0, 0, -20)
-	-- Reagent:SetScript("OnMouseDown", function(self, button)
-		-- if IsShiftKeyDown() and button == "LeftButton" then
-			-- self:StartMoving()
-		-- end
-	-- end)
-	-- Reagent:SetScript("OnMouseUp", Reagent.StopMovingOrSizing)
-
-	-- SwitchBankButton:SetSize(16, 16)
-	-- SwitchBankButton:CreateBorder()
-	-- SwitchBankButton:CreateInnerShadow()
-	-- SwitchBankButton:StyleButton(true)
-	-- SwitchBankButton:SetPoint("TOPRIGHT", -54, -7)
-	-- SwitchBankButton:SetNormalTexture("Interface\\ICONS\\achievement_guildperk_mobilebanking")
-	-- SwitchBankButton:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	-- SwitchBankButton:GetNormalTexture():SetAllPoints()
-	-- SwitchBankButton:SetPushedTexture("Interface\\ICONS\\achievement_guildperk_mobilebanking")
-	-- SwitchBankButton:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	-- SwitchBankButton:GetPushedTexture():SetAllPoints()
-	-- SwitchBankButton.ttText = L["Switch to Bank"]
-	-- SwitchBankButton:SetScript("OnEnter", Stuffing_TooltipShow)
-	-- SwitchBankButton:SetScript("OnLeave", Stuffing_TooltipHide)
-	-- SwitchBankButton:SetScript("OnClick", function()
-		-- Reagent:Hide()
-		-- _G["StuffingFrameBank"]:Show()
-		-- _G["StuffingFrameBank"]:SetAlpha(1)
-		-- _G["StuffingFrameBank"]:EnableMouse(true)
-		-- BankFrame_ShowPanel(BANK_PANELS[1].name)
-		-- PlaySound(PlaySoundKitID and "igbackpackopen" or SOUNDKIT.IG_BACKPACK_OPEN)
-	-- end)
-
-	-- local SortReagentButton = CreateFrame("Button", nil, Reagent)
-	-- SortReagentButton:SetSize(16, 16)
-	-- SortReagentButton:CreateBorder()
-	-- SortReagentButton:CreateInnerShadow()
-	-- SortReagentButton:StyleButton(true)
-	-- SortReagentButton:SetPoint("TOPRIGHT", SwitchBankButton, -22, 0)
-	-- SortReagentButton:SetNormalTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
-	-- SortReagentButton:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	-- SortReagentButton:GetNormalTexture():SetAllPoints()
-	-- SortReagentButton:SetPushedTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
-	-- SortReagentButton:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	-- SortReagentButton:GetPushedTexture():SetAllPoints()
-	-- SortReagentButton:SetDisabledTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
-	-- SortReagentButton:GetDisabledTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	-- SortReagentButton:GetDisabledTexture():SetAllPoints()
-	-- SortReagentButton:GetDisabledTexture():SetDesaturated(1)
-	-- SortReagentButton.ttText = _G.BAG_FILTER_CLEANUP
-	-- SortReagentButton:SetScript("OnEnter", Stuffing_TooltipShow)
-	-- SortReagentButton:SetScript("OnLeave", Stuffing_TooltipHide)
-	-- SortReagentButton:SetScript("OnMouseUp", SortReagentBankBags)
-
-	-- Deposit:SetParent(Reagent)
-	-- Deposit:ClearAllPoints()
-	-- Deposit:SetText("")
-	-- Deposit:SetSize(16, 16)
-	-- Deposit:CreateBorder()
-	-- Deposit:CreateInnerShadow()
-	-- Deposit:StyleButton(true)
-	-- Deposit:SetPoint("TOPLEFT", SwitchBankButton, "TOPRIGHT", 6, 0)
-	-- Deposit:SetNormalTexture("Interface\\ICONS\\misc_arrowdown")
-	-- Deposit:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	-- Deposit:GetNormalTexture():SetAllPoints()
-	-- Deposit:SetPushedTexture("Interface\\ICONS\\misc_arrowdown")
-	-- Deposit:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	-- Deposit:GetPushedTexture():SetAllPoints()
-	-- Deposit.ttText = _G.REAGENTBANK_DEPOSIT
-	-- Deposit:SetScript("OnEnter", Stuffing_TooltipShow)
-	-- Deposit:SetScript("OnLeave", Stuffing_TooltipHide)
-	-- Deposit:SetScript("OnClick", function()
-		-- PlaySound(PlaySoundKitID and "igmainmenuoption" or SOUNDKIT.IG_MAINMENU_OPTION)
-		-- DepositReagentBank()
-	-- end)
-
-	-- local Close = CreateFrame("Button", "StuffingCloseButtonReagent", Reagent, "UIPanelCloseButton")
-	-- Close:SetPoint("TOPRIGHT", 0, 1)
-	-- Close:SkinCloseButton()
-	-- Close:RegisterForClicks("AnyUp")
-	-- Close:SetScript("OnClick", function()
-		-- StuffingBank_OnHide()
-	-- end)
-
-	-- for i = 1, 98 do
-		-- local button = _G["ReagentBankFrameItem" .. i]
-		-- local icon = _G[button:GetName() .. "IconTexture"]
-		-- local count = _G[button:GetName() .. "Count"]
-
-		-- ReagentBankFrame:SetParent(Reagent)
-		-- ReagentBankFrame:ClearAllPoints()
-		-- ReagentBankFrame:SetAllPoints()
-		-- button:CreateBorder()
-		-- button:CreateInnerShadow()
-		-- button:StyleButton()
-		-- button:SetNormalTexture(nil)
-		-- button.IconBorder:SetAlpha(0)
-
-		-- button:ClearAllPoints()
-		-- button:SetSize(C["Inventory"].ButtonSize, C["Inventory"].ButtonSize)
-
-		-- local _, _, _, quality = GetContainerItemInfo(-3, i)
-		-- local clink = GetContainerItemLink(-3, i)
-		-- if clink then
-			-- if quality and quality > 1 then
-				-- button:SetBackdropBorderColor(GetItemQualityColor(quality))
-			-- end
-		-- end
-
-		-- if i == 1 then
-			-- button:SetPoint("TOPLEFT", Reagent, "TOPLEFT", 10, -30)
-			-- LastRowButton = button
-			-- LastButton = button
-		-- elseif NumButtons == C["Inventory"].BankColumns then
-			-- button:SetPoint("TOPRIGHT", LastRowButton, "TOPRIGHT", 0, -(C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize))
-			-- button:SetPoint("BOTTOMLEFT", LastRowButton, "BOTTOMLEFT", 0, -(C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize))
-			-- LastRowButton = button
-			-- NumRows = NumRows + 1
-			-- NumButtons = 1
-		-- else
-			-- button:SetPoint("TOPRIGHT", LastButton, "TOPRIGHT", (C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize), 0)
-			-- button:SetPoint("BOTTOMLEFT", LastButton, "BOTTOMLEFT", (C["Inventory"].ButtonSpace + C["Inventory"].ButtonSize), 0)
-			-- NumButtons = NumButtons + 1
-		-- end
-
-		-- icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		-- icon:SetAllPoints()
-
-		-- count:SetFontObject(BAGS_FONT)
-		-- count:SetPoint("BOTTOMRIGHT", 1, 1)
-
-		-- if (LastButton ~= button) then
-			-- LastButton = button
-		-- end
-	-- end
-	-- Reagent:SetHeight(((C["Inventory"].ButtonSize + C["Inventory"].ButtonSpace) * (NumRows + 1) + 40) - C["Inventory"].ButtonSpace)
-
-	-- MoneyFrame_Update(ReagentBankFrame.UnlockInfo.CostMoneyFrame, GetReagentBankCost())
-	-- ReagentBankFrameUnlockInfo:StripTextures()
-	-- ReagentBankFrameUnlockInfo:SetAllPoints(Reagent)
-	-- ReagentBankFrameUnlockInfo:CreateBorder()
-	-- ReagentBankFrameUnlockInfo:SetFrameStrata("FULLSCREEN")
-	-- ReagentBankFrameUnlockInfoPurchaseButton:SkinButton()
--- end
 
 function Stuffing:BagFrameSlotNew(p, slot)
 	for _, v in ipairs(self.bagframe_buttons) do
@@ -756,15 +552,6 @@ function Stuffing:SlotNew(bag, slot)
 			ret.frame.JunkIcon:Hide()
 		end
 
-		if not ret.frame.Azerite then
-			ret.frame.Azerite = ret.frame:CreateTexture(nil, "OVERLAY")
-			ret.frame.Azerite:SetAtlas("AzeriteIconFrame")
-			ret.frame.Azerite:SetTexCoord(0, 1, 0, 1)
-			ret.frame.Azerite:SetPoint("TOPLEFT")
-			ret.frame.Azerite:SetPoint("BOTTOMRIGHT")
-			ret.frame.Azerite:Hide()
-		end
-
 		local Battlepay = _G[ret.frame:GetName()].BattlepayItemTexture
 		if Battlepay then
 			Battlepay:SetAlpha(0)
@@ -784,12 +571,18 @@ function Stuffing:SlotNew(bag, slot)
 end
 
 local BAGTYPE_PROFESSION = 0x0008 + 0x0010 + 0x0020 + 0x0040 + 0x0080 + 0x0200 + 0x0400 + 0x10000
+local BAGTYPE_QUIVER = 0x0001 + 0x0002
+local BAGTYPE_SOUL = 0x004
 local BAGTYPE_FISHING = 32768
 
 function Stuffing:BagType(bag)
 	local bagType = select(2, GetContainerNumFreeSlots(bag))
 
-	if bagType and bit_band(bagType, BAGTYPE_FISHING) > 0 then
+	if bit_band(bagType, BAGTYPE_QUIVER) > 0 then
+		return ST_QUIVER
+	elseif bit_band(bagType, BAGTYPE_SOUL) > 0 then
+		return ST_SOULBAG
+	elseif bagType and bit_band(bagType, BAGTYPE_FISHING) > 0 then
 		return ST_FISHBAG
 	elseif bagType and bit_band(bagType, BAGTYPE_PROFESSION) > 0 then
 		return ST_SPECIAL
@@ -941,35 +734,6 @@ function Stuffing:CreateBagFrame(w)
 	end
 
 	if w == "Bank" then
-		-- f.reagentToggle = CreateFrame("Button", "StuffingReagentButton" .. w, f)
-		-- f.reagentToggle:SetSize(16, 16)
-		-- f.reagentToggle:CreateBorder()
-		-- f.reagentToggle:CreateInnerShadow()
-		-- f.reagentToggle:SetPoint("TOPRIGHT", f, -32, -7)
-		-- f.reagentToggle:SetNormalTexture("Interface\\Icons\\Achievement_GuildPerk_BountifulBags")
-		-- f.reagentToggle:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-		-- f.reagentToggle:GetNormalTexture():SetAllPoints()
-		-- f.reagentToggle:SetPushedTexture("Interface\\Icons\\Achievement_GuildPerk_BountifulBags")
-		-- f.reagentToggle:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-		-- f.reagentToggle:GetPushedTexture():SetAllPoints()
-		-- f.reagentToggle:StyleButton(nil, true)
-		-- f.reagentToggle.ttText = L["Reagents"]
-		-- f.reagentToggle:SetScript("OnEnter", Stuffing_TooltipShow)
-		-- f.reagentToggle:SetScript("OnLeave", Stuffing_TooltipHide)
-		-- f.reagentToggle:SetScript("OnClick", function()
-			-- BankFrame_ShowPanel(BANK_PANELS[2].name)
-			-- PlaySound(PlaySoundKitID and "igcharacterinfotab" or SOUNDKIT.IG_CHARACTER_INFO_TAB)
-			-- if not ReagentBankFrame.isMade then
-				-- Stuffing_CreateReagentContainer()
-				-- ReagentBankFrame.isMade = true
-			-- else
-				-- _G["StuffingFrameReagent"]:Show()
-			-- end
-
-			-- _G["StuffingFrameBank"]:SetAlpha(0)
-			-- _G["StuffingFrameBank"]:EnableMouse(false)
-		-- end)
-
 		f.bagsButton = CreateFrame("Button", nil, f)
 		f.bagsButton:SetSize(16, 16)
 		f.bagsButton:CreateBorder()
@@ -1154,11 +918,6 @@ function Stuffing:InitBags()
 			return
 		end
 
-		if not Ticker then
-			C_WowTokenPublic.UpdateMarketPrice()
-			Ticker = _G.C_Timer.NewTicker(60, C_WowTokenPublic.UpdateMarketPrice)
-		end
-
 		local NewMoney = GetMoney()
 		KkthnxUIData = KkthnxUIData or {}
 		KkthnxUIData["Gold"] = KkthnxUIData["Gold"] or {}
@@ -1240,17 +999,6 @@ function Stuffing:InitBags()
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine("Server: ")
 		GameTooltip:AddDoubleLine("Total: ", K.FormatMoney(totalGold), 1, 1, 1, 1, 1, 1)
-		GameTooltip:AddLine(" ")
-		GameTooltip:AddDoubleLine("WoW Token:", K.FormatMoney(_G.C_WowTokenPublic.GetCurrentMarketPrice() or 0), 1, 1, 1, 1, 1, 1)
-
-		-- for i = 1, MAX_WATCHED_TOKENS do
-		-- 	local name, count = _G.GetBackpackCurrencyInfo(i)
-		-- 	if name and i == 1 then
-		-- 		GameTooltip:AddLine(" ")
-		-- 		GameTooltip:AddLine(CURRENCY)
-		-- 	end
-		-- 	if name and count then GameTooltip:AddDoubleLine(name, count, 1, 1, 1) end
-		-- end
 
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(resetCountersFormatter)
@@ -1273,36 +1021,6 @@ function Stuffing:InitBags()
 	gold:SetScript("OnMouseUp", OnGoldClick)
 	gold:SetScript("OnEnter", OnGoldEnter)
 	gold:SetScript("OnLeave", OnGoldLeave)
-
-	-- do
-	-- 	Token3:ClearAllPoints()
-	-- 	Token3:SetPoint("TOP", f, "BOTTOM", -70, -10)
-	-- 	Token2:ClearAllPoints()
-	-- 	Token2:SetPoint("LEFT", Token3, "RIGHT", 14, 0)
-	-- 	Token1:ClearAllPoints()
-	-- 	Token1:SetPoint("LEFT", Token2, "RIGHT", 14, 0)
-	-- end
-
-	-- for i = 1, 3 do
-	-- 	local Token = _G["BackpackTokenFrameToken" .. i]
-	-- 	local Icon = _G["BackpackTokenFrameToken" .. i .. "Icon"]
-	-- 	local Count = _G["BackpackTokenFrameToken" .. i .. "Count"]
-
-	-- 	Token:SetParent(f)
-	-- 	Token:SetScale(1)
-	-- 	Token:CreateBackdrop()
-	-- 	Token.Backdrop:SetAllPoints(Icon)
-	-- 	Token.Backdrop:SetFrameLevel(6)
-	-- 	Token:SetFrameStrata("MEDIUM")
-	-- 	Token:SetFrameLevel(51)
-
-	-- 	Icon:SetSize(16, 16)
-	-- 	Icon:SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	-- 	Icon:SetPoint("LEFT", Token, "RIGHT", -8, 2)
-
-	-- 	Count:SetFontObject(BAGS_FONT)
-	-- 	Count:SetShadowOffset(0, 0)
-	-- end
 
 	local button = CreateFrame("Button", nil, f)
 	button:EnableMouse(true)
@@ -1557,7 +1275,13 @@ function Stuffing:Layout(isBank)
 				b.frame.lock = false
 				b.frame:SetAlpha(1)
 
-				if bagType == ST_FISHBAG then
+				if bagType == ST_QUIVER then
+					b.frame:SetBackdropBorderColor(0.8, 0.8, 0.2)	-- Quiver
+					b.frame.lock = true
+				elseif bagType == ST_SOULBAG then
+					b.frame:SetBackdropBorderColor(0.8, 0.2, 0.2)	-- Soul Bag
+					b.frame.lock = true
+				elseif bagType == ST_FISHBAG then
 					b.frame:SetBackdropBorderColor(107/255, 150/255, 255/255) -- Tackle
 					b.frame.lock = true
 				elseif bagType == ST_SPECIAL then
@@ -1575,8 +1299,6 @@ function Stuffing:Layout(isBank)
 						b.frame:SetBackdropBorderColor(8/255, 180/255, 207/255)
 					elseif specialType == 0x0400 then -- Mining
 						b.frame:SetBackdropBorderColor(138/255, 103/255, 9/255)
-					elseif specialType == 0x8000 then -- Fishing
-						b.frame:SetBackdropBorderColor(107/255, 150/255, 255/255)
 					elseif specialType == 0x10000 then -- Cooking
 						b.frame:SetBackdropBorderColor(222/255, 13/255, 65/255)
 					end
@@ -1599,20 +1321,14 @@ function Stuffing:ADDON_LOADED(addon)
 	self:RegisterEvent("ITEM_LOCK_CHANGED")
 	self:RegisterEvent("BANKFRAME_OPENED")
 	self:RegisterEvent("BANKFRAME_CLOSED")
-	-- self:RegisterEvent("GUILDBANKFRAME_OPENED")
-	-- self:RegisterEvent("GUILDBANKFRAME_CLOSED")
-	-- self:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
-	-- self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
-	--self:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
+	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
 	self:RegisterEvent("BAG_CLOSED")
 	self:RegisterEvent("BAG_UPDATE_COOLDOWN")
-	-- self:RegisterEvent("SCRAPPING_MACHINE_SHOW")
 	self:RegisterEvent("BAG_UPDATE_DELAYED")
 
 	self:InitBags()
 
 	table_insert(UISpecialFrames, "StuffingFrameBags")
-	-- table_insert(UISpecialFrames, "StuffingFrameReagent")
 
 	ToggleBackpack = Stuffing_Toggle
 	ToggleBag = Stuffing_Toggle
@@ -1653,25 +1369,6 @@ function Stuffing:PLAYERBANKSLOTS_CHANGED(id)
 		self:BagSlotUpdate(-1)
 	end
 end
-
--- function Stuffing:PLAYERREAGENTBANKSLOTS_CHANGED()
-	-- for i = 1, 98 do
-		-- local button = _G["ReagentBankFrameItem" .. i]
-		-- if not button then
-			-- return
-		-- end
-
-		-- local _, _, _, quality = GetContainerItemInfo(-3, i)
-		-- local clink = GetContainerItemLink(-3, i)
-		-- button:SetBackdropBorderColor()
-
-		-- if clink then
-			-- if quality and quality > 1 then
-				-- button:SetBackdropBorderColor(GetItemQualityColor(quality))
-			-- end
-		-- end
-	-- end
--- end
 
 function Stuffing:BAG_UPDATE(id)
 	self:BagSlotUpdate(id)
@@ -1715,10 +1412,6 @@ function Stuffing:BANKFRAME_OPENED()
 end
 
 function Stuffing:BANKFRAME_CLOSED()
-	-- if StuffingFrameReagent then
-		-- StuffingFrameReagent:Hide()
-	-- end
-
 	if self.bankFrame then
 		self.bankFrame:Hide()
 	end
@@ -1726,29 +1419,6 @@ end
 
 function Stuffing:GUILDBANKFRAME_OPENED()
 	Stuffing_Open()
-
-	local guildSort = CreateFrame("Button", "GuildSortButton", GuildBankFrame)
-	guildSort:SetSize(16, 16)
-	guildSort:CreateBorder()
-	guildSort:CreateInnerShadow()
-	guildSort:StyleButton(true)
-	guildSort:SetPoint("RIGHT", GuildItemSearchBox, "LEFT", -8, 0)
-	guildSort:SetNormalTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
-	guildSort:GetNormalTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	guildSort:GetNormalTexture():SetAllPoints()
-	guildSort:SetPushedTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
-	guildSort:GetPushedTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	guildSort:GetPushedTexture():SetAllPoints()
-	guildSort:SetDisabledTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\INV_Pet_Broom.blp")
-	guildSort:GetDisabledTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
-	guildSort:GetDisabledTexture():SetAllPoints()
-	guildSort:GetDisabledTexture():SetDesaturated(1)
-	guildSort.ttText = BAG_FILTER_CLEANUP
-	guildSort:SetScript("OnEnter", Stuffing_TooltipShow)
-	guildSort:SetScript("OnLeave", Stuffing_TooltipHide)
-	guildSort:SetScript("OnClick", function()
-		ModuleSort:CommandDecorator(ModuleSort.SortBags, "guild")()
-	end)
 end
 
 function Stuffing:GUILDBANKFRAME_CLOSED()
@@ -1801,31 +1471,6 @@ function Stuffing:SCRAPPING_MACHINE_SHOW()
 		Stuffing:BAG_UPDATE(i)
 	end
 end
-
--- function Stuffing:PLAYERBANKBAGSLOTS_CHANGED()
--- 	if not StuffingPurchaseButtonBank then
--- 		return
--- 	end
-
--- 	local numSlots, full = GetNumBankSlots()
--- 	if full then
--- 		StuffingPurchaseButtonBank:Hide()
--- 	else
--- 		StuffingPurchaseButtonBank:Show()
--- 	end
-
--- 	local button
--- 	for i = 1, NUM_BANKBAGSLOTS, 1 do
--- 		button = _G["StuffingBBag"..i.."Slot"]
--- 		if button then
--- 			if i <= numSlots then
--- 				SetItemButtonTextureVertexColor(button, 1.0, 1.0, 1.0)
--- 			else
--- 				SetItemButtonTextureVertexColor(button, 1.0, 0.1, 0.1)
--- 			end
--- 		end
--- 	end
--- end
 
 -- Kill Blizzard Functions
 LootWonAlertFrame_OnClick = K.Noop

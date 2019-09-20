@@ -1,6 +1,5 @@
 local K, C, L = unpack(select(2, ...))
 
--- Lua API
 local _G = _G
 local string_find = _G.string.find
 local string_gsub = _G.string.gsub
@@ -10,7 +9,6 @@ local string_trim = _G.string.trim
 local table_insert = _G.table.insert
 local table_remove = _G.table.remove
 
--- Wow API
 local AbandonQuest = _G.AbandonQuest
 local CombatLogClearEntries = _G.CombatLogClearEntries
 local ConvertToParty = _G.ConvertToParty
@@ -19,30 +17,20 @@ local DisableAllAddOns = _G.DisableAllAddOns
 local DoReadyCheck = _G.DoReadyCheck
 local EnableAddOn = _G.EnableAddOn
 local ERR_NOT_IN_GROUP = _G.ERR_NOT_IN_GROUP
--- local GetCurrentResolution = _G.GetCurrentResolution
--- local GetCVarBool = _G.GetCVarBool
 local GetNumGroupMembers = _G.GetNumGroupMembers
 local GetNumQuestLogEntries = _G.GetNumQuestLogEntries
--- local GetRaidRosterInfo = _G.GetRaidRosterInfo
 local GetRealmName = _G.GetRealmName
--- local GetScreenResolutions = _G.GetScreenResolutions
--- local InCombatLockdown = _G.InCombatLockdown
 local IsInInstance = _G.IsInInstance
 local LeaveParty = _G.LeaveParty
 local LFGTeleport = _G.LFGTeleport
--- local MAX_PARTY_MEMBERS = _G.MAX_PARTY_MEMBERS
 local NUM_CHAT_WINDOWS = _G.NUM_CHAT_WINDOWS
--- local PlaySound = _G.PlaySound
 local ReloadUI = _G.ReloadUI
 local RepopMe = _G.RepopMe
 local RetrieveCorpse = _G.RetrieveCorpse
 local SelectQuestLogEntry = _G.SelectQuestLogEntry
--- local SendChatMessage = _G.SendChatMessage
 local SetAbandonQuest = _G.SetAbandonQuest
 local SetCVar = _G.SetCVar
 local SlashCmdList = _G.SlashCmdList
--- local UninviteUnit = _G.UninviteUnit
--- local UnitExists = _G.UnitExists
 local UnitInParty = _G.UnitInParty
 local UnitInRaid = _G.UnitInRaid
 local UnitIsGroupLeader = _G.UnitIsGroupLeader
