@@ -61,32 +61,18 @@ local UnitPowerType = _G.UnitPowerType
 local UnitReaction = _G.UnitReaction
 local UnitStagger = _G.UnitStagger
 
-local GetUnitHealth
-local function updateHealthAPI(event)
-	if RealMobHealth then
-		GetUnitHealth = RealMobHealth.GetUnitHealth
-	end
-
-	K:UnregisterEvent(event, updateHealthAPI)
-end
-K:RegisterEvent("PLAYER_ENTERING_WORLD", updateHealthAPI)
-
 local function UnitHealthValues(unit)
-	if GetUnitHealth and RealMobHealth.UnitHasHealthData(unit) then
-		return GetUnitHealth(unit)
+	if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
+		local c, m, _, _ = RealMobHealth.GetUnitHealth(unit);
+		return c, m
+	elseif _G.MobHealthFrame and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
+		local name, level = UnitName(unit), UnitLevel(unit)
+		local cur, full = MI2_GetMobData(name, level, unit).healthCur, MI2_GetMobData(name, level, unit).healthMax;
+		return cur, full
 	else
 		return UnitHealth(unit), UnitHealthMax(unit)
 	end
 end
-
--- local function UnitHealthValues(unit)
--- 	if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
--- 		local c, m, _, _ = RealMobHealth.GetUnitHealth(unit)
--- 		return c, m
--- 	else
--- 		return UnitHealth(unit), UnitHealthMax(unit)
--- 	end
--- end
 
 local function UnitName(unit)
 	local name, realm = _G.UnitName(unit)

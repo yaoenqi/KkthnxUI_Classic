@@ -285,9 +285,11 @@ function Module:OnTooltipSetUnit()
 			GameTooltipStatusBar:SetStatusBarColor(r, g, b)
 
 			if GameTooltipStatusBar.text then
-				if RealMobHealth and RealMobHealth.UnitHasHealthData(unit) then
-					local value, max = RealMobHealth.GetUnitHealth(unit)
-					GameTooltipStatusBar.text:SetText(value.." / "..max)
+				if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
+					local c, m, _, _ = _G.RealMobHealth.GetUnitHealth(unit)
+					GameTooltipStatusBar.text:SetText(c.." / "..m)
+				else
+					-- GameTooltipStatusBar.text:SetText(value.." / "..max)
 				end
 			end
 		else
@@ -305,23 +307,31 @@ function Module:StatusBar_OnValueChanged(value)
 		return
 	end
 
-	local min, max = self:GetMinMaxValues()
-	if (value < min) or (value > max) then
-		return
+	local unit = select(2, self:GetParent():GetUnit())
+	if (not unit) then
+		local GMF = GetMouseFocus()
+		if(GMF and GMF.GetAttribute and GMF:GetAttribute("unit")) then
+			unit = GMF:GetAttribute("unit")
+		end
 	end
 
 	if not self.text then
 		self.text = K.CreateFontString(self, 11, nil, "")
 	end
 
-	if value > 0 and max == 1 then
-		self.text:SetFormattedText("%d%%", value * 100)
+	local _, max = self:GetMinMaxValues()
+	if (value > 0 and max == 1) then
+		self.text:SetFormattedText("%d%%", floor(value * 100))
+		self:SetStatusBarColor(0.6, 0.6, 0.6) --most effeciant?
+	elseif(value == 0 or (unit and UnitIsDeadOrGhost(unit))) then
+		self.text:SetText(_G.DEAD)
 	else
-		local unit = Module.GetUnit(GameTooltip)
-		if RealMobHealth and RealMobHealth.UnitHasHealthData(unit) then
-			value, max = RealMobHealth.GetUnitHealth(unit)
+		if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
+			local c, m, _, _ = RealMobHealth.GetUnitHealth(unit);
+			self.text:SetText(c.." / "..m)
+		else
+			self.text:SetText(value.." / "..max)
 		end
-		self.text:SetText(value.." / "..max)
 	end
 end
 
@@ -466,6 +476,10 @@ function Module:OnEnable()
 	hooksecurefunc("GameTooltip_ShowProgressBar", self.GameTooltip_ShowProgressBar)
 	hooksecurefunc("GameTooltip_SetDefaultAnchor", self.GameTooltip_SetDefaultAnchor)
 	hooksecurefunc("GameTooltip_SetBackdropStyle", self.GameTooltip_SetBackdropStyle)
+
+	-- Battlenet toast frame
+	BNToastFrame:CreateBorder()
+	BNToastFrame.TooltipFrame:CreateBorder()
 
 	-- Elements
 	self:CreateTargetedInfo()

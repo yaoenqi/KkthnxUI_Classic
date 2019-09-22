@@ -419,25 +419,55 @@ function Module:CreateEnhancedMenu()
 	hooksecurefunc("UnitPopup_ShowMenu", Module.MenuButton_Show)
 end
 
+-- Auto dismount and auto stand
+function Module:CreateDismountStand()
+    if not C["Misc"].AutoDismountStand then
+        return
+    end
+
+	local standString = {
+		[ERR_LOOT_NOTSTANDING] = true,
+		[SPELL_FAILED_NOT_STANDING] = true,
+	}
+
+	local dismountString = {
+		[ERR_ATTACK_MOUNTED] = true,
+		[ERR_NOT_WHILE_MOUNTED] = true,
+		[ERR_TAXIPLAYERALREADYMOUNTED] = true,
+		[SPELL_FAILED_NOT_MOUNTED] = true,
+	}
+
+	local function updateEvent(event, ...)
+		local _, msg = ...
+		if standString[msg] then
+			DoEmote("STAND")
+		elseif dismountString[msg] then
+			Dismount()
+		end
+    end
+
+	K:RegisterEvent("UI_ERROR_MESSAGE", updateEvent)
+end
+
 function Module:OnEnable()
     self:CreateAFKCam()
     self:CreateChatBubble()
     self:CreateDurabilityFrame()
     -- self:CreateEnchantScroll()
     self:CreateImprovedMail()
-    -- self:CreateImprovedStats()
-    -- self:CreateKillingBlow()
+    self:CreateKillingBlow()
     -- self:CreateMerchantItemLevel()
-    -- self:CreatePvPEmote()
+    self:CreatePvPEmote()
     self:CreateQuestNotifier()
     -- self:CreateQueueTimer()
-    -- self:CreateRaidMarker()
+    self:CreateRaidMarker()
     self:CreateSlotDurability()
     self:CreateSlotItemLevel()
     -- self:ExtendInstance()
     self:TradeTargetInfo()
     -- self:VehicleSeatMover()
     self:CreateEnhancedMenu()
+    self:CreateDismountStand()
 
     -- Instant delete
     hooksecurefunc(StaticPopupDialogs["DELETE_GOOD_ITEM"], "OnShow", function(self)
@@ -469,13 +499,13 @@ function Module:OnEnable()
         StaticPopupDialogs.CONFIRM_SUMMON.hideOnEscape = nil
         StaticPopupDialogs.ADDON_ACTION_FORBIDDEN.button1 = nil
         StaticPopupDialogs.TOO_MANY_LUA_ERRORS.button1 = nil
-
-        _G.PetBattleQueueReadyFrame.hideOnEscape = nil
     end
 
-    if (PVPReadyDialog) then
-        PVPReadyDialog.leaveButton:Hide()
-        PVPReadyDialog.enterButton:ClearAllPoints()
-        PVPReadyDialog.enterButton:SetPoint("BOTTOM", PVPReadyDialog, "BOTTOM", 0, 25)
-    end
+    -- RealMobHealth override
+	if RealMobHealth then
+		RealMobHealth.OverrideOption("ModifyHealthBarText", false)
+		RealMobHealth.OverrideOption("ShowTooltipHealthText", false)
+		RealMobHealth.OverrideOption("ShowNamePlateHealthText", false)
+		RealMobHealth.OverrideOption("ShowStatusBarTextAdditions", false)
+	end
 end

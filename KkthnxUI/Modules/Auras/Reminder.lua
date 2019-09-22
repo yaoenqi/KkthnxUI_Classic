@@ -2,13 +2,13 @@ local K, C, L = unpack(select(2, ...))
 local Module = K:GetModule("Auras")
 
 local _G = _G
-local next = next
-local pairs = pairs
-local table_insert = table.insert
-local unpack = unpack
+local next = _G.next
+local pairs = _G.pairs
+local table_insert = _G.table.insert
+local unpack = _G.unpack
 
 local CreateFrame = _G.CreateFrame
-local GetSpecialization = _G.GetSpecialization
+local GetSpellInfo = _G.GetSpellInfo
 local GetSpellTexture = _G.GetSpellTexture
 local GetZonePVPInfo = _G.GetZonePVPInfo
 local InCombatLockdown = _G.InCombatLockdown
@@ -16,27 +16,36 @@ local IsInInstance = _G.IsInInstance
 local IsPlayerSpell = _G.IsPlayerSpell
 local UIParent = _G.UIParent
 local UnitBuff = _G.UnitBuff
-local UnitInVehicle = _G.UnitInVehicle
 
 local groups = K.ReminderBuffs[K.Class]
 local iconSize = C["Auras"].DebuffSize + 4
 local frames, parentFrame = {}
+
+function Module:Reminder_ConvertToName(cfg)
+	local cache = {}
+	for spellID in pairs(cfg.spells) do
+		local name = GetSpellInfo(spellID)
+		if name then
+			cache[name] = true
+		end
+	end
+
+	for name in pairs(cache) do
+		cfg.spells[name] = true
+	end
+end
+
 function Module:Reminder_Update(cfg)
 	local frame = cfg.frame
 	local depend = cfg.depend
-	local spec = cfg.spec
 	local combat = cfg.combat
 	local instance = cfg.instance
 	local pvp = cfg.pvp
-	local isPlayerSpell, isRightSpec, isInCombat, isInInst, isInPVP = true, true
+	local isPlayerSpell, isInCombat, isInInst, isInPVP = true
 	local inInst, instType = IsInInstance()
 
 	if depend and not IsPlayerSpell(depend) then
 		isPlayerSpell = false
-	end
-
-	if spec and spec ~= GetSpecialization() then
-		isRightSpec = false
 	end
 
 	if combat and InCombatLockdown() then
@@ -56,14 +65,14 @@ function Module:Reminder_Update(cfg)
 	end
 
 	frame:Hide()
-	if isPlayerSpell and isRightSpec and (isInCombat or isInInst or isInPVP) and not UnitInVehicle("player") then
+	if isPlayerSpell and (isInCombat or isInInst or isInPVP) then
 		for i = 1, 32 do
-			local name, _, _, _, _, _, _, _, _, spellID = UnitBuff("player", i)
+			local name = UnitBuff("player", i)
 			if not name then
 				break
 			end
 
-			if name and cfg.spells[spellID] then
+			if name and cfg.spells[name] then
 				frame:Hide()
 				return
 			end
@@ -116,6 +125,7 @@ function Module:Reminder_OnEvent()
 	for _, cfg in pairs(groups) do
 		if not cfg.frame then
 			Module:Reminder_Create(cfg)
+			Module:Reminder_ConvertToName(cfg)
 		end
 		Module:Reminder_Update(cfg)
 	end
@@ -128,19 +138,28 @@ function Module:CreateReminder()
 		return
 	end
 
-	if not C["Auras"].Reminder then
-		return
+	if C["Auras"].Reminder then
+		if not parentFrame then
+			parentFrame = CreateFrame("Frame", nil, UIParent)
+			parentFrame:SetPoint("CENTER", -220, 130)
+			parentFrame:SetSize(iconSize, iconSize)
+		end
+		parentFrame:Show()
+
+		Module:Reminder_OnEvent()
+		K:RegisterEvent("UNIT_AURA", Module.Reminder_OnEvent, "player")
+		K:RegisterEvent("PLAYER_REGEN_ENABLED", Module.Reminder_OnEvent)
+		K:RegisterEvent("PLAYER_REGEN_DISABLED", Module.Reminder_OnEvent)
+		K:RegisterEvent("ZONE_CHANGED_NEW_AREA", Module.Reminder_OnEvent)
+		K:RegisterEvent("PLAYER_ENTERING_WORLD", Module.Reminder_OnEvent)
+	else
+		if parentFrame then
+			parentFrame:Hide()
+			K:UnregisterEvent("UNIT_AURA", Module.Reminder_OnEvent)
+			K:UnregisterEvent("PLAYER_REGEN_ENABLED", Module.Reminder_OnEvent)
+			K:UnregisterEvent("PLAYER_REGEN_DISABLED", Module.Reminder_OnEvent)
+			K:UnregisterEvent("ZONE_CHANGED_NEW_AREA", Module.Reminder_OnEvent)
+			K:UnregisterEvent("PLAYER_ENTERING_WORLD", Module.Reminder_OnEvent)
+		end
 	end
-
-	parentFrame = CreateFrame("Frame", nil, UIParent)
-	parentFrame:SetPoint("CENTER", -220, 130)
-	parentFrame:SetSize(iconSize, iconSize)
-
-	K:RegisterEvent("UNIT_AURA", self.Reminder_OnEvent, "player")
-	K:RegisterEvent("UNIT_EXITED_VEHICLE", self.Reminder_OnEvent)
-	K:RegisterEvent("UNIT_ENTERED_VEHICLE", self.Reminder_OnEvent)
-	K:RegisterEvent("PLAYER_REGEN_ENABLED", self.Reminder_OnEvent)
-	K:RegisterEvent("PLAYER_REGEN_DISABLED", self.Reminder_OnEvent)
-	K:RegisterEvent("ZONE_CHANGED_NEW_AREA", self.Reminder_OnEvent)
-	K:RegisterEvent("PLAYER_ENTERING_WORLD", self.Reminder_OnEvent)
 end

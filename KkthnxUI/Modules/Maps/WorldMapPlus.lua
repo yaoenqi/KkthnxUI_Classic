@@ -9,7 +9,6 @@ end
 
 -- Function to refresh overlays (Blizzard_SharedMapDataProviders\MapExplorationDataProvider)
 local _G = _G
-local pATex, pHTex, pNTex = "TaxiNode_Continent_Alliance", "TaxiNode_Continent_Horde", "TaxiNode_Continent_Neutral"
 local overlayTextures, TileExists = {}, {}
 local strsplit, ceil, mod = _G.string.split, _G.math.ceil, _G.mod
 local pairs, tonumber, tinsert = _G.pairs, _G.tonumber, _G.table.insert
@@ -180,261 +179,196 @@ function Module:CreateMapReveal()
 end
 
 function Module:CreateMapIcons()
-	-- Add Caverns of Time portal to Shattrath if reputation with Keepers of Time is revered or higher
-	local name, description, standingID = GetFactionInfoByID(989)
-	if standingID and standingID >= 7 then
-		-- Shattrath City]
-		K.WorldMapPlusPinData[111] = {{74.7, 31.4, "Caverns of Time", "Portal from Zephyr", pNTex},}
-	end
+		-- Flight points
+		local tATex, tHTex = "TaxiNode_Alliance", "TaxiNode_Horde"
+		local playerFaction = UnitFactionGroup("player")
 
-	local KkthnxUIMix = CreateFromMixins(MapCanvasDataProviderMixin)
+		-- Add situational data
+		if K.Class == "DRUID" then
+			-- Moonglade flight points for druids only
+			tinsert(K.WorldMapPlusPinData[1450], {"FlightA", 44.1, 45.2, "Nighthaven" .. ", " .. "Moonglade", "Druid only flight point to Darnassus", tATex, nil, nil})
+			tinsert(K.WorldMapPlusPinData[1450], {"FlightH", 44.3, 45.9, "Nighthaven" .. ", " .. "Moonglade", "Druid only flight point to Thunder Bluff", tHTex, nil, nil})
+		end
 
-	function KkthnxUIMix:RefreshAllData()
-		-- Remove all pins created by code
-		self:GetMap():RemoveAllPinsByTemplate("KkthnxUIMapsGlobalPinTemplate")
-		-- Make new pins
-		local pMapID = WorldMapFrame.mapID
-		if K.WorldMapPlusPinData[pMapID] then
-			local count = #K.WorldMapPlusPinData[pMapID]
-			for i = 1, count do
+		local KkthnxUIMix = CreateFromMixins(MapCanvasDataProviderMixin)
+		function KkthnxUIMix:RefreshAllData()
+			-- Remove all pins
+			self:GetMap():RemoveAllPinsByTemplate("KkthnxUIMapsGlobalPinTemplate")
 
-				-- Do nothing if pinInfo has no entry for zone we are looking at
-				local pinInfo = K.WorldMapPlusPinData[pMapID][i]
-				if not pinInfo then return nil end
+			-- Make new pins
+			local pMapID = WorldMapFrame.mapID
+			if K.WorldMapPlusPinData[pMapID] then
+				local count = #K.WorldMapPlusPinData[pMapID]
+				for i = 1, count do
 
-				-- Get POI if any quest requirements have been met
-				if not pinInfo[6] or pinInfo[6] and not pinInfo[7] and IsQuestFlaggedCompleted(pinInfo[6]) or pinInfo[6] and pinInfo[7] and IsQuestFlaggedCompleted(pinInfo[6]) and not IsQuestFlaggedCompleted(pinInfo[7]) then
-					if K.Faction == "Alliance" and pinInfo[5] ~= pHTex or K.Faction == "Horde" and pinInfo[5] ~= pATex then
+					-- Do nothing if pinInfo has no entry for zone we are looking at
+					local pinInfo = K.WorldMapPlusPinData[pMapID][i]
+					if not pinInfo then return nil end
+
+					-- Get POI if any quest requirements have been met
+					if (pinInfo[1] == "Dungeon" or pinInfo[1] == "Raid" or pinInfo[1] == "Dunraid")
+						or playerFaction == "Alliance" and (pinInfo[1] == "FlightA" or pinInfo[1] == "FlightN")
+						or playerFaction == "Horde" and (pinInfo[1] == "FlightH" or pinInfo[1] == "FlightN")
+						or playerFaction == "Alliance" and (pinInfo[1] == "TravelA" or pinInfo[1] == "TravelN")
+						or playerFaction == "Horde" and (pinInfo[1] == "TravelH" or pinInfo[1] == "TravelN")
+					then
 						local myPOI = {}
-						myPOI["position"] = CreateVector2D(pinInfo[1] / 100, pinInfo[2] / 100)
-						myPOI["name"] = pinInfo[3]
-						myPOI["description"] = pinInfo[4]
-						myPOI["atlasName"] = pinInfo[5]
-						self:GetMap():AcquirePin("KkthnxUIMapsGlobalPinTemplate", myPOI)
+						myPOI["position"] = CreateVector2D(pinInfo[2] / 100, pinInfo[3] / 100)
+						if pinInfo[7] and pinInfo[8] then
+							-- Set dungeon level in title
+							local playerLevel = K.Level
+							local color
+							local name = ""
+							local dungeonMinLevel, dungeonMaxLevel = pinInfo[7], pinInfo[8]
+							if playerLevel < dungeonMinLevel then
+								color = GetQuestDifficultyColor(dungeonMinLevel)
+							elseif playerLevel > dungeonMaxLevel then
+								-- Subtract 2 from the maxLevel so zones entirely below the player's level won't be yellow
+								color = GetQuestDifficultyColor(dungeonMaxLevel - 2)
+							else
+								color = QuestDifficultyColors["difficult"]
+							end
+							color = ConvertRGBtoColorString(color)
+							if dungeonMinLevel ~= dungeonMaxLevel then
+								name = name..color.." (" .. dungeonMinLevel .. "-" .. dungeonMaxLevel .. ")" .. FONT_COLOR_CODE_CLOSE
+							else
+								name = name..color.." (" .. dungeonMaxLevel .. ")" .. FONT_COLOR_CODE_CLOSE
+							end
+							myPOI["name"] = pinInfo[4] .. name
+						else
+							-- Show zone levels is disabled or dungeon has no level range
+							myPOI["name"] = pinInfo[4]
+						end
+						myPOI["description"] = pinInfo[5]
+						myPOI["atlasName"] = pinInfo[6]
+						local pin = self:GetMap():AcquirePin("KkthnxUIMapsGlobalPinTemplate", myPOI)
+						-- Override travel textures
+						if pinInfo[1] == "TravelA" then
+							pin.Texture:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps.blp")
+							pin.Texture:SetTexCoord(0, 0.125, 0.5, 1)
+							pin.HighlightTexture:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps.blp")
+							pin.HighlightTexture:SetTexCoord(0, 0.125, 0.5, 1)
+						elseif pinInfo[1] == "TravelH" then
+							pin.Texture:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps.blp")
+							pin.HighlightTexture:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps.blp")
+							pin.Texture:SetTexCoord(0.125, 0.25, 0.5, 1)
+							pin.HighlightTexture:SetTexCoord(0.125, 0.25, 0.5, 1)
+						elseif pinInfo[1] == "TravelN" then
+							pin.Texture:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps.blp")
+							pin.HighlightTexture:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps.blp")
+							pin.Texture:SetTexCoord(0.25, 0.375, 0.5, 1)
+							pin.HighlightTexture:SetTexCoord(0.25, 0.375, 0.5, 1)
+						elseif pinInfo[1] == "Dunraid" then
+							pin.Texture:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps.blp")
+							pin.HighlightTexture:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps.blp")
+							pin.Texture:SetTexCoord(0.375, 0.5, 0.5, 1)
+							pin.Texture:SetSize(32, 32)
+							pin.HighlightTexture:SetTexCoord(0.375, 0.5, 0.5, 1)
+							pin.HighlightTexture:SetSize(32, 32)
+						end
 					end
 				end
 			end
 		end
-	end
 
-	KkthnxUIMapsGlobalPinMixin = BaseMapPoiPinMixin:CreateSubPin("PIN_FRAME_LEVEL_DUNGEON_ENTRANCE")
+		KkthnxUIMapsGlobalPinMixin = BaseMapPoiPinMixin:CreateSubPin("PIN_FRAME_LEVEL_DUNGEON_ENTRANCE")
 
-	function KkthnxUIMapsGlobalPinMixin:OnAcquired(myInfo)
-		BaseMapPoiPinMixin.OnAcquired(self, myInfo)
-	end
+		function KkthnxUIMapsGlobalPinMixin:OnAcquired(myInfo)
+			BaseMapPoiPinMixin.OnAcquired(self, myInfo)
+		end
 
-	WorldMapFrame:AddDataProvider(KkthnxUIMix)
+		function KkthnxUIMapsGlobalPinMixin:OnMouseUp(btn)
+			if btn == "RightButton" then
+				WorldMapFrame:NavigateToParentMap()
+			end
+		end
 
-	-- Refresh it
-	KkthnxUIMix:RefreshAllData()
+		WorldMapFrame:AddDataProvider(KkthnxUIMix)
 end
 
-function Module:CreateMapLinks()
-	local urlQuestIcon = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:0:0:0:0|t]]
-	-- Get localised Wowhead URL
-	local wowheadLoc = " "
-	if GameLocale == "deDE" then
-		wowheadLoc = "de.wowhead.com"
-	elseif GameLocale == "esMX" then
-		wowheadLoc = "es.wowhead.com"
-	elseif GameLocale == "esES" then
-		wowheadLoc = "es.wowhead.com"
-	elseif GameLocale == "frFR" then
-		wowheadLoc = "fr.wowhead.com"
-	elseif GameLocale == "itIT" then
-		wowheadLoc = "it.wowhead.com"
-	elseif GameLocale == "ptBR" then
-		wowheadLoc = "pt.wowhead.com"
-	elseif GameLocale == "ruRU" then
-		wowheadLoc = "ru.wowhead.com"
-	elseif GameLocale == "koKR" then
-		wowheadLoc = "ko.wowhead.com"
-	elseif GameLocale == "zhCN" then
-		wowheadLoc = "cn.wowhead.com"
-	elseif GameLocale == "zhTW" then
-		wowheadLoc = "cn.wowhead.com"
-	else
-		wowheadLoc = "wowhead.com"
-	end
-
-	-- Achievements frame
-	-- Achievement link function
-	local function DoWowheadAchievementFunc()
-		-- Create editbox
-		local aEB = CreateFrame("EditBox", nil, AchievementFrame)
-		aEB:ClearAllPoints()
-		aEB:SetPoint("BOTTOMRIGHT", -50, 1)
-		aEB:SetHeight(16)
-		aEB:SetFontObject("GameFontNormalSmall")
-		aEB:SetBlinkSpeed(0)
-		aEB:SetJustifyH("RIGHT")
-		aEB:SetAutoFocus(false)
-		aEB:EnableKeyboard(false)
-		aEB:SetHitRectInsets(90, 0, 0, 0)
-		aEB:SetScript("OnKeyDown", function() end)
-		aEB:SetScript("OnMouseUp", function()
-			if aEB:IsMouseOver() then
-				aEB:HighlightText()
-			else
-				aEB:HighlightText(0, 0)
+local function AreaLabel_OnUpdate(self)
+	self:ClearLabel(MAP_AREA_LABEL_TYPE.AREA_NAME)
+	local map = self.dataProvider:GetMap()
+	if map:IsCanvasMouseFocus() then
+		local name, description
+		local mapID = map:GetMapID()
+		local normalizedCursorX, normalizedCursorY = map:GetNormalizedCursorPosition()
+		local positionMapInfo = C_Map.GetMapInfoAtPosition(mapID, normalizedCursorX, normalizedCursorY)
+		if positionMapInfo and positionMapInfo.mapID ~= mapID then
+			-- print(positionMapInfo.mapID)
+			name = positionMapInfo.name
+			-- Get level range from table
+			local playerMinLevel, playerMaxLevel, playerFaction
+			if K.WorldMapLevelZoneData[positionMapInfo.mapID] then
+				playerMinLevel = K.WorldMapLevelZoneData[positionMapInfo.mapID]["minLevel"]
+				playerMaxLevel = K.WorldMapLevelZoneData[positionMapInfo.mapID]["maxLevel"]
+				playerFaction = K.WorldMapLevelZoneData[positionMapInfo.mapID].faction
 			end
-		end)
 
-		-- Create hidden font string (used for setting width of editbox)
-		aEB.z = aEB:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-		aEB.z:Hide()
-
-		-- Store last link in case editbox is cleared
-		local lastAchievementLink
-		-- Function to set editbox value
-		hooksecurefunc("AchievementFrameAchievements_SelectButton", function(self)
-			local achievementID = self.id or nil
-			if achievementID then
-				-- Set editbox text
-				aEB:SetText(urlQuestIcon.."https://" .. wowheadLoc .. "/achievement=" .. achievementID)
-				lastAchievementLink = aEB:GetText()
-				-- Set hidden fontstring then resize editbox to match
-				aEB.z:SetText(aEB:GetText())
-				aEB:SetWidth(aEB.z:GetStringWidth() + 90)
-				-- Get achievement title for tooltip
-				local achievementLink = GetAchievementLink(self.id)
-				if achievementLink then
-					aEB.tiptext = achievementLink:match("%[(.-)%]") .. "|n" .. L["Press To Copy"]
+			if (playerFaction) then
+				local englishFaction = UnitFactionGroup("player")
+				if (playerFaction == "Alliance") then
+					description = string.format(FACTION_CONTROLLED_TERRITORY, FACTION_ALLIANCE)
+				elseif (playerFaction == "Horde") then
+					description = string.format(FACTION_CONTROLLED_TERRITORY, FACTION_HORDE)
 				end
-				-- Show the editbox
-				aEB:Show()
-			end
-		end)
 
-		-- Create tooltip
-		aEB:HookScript("OnEnter", function()
-			aEB:HighlightText()
-			aEB:SetFocus()
-			GameTooltip:SetOwner(aEB, "ANCHOR_TOP", 0, 10)
-			GameTooltip:SetText(aEB.tiptext, nil, nil, nil, nil, true)
-			GameTooltip:Show()
-		end)
-
-		aEB:HookScript("OnLeave", function()
-			-- Set link text again if it"s changed since it was set
-			if aEB:GetText() ~= lastAchievementLink then
-				aEB:SetText(lastAchievementLink)
-			end
-
-			aEB:HighlightText(0, 0)
-			aEB:ClearFocus()
-			GameTooltip:Hide()
-		end)
-
-		-- Hide editbox when achievement is deselected
-		hooksecurefunc("AchievementFrameAchievements_ClearSelection", function()
-			aEB:Hide()
-		end)
-
-		hooksecurefunc("AchievementCategoryButton_OnClick", function()
-			aEB:Hide()
-		end)
-	end
-
-	-- Run function when achievement UI is loaded
-	if IsAddOnLoaded("Blizzard_AchievementUI") then
-		DoWowheadAchievementFunc()
-	else
-		local waitAchievementsFrame = CreateFrame("FRAME")
-		waitAchievementsFrame:RegisterEvent("ADDON_LOADED")
-		waitAchievementsFrame:SetScript("OnEvent", function(_, _, arg1)
-			if arg1 == "Blizzard_AchievementUI" then
-				DoWowheadAchievementFunc()
-				waitAchievementsFrame:UnregisterAllEvents()
-			end
-		end)
-	end
-
-	-- World map frame
-	-- Hide the title text
-	--WorldMapFrameTitleText:Hide()
-	-- Create editbox
-	local mEB = CreateFrame("EditBox", nil, WorldMapFrame.BorderFrame)
-	mEB:ClearAllPoints()
-	mEB:SetPoint("TOPLEFT", 100, -4)
-	mEB:SetHeight(16)
-	mEB:SetFontObject("GameFontNormal")
-	mEB:SetBlinkSpeed(0)
-	mEB:SetAutoFocus(false)
-	mEB:EnableKeyboard(false)
-	mEB:SetHitRectInsets(0, 90, 0, 0)
-	mEB:SetScript("OnKeyDown", function() end)
-	mEB:SetScript("OnMouseUp", function()
-		if mEB:IsMouseOver() then
-			mEB:HighlightText()
-		else
-			mEB:HighlightText(0, 0)
-		end
-	end)
-
-	-- Create hidden font string (used for setting width of editbox)
-	mEB.z = mEB:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	mEB.z:Hide()
-
-	-- Function to set editbox value
-	local function SetQuestInBox()
-		local questID
-		if QuestMapFrame.DetailsFrame:IsShown() then
-			-- Get quest ID from currently showing quest in details panel
-			questID = QuestMapFrame_GetDetailQuestID()
-		else
-			-- Get quest ID from currently selected quest on world map
-			questID = GetSuperTrackedQuestID()
-		end
-		if questID then
-			-- Hide editbox if quest ID is invalid
-			if questID == 0 then
-				mEB:Hide()
-			else
-				mEB:Show()
-			end
-			-- Set editbox text
-			mEB:SetText(urlQuestIcon.."https://" .. wowheadLoc .. "/quest=" .. questID)
-			-- Set hidden fontstring then resize editbox to match
-			mEB.z:SetText(mEB:GetText())
-			mEB:SetWidth(mEB.z:GetStringWidth() + 90)
-			-- Get quest title for tooltip
-			local questLink = GetQuestLink(questID) or nil
-			if questLink then
-				mEB.tiptext = questLink:match("%[(.-)%]") .. "|n" .. L["Press To Copy"]
-			else
-				mEB.tiptext = ""
-				if mEB:IsMouseOver() and GameTooltip:IsShown() then
-					GameTooltip:Hide()
+				if (englishFaction == playerFaction) then
+					description = "|CFF40D326" .. description.."|r" .. FONT_COLOR_CODE_CLOSE
+				else
+					description = "|CFFF52E24" .. description.."|r" .. FONT_COLOR_CODE_CLOSE
 				end
 			end
+			-- Show level range if map zone exists in table
+			if name and playerMinLevel and playerMaxLevel and playerMinLevel > 0 and playerMaxLevel > 0 then
+				local playerLevel = K.Level
+				local color
+				if playerLevel < playerMinLevel then
+					color = GetQuestDifficultyColor(playerMinLevel)
+				elseif playerLevel > playerMaxLevel then
+					-- Subtract 2 from the maxLevel so zones entirely below the player's level won't be yellow
+					color = GetQuestDifficultyColor(playerMaxLevel - 2)
+				else
+					color = QuestDifficultyColors["difficult"]
+				end
+				color = ConvertRGBtoColorString(color)
+				if playerMinLevel ~= playerMaxLevel then
+					name = name..color.." ("..playerMinLevel.."-"..playerMaxLevel..")"..FONT_COLOR_CODE_CLOSE
+				else
+					name = name..color.." ("..playerMaxLevel..")"..FONT_COLOR_CODE_CLOSE
+				end
+			end
+		else
+			name = MapUtil.FindBestAreaNameAtMouse(mapID, normalizedCursorX, normalizedCursorY)
+		end
+
+		if name then
+			self:SetLabel(MAP_AREA_LABEL_TYPE.AREA_NAME, name, description)
 		end
 	end
+	self:EvaluateLabels()
+end
 
-	-- Set URL when super tracked quest changes and on startup
-	mEB:RegisterEvent("SUPER_TRACKED_QUEST_CHANGED")
-	mEB:SetScript("OnEvent", SetQuestInBox)
-	SetQuestInBox()
+function Module:CreatePlayerArrowSize()
+	local WorldMapUnitPin, WorldMapUnitPinSizes
 
-	-- Set URL when quest details frame is shown or hidden
-	hooksecurefunc("QuestMapFrame_ShowQuestDetails", SetQuestInBox)
-	hooksecurefunc("QuestMapFrame_CloseQuestDetails", SetQuestInBox)
+	-- Get unit provider
+	for pin in WorldMapFrame:EnumeratePinsByTemplate("GroupMembersPinTemplate") do
+		WorldMapUnitPin = pin
+		WorldMapUnitPinSizes = pin.dataProvider:GetUnitPinSizesTable()
+		break
+	end
 
-	-- Create tooltip
-	mEB:HookScript("OnEnter", function()
-		mEB:HighlightText()
-		mEB:SetFocus()
-		GameTooltip:SetOwner(mEB, "ANCHOR_BOTTOM", 0, -10)
-		GameTooltip:SetText(mEB.tiptext, nil, nil, nil, nil, true)
-		GameTooltip:Show()
-	end)
+	WorldMapUnitPinSizes.player = 22
+	WorldMapUnitPin:SynchronizePinSizes()
+end
 
-	mEB:HookScript("OnLeave", function()
-		mEB:HighlightText(0, 0)
-		mEB:ClearFocus()
-		GameTooltip:Hide()
-		SetQuestInBox()
-	end)
+function Module:SetUpZoneLevels()
+	for provider in next, WorldMapFrame.dataProviders do
+		if provider.setAreaLabelCallback then
+			provider.Label:SetScript("OnUpdate", AreaLabel_OnUpdate)
+		end
+	end
 end
 
 function Module:CreateWorldMapPlus()
@@ -443,6 +377,7 @@ function Module:CreateWorldMapPlus()
 	end
 
 	self:CreateMapReveal()
-	--self:CreateMapIcons()
-	--self:CreateMapLinks()
+	self:CreateMapIcons()
+	self:SetUpZoneLevels()
+	self:CreatePlayerArrowSize()
 end

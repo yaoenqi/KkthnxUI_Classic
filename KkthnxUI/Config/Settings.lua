@@ -204,7 +204,6 @@ C["Loot"] = {
 C["Minimap"] = {
 	["Calendar"] = true,
 	["Enable"] = true,
-	["GarrisonLandingPage"] = true,
 	["ResetZoom"] = false,
 	["ResetZoomTime"] = 4,
 	["ShowRecycleBin"] = true,
@@ -214,6 +213,7 @@ C["Minimap"] = {
 -- Miscellaneous
 C["Misc"] = {
 	["AFKCamera"] = false,
+	["AutoDismountStand"] = true,
 	["ColorPicker"] = false,
 	["EnhancedFriends"] = false,
 	["GemEnchantInfo"] = false,
@@ -225,12 +225,12 @@ C["Misc"] = {
 }
 
 C["Nameplates"] = {
-	["GoodColor"] = {0.2, 0.8, 0.2},
-	["NearColor"] = {1, 1, 0},
-	["BadColor"] = {1, 0, 0},
-	["OffTankColor"] = {0, 0.5, 1},
+	-- ["GoodColor"] = {0.2, 0.8, 0.2},
+	-- ["NearColor"] = {1, 1, 0},
+	-- ["BadColor"] = {1, 0, 0},
+	-- ["OffTankColor"] = {0, 0.5, 1},
 	["Clamp"] = false,
-	["ClassResource"] = true,
+	-- ["ClassResource"] = true,
 	["Combat"] = false,
 	["Distance"] = 40,
 	["Enable"] = true,

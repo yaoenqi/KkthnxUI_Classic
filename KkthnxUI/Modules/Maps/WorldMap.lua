@@ -1,14 +1,14 @@
 local K, C = unpack(select(2, ...))
-local Module = K:NewModule("WorldMap", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0")
+local Module = K:NewModule("WorldMap")
 
 local _G = _G
 
 local select = select
-local WorldMapFrame = WorldMapFrame
-local CreateVector2D = CreateVector2D
-local UnitPosition = UnitPosition
-local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
+local WorldMapFrame = _G.WorldMapFrame
+local CreateVector2D = _G.CreateVector2D
+local UnitPosition = _G.UnitPosition
+local C_Map_GetWorldPosFromMapPos = _G.C_Map.GetWorldPosFromMapPos
+local C_Map_GetBestMapForUnit = _G.C_Map.GetBestMapForUnit
 
 local mapRects = {}
 local tempVec2D = CreateVector2D(0, 0)

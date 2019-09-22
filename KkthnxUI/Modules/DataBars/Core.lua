@@ -23,8 +23,6 @@ local LEVEL = _G.LEVEL
 local MAX_PLAYER_LEVEL_TABLE = _G.MAX_PLAYER_LEVEL_TABLE
 local REPUTATION = _G.REPUTATION
 local STANDING = _G.STANDING
-local UnitHonor = _G.UnitHonor
-local UnitHonorMax = _G.UnitHonorMax
 local UnitIsPVP = _G.UnitIsPVP
 local UnitLevel = _G.UnitLevel
 local UnitXP = _G.UnitXP
@@ -327,11 +325,8 @@ function Module:OnEnable()
 	K:RegisterEvent("PLAYER_LEVEL_UP", self.OnUpdate)
 	K:RegisterEvent("PLAYER_XP_UPDATE", self.OnUpdate)
 	K:RegisterEvent("UPDATE_EXHAUSTION", self.OnUpdate)
-	K:RegisterEvent("DISABLE_XP_GAIN", self.OnUpdate)
-	K:RegisterEvent("ENABLE_XP_GAIN", self.OnUpdate)
 	K:RegisterEvent("UPDATE_FACTION", self.OnUpdate)
-	K:RegisterEvent("UNIT_INVENTORY_CHANGED", self.OnUpdate)
-	K:RegisterEvent("PLAYER_FLAGS_CHANGED", self.OnUpdate)
+	K:RegisterEvent('CHAT_MSG_COMBAT_FACTION_CHANGE', self.OnUpdate)
 
 	K.Mover(self.Container, "DataBars", "DataBars", {"TOP", "Minimap", "BOTTOM", 0, -6}, C["DataBars"].Width, self.Container:GetHeight())
 end
