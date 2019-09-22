@@ -353,6 +353,7 @@ C["Unitframe"] = {
 	["DebuffHighlight"] = true,
 	["DebuffsOnTop"] = true,
 	["Enable"] = true,
+	["EnergyTick"] = true,
 	["GlobalCooldown"] = false,
 	["HideTargetofTarget"] = false,
 	["OnlyShowPlayerDebuff"] = false,

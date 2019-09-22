@@ -3,6 +3,7 @@
    <!-- Unitframe oUF Plugins -->
    <Script file="oUF_FloatingCombatFeedback.lua"/>
    <Script file="oUF_Swing.lua"/>
+   <Script file="oUF_EnergyTicker.lua"/>
    <!-- <Script file="oUF_HealerSpecs.lua"/> -->
    <!-- <Script file="oUF_AuraWatch.lua"/> -->
    <Script file="oUF_CombatFader.lua"/>

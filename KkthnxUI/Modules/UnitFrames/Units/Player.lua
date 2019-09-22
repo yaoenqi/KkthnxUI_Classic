@@ -282,6 +282,13 @@ function Module:CreatePlayer()
 		self:Tag(self.GroupNumber, "[KkthnxUI:GetNameColor][KkthnxUI:GroupNumber]")
 	end
 
+	if C["Unitframe"].EnergyTick then
+		if K.Class == "DRUID" or K.Class == "ROGUE" then
+			self.EnergyTicker = CreateFrame("Frame", nil, self)
+			self.EnergyTicker:SetFrameLevel(self.Power:GetFrameLevel() + 1)
+		end
+	end
+
 	if C["Unitframe"].AdditionalPower then
 		if K.Class == "DRUID" then
 			self.AdditionalPower = CreateFrame("StatusBar", nil, self)
