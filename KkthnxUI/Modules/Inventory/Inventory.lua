@@ -250,6 +250,44 @@ end
 -- Bag slot stuff
 local trashButton = {}
 local trashBag = {}
+local S_ITEM_LEVEL = "^" .. gsub(_G.ITEM_LEVEL, "%%d", "(%%d+)")
+local ItemDB = {}
+local function _getRealItemLevel(link, owner, bag, slot)
+	if ItemDB[link] then return ItemDB[link] end
+
+	local realItemLevel
+
+	K.ScanTooltip.owner = owner
+	K.ScanTooltip:SetOwner(owner, "ANCHOR_NONE")
+	K.ScanTooltip:SetBagItem(bag, slot)
+
+	local line = _G[K.ScanTooltip:GetName().."TextLeft2"]
+	if line then
+		local msg = line:GetText()
+		if msg and string.find(msg, S_ITEM_LEVEL) then
+			local itemLevel = string.match(msg, S_ITEM_LEVEL)
+			if itemLevel and (tonumber(itemLevel) > 0) then
+				realItemLevel = itemLevel
+			end
+		else
+			-- Check line 3, some artifacts have the ilevel there
+			line = _G[K.ScanTooltip:GetName().."TextLeft3"]
+			if line then
+				local msg = line:GetText()
+				if msg and string.find(msg, S_ITEM_LEVEL) then
+					local itemLevel = string.match(msg, S_ITEM_LEVEL)
+					if itemLevel and (tonumber(itemLevel) > 0) then
+						realItemLevel = itemLevel
+					end
+				end
+			end
+		end
+	end
+
+	ItemDB[link] = tonumber(realItemLevel)
+	return realItemLevel
+end
+
 function Stuffing:SlotUpdate(b)
 	local texture, count, locked, quality, _, _, _, _, noValue = GetContainerItemInfo(b.bag, b.slot)
 	local clink = GetContainerItemLink(b.bag, b.slot)
@@ -262,7 +300,20 @@ function Stuffing:SlotUpdate(b)
 
 	if b.cooldown and StuffingFrameBags and StuffingFrameBags:IsShown() then
 		local start, duration, enable = GetContainerItemCooldown(b.bag, b.slot)
-		CooldownFrame_Set(b.cooldown, start, duration, enable)
+		if HasWandEquipped() then
+			local wandID = GetInventoryItemID("player", 18)
+			local wandSpeed = GetItemCooldown(wandID)
+			if wandSpeed == 0 then
+				CooldownFrame_Set(b.cooldown, start, duration, enable)
+			else
+				if wandSpeed < 1.5 then wandSpeed = 1.5 end
+				if duration and duration > wandSpeed then
+					CooldownFrame_Set(b.cooldown, start, duration, enable)
+				end
+			end
+		else
+			CooldownFrame_Set(b.cooldown, start, duration, enable)
+		end
 	end
 
 	if C["Inventory"].ItemLevel == true then
@@ -340,8 +391,9 @@ function Stuffing:SlotUpdate(b)
 		end
 
 		if C["Inventory"].ItemLevel then
-			if b.link and b.level and b.rarity > 1 and (b.subType == EJ_LOOT_SLOT_FILTER_ARTIFACT_RELIC or b.itemClassID == LE_ITEM_CLASS_WEAPON or b.itemClassID == LE_ITEM_CLASS_ARMOR) then
-				local level = K.GetItemLevel(b.link, b.bagID, b.slotID) or b.level
+			if b.link and b.level and b.rarity > 1 and (b.itemClassID == LE_ITEM_CLASS_WEAPON or b.itemClassID == LE_ITEM_CLASS_ARMOR) then
+				local level = _getRealItemLevel(clink, self, b.bag, b.slot) or b.itemlevel
+				--local level = b.level
 				local color = BAG_ITEM_QUALITY_COLORS[b.rarity]
 				b.frame.text:SetText(level)
 				b.frame.text:SetTextColor(color.r, color.g, color.b)
@@ -390,7 +442,20 @@ end
 function Stuffing:UpdateCooldowns(b)
 	if b.cooldown and StuffingFrameBags and StuffingFrameBags:IsShown() then
 		local start, duration, enable = GetContainerItemCooldown(b.bag, b.slot)
-		CooldownFrame_Set(b.cooldown, start, duration, enable)
+		if HasWandEquipped() then
+			local wandID = GetInventoryItemID("player", 18)
+			local wandSpeed = GetItemCooldown(wandID)
+			if wandSpeed == 0 then
+				return CooldownFrame_Set(b.cooldown, start, duration, enable)
+			else
+				if wandSpeed < 1.5 then wandSpeed = 1.5 end
+				if duration and duration > wandSpeed then
+					return CooldownFrame_Set(b.cooldown, start, duration, enable)
+				end
+			end
+		else
+			return CooldownFrame_Set(b.cooldown, start, duration, enable)
+		end
 	end
 end
 

@@ -410,7 +410,9 @@ function Module:MenuButton_Show(_, unit)
 end
 
 function Module:CreateEnhancedMenu()
-	--if not C["Misc"]["EnhancedMenu"] then return end
+    if not C["Misc"].EnhancedMenu then
+        return
+    end
 
 	Module.MenuButtonList = {
 		["name"] = COPY_NAME,
@@ -453,13 +455,11 @@ function Module:OnEnable()
     self:CreateAFKCam()
     self:CreateChatBubble()
     self:CreateDurabilityFrame()
-    -- self:CreateEnchantScroll()
     self:CreateImprovedMail()
     self:CreateKillingBlow()
-    -- self:CreateMerchantItemLevel()
+    self:CreateMerchantItemLevel()
     self:CreatePvPEmote()
     self:CreateQuestNotifier()
-    -- self:CreateQueueTimer()
     self:CreateRaidMarker()
     self:CreateSlotDurability()
     self:CreateSlotItemLevel()

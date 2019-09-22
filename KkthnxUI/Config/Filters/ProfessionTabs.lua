@@ -24,6 +24,3 @@ K.ProfessionTabs_OnlyPrimary = {
 	[393] = true, -- Skinning
 	[356] = true, -- Fishing
 }
-
-K.ProfessionTabs_RUNEFORGING = 53428 -- Runeforging Spellid
-K.ProfessionTabs_CHEF_HAT = 134020

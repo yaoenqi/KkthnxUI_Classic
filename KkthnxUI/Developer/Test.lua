@@ -47,7 +47,11 @@ function Module:SetupBuffThanks()
                 -- Make sure the other source is a player
                 if srcType == "Player" then
                     local id = fast_random(1, emoteCounts)
-                    DoEmote(randomEmoteList[id], sourceName)
+                    C_Timer_After(0.5, function() -- Give this more time to say thanks.
+                        if not UnitIsDeadOrGhost("player") then
+                            DoEmote(randomEmoteList[id], sourceName)
+                        end
+                    end)
                 end
             end
         end

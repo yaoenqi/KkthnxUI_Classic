@@ -4,7 +4,6 @@ local _G = _G
 
 local DAMAGE = _G.DAMAGE
 local DISABLE = _G.DISABLE
-local GetCurrentRegion = _G.GetCurrentRegion
 local GUILD = _G.GUILD
 local HEALER = _G.HEALER
 local IsAddOnLoaded = _G.IsAddOnLoaded
@@ -52,7 +51,6 @@ C["Announcements"] = {
 -- Automation
 C["Automation"] = {
 	["AutoBubbles"] = true,
-	["AutoCollapse"] = false,
 	["AutoDisenchant"] = false,
 	["AutoInvite"] = false,
 	["AutoQuest"] = false,
@@ -61,7 +59,6 @@ C["Automation"] = {
 	["AutoResurrectThank"] = false,
 	["AutoReward"] = false,
 	["AutoTabBinder"] = false,
-	["BlockMovies"] = false,
 	["DeclinePvPDuel"] = false,
 	["WhisperInvite"] = "inv",
 }
@@ -78,7 +75,6 @@ C["Inventory"] = {
 	["ItemLevel"] = false,
 	["JunkIcon"] = true,
 	["PulseNewItem"] = false,
-	["ReverseLoot"] = false,
 	["SortInverted"] = false,
 	["AutoRepair"] = {
 		["Options"] = {
@@ -106,7 +102,6 @@ C["Auras"] = {
 C["Chat"] = {
 	["Background"] = false,
 	["BackgroundAlpha"] = 0.25,
-	["BlockAddonAlert"] = true,
 	["ChatItemLevel"] = true,
 	["Enable"] = true,
 	["EnableFilter"] = true,
@@ -114,7 +109,6 @@ C["Chat"] = {
 	["FadingTimeFading"] = 3,
 	["FadingTimeVisible"] = 20,
 	["Height"] = 149,
-	-- ["QuickJoin"] = false,
 	["ScrollByX"] = 3,
 	["ShortenChannelNames"] = true,
 	["TabsMouseover"] = true,
@@ -124,25 +118,19 @@ C["Chat"] = {
 
 -- DataBars
 C["DataBars"] = {
-	--["AzeriteColor"] = {.901, .8, .601},
 	["Enable"] = true,
 	["ExperienceColor"] = {0, 0.4, 1, .8},
 	["Height"] = 12,
-	--["HonorColor"] = {240/255, 114/255, 65/255},
 	["MouseOver"] = false,
 	["RestedColor"] = {1, 0, 1, 0.2},
 	["Text"] = true,
-	--["TrackHonor"] = false,
 	["Width"] = 180,
 }
 
 -- Datatext
 C["DataText"] = {
-	["Battleground"] = true,
-	["LocalTime"] = true,
 	["System"] = true,
 	["Time"] = true,
-	["Time24Hr"] = GetCurrentRegion() ~= 1
 }
 
 -- C["Filger"] = {
@@ -216,10 +204,10 @@ C["Misc"] = {
 	["AutoDismountStand"] = true,
 	["ColorPicker"] = false,
 	["EnhancedFriends"] = false,
+	["EnhancedMenu"] = true,
 	["GemEnchantInfo"] = false,
 	["ItemLevel"] = false,
 	["KillingBlow"] = false,
-	["ProfessionTabs"] = false,
 	["PvPEmote"] = false,
 	["SlotDurability"] = false,
 }
@@ -231,8 +219,7 @@ C["Nameplates"] = {
 	-- ["OffTankColor"] = {0, 0.5, 1},
 	["Clamp"] = false,
 	-- ["ClassResource"] = true,
-	["Combat"] = false,
-	["Distance"] = 40,
+	["Distance"] = 50,
 	["Enable"] = true,
 	["HealthValue"] = true,
 	["Height"] = 13,
@@ -293,7 +280,6 @@ C["Skins"] = {
 
 -- Tooltip
 C["Tooltip"] = {
-	["AzeriteArmor"] = true,
 	["ClassColor"] = false,
 	["CombatHide"] = false,
 	["Cursor"] = false,
@@ -303,7 +289,6 @@ C["Tooltip"] = {
 	["HideRealm"] = true,
 	["HideTitle"] = true,
 	["Icons"] = true,
-	["LFDRole"] = false,
 	["SpecLevelByShift"] = true,
 	["TargetBy"] = true,
 }
@@ -368,7 +353,7 @@ C["Unitframe"] = {
 	["SwingbarTimer"] = false,
 	["TargetCastbarHeight"] = 24,
 	["TargetCastbarWidth"] = 260,
-	["TotemBar"] = true,
+	-- ["TotemBar"] = true,
 	["PlayerHealthFormat"] = {
 		["Options"] = {
 			["Current"] = "[KkthnxUI:HealthCurrent]",
@@ -393,7 +378,6 @@ C["Party"] = {
 	["PortraitTimers"] = false,
 	["ShowBuffs"] = true,
 	["ShowPlayer"] = true,
-	-- ["Smooth"] = false,
 	["TargetHighlight"] = false,
 }
 
@@ -406,7 +390,6 @@ C["Party"] = {
 C["Boss"] = {
 	["Castbars"] = true,
 	["Enable"] = true,
-	-- ["Smooth"] = false,
 }
 
 -- Raidframe

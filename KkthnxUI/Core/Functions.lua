@@ -205,8 +205,6 @@ local iLvlDB = {}
 local itemLevelString = gsub(ITEM_LEVEL, "%%d", "")
 local enchantString = gsub(ENCHANTED_TOOLTIP_LINE, "%%s", "(.+)")
 local essenceTextureID = 2975691
-local tip = CreateFrame("GameTooltip", "NDui_iLvlTooltip", nil, "GameTooltipTemplate")
-
 local texturesDB, essencesDB = {}, {}
 function K:InspectItemTextures(clean, grabTextures)
 	wipe(texturesDB)
@@ -235,9 +233,14 @@ end
 
 function K:InspectItemInfo(text, iLvl, enchantText)
 	local itemLevel = strfind(text, itemLevelString) and strmatch(text, "(%d+)%)?$")
-	if itemLevel then iLvl = tonumber(itemLevel) end
+	if itemLevel then
+		iLvl = tonumber(itemLevel)
+	end
+
 	local enchant = strmatch(text, enchantString)
-	if enchant then enchantText = enchant end
+	if enchant then
+		enchantText = enchant
+	end
 
 	return iLvl, enchantText
 end
@@ -274,7 +277,7 @@ function K.GetItemLevel(link, arg1, arg2, fullScan)
 		end
 
 		for i = 2, 5 do
-			local line = _G[tip:GetName().."TextLeft"..i]
+			local line = _G[K.ScanTooltip:GetName().."TextLeft"..i]
 			if line then
 				local text = line:GetText() or ""
 				local found = strfind(text, itemLevelString)
