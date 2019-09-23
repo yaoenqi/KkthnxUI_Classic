@@ -297,7 +297,6 @@ function Module:CreatePlayer()
 			self.DruidMana:SetStatusBarTexture(K.GetTexture(C["UITextures"].UnitframeTextures))
 			self.DruidMana:SetStatusBarColor(unpack(K.Colors.power["MANA"]))
 			self.DruidMana:CreateBorder()
-			self.DruidMana.frequentUpdates = true
 
 			K.SmoothBar(self.DruidMana)
 
