@@ -1,14 +1,17 @@
 local K = unpack(select(2,...))
-local Module = K:NewModule("Changelog", "AceTimer-3.0")
+local Module = K:NewModule("Changelog")
 
 local ChangeLogData = {
 	"Changes:",
-	"• Released v9.06.",
-	"• Made many corrections to RegisterEvent and UnregisterEvent",
-	"• Added Worldmap overlay for zones not explored yet",
-	"• Fix quick menu commands",
-	"• Update Datatext system",
-	"• Update QuestNotifier",
+	"• Released v1.02.",
+	"• Added DruidMana",
+	"• Add more Health/Power formats",
+	"• Added standup/dismount feature",
+	"• Added energy ticks",
+	"• Fix AutoInvite module function call",
+	"• Fix Reminder module",
+	"• WorldMap Plus now shows more data",
+	"• Updated various libs",
 
     -- Important Notes We Want The User To Know!
 	" ",
