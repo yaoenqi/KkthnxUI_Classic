@@ -24,5 +24,3 @@
 
 # -- Load Core File
 KkthnxUI.xml
-
-https://www.curseforge.com/api/projects/342348/package?token=eeca0ce8-4088-4bb3-948c-bf1f3e4c7fe8
