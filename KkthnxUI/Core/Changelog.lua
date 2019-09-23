@@ -3,7 +3,7 @@ local Module = K:NewModule("Changelog")
 
 local ChangeLogData = {
 	"Changes:",
-	"• Released v1.02.",
+	"• Released v1.03.",
 	"• Added DruidMana",
 	"• Add more Health/Power formats",
 	"• Added standup/dismount feature",
