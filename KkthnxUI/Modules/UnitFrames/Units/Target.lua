@@ -272,7 +272,7 @@ function Module:CreateTarget()
 	self.Level = self:CreateFontString(nil, "OVERLAY")
 	self.Level:SetPoint("TOP", self.Portrait, 0, 15)
 	self.Level:SetFontObject(UnitframeFont)
-	self:Tag(self.Level, "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]")
+	self:Tag(self.Level, C["Unitframe"].TargetLevelFormat.Value)
 
 	-- self.QuestIndicator = self.Overlay:CreateTexture(nil, "OVERLAY")
 	-- self.QuestIndicator:SetPoint("TOPLEFT", self.Overlay, "TOPLEFT", 0, 8)

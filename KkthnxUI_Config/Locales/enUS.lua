@@ -702,6 +702,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Nameplate Width",
 		},
 
+		["LevelFormat"] = {
+			["Name"] = "Level Format Display",
+		},
+
 		["TargetArrowMark"] = {
 			["Name"] = "Show Target Arrows",
 		},
@@ -878,6 +882,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["TargetPowerFormat"] = {
 			["Name"] = "Target Power Format",
+		},
+
+		["TargetLevelFormat"] = {
+			["Name"] = "Target Level Format",
 		},
 	},
 

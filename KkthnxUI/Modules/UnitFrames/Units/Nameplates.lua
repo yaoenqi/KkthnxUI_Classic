@@ -8,23 +8,23 @@ if not oUF then
 end
 
 local _G = _G
-local unpack = _G.unpack
+-- local unpack = _G.unpack
 
 local CreateFrame = _G.CreateFrame
-local GetNumGroupMembers = _G.GetNumGroupMembers
-local IsInGroup = _G.IsInGroup
-local IsInRaid = _G.IsInRaid
+-- local GetNumGroupMembers = _G.GetNumGroupMembers
+-- local IsInGroup = _G.IsInGroup
+-- local IsInRaid = _G.IsInRaid
 local UIParent = _G.UIParent
-local UnitAffectingCombat = _G.UnitAffectingCombat
-local UnitDetailedThreatSituation = _G.UnitDetailedThreatSituation
-local UnitExists = _G.UnitExists
-local UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned
-local UnitIsPlayer = _G.UnitIsPlayer
-local UnitIsTapDenied = _G.UnitIsTapDenied
+-- local UnitAffectingCombat = _G.UnitAffectingCombat
+-- local UnitDetailedThreatSituation = _G.UnitDetailedThreatSituation
+-- local UnitExists = _G.UnitExists
+-- local UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned
+-- local UnitIsPlayer = _G.UnitIsPlayer
+-- local UnitIsTapDenied = _G.UnitIsTapDenied
 local UnitIsUnit = _G.UnitIsUnit
 local UnitPower = _G.UnitPower
-local UnitReaction = _G.UnitReaction
-local UnitSelectionColor = _G.UnitSelectionColor
+-- local UnitReaction = _G.UnitReaction
+-- local UnitSelectionColor = _G.UnitSelectionColor
 
 -- -- Threat Update Color For Health
 -- local function threatColor(self, forced)
@@ -125,12 +125,12 @@ end
 
 -- Create The Plates. Where The Magic Happens
 function Module:CreateNameplates(unit)
-	local main = self
+	--local main = self
 	self.unit = unit
 
 	local NameplateTexture = K.GetTexture(C["UITextures"].NameplateTextures)
 	local Font = K.GetFont(C["UIFonts"].NameplateFonts)
-	local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)
+	-- local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)
 
 	self:SetScale(UIParent:GetEffectiveScale())
 	self:SetSize(C["Nameplates"].Width, C["Nameplates"].Height)
@@ -184,7 +184,7 @@ function Module:CreateNameplates(unit)
 	self.Level:SetJustifyH("RIGHT")
 	self.Level:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", 0, 4)
 	self.Level:SetFontObject(Font)
-	self:Tag(self.Level, "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]")
+	self:Tag(self.Level, C["Nameplates"].LevelFormat.Value)
 
 	self.Name = self.Health:CreateFontString(nil, "OVERLAY")
 	self.Name:SetJustifyH("LEFT")

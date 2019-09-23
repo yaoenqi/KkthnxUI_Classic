@@ -231,6 +231,13 @@ C["Nameplates"] = {
 	["Smooth"] = false,
 	["TrackAuras"] = true,
 	["Width"] = 150,
+	["LevelFormat"] = {
+		["Options"] = {
+			["Smart Level"] = "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]",
+			["Level"] = "[KkthnxUI:DifficultyColor][level][KkthnxUI:ClassificationColor][shortclassification]",
+		},
+		["Value"] = "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]"
+	},
 	["TargetArrowMark"] = {
 		["Options"] = {
 			["None"] = "NONE",
@@ -390,6 +397,13 @@ C["Unitframe"] = {
 			[NONE] = " ",
 		},
 		["Value"] = "[KkthnxUI:PowerCurrent]"
+	},
+	["TargetLevelFormat"] = {
+		["Options"] = {
+			["Smart Level"] = "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]",
+			["Level"] = "[KkthnxUI:DifficultyColor][level][KkthnxUI:ClassificationColor][shortclassification]",
+		},
+		["Value"] = "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]"
 	},
 }
 

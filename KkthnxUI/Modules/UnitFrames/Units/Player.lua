@@ -289,7 +289,7 @@ function Module:CreatePlayer()
 	end
 
 	if C["Unitframe"].AdditionalPower then
-		if K.Class == "WARLOCK" then
+		if K.Class == "DRUID" then
 			self.DruidMana = CreateFrame("StatusBar", nil, self)
 			self.DruidMana:SetHeight(14)
 			self.DruidMana:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, 6)
