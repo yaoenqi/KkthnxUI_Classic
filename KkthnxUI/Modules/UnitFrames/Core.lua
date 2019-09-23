@@ -358,11 +358,11 @@ function Module:UpdateQuestUnit(_, unit)
 	unit = unit or self.unit
 
 	local isLootQuest, questProgress
-	unitTip:SetOwner(UIParent, "ANCHOR_NONE")
-	unitTip:SetUnit(unit)
+	K.ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+	K.ScanTooltip:SetUnit(unit)
 
-	for i = 2, unitTip:NumLines() do
-		local textLine = _G[unitTip:GetName().."TextLeft"..i]
+	for i = 2, K.ScanTooltip:NumLines() do
+		local textLine = _G[K.ScanTooltip:GetName().."TextLeft"..i]
 		local text = textLine:GetText()
 		if textLine and text then
 			local r, g, b = textLine:GetTextColor()

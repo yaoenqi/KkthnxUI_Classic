@@ -577,46 +577,43 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "AFK Camera",
 		},
 
+		["AutoDismountStand"] = {
+			["Name"] = "Auto Stand / Dismount",
+			["Desc"] = "Will make you stand / dismount when you want to cast or fight something",
+		},
+
 		["ColorPicker"] = {
 			["Name"] = "Enhanced Color Picker",
 		},
 
 		["EnhancedFriends"] = {
-			["Name"] = "Enhanced Friends List +",
-	},
+			["Name"] = "Enhanced Colors (Friends / Guild +)",
+		},
 
-	["GemEnchantInfo"] = {
-		["Name"] = "Character/Inspect Gem/Enchant Info",
-	},
+		["EnhancedMenu"] = {
+			["Name"] = "Add guild invite and more to dropdowns",
+		},
 
-	["ImprovedStats"] = {
-		["Name"] = "Improved Character Frame Stats",
-	},
+		["GemEnchantInfo"] = {
+			["Name"] = "Character/Inspect Gem/Enchant Info",
+		},
 
-	["ItemLevel"] = {
-		["Name"] = "Show Character/Inspect ItemLevel Info",
-	},
+		["ItemLevel"] = {
+			["Name"] = "Show Character/Inspect ItemLevel Info",
+		},
 
-	["KillingBlow"] = {
-		["Name"] = "Show Your Killing Blow Info",
-	},
+		["KillingBlow"] = {
+			["Name"] = "Show Your Killing Blow Info",
+		},
 
-	["NoTalkingHead"] = {
-		["Name"] = "Hide Talking Head Frame",
-	},
+		["PvPEmote"] = {
+			["Name"] = "Auto Emote On Your Killing Blow",
+		},
 
-	["ProfessionTabs"] = {
-		["Name"] = "Enhanced Profession Tabs",
+		["SlotDurability"] = {
+			["Name"] = "Show Slot Durability %",
+		},
 	},
-
-	["PvPEmote"] = {
-		["Name"] = "Auto Emote On Your Killing Blow",
-	},
-
-	["SlotDurability"] = {
-		["Name"] = "Show Slot Durability %",
-	},
-},
 
 	-- Nameplates Local
 	["Nameplates"] = {
@@ -756,7 +753,7 @@ _G.KkthnxUIConfig["enUS"] = {
 	-- Unitframe Local
 	["Unitframe"] = {
 		["AdditionalPower"] = {
-			["Name"] = "Show Additional Power",
+			["Name"] = "Show Druid Mana (Shapeshift Only)",
 		},
 
 		["CastClassColor"] = {
@@ -799,6 +796,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Enable Unitframes",
 		},
 
+		["EnergyTick"] = {
+			["Name"] = "Show EnergyTicks (Druid / Rogue)",
+		},
+
 		["GlobalCooldown"] = {
 			["Name"] = "Show Global Cooldown",
 		},
@@ -825,6 +826,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["PortraitTimers"] = {
 			["Name"] = "Portrait Spell Timers",
+		},
+
+		["PvPIndicator"] = {
+			["Name"] = "Show PvP Indicator on Player / Target",
 		},
 
 		["ShowPlayerLevel"] = {
@@ -863,8 +868,16 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Player Health Format",
 		},
 
+		["PlayerPowerFormat"] = {
+			["Name"] = "Player Power Format",
+		},
+
 		["TargetHealthFormat"] = {
 			["Name"] = "Target Health Format",
+		},
+
+		["TargetPowerFormat"] = {
+			["Name"] = "Target Power Format",
 		},
 	},
 
@@ -926,6 +939,14 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["TargetHighlight"] = {
 			["Name"] = "Show Highlighted Target",
+		},
+
+		["PartyHealthFormat"] = {
+			["Name"] = "Party Health Format",
+		},
+
+		["PartyPowerFormat"] = {
+			["Name"] = "Party Power Format",
 		},
 	},
 

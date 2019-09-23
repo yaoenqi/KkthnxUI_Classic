@@ -28,7 +28,6 @@ function Module:CreateRecycleBin()
 		["ButtonCollectFrame"] = true,
 		["FeedbackUIButton"] = true,
 		["GameTimeFrame"] = true,
-		["GarrisonLandingPageMinimapButton"] = true,
 		["HelpOpenTicketButton"] = true,
 		["HelpOpenWebTicketButton"] = true,
 		["MiniMapBattlefieldFrame"] = true,
@@ -44,6 +43,28 @@ function Module:CreateRecycleBin()
 		["RecycleBinFrame"] = true,
 		["RecycleBinToggleButton"] = true,
 		["TimeManagerClockButton"] = true,
+		-- ADDONS
+		["Archy"] = true,
+		["GatherMatePin"] = true,
+		["GatherNote"] = true,
+		["GuildInstance"] = true,
+		["HandyNotesPin"] = true,
+		["MiniMap"] = true,
+		["Spy_MapNoteList_mini"] = true,
+		["ZGVMarker"] = true,
+		["poiMinimap"] = true,
+		["GuildMap3Mini"] = true,
+		["LibRockConfig-1.0_MinimapButton"] = true,
+		["NauticusMiniIcon"] = true,
+		["WestPointer"] = true,
+		["Cork"] = true,
+		["DugisArrowMinimapPoint"] = true,
+		["QuestieFrame"] = true,
+
+		["Node"] = true,
+		["Note"] = true,
+		["Pin"] = true,
+		["POI"] = true
 	}
 
 	local bu = CreateFrame("Button", "RecycleBinToggleButton", Minimap)

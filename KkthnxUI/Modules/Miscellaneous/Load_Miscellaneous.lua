@@ -456,7 +456,7 @@ function Module:OnEnable()
     self:CreateChatBubble()
     self:CreateDurabilityFrame()
     self:CreateImprovedMail()
-    self:CreateKillingBlow()
+    -- self:CreateKillingBlow()
     self:CreateMerchantItemLevel()
     self:CreatePvPEmote()
     self:CreateQuestNotifier()
@@ -502,7 +502,7 @@ function Module:OnEnable()
     end
 
     -- RealMobHealth override
-	if RealMobHealth then
+    if RealMobHealth and RealMobHealth.OverrideOption then
 		RealMobHealth.OverrideOption("ModifyHealthBarText", false)
 		RealMobHealth.OverrideOption("ShowTooltipHealthText", false)
 		RealMobHealth.OverrideOption("ShowNamePlateHealthText", false)

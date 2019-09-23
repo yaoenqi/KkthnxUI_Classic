@@ -59,15 +59,14 @@ local UnitPower = _G.UnitPower
 local UnitPowerMax = _G.UnitPowerMax
 local UnitPowerType = _G.UnitPowerType
 local UnitReaction = _G.UnitReaction
-local UnitStagger = _G.UnitStagger
 
 local function UnitHealthValues(unit)
 	if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
-		local c, m, _, _ = RealMobHealth.GetUnitHealth(unit);
+		local c, m, _, _ = RealMobHealth.GetUnitHealth(unit)
 		return c, m
 	elseif _G.MobHealthFrame and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
 		local name, level = UnitName(unit), UnitLevel(unit)
-		local cur, full = MI2_GetMobData(name, level, unit).healthCur, MI2_GetMobData(name, level, unit).healthMax;
+		local cur, full = MI2_GetMobData(name, level, unit).healthCur, MI2_GetMobData(name, level, unit).healthMax
 		return cur, full
 	else
 		return UnitHealth(unit), UnitHealthMax(unit)
@@ -137,22 +136,6 @@ oUF.Tags.Methods["KkthnxUI:GroupNumber"] = function()
 			end
 		end
 	end
-end
-
-oUF.Tags.Events["KkthnxUI:MonkStagger"] = "PLAYER_TALENT_UPDATE UNIT_POWER_UPDATE UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA"
-oUF.Tags.Methods["KkthnxUI:MonkStagger"] = function(unit)
-	if unit ~= "player" then
-		return
-	end
-
-	local cur = UnitStagger(unit) or 0
-	local perc = cur / UnitHealthMax(unit)
-
-	if cur == 0 then
-		return
-	end
-
-	return K.ShortValue(cur).." | "..K.MyClassColor..math_floor(perc*100 + .5).."%"
 end
 
 oUF.Tags.Events["KkthnxUI:AdditionalPower"] = "UNIT_POWER_UPDATE"
@@ -257,6 +240,30 @@ oUF.Tags.Methods["KkthnxUI:PowerCurrent"] = function(unit)
 	end
 end
 
+oUF.Tags.Events["KkthnxUI:PowerPercent"] = "UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER"
+oUF.Tags.Methods["KkthnxUI:PowerPercent"] = function(unit)
+	local pType = UnitPowerType(unit)
+	local min = UnitPower(unit, pType)
+
+	if min == 0 then
+		return nil
+	else
+		return K.GetFormattedText("PERCENT", min, UnitPowerMax(unit, pType))
+	end
+end
+
+oUF.Tags.Events["KkthnxUI:PowerCurrent-Percent"] = "UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER"
+oUF.Tags.Methods["KkthnxUI:PowerCurrent-Percent"] = function(unit)
+	local pType = UnitPowerType(unit)
+	local min = UnitPower(unit, pType)
+
+	if min == 0 then
+		return nil
+	else
+		return K.GetFormattedText("CURRENT_PERCENT", min, UnitPowerMax(unit, pType))
+	end
+end
+
 oUF.Tags.Events["KkthnxUI:Level"] = "UNIT_LEVEL PLAYER_LEVEL_UP"
 oUF.Tags.Methods["KkthnxUI:Level"] = function(unit)
 	if (UnitClassification(unit) == "worldboss") then
@@ -287,7 +294,7 @@ oUF.Tags.Methods["KkthnxUI:SmartLevel"] = function(unit)
 	elseif(level > 0) then
 		return level
 	else
-		return '??'
+		return "??"
 	end
 end
 
@@ -338,26 +345,6 @@ oUF.Tags.Methods["KkthnxUI:Status"] = function(unit)
 	end
 end
 
-oUF.Tags.Events["KkthnxUI:ThreatPercent"] = "UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE"
-oUF.Tags.Methods["KkthnxUI:ThreatPercent"] = function(unit)
-	local _, _, percent = UnitDetailedThreatSituation("player", unit)
-	if (percent and percent > 0) and (IsInGroup() or UnitExists("pet")) then
-		return string_format("%.0f%%", percent)
-	else
-		return nil
-	end
-end
-
-oUF.Tags.Events["KkthnxUI:ThreatColor"] = "UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE"
-oUF.Tags.Methods["KkthnxUI:ThreatColor"] = function(unit)
-	local _, status = UnitDetailedThreatSituation("player", unit)
-	if (status) and (IsInGroup() or UnitExists("pet")) then
-		return Hex(GetThreatStatusColor(status))
-	else
-		return nil
-	end
-end
-
 oUF.Tags.Events["KkthnxUI:Leader"] = "PARTY_LEADER_CHANGED GROUP_ROSTER_UPDATE"
 oUF.Tags.Methods["KkthnxUI:Leader"] = function(unit)
 	local IsLeader = UnitIsGroupLeader(unit)
@@ -365,23 +352,6 @@ oUF.Tags.Methods["KkthnxUI:Leader"] = function(unit)
 	local Assist, Lead = IsAssistant and "|cffffd100[A]|r " or "", IsLeader and "|cffffd100[L]|r " or ""
 
 	return (Lead .. Assist)
-end
-
-oUF.Tags.Events["KkthnxUI:Role"] = "PLAYER_ROLES_ASSIGNED GROUP_ROSTER_UPDATE"
-oUF.Tags.Methods["KkthnxUI:Role"] = function(unit)
-	local role = UnitGroupRolesAssigned(unit)
-	local roleString = ""
-	local IsTank = TANK or UNKNOWN
-	local IsHealer = HEALER or UNKNOWN
-	local Tank, Healer = IsTank and "|cff0099CC[T]|r " or "", IsHealer and "|cff00FF00[H]|r " or ""
-
-	if (role == "TANK") then
-		roleString = Tank
-	elseif (role == "HEALER") then
-		roleString = Healer
-	end
-
-	return roleString
 end
 
 -- Raid Tags

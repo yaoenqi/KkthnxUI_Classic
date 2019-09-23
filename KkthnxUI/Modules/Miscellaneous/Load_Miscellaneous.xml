@@ -8,7 +8,7 @@
    <Script file="ChatBubble.lua" />
    <Script file="Durability.lua" />
    <Script file="ImprovedMail.lua" />
-   <Script file="KillingBlow.lua" />
+   <!-- <Script file="KillingBlow.lua" /> NEEDS A REWRITE TO NOT USE BANNER -->
    <Script file="MerchantItemlevel.lua" />
    <Script file="MovableFrames.lua" />
    <Script file="PvPEmote.lua" />

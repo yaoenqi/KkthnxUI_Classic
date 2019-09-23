@@ -227,10 +227,10 @@ C["Nameplates"] = {
 	["OverlapH"] = 1.2,
 	["OverlapV"] = 1.2,
 	["QuestInfo"] = true,
-	["SelectedScale"] = 1.4,
+	["SelectedScale"] = 1.2,
 	["Smooth"] = false,
 	["TrackAuras"] = true,
-	["Width"] = 140,
+	["Width"] = 150,
 	["TargetArrowMark"] = {
 		["Options"] = {
 			["None"] = "NONE",
@@ -346,6 +346,7 @@ C["Unitframe"] = {
 	["PlayerCastbarHeight"] = 24,
 	["PlayerCastbarWidth"] = 260,
 	["PortraitTimers"] = false,
+	["PvPIndicator"] = true,
 	["ShowPlayerLevel"] = true,
 	["ShowPlayerName"] = false,
 	["Smooth"] = false,
@@ -359,17 +360,37 @@ C["Unitframe"] = {
 			["Current"] = "[KkthnxUI:HealthCurrent]",
 			["Percent"] = "[KkthnxUI:HealthPercent]",
 			["Current / Percent"] = "[KkthnxUI:HealthCurrent-Percent]",
+			[NONE] = " ",
 		},
 		["Value"] = "[KkthnxUI:HealthCurrent]"
+	},
+	["PlayerPowerFormat"] = {
+		["Options"] = {
+			["Current"] = "[KkthnxUI:PowerCurrent]",
+			["Percent"] = "[KkthnxUI:PowerPercent]",
+			["Current / Percent"] = "[KkthnxUI:PowerCurrent-Percent]",
+			[NONE] = " ",
+		},
+		["Value"] = "[KkthnxUI:PowerCurrent]"
 	},
 	["TargetHealthFormat"] = {
 		["Options"] = {
 			["Current"] = "[KkthnxUI:HealthCurrent]",
 			["Percent"] = "[KkthnxUI:HealthPercent]",
 			["Current / Percent"] = "[KkthnxUI:HealthCurrent-Percent]",
+			[NONE] = " ",
 		},
 		["Value"] = "[KkthnxUI:HealthCurrent-Percent]"
-	}
+	},
+	["TargetPowerFormat"] = {
+		["Options"] = {
+			["Current"] = "[KkthnxUI:PowerCurrent]",
+			["Percent"] = "[KkthnxUI:PowerPercent]",
+			["Current / Percent"] = "[KkthnxUI:PowerCurrent-Percent]",
+			[NONE] = " ",
+		},
+		["Value"] = "[KkthnxUI:PowerCurrent]"
+	},
 }
 
 C["Party"] = {
@@ -379,6 +400,24 @@ C["Party"] = {
 	["ShowBuffs"] = true,
 	["ShowPlayer"] = true,
 	["TargetHighlight"] = false,
+	["PartyHealthFormat"] = {
+		["Options"] = {
+			["Current"] = "[KkthnxUI:HealthCurrent]",
+			["Percent"] = "[KkthnxUI:HealthPercent]",
+			["Current / Percent"] = "[KkthnxUI:HealthCurrent-Percent]",
+			[NONE] = " ",
+		},
+		["Value"] = "[KkthnxUI:HealthCurrent]"
+	},
+	["PartyPowerFormat"] = {
+		["Options"] = {
+			["Current"] = "[KkthnxUI:PowerCurrent]",
+			["Percent"] = "[KkthnxUI:PowerPercent]",
+			["Current / Percent"] = "[KkthnxUI:PowerCurrent-Percent]",
+			[NONE] = " ",
+		},
+		["Value"] = " "
+	},
 }
 
 -- C["Arena"] = {

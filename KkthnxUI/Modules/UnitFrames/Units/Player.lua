@@ -80,7 +80,7 @@ function Module:CreatePlayer()
 	self.Power.Value:SetPoint("CENTER", self.Power, "CENTER", 0, 0)
 	self.Power.Value:SetFontObject(UnitframeFont)
 	self.Power.Value:SetFont(select(1, self.Power.Value:GetFont()), 11, select(3, self.Power.Value:GetFont()))
-	self:Tag(self.Power.Value, "[KkthnxUI:PowerCurrent]")
+	self:Tag(self.Power.Value, C["Unitframe"].PlayerPowerFormat.Value)
 
 	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then
 		self.Portrait = CreateFrame("PlayerModel", nil, self.Health)
@@ -112,8 +112,7 @@ function Module:CreatePlayer()
 	if C["Unitframe"].PlayerBuffs then
 		self.Buffs = CreateFrame("Frame", self:GetName().."Buffs", self)
 
-		if K.Class == "ROGUE"
-		or K.Class == "DRUID" then
+		if K.Class == "ROGUE" or K.Class == "DRUID" then
 			self.Buffs:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -26)
 		else
 			self.Buffs:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -6)
@@ -290,23 +289,23 @@ function Module:CreatePlayer()
 	end
 
 	if C["Unitframe"].AdditionalPower then
-		if K.Class == "DRUID" then
-			self.AdditionalPower = CreateFrame("StatusBar", nil, self)
-			self.AdditionalPower:SetHeight(14)
-			self.AdditionalPower:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, 6)
-			self.AdditionalPower:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", 0, 6)
-			self.AdditionalPower:SetStatusBarTexture(K.GetTexture(C["UITextures"].UnitframeTextures))
-			self.AdditionalPower:SetStatusBarColor(unpack(K.Colors.power["MANA"]))
-			self.AdditionalPower:CreateBorder()
-			self.AdditionalPower.frequentUpdates = true
+		if K.Class == "WARLOCK" then
+			self.DruidMana = CreateFrame("StatusBar", nil, self)
+			self.DruidMana:SetHeight(14)
+			self.DruidMana:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, 6)
+			self.DruidMana:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", 0, 6)
+			self.DruidMana:SetStatusBarTexture(K.GetTexture(C["UITextures"].UnitframeTextures))
+			self.DruidMana:SetStatusBarColor(unpack(K.Colors.power["MANA"]))
+			self.DruidMana:CreateBorder()
+			self.DruidMana.frequentUpdates = true
 
-			K.SmoothBar(self.AdditionalPower)
+			K.SmoothBar(self.DruidMana)
 
-			self.AdditionalPower.Text = self.AdditionalPower:CreateFontString(nil, "OVERLAY")
-			self.AdditionalPower.Text:SetFontObject(K.GetFont(C["UIFonts"].UnitframeFonts))
-			self.AdditionalPower.Text:SetPoint("CENTER", self.AdditionalPower, "CENTER", 0, 0)
+			self.DruidMana.Text = self.DruidMana:CreateFontString(nil, "OVERLAY")
+			self.DruidMana.Text:SetFontObject(K.GetFont(C["UIFonts"].UnitframeFonts))
+			self.DruidMana.Text:SetPoint("CENTER", self.DruidMana, "CENTER", 0, 0)
 
-			self.AdditionalPower.PostUpdate = PostUpdateAddPower
+			self.DruidMana.PostUpdate = PostUpdateAddPower
 		end
 	end
 
@@ -317,11 +316,6 @@ function Module:CreatePlayer()
 	-- Class Power (Combo Points, etc...)
 	if C["Unitframe"].ClassResource then
 		Module.CreateClassPower(self)
-		if (K.Class == "MONK") then
-			Module.CreateStaggerBar(self)
-		elseif (K.Class == "DEATHKNIGHT") then
-			Module.CreateRuneBar(self)
-		end
 	end
 
 	if C["Unitframe"].CombatText then
@@ -351,6 +345,7 @@ function Module:CreatePlayer()
 		self.Swing = CreateFrame("StatusBar", nil, self)
 		self.Swing:SetSize(250, 12)
 		self.Swing:SetPoint("TOP", self.Castbar, "BOTTOM", 0, -5)
+		K.SmoothBar(self.Swing)
 
 		self.Swing.Twohand = CreateFrame("StatusBar", nil, self.Swing)
 		self.Swing.Twohand:SetStatusBarTexture(UnitframeTexture)
@@ -393,10 +388,12 @@ function Module:CreatePlayer()
 		self.Swing.hideOoc = true
 	end
 
-	self.PvPIndicator = self:CreateTexture(nil, "OVERLAY")
-	self.PvPIndicator:SetSize(30, 33)
-	self.PvPIndicator:SetPoint("RIGHT", self.Portrait, "LEFT", -2, 0)
-	self.PvPIndicator.PostUpdate = Module.PostUpdatePvPIndicator
+	if C["Unitframe"].PvPIndicator then
+		self.PvPIndicator = self:CreateTexture(nil, "OVERLAY")
+		self.PvPIndicator:SetSize(30, 33)
+		self.PvPIndicator:SetPoint("RIGHT", self.Portrait, "LEFT", -2, 0)
+		self.PvPIndicator.PostUpdate = Module.PostUpdatePvPIndicator
+	end
 
 	self.CombatIndicator = self.Health:CreateTexture(nil, "OVERLAY")
 	self.CombatIndicator:SetSize(20, 20)

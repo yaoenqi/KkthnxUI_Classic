@@ -69,7 +69,7 @@ function Module:CreateTarget()
 	self.Power.Value:SetPoint("CENTER", self.Power, "CENTER", 0, 0)
 	self.Power.Value:SetFontObject(UnitframeFont)
 	self.Power.Value:SetFont(select(1, self.Power.Value:GetFont()), 11, select(3, self.Power.Value:GetFont()))
-	self:Tag(self.Power.Value, "[KkthnxUI:PowerCurrent]")
+	self:Tag(self.Power.Value, C["Unitframe"].TargetPowerFormat.Value)
 
 	self.Name = self:CreateFontString(nil, "OVERLAY")
 	self.Name:SetPoint("TOP", self.Health, 0, 16)
@@ -305,10 +305,12 @@ function Module:CreateTarget()
 		self.PortraitTimer:Hide()
 	end
 
-	self.PvPIndicator = self:CreateTexture(nil, "OVERLAY")
-	self.PvPIndicator:SetSize(30, 33)
-	self.PvPIndicator:SetPoint("LEFT", self.Portrait, "RIGHT", 2, 0)
-	self.PvPIndicator.PostUpdate = Module.PostUpdatePvPIndicator
+	if C["Unitframe"].PvPIndicator then
+		self.PvPIndicator = self:CreateTexture(nil, "OVERLAY")
+		self.PvPIndicator:SetSize(30, 33)
+		self.PvPIndicator:SetPoint("LEFT", self.Portrait, "RIGHT", 2, 0)
+		self.PvPIndicator.PostUpdate = Module.PostUpdatePvPIndicator
+	end
 
 	self.RaidTargetIndicator = self.Overlay:CreateTexture(nil, "OVERLAY")
 	self.RaidTargetIndicator:SetPoint("TOP", self.Portrait, "TOP", 0, 8)

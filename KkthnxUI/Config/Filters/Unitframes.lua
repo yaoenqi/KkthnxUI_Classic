@@ -3,9 +3,7 @@ local K = unpack(select(2, ...))
 local _G = _G
 local print = _G.print
 
-local CreateFrame = _G.CreateFrame
 local GetSpellInfo = _G.GetSpellInfo
-local IsPlayerSpell = _G.IsPlayerSpell
 
 local function Defaults(priorityOverride)
 	return {["enable"] = true, ["priority"] = priorityOverride or 0, ["stackThreshold"] = 0}
@@ -22,8 +20,6 @@ local function SpellName(id)
 end
 
 K.DebuffsTracking = {}
-K.TicksPenance = SpellName(47540)
-
 K.DebuffsTracking["RaidDebuffs"] = {
 	-- BROKEN: Need to build a new classic RaidDebuffs list
 	-- EXAMPLE: See comment in spells table
@@ -48,67 +44,29 @@ K.DebuffsTracking["CCDebuffs"] = {
 -- Raid Buffs (Squared Aura Tracking List)
 K.RaidBuffsTracking = {
 	PRIEST = {
-		{194384, "TOPRIGHT", {1, 0, 0.75}}, -- Atonement
-		{214206, "TOPRIGHT", {1, 0, 0.75}}, -- Atonement PvP
-		{41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}}, -- Prayer of Mending
-		{193065, "BOTTOMRIGHT", {0.54, 0.21, 0.78}}, -- Masochism
-		{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Renew
-		{6788, "BOTTOMLEFT", {0.89, 0.1, 0.1}}, -- Weakened Soul
-		{17, "TOPLEFT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
-		{47788, "LEFT", {221 / 255, 117 / 255, 0}, true}, -- Guardian Spirit
-		{33206, "LEFT", {227 / 255, 23 / 255, 13 / 255}, true} -- Pain Suppression
+		-- {194384, "TOPRIGHT", {1, 0, 0.75}}, -- Atonement
 	},
-
 	DRUID = {
-		{774, "TOPRIGHT", {0.8, 0.4, 0.8}}, -- Rejuvenation
-		{155777, "RIGHT", {0.8, 0.4, 0.8}}, -- Germination
-		{8936, "BOTTOMLEFT", {0.2, 0.8, 0.2}}, -- Regrowth
-		{33763, "TOPLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
-		{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}}, -- Wild Growth
-		{207386, "TOP", {0.4, 0.2, 0.8}}, -- Spring Blossoms
-		{102351, "LEFT", {0.2, 0.8, 0.8}}, -- Cenarion Ward (Initial Buff)
-		{102352, "LEFT", {0.2, 0.8, 0.8}}, -- Cenarion Ward (HoT)
-		{200389, "BOTTOM", {1, 1, 0.4}} -- Cultivation
+		-- {774, "TOPRIGHT", {0.8, 0.4, 0.8}}, -- Rejuvenation
 	},
-
 	PALADIN = {
-		{53563, "TOPRIGHT", {0.7, 0.3, 0.7}}, -- Beacon of Light
-		{156910, "TOPRIGHT", {0.7, 0.3, 0.7}}, -- Beacon of Faith
-		{200025, "TOPRIGHT", {0.7, 0.3, 0.7}}, -- Beacon of Virtue
-		--{287280, "RIGHT", {0.7, 0.3, 0.7}}, -- Glimmer of Light
-		{1022, "BOTTOMRIGHT", {0.2, 0.2, 1}, true}, -- Hand of Protection
-		{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true}, -- Hand of Freedom
-		{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true}, -- Hand of Sacrifice
-		{223306, "BOTTOMLEFT", {0.7, 0.7, 0.3}, true} -- Bestow Faith
+		-- {53563, "TOPRIGHT", {0.7, 0.3, 0.7}}, -- Beacon of Light
 	},
-
 	SHAMAN = {
-		{61295, "TOPRIGHT", {0.7, 0.3, 0.7}}, -- Riptide
-		{974, "BOTTOMRIGHT", {0.2, 0.2, 1}} -- Earth Shield
+		-- {61295, "TOPRIGHT", {0.7, 0.3, 0.7}}, -- Riptide
 	},
-
-	MONK = {
-		{119611, "TOPLEFT", {0.8, 0.4, 0.8}}, --Renewing Mist
-		{116849, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- Life Cocoon
-		{124682, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Enveloping Mist
-		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}} -- Zen Sphere
-	},
-
 	ROGUE = {
-		{57934, "TOPRIGHT", {227 / 255, 23 / 255, 13 / 255}} -- Tricks of the Trade
+		--{57934, "TOPRIGHT", {227 / 255, 23 / 255, 13 / 255}} -- Tricks of the Trade
 	},
 
 	WARRIOR = {
-		{114030, "TOPLEFT", {0.2, 0.2, 1}}, -- Vigilance
-		{147833, "TOPRIGHT", {227 / 255, 23 / 255, 13 / 255}} -- Intervene
+		--{114030, "TOPLEFT", {0.2, 0.2, 1}}, -- Vigilance
 	},
-
 	PET = {
 		-- Warlock Pets
-		{193396, "TOPRIGHT", {0.6, 0.2, 0.8}, true}, -- Demonic Empowerment
+		--{193396, "TOPRIGHT", {0.6, 0.2, 0.8}, true}, -- Demonic Empowerment
 		-- Hunter Pets
-		{19615, "TOPLEFT", {227 / 255, 23 / 255, 13 / 255}, true}, -- Frenzy
-		{136, "TOPRIGHT", {0.2, 0.8, 0.2}, true} -- Mend Pet
+		--{19615, "TOPLEFT", {227 / 255, 23 / 255, 13 / 255}, true}, -- Frenzy
 	},
 }
 
@@ -136,9 +94,6 @@ K.UnimportantBuffs = {
 	[SpellName(113942)] = true, -- Demonic: Gateway
 	[SpellName(117870)] = true, -- Touch of The Titans
 	[SpellName(123981)] = true, -- Perdition
-	[SpellName(124273)] = true, -- Stagger
-	[SpellName(124274)] = true, -- Stagger
-	[SpellName(124275)] = true, -- Stagger
 	[SpellName(126434)] = true, -- Tushui Champion
 	[SpellName(126436)] = true, -- Huojin Champion
 	[SpellName(131493)] = true, -- B.F.F. Friends forever!
@@ -238,19 +193,3 @@ K.ChannelingTicks = {
 	[SpellName(15407)] = 4,		-- 精神鞭笞
 	[SpellName(6948)] = 4,		-- 精神鞭笞
 }
-
--- local updateTicks = CreateFrame("Frame")
--- updateTicks:RegisterEvent("PLAYER_LOGIN")
--- -- updateTicks:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
--- updateTicks:SetScript("OnEvent", function()
--- 	if K.Class ~= "PRIEST" then
--- 		return
--- 	end
-
--- 	local numTicks = 3
--- 	if IsPlayerSpell(193134) then -- Enhanced Mind Flay
--- 		numTicks = 4
--- 	end
-
--- 	K.ChannelingTicks[K.TicksPenance] = numTicks
--- end)

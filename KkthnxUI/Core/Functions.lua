@@ -265,7 +265,9 @@ function K.GetItemLevel(link, arg1, arg2, fullScan)
 
 		return iLvl, enchantText, gems, essences
 	else
-		if iLvlDB[link] then return iLvlDB[link] end
+		if iLvlDB[link] then
+			return iLvlDB[link]
+		end
 
 		K.ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		if arg1 and type(arg1) == "string" then
