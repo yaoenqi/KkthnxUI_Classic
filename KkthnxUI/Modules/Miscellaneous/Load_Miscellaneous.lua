@@ -176,7 +176,7 @@ do
     end
 
     local isAligning = false
-    function K.ToggleGrid(arg)
+    SlashCmdList["KKUI_TOGGLEGRID"] = function(arg)
         if isAligning or arg == "1" then
             if grid then grid:Hide() end
             isAligning = false
@@ -187,49 +187,10 @@ do
             isAligning = true
         end
     end
-    -- K:RegisterChatCommand("showgrid", K.ToggleGrid)
-    -- K:RegisterChatCommand("align", K.ToggleGrid)
-    -- K:RegisterChatCommand("grid", K.ToggleGrid)
-end
 
--- Extend Instance
-function Module:ExtendInstance()
-    local bu = CreateFrame("Button", nil, _G.RaidInfoFrame)
-    bu:SetPoint("TOPLEFT", 10, -10)
-    bu:SetSize(18, 18)
-    bu:CreateBorder()
-
-    bu.Icon = bu:CreateTexture(nil, "ARTWORK")
-    bu.Icon:SetPoint("TOPLEFT", 1, -1)
-    bu.Icon:SetPoint("BOTTOMRIGHT", -1, 1)
-    bu.Icon:SetTexCoord(unpack(K.TexCoords))
-
-    local atlas = string.match(GetSpellTexture(80353), "Atlas:(.+)$")
-    if atlas then
-        bu.Icon:SetAtlas(atlas)
-    else
-        bu.Icon:SetTexture(GetSpellTexture(80353))
-    end
-    K.AddTooltip(bu, "ANCHOR_RIGHT", "Extend Instance", "system")
-
-    bu:SetScript("OnMouseUp", function(_, btn)
-        for i = 1, GetNumSavedInstances() do
-            local _, _, _, _, _, extended, _, isRaid = GetSavedInstanceInfo(i)
-            if isRaid then
-                if btn == "LeftButton" then
-                    if not extended then
-                        _G.SetSavedInstanceExtend(i, true)		-- extend
-                    end
-                else
-                    if extended then
-                        _G.SetSavedInstanceExtend(i, false)	-- cancel
-                    end
-                end
-            end
-        end
-        _G.RequestRaidInfo()
-        _G.RaidInfoFrame_Update()
-    end)
+    SLASH_KKUI_TOGGLEGRID1 = "/showgrid"
+    SLASH_KKUI_TOGGLEGRID2 = "/align"
+    SLASH_KKUI_TOGGLEGRID3 = "/grid"
 end
 
 -- TradeFrame hook
@@ -463,7 +424,6 @@ function Module:OnEnable()
     self:CreateRaidMarker()
     self:CreateSlotDurability()
     self:CreateSlotItemLevel()
-    -- self:ExtendInstance()
     self:TradeTargetInfo()
     -- self:VehicleSeatMover()
     self:CreateEnhancedMenu()
@@ -502,10 +462,7 @@ function Module:OnEnable()
     end
 
     -- RealMobHealth override
-    if RealMobHealth and RealMobHealth.OverrideOption then
-		RealMobHealth.OverrideOption("ModifyHealthBarText", false)
+	if RealMobHealth and RealMobHealth.OverrideOption then
 		RealMobHealth.OverrideOption("ShowTooltipHealthText", false)
-		RealMobHealth.OverrideOption("ShowNamePlateHealthText", false)
-		RealMobHealth.OverrideOption("ShowStatusBarTextAdditions", false)
 	end
 end

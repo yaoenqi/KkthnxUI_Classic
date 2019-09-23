@@ -16,7 +16,7 @@ local UIParent = _G.UIParent
 local UpdateMicroButtonsParent = _G.UpdateMicroButtonsParent
 local hooksecurefunc = _G.hooksecurefunc
 
-local function onLeave()
+local function onLeaveBar()
 	if C["ActionBar"].MicroBarMouseover then
 		K.UIFrameFadeOut(KkthnxUI_MicroBar, 0.2, KkthnxUI_MicroBar:GetAlpha(), 0.25)
 	end
@@ -28,7 +28,7 @@ local function onUpdate(self, elapsed)
 		if not self:IsMouseOver() then
 			self.IsMouseOvered = nil
 			self:SetScript("OnUpdate", nil)
-			onLeave()
+			onLeaveBar()
 		end
 
 		watcher = 0
@@ -37,21 +37,22 @@ local function onUpdate(self, elapsed)
 	end
 end
 
-local function onEnter()
+local function onEnter(button)
 	if C["ActionBar"].MicroBarMouseover and not KkthnxUI_MicroBar.IsMouseOvered then
 		KkthnxUI_MicroBar.IsMouseOvered = true
 		KkthnxUI_MicroBar:SetScript("OnUpdate", onUpdate)
 		K.UIFrameFadeIn(KkthnxUI_MicroBar, 0.2, KkthnxUI_MicroBar:GetAlpha(), 1)
 	end
+
+	if button.backdrop then
+		button.backdrop:SetBackdropBorderColor(K.r, K.g, K.b)
+	end
 end
 
-function Module.PLAYER_REGEN_ENABLED()
-	if Module.NeedsUpdateMicroBarVisibility then
-		Module:UpdateMicroBarVisibility()
-		Module.NeedsUpdateMicroBarVisibility = nil
+local function onLeave(button)
+	if button.backdrop then
+		button.backdrop:SetBackdropBorderColor()
 	end
-
-	K:UnregisterEvent("PLAYER_REGEN_ENABLED", Module.PLAYER_REGEN_ENABLED)
 end
 
 function Module.HandleMicroButton(button)
@@ -70,6 +71,7 @@ function Module.HandleMicroButton(button)
 	button:SetParent(KkthnxUI_MicroBar)
 	button:GetHighlightTexture():Kill()
 	button:HookScript("OnEnter", onEnter)
+	button:HookScript("OnLeave", onLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
 	if button.Flash then
@@ -103,22 +105,10 @@ function Module.UpdateMicroButtonsParent()
 	end
 end
 
--- we use this table to sort the micro buttons on our bar to match Blizzard's button placements.
-local __buttonIndex = {
-	'CharacterMicroButton',
-	'SpellbookMicroButton',
-	'TalentMicroButton',
-	'QuestLogMicroButton',
-	'SocialsMicroButton',
-	'WorldMapMicroButton',
-	'MainMenuMicroButton',
-	'HelpMicroButton'
-}
-
 function Module.UpdateMicroBarVisibility()
 	if InCombatLockdown() then
 		Module.NeedsUpdateMicroBarVisibility = true
-		K:RegisterEvent("PLAYER_REGEN_ENABLED", Module.PLAYER_REGEN_ENABLED)
+		K:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return
 	end
 
@@ -130,6 +120,7 @@ function Module.UpdateMicroBarVisibility()
 	RegisterStateDriver(KkthnxUI_MicroBar.visibility, "visibility", (C["ActionBar"].MicroBar and visibility) or "hide")
 end
 
+local VisibleMicroButtons = {}
 function Module.UpdateMicroPositionDimensions()
 	if not KkthnxUI_MicroBar then
 		return
@@ -139,22 +130,27 @@ function Module.UpdateMicroPositionDimensions()
 	local prevButton = KkthnxUI_MicroBar
 	local offset = 4
 	local spacing = offset + 2
+	wipe(VisibleMicroButtons)
 
 	for i = 1, #MICRO_BUTTONS do
-		local button = _G[__buttonIndex[i]] or _G[MICRO_BUTTONS[i]]
+		local button = _G[MICRO_BUTTONS[i]]
 		if button:IsShown() then
-
-			button:SetSize(20, 20 * 1.4)
-			button:ClearAllPoints()
-
-			if prevButton == KkthnxUI_MicroBar then
-				button:SetPoint('TOPLEFT', prevButton, 'TOPLEFT', offset, -offset)
-			else
-				button:SetPoint('LEFT', prevButton, 'RIGHT', spacing, 0)
-			end
-
-			prevButton = button
+			tinsert(VisibleMicroButtons, button:GetName())
 		end
+	end
+
+	for i = 1, #VisibleMicroButtons do
+		local button = _G[VisibleMicroButtons[i]]
+		button:ClearAllPoints()
+		button:SetSize(20, 20 * 1.4)
+
+		if prevButton == KkthnxUI_MicroBar then
+			button:SetPoint('TOPLEFT', prevButton, 'TOPLEFT', offset, -offset)
+		else
+			button:SetPoint('LEFT', prevButton, 'RIGHT', spacing, 0)
+		end
+
+		prevButton = button
 	end
 
 	if C["ActionBar"].MicroBarMouseover and not KkthnxUI_MicroBar:IsMouseOver() then
@@ -165,7 +161,6 @@ function Module.UpdateMicroPositionDimensions()
 
 	Module.MicroWidth = (((_G['CharacterMicroButton']:GetWidth() + spacing) * 8) - spacing) + (offset * 2)
 	Module.MicroHeight = (((_G['CharacterMicroButton']:GetHeight() + spacing) * numRows) - spacing) + (offset * 2)
-
 	KkthnxUI_MicroBar:SetSize(Module.MicroWidth, Module.MicroHeight)
 
 	Module.UpdateMicroBarVisibility()

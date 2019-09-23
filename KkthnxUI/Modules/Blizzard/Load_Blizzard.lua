@@ -22,7 +22,7 @@ function Module:OnEnable()
     self:CreateMirrorBars()
     -- self:CreateNoTutorials()
     self:CreateQuestTrackerMover()
-    -- self:CreateRaidUtility()
+    self:CreateRaidUtility()
     -- self:CreateTimerTracker()
     -- self:CreateUIWidgets()
 end
