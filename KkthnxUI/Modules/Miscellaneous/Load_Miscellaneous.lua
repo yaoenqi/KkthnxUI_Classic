@@ -1,5 +1,5 @@
 local K, C, L = unpack(select(2, ...))
-local Module = K:NewModule("Miscellaneous", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+local Module = K:NewModule("Miscellaneous")
 
 local _G = _G
 local math_min = _G.math.min
@@ -17,16 +17,12 @@ local GetItemQualityColor = _G.GetItemQualityColor
 local GetMerchantItemLink = _G.GetMerchantItemLink
 local GetMerchantItemMaxStack = _G.GetMerchantItemMaxStack
 local GetNetStats = _G.GetNetStats
-local GetNumSavedInstances = _G.GetNumSavedInstances
-local GetSavedInstanceInfo = _G.GetSavedInstanceInfo
 local GetScreenHeight = _G.GetScreenHeight
 local GetScreenWidth = _G.GetScreenWidth
-local GetSpellTexture = _G.GetSpellTexture
 local InCombatLockdown = _G.InCombatLockdown
 local IsAltKeyDown = _G.IsAltKeyDown
 local IsGuildMember = _G.IsGuildMember
 local NO = _G.NO
-local PVPReadyDialog = _G.PVPReadyDialog
 local SetCVar = _G.SetCVar
 local StaticPopupDialogs = _G.StaticPopupDialogs
 local StaticPopup_Show = _G.StaticPopup_Show
@@ -476,22 +472,23 @@ function Module:CreateDismountStand()
 end
 
 function Module:OnEnable()
+    -- self:CreateKillingBlow()
+    -- self:VehicleSeatMover()
     self:CreateAFKCam()
     self:CreateChatBubble()
+    self:CreateDismountStand()
     self:CreateDurabilityFrame()
+    self:CreateEnhancedMenu()
     self:CreateImprovedMail()
-    -- self:CreateKillingBlow()
+    self:CreateImprovedQuestLog()
     self:CreateMerchantItemLevel()
     self:CreatePvPEmote()
     self:CreateQuestNotifier()
     self:CreateRaidMarker()
     self:CreateSlotDurability()
     self:CreateSlotItemLevel()
-    self:TradeTargetInfo()
-    -- self:VehicleSeatMover()
-    self:CreateEnhancedMenu()
-    self:CreateDismountStand()
     self:CreateToggleHelmCloak()
+    self:TradeTargetInfo()
 
     -- Instant delete
     hooksecurefunc(StaticPopupDialogs["DELETE_GOOD_ITEM"], "OnShow", function(self)

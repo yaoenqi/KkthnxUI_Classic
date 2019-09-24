@@ -139,6 +139,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Accept Invites From Friends & Guild Members",
 		},
 
+		["AutoDisenchant"] = {
+			["Name"] = "Auto Disenchant With 'CTRL'",
+		},
+
 		["AutoQuest"] = {
 			["Name"] = "Auto Accept & Turnin Quests",
 		},
@@ -161,6 +165,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["AutoTabBinder"] = {
 			["Name"] = "Only Tab Target Enemy Players",
+		},
+
+		["BuffThanks"] = {
+			["Name"] = "Thank Players For Buffs (Open World Only)",
 		},
 
 		["BlockMovies"] = {
@@ -519,10 +527,6 @@ _G.KkthnxUIConfig["enUS"] = {
 
 	-- Loot Local
 	["Loot"] = {
-		["AutoDisenchant"] = {
-			["Name"] = "Auto Disenchant With 'CTRL'",
-		},
-
 		["AutoGreed"] = {
 			["Name"] = "Auto Greed/Disenchant Green Items",
 		},
@@ -592,6 +596,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["GemEnchantInfo"] = {
 			["Name"] = "Character/Inspect Gem/Enchant Info",
+		},
+
+		["ImprovedQuestLog"] = {
+			["Name"] = "Display A Better Questlog Style",
 		},
 
 		["ItemLevel"] = {

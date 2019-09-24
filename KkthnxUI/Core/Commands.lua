@@ -316,6 +316,11 @@ end
 SLASH_KKUI_GMTICKET1 = "/gm"
 SLASH_KKUI_GMTICKET2 = "/ticket"
 
+SlashCmdList["KKUI_LOLWUT"] = function(msg) -- I like to 'Fart in the tub' O.o
+	PlaySoundFile("Sound\\Character\\Human\\HumanVocalFemale\\HumanFemalePissed04.ogg")
+end
+SLASH_KKUI_LOLWUT1 = "/lolwut"
+
 SlashCmdList["KKUI_DELETEQUESTITEMS"] = function()
 	for bag = 0, 4 do
 		for slot = 1, _G.GetContainerNumSlots(bag) do

@@ -371,6 +371,30 @@ function Module:SetUpZoneLevels()
 	end
 end
 
+function Module:CreateClassIcons()
+	local WorldMapUnitPin, WorldMapUnitPinSizes
+	local partyTexture = "Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps_Icon.blp"
+
+	-- Set group icon textures
+	for pin in WorldMapFrame:EnumeratePinsByTemplate("GroupMembersPinTemplate") do
+		WorldMapUnitPin = pin
+		WorldMapUnitPinSizes = pin.dataProvider:GetUnitPinSizesTable()
+		WorldMapUnitPin:SetPinTexture("raid", partyTexture)
+		WorldMapUnitPin:SetPinTexture("party", partyTexture)
+		hooksecurefunc(WorldMapUnitPin, "UpdateAppearanceData", function(self)
+			self:SetPinTexture("raid", partyTexture)
+			self:SetPinTexture("party", partyTexture)
+		end)
+		break
+	end
+
+	-- Set party icon size and enable class colors
+	WorldMapUnitPinSizes.party = 20
+	WorldMapUnitPin:SetAppearanceField("party", "useClassColor", true)
+	WorldMapUnitPin:SetAppearanceField("raid", "useClassColor", true)
+	WorldMapUnitPin:SynchronizePinSizes()
+end
+
 function Module:CreateWorldMapPlus()
 	if C["WorldMap"].WorldMapPlus ~= true then
 		return
@@ -380,4 +404,5 @@ function Module:CreateWorldMapPlus()
 	self:CreateMapIcons()
 	self:SetUpZoneLevels()
 	self:CreatePlayerArrowSize()
+	self:CreateClassIcons()
 end

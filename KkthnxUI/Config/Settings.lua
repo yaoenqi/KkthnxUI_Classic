@@ -59,6 +59,7 @@ C["Automation"] = {
 	["AutoResurrectThank"] = false,
 	["AutoReward"] = false,
 	["AutoTabBinder"] = false,
+	["BuffThanks"] = false,
 	["DeclinePvPDuel"] = false,
 	["WhisperInvite"] = "inv",
 }
@@ -206,6 +207,7 @@ C["Misc"] = {
 	["EnhancedFriends"] = false,
 	["EnhancedMenu"] = true,
 	["GemEnchantInfo"] = false,
+	["ImprovedQuestLog"] = true,
 	["ItemLevel"] = false,
 	["KillingBlow"] = false,
 	["PvPEmote"] = false,

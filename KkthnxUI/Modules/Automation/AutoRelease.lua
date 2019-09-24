@@ -18,18 +18,6 @@ function Module.PLAYER_DEAD()
 		RepopMe()
 		return
 	end
-
-	-- Resurrect if playuer is in a PvP location
-	local areaID = C_Map.GetBestMapForUnit("player") or 0
-	if areaID == 123 -- Wintergrasp
-	or areaID == 244 -- Tol Barad (PvP)
-	or areaID == 588 -- Ashran
-	or areaID == 622 -- Stormshield
-	or areaID == 624 -- Warspear
-	then
-		RepopMe()
-		return
-	end
 	return
 end
 
