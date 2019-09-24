@@ -64,9 +64,8 @@ K.Resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gx
 K.ScreenHeight = tonumber(string_match(K.Resolution, "%d+x(%d+)"))
 K.ScreenWidth = tonumber(string_match(K.Resolution, "(%d+)x+%d"))
 K.UIScale = math_min(2, math_max(0.01, 768 / string_match(K.Resolution, "%d+x(%d+)")))
-K.PriestColors = {r = 0.86, g = 0.92, b = 0.98, colorStr = "dbebfa"}
-K.Color = K.Class == "PRIEST" and K.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[K.Class] or RAID_CLASS_COLORS[K.Class])
-K.MyClassColor = string_format("|cff%02x%02x%02x", K.Color.r * 255, K.Color.g * 255, K.Color.b * 255)
+K.PriestColors = {r = 0.86, g = 0.92, b = 0.98, colorStr = "dbebfa"} -- Keep this until I convert the rest.
+-- K.Color = K.Class == "PRIEST" and K.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[K.Class] or RAID_CLASS_COLORS[K.Class])
 K.TexCoords = {0.08, 0.92, 0.08, 0.92}
 K.Welcome = "|cff4488ffKkthnxUI "..K.Version.." "..K.Client.."|r - /helpui"
 K.ScanTooltip = CreateFrame("GameTooltip", "KkthnxUI_ScanTooltip", _G.UIParent, "GameTooltipTemplate")
@@ -80,15 +79,26 @@ for k, v in pairs(LOCALIZED_CLASS_NAMES_MALE) do
 	K.ClassList[v] = k
 end
 K.ClassColors = {}
+-- PRIEST ClassColor
+RAID_CLASS_COLORS["PRIEST"].r = 0.86
+RAID_CLASS_COLORS["PRIEST"].g = 0.92
+RAID_CLASS_COLORS["PRIEST"].b = 0.98
+RAID_CLASS_COLORS["PRIEST"].colorStr = "dbebfa"
+-- SHAMAN ClassColor
+RAID_CLASS_COLORS["SHAMAN"].r = 0
+RAID_CLASS_COLORS["SHAMAN"].g = .44
+RAID_CLASS_COLORS["SHAMAN"].b = .87
+RAID_CLASS_COLORS["SHAMAN"].colorStr = "ff0070dd"
 local colors = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
-for class in pairs(colors) do
+for class, value in pairs(colors) do
 	K.ClassColors[class] = {}
-	K.ClassColors[class].r = colors[class].r
-	K.ClassColors[class].g = colors[class].g
-	K.ClassColors[class].b = colors[class].b
-	K.ClassColors[class].colorStr = colors[class].colorStr
+	K.ClassColors[class].r = value.r
+	K.ClassColors[class].g = value.g
+	K.ClassColors[class].b = value.b
+	K.ClassColors[class].colorStr =  value.colorStr
 end
 K.r, K.g, K.b = K.ClassColors[K.Class].r, K.ClassColors[K.Class].g, K.ClassColors[K.Class].b
+K.MyClassColor = string_format("|cff%02x%02x%02x", K.r * 255, K.g * 255, K.b * 255)
 
 local events = {}
 local host = CreateFrame("Frame")
