@@ -140,7 +140,7 @@ local function LockElements()
 		mover:Hide()
 	end
 	f:Hide()
-	K.ToggleGrid("1")
+	SlashCmdList["KKUI_TOGGLEGRID"]("1")
 end
 
 _G.StaticPopupDialogs["RESET_MOVER"] = {
@@ -206,7 +206,7 @@ local function CreateConsole()
 	end)
 
 	bu[3]:SetScript("OnClick", function()
-		K.ToggleGrid("64")
+		SlashCmdList["KKUI_TOGGLEGRID"]("64")
 	end)
 
 	bu[4]:SetScript("OnClick", function()

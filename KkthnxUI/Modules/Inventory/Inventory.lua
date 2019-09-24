@@ -354,6 +354,7 @@ function Stuffing:SlotUpdate(b)
 		else
 			newItemTexture:Hide()
 			battlePayTexture:Hide()
+			C_NewItems.RemoveNewItem(b.bag, b.slot)
 			if flashAnim:IsPlaying() or newItemAnim:IsPlaying() then
 				flashAnim:Stop()
 				newItemAnim:Stop()

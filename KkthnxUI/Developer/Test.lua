@@ -80,7 +80,7 @@ function Module:OnCombatEvent(_, ...)
 				local srcType = string_split("-", sourceGUID) -- `type` is a reserved word for a Lua function
 				-- Make sure the other source is a player
 				if srcType == "Player" then
-					C_Timer_After(0.6, function() -- Give this more time to say thanks.
+					C_Timer.After(0.6, function() -- Give this more time to say thanks.
 						DoEmote(EMOTE98_TOKEN, sourceName)
 					end)
 				end

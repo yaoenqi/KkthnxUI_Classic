@@ -9,6 +9,9 @@ local GetItemInfo = _G.GetItemInfo
 local GetItemQualityColor = _G.GetItemQualityColor
 
 local function ReskinInspectUI()
+	InspectModelFrameRotateLeftButton:Kill()
+	InspectModelFrameRotateRightButton:Kill()
+
 	for _, slot in pairs({ _G.InspectPaperDollItemsFrame:GetChildren() }) do
 		local icon = _G[slot:GetName()..'IconTexture']
 

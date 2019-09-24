@@ -133,18 +133,18 @@ C["DataText"] = {
 	["Time"] = true,
 }
 
--- C["Filger"] = {
--- 	["BuffSize"] = 36,
--- 	["CooldownSize"] = 30,
--- 	["DisableCD"] = false,
--- 	["DisablePvP"] = false,
--- 	["Expiration"] = false,
--- 	["Enable"] = false,
--- 	["MaxTestIcon"] = 5,
--- 	["PvPSize"] = 60,
--- 	["ShowTooltip"] = false,
--- 	["TestMode"] = false,
--- }
+C["Filger"] = {
+	["BuffSize"] = 36,
+	["CooldownSize"] = 30,
+	["DisableCD"] = false,
+	["DisablePvP"] = false,
+	["Expiration"] = false,
+	["Enable"] = false,
+	["MaxTestIcon"] = 5,
+	["PvPSize"] = 60,
+	["ShowTooltip"] = false,
+	["TestMode"] = false,
+}
 
 -- General
 C["General"] = {
@@ -209,6 +209,7 @@ C["Misc"] = {
 	["ItemLevel"] = false,
 	["KillingBlow"] = false,
 	["PvPEmote"] = false,
+	["ShowHelmCloak"] = false,
 	["SlotDurability"] = false,
 }
 

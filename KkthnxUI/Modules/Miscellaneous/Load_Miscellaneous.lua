@@ -193,6 +193,69 @@ do
     SLASH_KKUI_TOGGLEGRID3 = "/grid"
 end
 
+-- Easily hide helm and cloak
+function Module:CreateToggleHelmCloak()
+    if not C["Misc"].ShowHelmCloak then
+        return
+    end
+
+	local helmCheck = CreateFrame("CheckButton", "HelmCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
+	helmCheck:SetSize(16, 16)
+	helmCheck:SetPoint("TOPLEFT", CharacterHeadSlot, "BOTTOMRIGHT", 12, 16)
+    helmCheck:SetScript("OnClick", function ()
+        ShowHelm(not ShowingHelm())
+    end)
+
+	helmCheck:SetScript("OnEnter", function ()
+		GameTooltip:SetOwner(helmCheck, "ANCHOR_RIGHT")
+		GameTooltip:SetText(SHOW_HELM)
+    end)
+
+    helmCheck:SetScript("OnLeave", function ()
+        GameTooltip:Hide()
+    end)
+
+	helmCheck:SetFrameStrata("HIGH")
+	helmCheck:SetHitRectInsets(0, 0, 0, 0)
+	helmCheck:SkinCheckBox()
+
+	local cloakCheck = CreateFrame("CheckButton", "CloakCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
+	cloakCheck:SetSize(16, 16)
+	cloakCheck:SetPoint("TOPLEFT", CharacterBackSlot, "BOTTOMRIGHT", 12, 16)
+    cloakCheck:SetScript("OnClick", function ()
+        ShowCloak(not ShowingCloak())
+    end)
+
+	cloakCheck:SetScript("OnEnter", function ()
+		GameTooltip:SetOwner(cloakCheck, "ANCHOR_RIGHT")
+		GameTooltip:SetText(SHOW_CLOAK)
+    end)
+
+    cloakCheck:SetScript("OnLeave", function ()
+        GameTooltip:Hide()
+    end)
+
+	cloakCheck:SetFrameStrata("HIGH")
+	cloakCheck:SetHitRectInsets(0, 0, 0, 0)
+	cloakCheck:SkinCheckBox()
+
+    hooksecurefunc("ShowHelm", function(v)
+        helmCheck:SetChecked(v)
+    end)
+
+    hooksecurefunc("ShowCloak", function(v)
+        cloakCheck:SetChecked(v)
+    end)
+
+	local checked_UpdateFrame = CreateFrame("Frame")
+	checked_UpdateFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+    checked_UpdateFrame:SetScript("OnEvent", function(self)
+        self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+		helmCheck:SetChecked(ShowingHelm())
+		cloakCheck:SetChecked(ShowingCloak())
+	end)
+end
+
 -- TradeFrame hook
 function Module:TradeTargetInfo()
 	local infoText = K.CreateFontString(TradeFrame, 14, nil, "")
@@ -428,6 +491,7 @@ function Module:OnEnable()
     -- self:VehicleSeatMover()
     self:CreateEnhancedMenu()
     self:CreateDismountStand()
+    self:CreateToggleHelmCloak()
 
     -- Instant delete
     hooksecurefunc(StaticPopupDialogs["DELETE_GOOD_ITEM"], "OnShow", function(self)

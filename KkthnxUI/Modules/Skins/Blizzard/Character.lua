@@ -11,6 +11,9 @@ local hooksecurefunc = _G.hooksecurefunc
 local unpack = _G.unpack
 
 local function ReskinCharacterFrame()
+	CharacterModelFrameRotateLeftButton:Kill()
+	CharacterModelFrameRotateRightButton:Kill()
+
 	local ResistanceCoords = {
 		[1] = {0.21875, 0.8125, 0.25, 0.32421875}, -- Arcane
 		[2] = {0.21875, 0.8125, 0.0234375, 0.09765625}, -- Fire
@@ -24,6 +27,7 @@ local function ReskinCharacterFrame()
 			local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
 			frame:SetSize(22, 22)
 			frame:CreateBorder()
+			frame:CreateInnerShadow()
 			frame:ClearAllPoints()
 
 			if i == 1 then

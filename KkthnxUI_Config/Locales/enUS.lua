@@ -550,10 +550,6 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Enable Minimap",
 		},
 
-		["GarrisonLandingPage"] = {
-			["Name"] = "Show Garrison icon",
-		},
-
 		["ResetZoom"] = {
 			["Name"] = "Reset Minimap Zoom",
 		},
@@ -578,8 +574,8 @@ _G.KkthnxUIConfig["enUS"] = {
 		},
 
 		["AutoDismountStand"] = {
-			["Name"] = "Auto Stand / Dismount",
-			["Desc"] = "Will make you stand / dismount when you want to cast or fight something",
+			["Name"] = "Auto Stand/Dismount",
+			["Desc"] = "Will make you stand/dismount when you want to cast or fight something",
 		},
 
 		["ColorPicker"] = {
@@ -587,7 +583,7 @@ _G.KkthnxUIConfig["enUS"] = {
 		},
 
 		["EnhancedFriends"] = {
-			["Name"] = "Enhanced Colors (Friends / Guild +)",
+			["Name"] = "Enhanced Colors (Friends/Guild +)",
 		},
 
 		["EnhancedMenu"] = {
@@ -608,6 +604,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["PvPEmote"] = {
 			["Name"] = "Auto Emote On Your Killing Blow",
+		},
+
+		["ShowHelmCloak"] = {
+			["Name"] = "Show Helm/Cloak Buttons On Character Frame",
 		},
 
 		["SlotDurability"] = {
