@@ -13,6 +13,7 @@ local ChangeLogData = {
 	"• Class Color names in chat",
 	"• Cleanup AutoRelease",
 	"• Enable AutoDisenchant module",
+	"• Fixed disabling debuffs on top would cause mass errors",
 	"• Fixed grids with moveui",
 	"• Killed rotation buttons on char/inspect frames",
 	"• Released 'v1.04'",
