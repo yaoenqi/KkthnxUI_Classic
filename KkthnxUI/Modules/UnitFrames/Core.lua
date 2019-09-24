@@ -257,32 +257,32 @@ function Module:PostUpdatePvPIndicator(unit, status)
 	end
 end
 
--- function Module:UpdateThreat(_, unit)
--- 	if (unit ~= self.unit) then
--- 		return
--- 	end
+function Module:UpdateThreat(_, unit)
+	if (unit ~= self.unit) then
+		return
+	end
 
--- 	local Status = UnitThreatSituation(unit)
--- 	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then
--- 		if not self.Portrait then return end
+	local Status = UnitThreatSituation(unit)
+	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then
+		if not self.Portrait then return end
 
--- 		if (Status and Status > 0) then
--- 			local r, g, b = GetThreatStatusColor(Status)
--- 			self.Portrait:SetBackdropBorderColor(r, g, b)
--- 		else
--- 			self.Portrait:SetBackdropBorderColor()
--- 		end
--- 	elseif C["General"].PortraitStyle.Value ~= "ThreeDPortraits" then
--- 		if not self.Portrait.Border then return end
+		if (Status and Status > 0) then
+			local r, g, b = GetThreatStatusColor(Status)
+			self.Portrait:SetBackdropBorderColor(r, g, b)
+		else
+			self.Portrait:SetBackdropBorderColor()
+		end
+	elseif C["General"].PortraitStyle.Value ~= "ThreeDPortraits" then
+		if not self.Portrait.Border then return end
 
--- 		if (Status and Status > 0) then
--- 			local r, g, b = GetThreatStatusColor(Status)
--- 			self.Portrait.Border:SetBackdropBorderColor(r, g, b)
--- 		else
--- 			self.Portrait.Border:SetBackdropBorderColor()
--- 		end
--- 	end
--- end
+		if (Status and Status > 0) then
+			local r, g, b = GetThreatStatusColor(Status)
+			self.Portrait.Border:SetBackdropBorderColor(r, g, b)
+		else
+			self.Portrait.Border:SetBackdropBorderColor()
+		end
+	end
+end
 
 function Module:UpdateHealth(unit, cur, max)
 	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then

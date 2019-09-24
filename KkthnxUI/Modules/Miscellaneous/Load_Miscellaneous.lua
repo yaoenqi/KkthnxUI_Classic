@@ -4,6 +4,7 @@ local Module = K:NewModule("Miscellaneous")
 local _G = _G
 local math_min = _G.math.min
 local math_floor = _G.math.floor
+local table_insert = _G.table.insert
 
 local BNGetGameAccountInfoByGUID = _G.BNGetGameAccountInfoByGUID
 local CreateFrame = _G.CreateFrame
@@ -11,6 +12,7 @@ local DELETE_ITEM_CONFIRM_STRING = _G.DELETE_ITEM_CONFIRM_STRING
 local FRIEND = _G.FRIEND
 local GUILD = _G.GUILD
 local GetCVar = _G.GetCVar
+local GetFileIDFromPath = _G.GetFileIDFromPath
 local GetInstanceInfo = _G.GetInstanceInfo
 local GetItemInfo = _G.GetItemInfo
 local GetItemQualityColor = _G.GetItemQualityColor
@@ -22,6 +24,7 @@ local GetScreenWidth = _G.GetScreenWidth
 local InCombatLockdown = _G.InCombatLockdown
 local IsAltKeyDown = _G.IsAltKeyDown
 local IsGuildMember = _G.IsGuildMember
+local MAX_NUM_QUESTS = _G.MAX_NUM_QUESTS or "25"
 local NO = _G.NO
 local SetCVar = _G.SetCVar
 local StaticPopupDialogs = _G.StaticPopupDialogs
@@ -30,6 +33,9 @@ local UIParent = _G.UIParent
 local UnitGUID = _G.UnitGUID
 local YES = _G.YES
 local hooksecurefunc = _G.hooksecurefunc
+
+local ACTIVE_QUEST_ICON_FILEID = GetFileIDFromPath("Interface\\GossipFrame\\ActiveQuestIcon")
+local AVAILABLE_QUEST_ICON_FILEID = GetFileIDFromPath("Interface\\GossipFrame\\AvailableQuestIcon")
 
 do -- Fix blank tooltip
 	local bug = nil
@@ -249,6 +255,30 @@ function Module:CreateToggleHelmCloak()
         self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 		helmCheck:SetChecked(ShowingHelm())
 		cloakCheck:SetChecked(ShowingCloak())
+	end)
+end
+
+function Module:FixQuestFrameIcons()
+	local titleLines = {}
+    local questIconTextures = {}
+
+	for i = 1, MAX_NUM_QUESTS do
+		local titleLine = _G["QuestTitleButton" .. i]
+		table_insert(titleLines, titleLine)
+		table_insert(questIconTextures, _G[titleLine:GetName() .. "QuestIcon"])
+	end
+
+	QuestFrameGreetingPanel:HookScript("OnShow", function()
+		for i, titleLine in ipairs(titleLines) do
+			if (titleLine:IsVisible()) then
+				local bulletPointTexture = questIconTextures[i]
+				if (titleLine.isActive == 1) then
+					bulletPointTexture:SetTexture(ACTIVE_QUEST_ICON_FILEID)
+				else
+					bulletPointTexture:SetTexture(AVAILABLE_QUEST_ICON_FILEID)
+				end
+			end
+		end
 	end)
 end
 
@@ -474,6 +504,7 @@ end
 function Module:OnEnable()
     -- self:CreateKillingBlow()
     -- self:VehicleSeatMover()
+
     self:CreateAFKCam()
     self:CreateChatBubble()
     self:CreateDismountStand()
@@ -488,6 +519,7 @@ function Module:OnEnable()
     self:CreateSlotDurability()
     self:CreateSlotItemLevel()
     self:CreateToggleHelmCloak()
+    self:FixQuestFrameIcons()
     self:TradeTargetInfo()
 
     -- Instant delete

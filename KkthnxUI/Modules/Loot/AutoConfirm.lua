@@ -15,11 +15,10 @@ local function SetupAutoConfirm()
 end
 
 function Module:CreateAutoConfirm()
-	if C["Loot"].AutoDisenchant ~= true then
+	if C["Loot"].AutoConfirmLoot ~= true then
 		return
 	end
 
-	K:RegisterEvent("CONFIRM_DISENCHANT_ROLL", SetupAutoConfirm)
 	K:RegisterEvent("CONFIRM_LOOT_ROLL", SetupAutoConfirm)
 	K:RegisterEvent("LOOT_BIND_CONFIRM", SetupAutoConfirm)
 end

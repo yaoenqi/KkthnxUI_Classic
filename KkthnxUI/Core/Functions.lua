@@ -295,24 +295,43 @@ function K.GetItemLevel(link, arg1, arg2, fullScan)
 	end
 end
 
--- local function CheckRole()
--- 	local tree = GetSpecialization()
--- 	if not tree then return end
--- 	local _, _, _, _, role, stat = GetSpecializationInfo(tree)
--- 	if role == "TANK" then
--- 		K.Role = "Tank"
--- 	elseif role == "HEALER" then
--- 		K.Role = "Healer"
--- 	elseif role == "DAMAGER" then
--- 		if stat == 4 then
--- 			K.Role = "Caster"
--- 		else
--- 			K.Role = "Melee"
--- 		end
--- 	end
--- end
--- K:RegisterEvent("PLAYER_LOGIN", CheckRole)
--- K:RegisterEvent("PLAYER_TALENT_UPDATE", CheckRole)
+local isCaster = {
+	DRUID = {true},					-- Balance
+	HUNTER = {nil, nil, nil},
+	MAGE = {true, true, true},
+	PALADIN = {nil, nil, nil},
+	PRIEST = {nil, nil, true},		-- Shadow
+	ROGUE = {nil, nil, nil},
+	SHAMAN = {true},				-- Elemental
+	WARLOCK = {true, true, true},
+	WARRIOR = {nil, nil, nil}
+}
+
+local function CheckRole()
+	local spec = K.GetSpecialization()
+	local role = spec and K.GetSpecializationRole(spec)
+
+	K.Spec = spec
+	if role == "TANK" then
+		K.Role = "Tank"
+	elseif role == "HEALER" then
+		K.Role = "Healer"
+	elseif role == "DAMAGER" then
+		if isCaster[K.Class][spec] then
+			K.Role = "Caster"
+		else
+			K.Role = "Melee"
+		end
+	elseif role == "MELEE" then
+		K.Role = "Melee"
+	elseif role == "CASTER" then
+		K.Role = "Caster"
+	end
+end
+K:RegisterEvent("PLAYER_LOGIN", CheckRole)
+K:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckRole)
+K:RegisterEvent("UNIT_INVENTORY_CHANGED", CheckRole)
+K:RegisterEvent("UPDATE_BONUS_ACTIONBAR", CheckRole)
 
 -- Chat channel check
 function K.CheckChat(warning)

@@ -527,6 +527,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 	-- Loot Local
 	["Loot"] = {
+		["AutoConfirm"] = {
+			["Name"] = "Auto Confirm Loot Dialogs",
+		},
+
 		["AutoGreed"] = {
 			["Name"] = "Auto Greed/Disenchant Green Items",
 		},

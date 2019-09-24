@@ -182,7 +182,7 @@ C["General"] = {
 
 -- Loot
 C["Loot"] = {
-	["AutoDisenchant"] = false,
+	["AutoConfirm"] = false,
 	["AutoGreed"] = false,
 	["Enable"] = true,
 	["FastLoot"] = false,
@@ -216,11 +216,12 @@ C["Misc"] = {
 }
 
 C["Nameplates"] = {
-	-- ["GoodColor"] = {0.2, 0.8, 0.2},
-	-- ["NearColor"] = {1, 1, 0},
-	-- ["BadColor"] = {1, 0, 0},
-	-- ["OffTankColor"] = {0, 0.5, 1},
+	["GoodColor"] = {0.2, 0.8, 0.2},
+	["NearColor"] = {1, 1, 0},
+	["BadColor"] = {1, 0, 0},
+	["OffTankColor"] = {0, 0.5, 1},
 	["Clamp"] = false,
+	["TankMode"] = false,
 	-- ["ClassResource"] = true,
 	["Distance"] = 50,
 	["Enable"] = true,
