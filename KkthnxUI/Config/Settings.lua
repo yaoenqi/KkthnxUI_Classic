@@ -212,6 +212,7 @@ C["Misc"] = {
 	["KillingBlow"] = false,
 	["PvPEmote"] = false,
 	["ShowHelmCloak"] = false,
+	["ShowWowHeadLinks"] = false,
 	["SlotDurability"] = false,
 }
 

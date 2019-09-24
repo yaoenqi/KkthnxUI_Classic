@@ -344,7 +344,6 @@ function Module:CreatePlayer()
 		self.Swing = CreateFrame("StatusBar", nil, self)
 		self.Swing:SetSize(250, 12)
 		self.Swing:SetPoint("TOP", self.Castbar, "BOTTOM", 0, -5)
-		K.SmoothBar(self.Swing)
 
 		self.Swing.Twohand = CreateFrame("StatusBar", nil, self.Swing)
 		self.Swing.Twohand:SetStatusBarTexture(UnitframeTexture)

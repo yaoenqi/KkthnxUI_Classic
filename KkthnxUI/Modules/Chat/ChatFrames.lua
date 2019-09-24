@@ -347,15 +347,15 @@ function Module:SetDefaultChatFramesPositions()
 
 		-- rename windows general because moved to chat #3
 		if ID == 1 then
-			FCF_SetWindowName(Frame, GENERAL)
+			FCF_SetWindowName(Frame, L["General"])
 		elseif ID == 2 then
-			FCF_SetWindowName(Frame, GUILD_EVENT_LOG)
+			FCF_SetWindowName(Frame, L["Combat"])
 		elseif ID == 3 then
-			FCF_SetWindowName(Frame, WHISPER)
+			FCF_SetWindowName(Frame, L["Whisper"])
 		elseif ID == 4 then
-			FCF_SetWindowName(Frame, TRADE)
+			FCF_SetWindowName(Frame, L["Trade"])
 		elseif ID == 5 then
-			FCF_SetWindowName(Frame, LOOT)
+			FCF_SetWindowName(Frame, L["Loot"])
 		end
 
 		if (not Frame.isLocked) then
@@ -407,37 +407,37 @@ function Module:Install()
 	-- General
 	FCF_ResetChatWindows()
 	FCF_SetLocked(ChatFrame1, 1)
-	FCF_SetWindowName(ChatFrame1, GENERAL)
+	FCF_SetWindowName(ChatFrame1, L["General"])
 	ChatFrame1:Show()
 
 	-- Combat Log
 	FCF_DockFrame(ChatFrame2)
 	FCF_SetLocked(ChatFrame2, 1)
-	FCF_SetWindowName(ChatFrame2, GUILD_EVENT_LOG)
+	FCF_SetWindowName(ChatFrame2, L["Combat"])
 	ChatFrame2:Show()
 
 	-- Whispers
-	FCF_OpenNewWindow(WHISPER)
+	FCF_OpenNewWindow(L["Whisper"])
 	FCF_SetLocked(ChatFrame3, 1)
 	FCF_DockFrame(ChatFrame3)
 	ChatFrame3:Show()
 
 	-- Trade
-	FCF_OpenNewWindow(TRADE)
+	FCF_OpenNewWindow(L["Trade"])
 	FCF_SetLocked(ChatFrame4, 1)
 	FCF_DockFrame(ChatFrame4)
 	ChatFrame4:Show()
 
 	-- Loot
-	FCF_OpenNewWindow(LOOT)
+	FCF_OpenNewWindow(L["Loot"])
 	FCF_SetLocked(ChatFrame5, 1)
 	FCF_DockFrame(ChatFrame5)
 	ChatFrame5:Show()
 
 	-- General
 	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
-	ChatFrame_RemoveChannel(ChatFrame1, TRADE)
-	ChatFrame_RemoveChannel(ChatFrame1, GENERAL)
+	ChatFrame_RemoveChannel(ChatFrame1, L["Trade"])
+	ChatFrame_RemoveChannel(ChatFrame1, L["General"])
 	ChatFrame_RemoveChannel(ChatFrame1, "LocalDefense")
 	ChatFrame_RemoveChannel(ChatFrame1, "GuildRecruitment")
 	ChatFrame_RemoveChannel(ChatFrame1, "LookingForGroup")
@@ -479,8 +479,8 @@ function Module:Install()
 
 	-- Trade
 	ChatFrame_RemoveAllMessageGroups(ChatFrame4)
-	ChatFrame_AddChannel(ChatFrame4, TRADE)
-	ChatFrame_AddChannel(ChatFrame4, GENERAL)
+	ChatFrame_AddChannel(ChatFrame4, L["Trade"])
+	ChatFrame_AddChannel(ChatFrame4, L["General"])
 
 	-- Loot
 	ChatFrame_RemoveAllMessageGroups(ChatFrame5)

@@ -622,6 +622,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Show Helm/Cloak Buttons On Character Frame",
 		},
 
+		["ShowWowHeadLinks"] = {
+			["Name"] = "Show Wowhead Links Above Questlog Frame",
+		},
+
 		["SlotDurability"] = {
 			["Name"] = "Show Slot Durability %",
 		},

@@ -1,6 +1,9 @@
 local K, C = unpack(select(2, ...))
 if C["Misc"].EnhancedFriends ~= true then return end
 
+local oUF = oUF or K.oUF
+assert(oUF, "KkthnxUI was unable to locate oUF.")
+
 -- Sourced: yClassColors (yleaf)
 -- Edited: KkthnxUI (Kkthnx)
 

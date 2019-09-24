@@ -1,5 +1,11 @@
 local K, _, L = unpack(select(2, ...))
 
+
+L["General"] = "General"
+L["Combat"] = "Combat"
+L["Whisper"] = "Whisper"
+L["Trade"] = "Trade"
+L["Loot"] = "Loot"
 L["%s to dismount."] = "%s to dismount."
 L["%s to leave the vehicle."] = "%s to leave the vehicle."
 L["AP"] = "AP:"
