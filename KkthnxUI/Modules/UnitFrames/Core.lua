@@ -1243,12 +1243,12 @@ function Module:CreateStyle(unit)
 		Module.CreateTargetOfTarget(self)
 	elseif (unit == "pet") then
 		Module.CreatePet(self)
-	elseif (unit == "focus") then
-		Module.CreateFocus(self)
-	elseif (unit == "focustarget") then
-		Module.CreateFocusTarget(self)
-	elseif string_find(unit, "arena%d") then
-		--Module.CreateArena(self)
+	-- elseif (unit == "focus") then
+	-- 	Module.CreateFocus(self)
+	-- elseif (unit == "focustarget") then
+	-- 	Module.CreateFocusTarget(self)
+	-- elseif string_find(unit, "arena%d") then
+		-- Module.CreateArena(self)
 	elseif string_find(unit, "boss%d") then
 		Module.CreateBoss(self)
 	elseif (string_find(unit, "raid") or string_find(unit, "maintank")) then

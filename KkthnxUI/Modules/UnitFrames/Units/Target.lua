@@ -138,7 +138,7 @@ function Module:CreateTarget()
 		self.Auras.gap = false
 		self.Auras:SetWidth(156)
 		self.Auras:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -6)
-		self.Auras.num = 5 * 4
+		self.Auras.num = 6 * 4
 		self.Auras.spacing = 6
 		self.Auras.size = ((((self.Auras:GetWidth() - (self.Auras.spacing * (self.Auras.num / 4 - 1))) / self.Auras.num)) * 4)
 		self.Auras:SetHeight(self.Auras.size * 4)
