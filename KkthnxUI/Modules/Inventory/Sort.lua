@@ -1,4 +1,19 @@
 local K, C, L = unpack(select(2, ...))
+if C["Inventory"].Enable ~= true then
+	return
+end
+ -- There is a conflict with AdiBags somewhere this should temp resolve it.
+if IsAddOnLoaded("AdiBags")
+or IsAddOnLoaded("ArkInventory")
+or IsAddOnLoaded("cargBags_Nivaya")
+or IsAddOnLoaded("cargBags")
+or IsAddOnLoaded("Bagnon")
+or IsAddOnLoaded("Combuctor")
+or IsAddOnLoaded("TBag")
+or IsAddOnLoaded("BaudBag")
+or C["Inventory"].Enable ~= true then
+	return
+end
 
 local _G = _G
 local table_insert = _G.table.insert
