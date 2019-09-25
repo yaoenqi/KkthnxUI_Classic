@@ -247,6 +247,14 @@ local function Stuffing_Toggle()
 	end
 end
 
+local function Stuffing_ToggleBag(id)
+	if id == -2 then
+		ToggleKeyRing()
+		return
+	end
+	Stuffing_Toggle()
+end
+
 -- Bag slot stuff
 local trashButton = {}
 local trashBag = {}
@@ -362,8 +370,6 @@ function Stuffing:SlotUpdate(b)
 
 		battlePayTexture:SetSize(b.frame:GetSize())
 		newItemTexture:SetSize(b.frame:GetSize())
-	else
-		C_NewItems.RemoveNewItem(b.bag, b.slot)
 	end
 
 	local questTexture = _G[b.frame:GetName() .. "IconQuestTexture"]
@@ -850,14 +856,13 @@ function Stuffing:CreateBagFrame(w)
 		f.sortButton:SetScript("OnLeave", Stuffing_TooltipHide)
 		f.sortButton:SetScript("OnMouseUp", function()
 			if InCombatLockdown() then
-				K.Print("You cannot sort your bag in combat")
+				UIErrorsFrame:AddMessage(K.InfoColor.._G.ERR_NOT_IN_COMBAT)
 
 				return
 			end
 
-			if Stuffing.frame:IsShown() then
-				SetSortBagsRightToLeft(C["Inventory"].SortInverted)
-				SortBankBags()
+			if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
+				Stuffing:SortBags()
 			end
 		end)
 
@@ -1156,19 +1161,23 @@ function Stuffing:InitBags()
 	f.sortButton:GetDisabledTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
 	f.sortButton:GetDisabledTexture():SetAllPoints()
 	f.sortButton:GetDisabledTexture():SetDesaturated(1)
-	f.sortButton.ttText = _G.BAG_FILTER_CLEANUP
+	f.sortButton.ttText = "|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:218:318|t "..L["Left Click"].." Sort|n|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:321:421|t "..L["Right Click"].." Stack"
 	f.sortButton:SetScript("OnEnter", Stuffing_TooltipShow)
 	f.sortButton:SetScript("OnLeave", Stuffing_TooltipHide)
-	f.sortButton:SetScript("OnMouseUp", function()
+	f.sortButton:SetScript("OnMouseUp", function(_, btn)
 		if InCombatLockdown() then
-			K.Print("You cannot sort your bag in combat")
+			UIErrorsFrame:AddMessage(K.InfoColor.._G.ERR_NOT_IN_COMBAT)
 
 			return
 		end
 
 		if Stuffing.frame:IsShown() then
-			SetSortBagsRightToLeft(C["Inventory"].SortInverted)
-			SortBags()
+			if btn == "LeftButton" then
+				Stuffing:SortBags()
+			elseif btn == "RightButton" then
+				Stuffing:SetBagsForSorting("d")
+				Stuffing:Restack()
+			end
 		end
 	end)
 
@@ -1379,6 +1388,44 @@ function Stuffing:Layout(isBank)
 	end
 end
 
+function Stuffing:SetBagsForSorting(c)
+	Stuffing_Open()
+
+	self.sortBags = {}
+
+	local cmd = ((c == nil or c == "") and {"d"} or {strsplit("/", c)})
+
+	for _, s in ipairs(cmd) do
+		if s == "c" then
+			self.sortBags = {}
+		elseif s == "d" then
+			if not self.bankFrame or not self.bankFrame:IsShown() then
+				for _, i in ipairs(BAGS_BACKPACK) do
+					if self.bags[i] and self.bags[i].bagType == ST_NORMAL then
+						table.insert(self.sortBags, i)
+					end
+				end
+			end
+		elseif s == "p" then
+			if not self.bankFrame or not self.bankFrame:IsShown() then
+				for _, i in ipairs(BAGS_BACKPACK) do
+					if self.bags[i] and self.bags[i].bagType == ST_SPECIAL then
+						table.insert(self.sortBags, i)
+					end
+				end
+			else
+				for _, i in ipairs(BAGS_BANK) do
+					if self.bags[i] and self.bags[i].bagType == ST_SPECIAL then
+						table.insert(self.sortBags, i)
+					end
+				end
+			end
+		else
+			table.insert(self.sortBags, tonumber(s))
+		end
+	end
+end
+
 function Stuffing:ADDON_LOADED(addon)
 	if addon ~= "KkthnxUI" then
 		return nil
@@ -1398,12 +1445,14 @@ function Stuffing:ADDON_LOADED(addon)
 	table_insert(UISpecialFrames, "StuffingFrameBags")
 
 	ToggleBackpack = Stuffing_Toggle
-	ToggleBag = Stuffing_Toggle
+	ToggleBag = Stuffing_ToggleBag
 	ToggleAllBags = Stuffing_Toggle
 	OpenAllBags = Stuffing_Open
 	OpenBackpack = Stuffing_Open
 	CloseAllBags = Stuffing_Close
 	CloseBackpack = Stuffing_Close
+
+	SetInsertItemsLeftToRight(false)
 
 	BankFrame:UnregisterAllEvents()
 	BankFrame:SetScale(0.00001)
@@ -1533,14 +1582,218 @@ function Stuffing:BAG_UPDATE_COOLDOWN()
 	end
 end
 
-function Stuffing:SCRAPPING_MACHINE_SHOW()
-	for i = 0, #BAGS_BACKPACK - 1 do
-		Stuffing:BAG_UPDATE(i)
+local function InBags(x)
+	if not Stuffing.bags[x] then
+		return false
+	end
+
+	for _, v in ipairs(Stuffing.sortBags) do
+		if x == v then
+			return true
+		end
+	end
+	return false
+end
+
+local BS_bagGroups
+local BS_itemSwapGrid
+local function BS_clearData()
+	BS_itemSwapGrid = {}
+	BS_bagGroups = {}
+end
+
+function Stuffing:SortOnUpdate(elapsed)
+	self.elapsed = (self.elapsed or 0) + elapsed
+
+	if self.elapsed < 0.05 then
+		return
+	end
+
+	self.elapsed = 0
+
+	local changed = false
+	local blocked = false
+
+	for bagIndex in pairs(BS_itemSwapGrid) do
+		for slotIndex in pairs(BS_itemSwapGrid[bagIndex]) do
+			local destinationBag = BS_itemSwapGrid[bagIndex][slotIndex].destinationBag
+			local destinationSlot = BS_itemSwapGrid[bagIndex][slotIndex].destinationSlot
+
+			local _, _, locked1 = GetContainerItemInfo(bagIndex, slotIndex)
+			local _, _, locked2 = GetContainerItemInfo(destinationBag, destinationSlot)
+
+			if locked1 or locked2 then
+				blocked = true
+			elseif bagIndex ~= destinationBag or slotIndex ~= destinationSlot then
+				PickupContainerItem(bagIndex, slotIndex)
+				PickupContainerItem(destinationBag, destinationSlot)
+
+				local tempItem = BS_itemSwapGrid[destinationBag][destinationSlot]
+				BS_itemSwapGrid[destinationBag][destinationSlot] = BS_itemSwapGrid[bagIndex][slotIndex]
+				BS_itemSwapGrid[bagIndex][slotIndex] = tempItem
+
+				changed = true
+				return
+			end
+		end
+	end
+
+	if not changed and not blocked then
+		self:SetScript("OnUpdate", nil)
+		BS_clearData()
 	end
 end
 
--- Kill Blizzard Functions
-LootWonAlertFrame_OnClick = K.Noop
-LootUpgradeFrame_OnClick = K.Noop
-StorePurchaseAlertFrame_OnClick = K.Noop
-LegendaryItemAlertFrame_OnClick = K.Noop
+function Stuffing:SortBags()
+	BS_clearData()
+
+	local bagList
+	if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
+		bagList = {10, 9, 8, 7, 6, 5, -1}
+	else
+		bagList = {4, 3, 2, 1, 0}
+	end
+
+	for _, slotNum in pairs(bagList) do
+		if GetContainerNumSlots(slotNum) > 0 then
+			BS_itemSwapGrid[slotNum] = {}
+			local family = select(2, GetContainerNumFreeSlots(slotNum))
+			if family then
+				if family == 0 then family = "Default" end
+				if not BS_bagGroups[family] then
+					BS_bagGroups[family] = {}
+					BS_bagGroups[family].bagSlotNumbers = {}
+				end
+				table.insert(BS_bagGroups[family].bagSlotNumbers, slotNum)
+			end
+		end
+	end
+
+	for _, group in pairs(BS_bagGroups) do
+		group.itemList = {}
+		for _, bagSlot in pairs(group.bagSlotNumbers) do
+			for itemSlot = 1, GetContainerNumSlots(bagSlot) do
+
+				local itemLink = GetContainerItemLink(bagSlot, itemSlot)
+				if itemLink ~= nil then
+
+					local newItem = {}
+
+					local n, _, q, iL, rL, c1, c2, _, Sl = GetItemInfo(itemLink)
+					-- Hearthstone
+					if n == GetItemInfo(6948) or n == GetItemInfo(110560) or n == GetItemInfo(140192) then
+						q = 9
+					end
+					-- Fix for battle pets
+					if not n then
+						n = itemLink
+						q = select(4, GetContainerItemInfo(bagSlot, itemSlot))
+						iL = 1
+						rL = 1
+						c1 = "Pet"
+						c2 = "Pet"
+						Sl = ""
+					end
+
+					newItem.sort = q..c1..c2..rL..n..iL..Sl
+
+					tinsert(group.itemList, newItem)
+
+					BS_itemSwapGrid[bagSlot][itemSlot] = newItem
+					newItem.startBag = bagSlot
+					newItem.startSlot = itemSlot
+				end
+			end
+		end
+
+		table.sort(group.itemList, function(a, b)
+			return a.sort > b.sort
+		end)
+
+		for index, item in pairs(group.itemList) do
+			local gridSlot = index
+			for _, bagSlotNumber in pairs(group.bagSlotNumbers) do
+				if gridSlot <= GetContainerNumSlots(bagSlotNumber) then
+					BS_itemSwapGrid[item.startBag][item.startSlot].destinationBag = bagSlotNumber
+					BS_itemSwapGrid[item.startBag][item.startSlot].destinationSlot = GetContainerNumSlots(bagSlotNumber) - gridSlot + 1
+					break
+				else
+					gridSlot = gridSlot - GetContainerNumSlots(bagSlotNumber)
+				end
+			end
+		end
+	end
+
+	self:SetScript("OnUpdate", Stuffing.SortOnUpdate)
+end
+
+function Stuffing:RestackOnUpdate(e)
+	if not self.elapsed then
+		self.elapsed = 0
+	end
+
+	self.elapsed = self.elapsed + e
+
+	if self.elapsed < 0.1 then
+		return
+	end
+
+	self.elapsed = 0
+	self:Restack()
+end
+
+function Stuffing:Restack()
+	local st = {}
+
+	Stuffing_Open()
+
+	for _, v in pairs(self.buttons) do
+		if InBags(v.bag) then
+			local _, cnt, _, _, _, _, clink = GetContainerItemInfo(v.bag, v.slot)
+			if clink then
+				local n, _, _, _, _, _, _, s = GetItemInfo(clink)
+
+				if n and cnt ~= s then
+					if not st[clink] then
+						st[clink] = {{item = v, size = cnt, max = s}}
+					else
+						table.insert(st[clink], {item = v, size = cnt, max = s})
+					end
+				end
+			end
+		end
+	end
+
+	local did_restack = false
+	for _, v in pairs(st) do
+		if #v > 1 then
+			for j = 2, #v, 2 do
+				local a, b = v[j - 1], v[j]
+				local _, _, l1 = GetContainerItemInfo(a.item.bag, a.item.slot)
+				local _, _, l2 = GetContainerItemInfo(b.item.bag, b.item.slot)
+
+				if l1 or l2 then
+					did_restack = true
+				else
+					PickupContainerItem(a.item.bag, a.item.slot)
+					PickupContainerItem(b.item.bag, b.item.slot)
+					did_restack = true
+				end
+			end
+		end
+	end
+
+	if did_restack then
+		self:SetScript("OnUpdate", Stuffing.RestackOnUpdate)
+	else
+		self:SetScript("OnUpdate", nil)
+	end
+end
+
+do
+	-- Kill Blizzard Functions
+	LootWonAlertFrame_OnClick = K.Noop
+	LootUpgradeFrame_OnClick = K.Noop
+	StorePurchaseAlertFrame_OnClick = K.Noop
+	LegendaryItemAlertFrame_OnClick = K.Noop
+end

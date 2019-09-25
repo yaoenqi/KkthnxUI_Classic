@@ -247,14 +247,6 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Show New Item Glow",
 		},
 
-		["ReverseLoot"] = {
-			["Name"] = REVERSE_NEW_LOOT_TEXT,
-		},
-
-		["SortInverted"] = {
-			["Name"] = "Use Inverted Sorting",
-		},
-
 		["AutoRepair"] = {
 			["Name"] = "Auto Repair Gear",
 		},
