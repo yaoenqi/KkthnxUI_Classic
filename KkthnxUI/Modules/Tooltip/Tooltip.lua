@@ -478,9 +478,11 @@ function Module:OnEnable()
 	hooksecurefunc("GameTooltip_SetBackdropStyle", self.GameTooltip_SetBackdropStyle)
 
 	-- Battlenet toast frame
+	BNToastFrame:SetClampedToScreen(true)
 	BNToastFrame:CreateBorder(nil, nil, nil, true)
-	BNToastFrame.TooltipFrame:CreateBorder(nil, nil, nil, true) -- ??
 	BNToastFrame.CloseButton:SkinCloseButton()
+	BNToastFrame.CloseButton:SetSize(32, 32)
+	BNToastFrame.CloseButton:SetPoint("TOPRIGHT", 4, 4)
 
 	-- Elements
 	self:CreateTargetedInfo()

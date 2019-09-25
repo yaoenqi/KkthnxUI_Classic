@@ -123,7 +123,7 @@ function Install:Step1()
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue("SHIFT")
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 
-	UIErrorsFrame:AddMessage(L["CVars Installed"], K.Color.r, K.Color.g, K.Color.b, 53, 2)
+	UIErrorsFrame:AddMessage(L["CVars Installed"], K.r, K.g, K.b, 53, 2)
 
 	self:Hide()
 end
@@ -138,7 +138,7 @@ function Install:Step2()
 	Chat:Install()
 	Chat:SetDefaultChatFramesPositions()
 
-	UIErrorsFrame:AddMessage(L["Chat Installed"], K.Color.r, K.Color.g, K.Color.b, 53, 2)
+	UIErrorsFrame:AddMessage(L["Chat Installed"], K.r, K.g, K.b, 53, 2)
 
 	self:Hide()
 end
@@ -148,7 +148,7 @@ function Install:Step3()
 	_G.KkthnxUIData[GetRealmName()][UnitName("player")].LockUIScale = true
 	SetupUIScale()
 
-	UIErrorsFrame:AddMessage("UI Scale Applied", K.Color.r, K.Color.g, K.Color.b, 53, 2)
+	UIErrorsFrame:AddMessage("UI Scale Applied", K.r, K.g, K.b, 53, 2)
 
 	self:Hide()
 end
@@ -350,7 +350,7 @@ function Install:Launch()
 	self.SkipButton.Text = self.SkipButton:CreateFontString(nil, "OVERLAY")
 	self.SkipButton.Text:SetFontObject(InstallFont)
 	self.SkipButton.Text:SetPoint("CENTER")
-	self.SkipButton.Text:SetText(format("|cff%02x%02x%02x%s|r", K.Color.r * 255, K.Color.g * 255, K.Color.b * 255, L["Skip Install"]))
+	self.SkipButton.Text:SetText(K.MyClassColor..L["Skip Install"])
 	self.SkipButton:SetScript("OnClick", function()
 		_G.KkthnxUIData[GetRealmName()][UnitName("player")].InstallComplete = true
 		PlaySound(6916) -- VO_PCGoblinMale_Cry

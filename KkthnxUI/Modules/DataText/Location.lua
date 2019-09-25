@@ -50,7 +50,8 @@ info.onEvent = function(self)
 	local r, g, b = unpack(zoneInfo[pvpType][2])
 	self.text:SetText((subzone ~= "") and subzone or zone)
 	self.text:SetTextColor(r, g, b)
-	self.text:SetWidth(Minimap:GetWidth() - 36)
+	self.text:SetJustifyH("CENTER")
+	self.text:SetJustifyV("MIDDLE")
 end
 
 info.onEnter = function(self)

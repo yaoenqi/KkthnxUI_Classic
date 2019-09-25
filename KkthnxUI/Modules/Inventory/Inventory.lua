@@ -354,7 +354,6 @@ function Stuffing:SlotUpdate(b)
 		else
 			newItemTexture:Hide()
 			battlePayTexture:Hide()
-			C_NewItems.RemoveNewItem(b.bag, b.slot)
 			if flashAnim:IsPlaying() or newItemAnim:IsPlaying() then
 				flashAnim:Stop()
 				newItemAnim:Stop()
@@ -363,6 +362,8 @@ function Stuffing:SlotUpdate(b)
 
 		battlePayTexture:SetSize(b.frame:GetSize())
 		newItemTexture:SetSize(b.frame:GetSize())
+	else
+		C_NewItems.RemoveNewItem(b.bag, b.slot)
 	end
 
 	local questTexture = _G[b.frame:GetName() .. "IconQuestTexture"]
