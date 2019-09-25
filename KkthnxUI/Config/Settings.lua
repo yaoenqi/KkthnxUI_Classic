@@ -29,6 +29,13 @@ C["ActionBar"] = {
 	["OverrideWA"] = false,
 	["RightButtonSize"] = 34,
 	["StancePetSize"] = 28,
+	["Layout"] = {
+		["Options"] = {
+			["Mainbar 3x12"] = "Default Style",
+			["Mainbar 4x6"] = "Four Stacked",
+		},
+		["Value"] = "Default Style"
+	},
 }
 
 -- Announcements

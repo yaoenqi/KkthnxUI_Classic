@@ -180,117 +180,179 @@ K.DebuffsTracking["CCDebuffs"] = {
 
 -- Raid Buffs (Squared Aura Tracking List)
 K.RaidBuffsTracking = {
-	-- PRIEST = {
-	-- 	[1243] = ClassBuff(1243, "TOPLEFT", {1, 1, 0.66}), --Power Word: Fortitude Rank 1
-	-- 	[1244] = ClassBuff(1244, "TOPLEFT", {1, 1, 0.66}), --Power Word: Fortitude Rank 2
-	-- 	[1245] = ClassBuff(1245, "TOPLEFT", {1, 1, 0.66}), --Power Word: Fortitude Rank 3
-	-- 	[2791] = ClassBuff(2791, "TOPLEFT", {1, 1, 0.66}), --Power Word: Fortitude Rank 4
-	-- 	[10937] = ClassBuff(10937, "TOPLEFT", {1, 1, 0.66}), --Power Word: Fortitude Rank 5
-	-- 	[10938] = ClassBuff(10938, "TOPLEFT", {1, 1, 0.66}), --Power Word: Fortitude Rank 6
-	-- 	[21562] = ClassBuff(21562, "TOPLEFT", {1, 1, 0.66}), --Prayer of Fortitude Rank 1
-	-- 	[21564] = ClassBuff(21564, "TOPLEFT", {1, 1, 0.66}), --Prayer of Fortitude Rank 2
-	-- 	[14752] = ClassBuff(14752, "TOPRIGHT", {0.2, 0.7, 0.2}), --Divine Spirit Rank 1
-	-- 	[14818] = ClassBuff(14818, "TOPRIGHT", {0.2, 0.7, 0.2}), --Divine Spirit Rank 2
-	-- 	[14819] = ClassBuff(14819, "TOPRIGHT", {0.2, 0.7, 0.2}), --Divine Spirit Rank 3
-	-- 	[27841] = ClassBuff(27841, "TOPRIGHT", {0.2, 0.7, 0.2}), --Divine Spirit Rank 4
-	-- 	[27581] = ClassBuff(27581, "TOPRIGHT", {0.2, 0.7, 0.2}), --Prayer of Spirit Rank 1
-	-- 	[976] = ClassBuff(976, "BOTTOMLEFT", {0.7, 0.7, 0.7}), --Shadow Protection Rank 1
-	-- 	[10957] = ClassBuff(10957, "BOTTOMLEFT", {0.7, 0.7, 0.7}), --Shadow Protection Rank 2
-	-- 	[10958] = ClassBuff(10958, "BOTTOMLEFT", {0.7, 0.7, 0.7}), --Shadow Protection Rank 3
-	-- 	[27683] = ClassBuff(27683, "BOTTOMLEFT", {0.7, 0.7, 0.7}), --Prayer of Shadow Protection Rank 1
-	-- },
-	-- DRUID = {
-	-- 	[1126] = ClassBuff(1126, "TOPLEFT", {0.2, 0.8, 0.8}), --Mark of the Wild Rank 1
-	-- 	[5232] = ClassBuff(5232, "TOPLEFT", {0.2, 0.8, 0.8}), --Mark of the Wild Rank 2
-	-- 	[6756] = ClassBuff(6756, "TOPLEFT", {0.2, 0.8, 0.8}), --Mark of the Wild Rank 3
-	-- 	[5234] = ClassBuff(5234, "TOPLEFT", {0.2, 0.8, 0.8}), --Mark of the Wild Rank 4
-	-- 	[8907] = ClassBuff(8907, "TOPLEFT", {0.2, 0.8, 0.8}), --Mark of the Wild Rank 5
-	-- 	[9884] = ClassBuff(9884, "TOPLEFT", {0.2, 0.8, 0.8}), --Mark of the Wild Rank 6
-	-- 	[16878] = ClassBuff(16878, "TOPLEFT", {0.2, 0.8, 0.8}), --Mark of the Wild Rank 7
-	-- 	[21849] = ClassBuff(21849, "TOPLEFT", {0.2, 0.8, 0.8}), --Gift of the Wild Rank 1
-	-- 	[21850] = ClassBuff(21850, "TOPLEFT", {0.2, 0.8, 0.8}), --Gift of the Wild Rank 2
-	-- 	[467] = ClassBuff(467, "TOPRIGHT", {0.4, 0.2, 0.8}), --Thorns Rank 1
-	-- 	[782] = ClassBuff(782, "TOPRIGHT", {0.4, 0.2, 0.8}), --Thorns Rank 2
-	-- 	[1075] = ClassBuff(1075, "TOPRIGHT", {0.4, 0.2, 0.8}), --Thorns Rank 3
-	-- 	[8914] = ClassBuff(8914, "TOPRIGHT", {0.4, 0.2, 0.8}), --Thorns Rank 4
-	-- 	[9756] = ClassBuff(9756, "TOPRIGHT", {0.4, 0.2, 0.8}), --Thorns Rank 5
-	-- 	[9910] = ClassBuff(9910, "TOPRIGHT", {0.4, 0.2, 0.8}), --Thorns Rank 6
-	-- },
-	-- PALADIN = {
-	-- 	[1044] = ClassBuff(1044, "CENTER", {0.89, 0.45, 0}), --Blessing of Freedom
-	-- 	[6940] = ClassBuff(6940, "CENTER", {0.89, 0.1, 0.1}), --Blessing Sacrifice Rank 1
-	-- 	[20729] = ClassBuff(20729, "CENTER", {0.89, 0.1, 0.1}), --Blessing Sacrifice Rank 2
-	-- 	[19740] = ClassBuff(19740, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Might Rank 1
-	-- 	[19834] = ClassBuff(19834, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Might Rank 2
-	-- 	[19835] = ClassBuff(19835, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Might Rank 3
-	-- 	[19836] = ClassBuff(19836, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Might Rank 4
-	-- 	[19837] = ClassBuff(19837, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Might Rank 5
-	-- 	[19838] = ClassBuff(19838, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Might Rank 6
-	-- 	[25291] = ClassBuff(25291, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Might Rank 7
-	-- 	[19742] = ClassBuff(19742, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Wisdom Rank 1
-	-- 	[19850] = ClassBuff(19850, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Wisdom Rank 2
-	-- 	[19852] = ClassBuff(19852, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Wisdom Rank 3
-	-- 	[19853] = ClassBuff(19853, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Wisdom Rank 4
-	-- 	[19854] = ClassBuff(19854, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Wisdom Rank 5
-	-- 	[25290] = ClassBuff(25290, "TOPLEFT", {0.2, 0.8, 0.2}), --Blessing of Wisdom Rank 6
-	-- 	[25782] = ClassBuff(25782, "TOPLEFT", {0.2, 0.8, 0.2}), --Greater Blessing of Might Rank 1
-	-- 	[25916] = ClassBuff(25916, "TOPLEFT", {0.2, 0.8, 0.2}), --Greater Blessing of Might Rank 2
-	-- 	[25894] = ClassBuff(25894, "TOPLEFT", {0.2, 0.8, 0.2}), --Greater Blessing of Wisdom Rank 1
-	-- 	[25918] = ClassBuff(25918, "TOPLEFT", {0.2, 0.8, 0.2}), --Greater Blessing of Wisdom Rank 2
-	-- },
-	-- SHAMAN = {
-	-- 	[29203] = ClassBuff(29203, "TOPLEFT", {0.7, 0.3, 0.7}), --Healing Way
-	-- 	[16237] = ClassBuff(16237, "TOPRIGHT", {0.2, 0.2, 1}), --Ancestral Fortitude
-	-- },
-	-- WARRIOR = {
-	-- 	[6673] = ClassBuff(6673, "TOPLEFT", {0.2, 0.2, 1}), --Battle Shout Rank 1
-	-- 	[5242] = ClassBuff(5242, "TOPLEFT", {0.2, 0.2, 1}), --Battle Shout Rank 2
-	-- 	[6192] = ClassBuff(6192, "TOPLEFT", {0.2, 0.2, 1}), --Battle Shout Rank 3
-	-- 	[11549] = ClassBuff(11549, "TOPLEFT", {0.2, 0.2, 1}), --Battle Shout Rank 4
-	-- 	[11550] = ClassBuff(11550, "TOPLEFT", {0.2, 0.2, 1}), --Battle Shout Rank 5
-	-- 	[11551] = ClassBuff(11551, "TOPLEFT", {0.2, 0.2, 1}), --Battle Shout Rank 6
-	-- 	[25289] = ClassBuff(25289, "TOPLEFT", {0.2, 0.2, 1}), --Battle Shout Rank 7
-	-- },
-	-- MAGE = {
-	-- 	[1459] = ClassBuff(1459, "TOPLEFT", {0.89, 0.09, 0.05}), --Arcane Intellect Rank 1
-	-- 	[1460] = ClassBuff(1460, "TOPLEFT", {0.89, 0.09, 0.05}), --Arcane Intellect Rank 2
-	-- 	[1461] = ClassBuff(1461, "TOPLEFT", {0.89, 0.09, 0.05}), --Arcane Intellect Rank 3
-	-- 	[10156] = ClassBuff(10156, "TOPLEFT", {0.89, 0.09, 0.05}), --Arcane Intellect Rank 4
-	-- 	[10157] = ClassBuff(10157, "TOPLEFT", {0.89, 0.09, 0.05}), --Arcane Intellect Rank 5
-	-- 	[23028] = ClassBuff(23028, "TOPLEFT", {0.89, 0.09, 0.05}), --Arcane Brilliance Rank 1
-	-- 	[27127] = ClassBuff(27127, "TOPLEFT", {0.89, 0.09, 0.05}), --Arcane Brilliance Rank 2
-	-- 	[604] = ClassBuff(604, "TOPRIGHT", {0.2, 0.8, 0.2}), --Dampen Magic Rank 1
-	-- 	[8450] = ClassBuff(8450, "TOPRIGHT", {0.2, 0.8, 0.2}), --Dampen Magic Rank 2
-	-- 	[8451] = ClassBuff(8451, "TOPRIGHT", {0.2, 0.8, 0.2}), --Dampen Magic Rank 3
-	-- 	[10173] = ClassBuff(10173, "TOPRIGHT", {0.2, 0.8, 0.2}), --Dampen Magic Rank 4
-	-- 	[10174] = ClassBuff(10174, "TOPRIGHT", {0.2, 0.8, 0.2}), --Dampen Magic Rank 5
-	-- 	[1008] = ClassBuff(1008, "TOPRIGHT", {0.2, 0.8, 0.2}), --Amplify Magic Rank 1
-	-- 	[8455] = ClassBuff(8455, "TOPRIGHT", {0.2, 0.8, 0.2}), --Amplify Magic Rank 2
-	-- 	[10169] = ClassBuff(10169, "TOPRIGHT", {0.2, 0.8, 0.2}), --Amplify Magic Rank 3
-	-- 	[10170] = ClassBuff(10170, "TOPRIGHT", {0.2, 0.8, 0.2}), --Amplify Magic Rank 4
-	-- },
-	-- HUNTER = {
-	-- 	[19506] = ClassBuff(19506, "TOPLEFT", {0.89, 0.09, 0.05}), --Trueshot Aura Rank 1
-	-- 	[20905] = ClassBuff(20905, "TOPLEFT", {0.89, 0.09, 0.05}), --Trueshot Aura Rank 2
-	-- 	[20906] = ClassBuff(20906, "TOPLEFT", {0.89, 0.09, 0.05}), --Trueshot Aura Rank 3
-	-- },
-	-- WARLOCK = {
-	-- 	[5597] = ClassBuff(5597, "TOPLEFT", {0.89, 0.09, 0.05}), --Unending Breath
-	-- 	[6512] = ClassBuff(6512, "TOPRIGHT", {0.2, 0.8, 0.2}), --Detect Lesser Invisibility
-	-- 	[2970] = ClassBuff(2970, "TOPRIGHT", {0.2, 0.8, 0.2}), --Detect Invisibility
-	-- 	[11743] = ClassBuff(11743, "TOPRIGHT", {0.2, 0.8, 0.2}), --Detect Greater Invisibility
-	-- },
-	-- PET = {
-	-- 	--Warlock Imp
-	-- 	[6307] = ClassBuff(6307, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact Rank 1
-	-- 	[7804] = ClassBuff(7804, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact Rank 2
-	-- 	[7805] = ClassBuff(7805, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact Rank 3
-	-- 	[11766] = ClassBuff(11766, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact Rank 4
-	-- 	[11767] = ClassBuff(11767, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact Rank 5
-	-- 	--Warlock Felhunter
-	-- 	[19480] = ClassBuff(19480, "BOTTOMLEFT", {0.2, 0.8, 0.2}), --Paranoia
-	-- },
-	-- ROGUE = {}, --No buffs
+	PRIEST = {
+		{10898, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 7)
+		{10899, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 8)
+		{10900, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 9)
+		{10901, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 10)
+		{10927, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 7)
+		{10928, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 8)
+		{10929, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 9)
+		{10937, "TOPLEFT", {1, 1, 0.66}}, --Power Word: Fortitude (Rank 5)
+		{10938, "TOPLEFT", {1, 1, 0.66}}, --Power Word: Fortitude (Rank 6)
+		{10957, "BOTTOMLEFT", {0.7, 0.7, 0.7}}, --Shadow Protection (Rank 2)
+		{10958, "BOTTOMLEFT", {0.7, 0.7, 0.7}}, --Shadow Protection (Rank 3)
+		{1243, "TOPLEFT", {1, 1, 0.66}}, --Power Word: Fortitude (Rank 1)
+		{1244, "TOPLEFT", {1, 1, 0.66}}, --Power Word: Fortitude (Rank 2)
+		{1245, "TOPLEFT", {1, 1, 0.66}}, --Power Word: Fortitude (Rank 3)
+		{139, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 1)
+		{14752, "TOPRIGHT", {0.2, 0.7, 0.2}}, --Divine Spirit (Rank 1)
+		{14818, "TOPRIGHT", {0.2, 0.7, 0.2}}, --Divine Spirit (Rank 2)
+		{14819, "TOPRIGHT", {0.2, 0.7, 0.2}}, --Divine Spirit (Rank 3)
+		{17, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 1)
+		{21562, "TOPLEFT", {1, 1, 0.66}}, --Prayer of Fortitude (Rank 1)
+		{21564, "TOPLEFT", {1, 1, 0.66}}, --Prayer of Fortitude (Rank 2)
+		{25315, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 10)
+		{27581, "TOPRIGHT", {0.2, 0.7, 0.2}}, --Prayer of Spirit (Rank 1)
+		{27683, "BOTTOMLEFT", {0.7, 0.7, 0.7}}, --Prayer of Shadow Protection (Rank 1)
+		{27841, "TOPRIGHT", {0.2, 0.7, 0.2}}, --Divine Spirit (Rank 4)
+		{2791, "TOPLEFT", {1, 1, 0.66}}, --Power Word: Fortitude (Rank 4)
+		{3747, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 4)
+		{592, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 2)
+		{600, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 3)
+		{6065, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 5)
+		{6066, "BOTTOM", {0.00, 0.00, 1.00}}, --Power Word: Shield (Rank 6)
+		{6074, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 2)
+		{6075, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 3)
+		{6076, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 4)
+		{6077, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 5)
+		{6078, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Renew (Rank 6)
+		{976, "BOTTOMLEFT", {0.7, 0.7, 0.7}}, --Shadow Protection (Rank 1)
+	},
+	DRUID = {
+		{1058, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 2)
+		{1075, "TOPRIGHT", {0.4, 0.2, 0.8}}, --Thorns (Rank 3)
+		{1126, "TOPLEFT", {0.2, 0.8, 0.8}}, --Mark of the Wild (Rank 1)
+		{1430, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 3)
+		{16878, "TOPLEFT", {0.2, 0.8, 0.8}}, --Mark of the Wild (Rank 7)
+		{2090, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 4)
+		{2091, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 5)
+		{21849, "TOPLEFT", {0.2, 0.8, 0.8}}, --Gift of the Wild (Rank 1)
+		{21850, "TOPLEFT", {0.2, 0.8, 0.8}}, --Gift of the Wild (Rank 2)
+		{25299, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 11)
+		{3627, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 6)
+		{467, "TOPRIGHT", {0.4, 0.2, 0.8}}, --Thorns (Rank 1)
+		{5232, "TOPLEFT", {0.2, 0.8, 0.8}}, --Mark of the Wild (Rank 2)
+		{5234, "TOPLEFT", {0.2, 0.8, 0.8}}, --Mark of the Wild (Rank 4)
+		{6756, "TOPLEFT", {0.2, 0.8, 0.8}}, --Mark of the Wild (Rank 3)
+		{774, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 1)
+		{782, "TOPRIGHT", {0.4, 0.2, 0.8}}, --Thorns (Rank 2)
+		{8907, "TOPLEFT", {0.2, 0.8, 0.8}}, --Mark of the Wild (Rank 5)
+		{8910, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 7)
+		{8914, "TOPRIGHT", {0.4, 0.2, 0.8}}, --Thorns (Rank 4)
+		{8936, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Regrowth (Rank 1)
+		{8938, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Regrowth (Rank 2)
+		{8939, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Regrowth (Rank 3)
+		{8940, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Regrowth (Rank 4)
+		{8941, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Regrowth (Rank 5)
+		{9750, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Regrowth (Rank 6)
+		{9756, "TOPRIGHT", {0.4, 0.2, 0.8}}, --Thorns (Rank 5)
+		{9839, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 8)
+		{9840, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 9)
+		{9841, "BOTTOMLEFT", {0.83, 1.00, 0.25}}, --Rejuvenation (Rank 10)
+		{9856, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Regrowth (Rank 7)
+		{9857, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Regrowth (Rank 8)
+		{9858, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, --Regrowth (Rank 9)
+		{9884, "TOPLEFT", {0.2, 0.8, 0.8}}, --Mark of the Wild (Rank 6)
+		{9910, "TOPRIGHT", {0.4, 0.2, 0.8}}, --Thorns (Rank 6)
+	},
+	PALADIN = {
+		{1044, "CENTER", {0.89, 0.45, 0}}, --Blessing of Freedom
+		{19740, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Might (Rank 1)
+		{19742, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Wisdom (Rank 1)
+		{19834, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Might (Rank 2)
+		{19835, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Might (Rank 3)
+		{19836, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Might (Rank 4)
+		{19837, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Might (Rank 5)
+		{19838, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Might (Rank 6)
+		{19850, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Wisdom (Rank 2)
+		{19852, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Wisdom (Rank 3)
+		{19853, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Wisdom (Rank 4)
+		{19854, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Wisdom (Rank 5)
+		{20729, "CENTER", {0.89, 0.1, 0.1}}, --Blessing Sacrifice (Rank 2)
+		{25290, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Wisdom (Rank 6)
+		{25291, "TOPLEFT", {0.2, 0.8, 0.2}}, --Blessing of Might (Rank 7)
+		{25782, "TOPLEFT", {0.2, 0.8, 0.2}}, --Greater Blessing of Might (Rank 1)
+		{25894, "TOPLEFT", {0.2, 0.8, 0.2}}, --Greater Blessing of Wisdom (Rank 1)
+		{25916, "TOPLEFT", {0.2, 0.8, 0.2}}, --Greater Blessing of Might (Rank 2)
+		{25918, "TOPLEFT", {0.2, 0.8, 0.2}}, --Greater Blessing of Wisdom (Rank 2)
+		{6940, "CENTER", {0.89, 0.1, 0.1}}, --Blessing Sacrifice (Rank 1)
+	},
+	SHAMAN = {
+		{10460, "BOTTOM", {0.67, 1.00, 0.50}}, --Healing Stream Totem (Rank 4)
+		{10461, "BOTTOM", {0.67, 1.00, 0.50}}, --Healing Stream Totem (Rank 5)
+		{10476, "TOPLEFT", {0.54, 0.53, 0.79}}, --Frost Resistance Totem (Rank 2)
+		{10477, "TOPLEFT", {0.54, 0.53, 0.79}}, --Frost Resistance Totem (Rank 3)
+		{10491, "LEFT", {0.67, 1.00, 0.80}}, --Mana Spring Totem (Rank 2)
+		{10493, "LEFT", {0.67, 1.00, 0.80}}, --Mana Spring Totem (Rank 3)
+		{10494, "LEFT", {0.67, 1.00, 0.80}}, --Mana Spring Totem (Rank 4)
+		{10534, "TOPLEFT", {0.05, 1.00, 0.50}}, --Fire Resistance Totem (Rank 2)
+		{10535, "TOPLEFT", {0.05, 1.00, 0.50}}, --Fire Resistance Totem (Rank 3)
+		{10596, "TOPLEFT", {0.33, 1.00, 0.20}}, --Nature Resistance Totem (Rank 1)
+		{10598, "TOPLEFT", {0.33, 1.00, 0.20}}, --Nature Resistance Totem (Rank 2)
+		{10599, "TOPLEFT", {0.33, 1.00, 0.20}}, --Nature Resistance Totem (Rank 3)
+		{16191, "BOTTOMLEFT", {0.67, 1.00, 0.80}}, --Mana Tide Totem (Rank 1)
+		{16237, "RIGHT", {0.2, 0.2, 1}}, --Ancestral Fortitude
+		{17355, "BOTTOMLEFT", {0.67, 1.00, 0.80}}, --Mana Tide Totem (Rank 2)
+		{17360, "BOTTOMLEFT", {0.67, 1.00, 0.80}}, --Mana Tide Totem (Rank 3)
+		{25909, "TOP", {0.00, 0.00, 0.50}}, --Tranquil Air
+		{29203, "TOPRIGHT", {0.7, 0.3, 0.7}}, --Healing Way
+		{5672, "BOTTOM", {0.67, 1.00, 0.50}}, --Healing Stream Totem (Rank 1)
+		{5677, "LEFT", {0.67, 1.00, 0.80}}, --Mana Spring Totem (Rank 1)
+		{6371, "BOTTOM", {0.67, 1.00, 0.50}}, --Healing Stream Totem (Rank 2)
+		{6372, "BOTTOM", {0.67, 1.00, 0.50}}, --Healing Stream Totem (Rank 3)
+		{8182, "TOPLEFT", {0.54, 0.53, 0.79}}, --Frost Resistance Totem (Rank 1)
+		{8185, "TOPLEFT", {0.05, 1.00, 0.50}}, --Fire Resistance Totem (Rank 1)
+	},
+	WARRIOR = {
+		{11549, "TOPLEFT", {0.2, 0.2, 1}}, --Battle Shout (Rank 4)
+		{11550, "TOPLEFT", {0.2, 0.2, 1}}, --Battle Shout (Rank 5)
+		{11551, "TOPLEFT", {0.2, 0.2, 1}}, --Battle Shout (Rank 6)
+		{25289, "TOPLEFT", {0.2, 0.2, 1}}, --Battle Shout (Rank 7)
+		{5242, "TOPLEFT", {0.2, 0.2, 1}}, --Battle Shout (Rank 2)
+		{6192, "TOPLEFT", {0.2, 0.2, 1}}, --Battle Shout (Rank 3)
+		{6673, "TOPLEFT", {0.2, 0.2, 1}}, --Battle Shout (Rank 1)
+	},
+	MAGE = {
+		{1008, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Amplify Magic (Rank 1)
+		{10156, "TOPLEFT", {0.89, 0.09, 0.05}}, --Arcane Intellect (Rank 4)
+		{10157, "TOPLEFT", {0.89, 0.09, 0.05}}, --Arcane Intellect (Rank 5)
+		{10169, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Amplify Magic (Rank 3)
+		{10170, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Amplify Magic (Rank 4)
+		{10173, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Dampen Magic (Rank 4)
+		{10174, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Dampen Magic (Rank 5)
+		{12438, "CENTER", {0.00, 0.00, 0.50}}, --Slow Fall
+		{1459, "TOPLEFT", {0.89, 0.09, 0.05}}, --Arcane Intellect (Rank 1)
+		{1460, "TOPLEFT", {0.89, 0.09, 0.05}}, --Arcane Intellect (Rank 2)
+		{1461, "TOPLEFT", {0.89, 0.09, 0.05}}, --Arcane Intellect (Rank 3)
+		{23028, "TOPLEFT", {0.89, 0.09, 0.05}}, --Arcane Brilliance (Rank 1)
+		{27127, "TOPLEFT", {0.89, 0.09, 0.05}}, --Arcane Brilliance (Rank 2)
+		{604, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Dampen Magic (Rank 1)
+		{8450, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Dampen Magic (Rank 2)
+		{8451, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Dampen Magic (Rank 3)
+		{8455, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Amplify Magic (Rank 2)
+	},
+	HUNTER = {
+		{19506, "TOPLEFT", {0.89, 0.09, 0.05}}, --Trueshot Aura (Rank 1)
+		{20905, "TOPLEFT", {0.89, 0.09, 0.05}}, --Trueshot Aura (Rank 2)
+		{20906, "TOPLEFT", {0.89, 0.09, 0.05}}, --Trueshot Aura (Rank 3)
+	},
+	WARLOCK = {
+		{11743, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Detect Greater Invisibility
+		{2970, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Detect Invisibility
+		{5597, "TOPLEFT", {0.89, 0.09, 0.05}}, --Unending Breath
+		{6512, "TOPRIGHT", {0.2, 0.8, 0.2}}, --Detect Lesser Invisibility
+	},
+	PET = {
+		-- Warlock Imp
+		{11766, "BOTTOMLEFT", {0.89, 0.09, 0.05}}, --Blood Pact (Rank 4)
+		{11767, "BOTTOMLEFT", {0.89, 0.09, 0.05}}, --Blood Pact (Rank 5)
+		{6307, "BOTTOMLEFT", {0.89, 0.09, 0.05}}, --Blood Pact (Rank 1)
+		{7804, "BOTTOMLEFT", {0.89, 0.09, 0.05}}, --Blood Pact (Rank 2)
+		{7805, "BOTTOMLEFT", {0.89, 0.09, 0.05}}, --Blood Pact (Rank 3)
+		-- Warlock Felhunter
+		{19480, "BOTTOMLEFT", {0.2, 0.8, 0.2}}, --Paranoia
+	},
 }
 
 -- Filter this. Pointless to see.
@@ -390,10 +452,26 @@ K.UnimportantBuffs = {
 }
 
 K.ChannelingTicks = {
-	[SpellName(740)] = 4,		-- 宁静
-	[SpellName(755)] = 3,		-- 生命通道
-	[SpellName(5143)] = 5, 		-- 奥术飞弹
-	[SpellName(12051)] = 3, 		-- 唤醒
-	[SpellName(15407)] = 4,		-- 精神鞭笞
-	[SpellName(6948)] = 4,		-- 精神鞭笞
+	-- [SpellName(740)] = 4,		-- 宁静
+	-- [SpellName(755)] = 3,		-- 生命通道
+	-- [SpellName(5143)] = 5, 		-- 奥术飞弹
+	-- [SpellName(12051)] = 3, 		-- 唤醒
+	-- [SpellName(15407)] = 4,		-- 精神鞭笞
+	-- [SpellName(6948)] = 4,		-- 精神鞭笞
+
+	-- Warlock
+	[SpellName(198590)] = 6, -- Drain Soul
+	[SpellName(755)] = 6, -- Health Funnel
+	[SpellName(234153)] = 6, -- Drain Life
+	-- Priest
+	[SpellName(64843)] = 4, -- Divine Hymn
+	[SpellName(15407)] = 4, -- Mind Flay
+	[SpellName(48045)] = 5, -- Mind Sear
+	-- Mage
+	[SpellName(5143)] = 5, -- Arcane Missiles
+	[SpellName(12051)] = 3, -- Evocation
+	[SpellName(205021)] = 10, -- Ray of Frost
+	-- Druid
+	[SpellName(740)] = 4, -- Tranquility
+
 }

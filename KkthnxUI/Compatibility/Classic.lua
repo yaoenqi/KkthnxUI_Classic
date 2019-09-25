@@ -1,5 +1,4 @@
 local K = unpack(select(2, ...))
-local ThreatLib = LibStub:GetLibrary("ThreatClassic-1.0")
 
 local _G = _G
 
@@ -371,26 +370,5 @@ UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned or function(unit) -- Needs wo
 			role = role or ""
 		end
 		return role
-	end
-end
-
--- Threat Functions
-if ThreatLib then
-    local ThreatFrame = CreateFrame("Frame")
-
-	ThreatLib.RegisterCallback(ThreatFrame, "Activate", K.Noop)
-	ThreatLib.RegisterCallback(ThreatFrame, "Deactivate", K.Noop)
-	ThreatLib:RequestActiveOnSolo(true)
-
-	GetThreatStatusColor = _G.GetThreatStatusColor or function(statusIndex)
-		return ThreatLib:GetThreatStatusColor(statusIndex)
-	end
-
-	UnitDetailedThreatSituation = _G.UnitDetailedThreatSituation or function(unit, target)
-		return ThreatLib:UnitDetailedThreatSituation(unit, target)
-	end
-
-	UnitThreatSituation = _G.UnitThreatSituation or function(unit, target)
-		return ThreatLib:UnitThreatSituation(unit, target)
 	end
 end
