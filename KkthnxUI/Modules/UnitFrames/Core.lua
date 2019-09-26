@@ -343,7 +343,6 @@ function Module:QuestIconCheck()
 	K:RegisterEvent("PLAYER_ENTERING_WORLD", CheckInstanceStatus)
 end
 
-local unitTip = CreateFrame("GameTooltip", "KkthnxUIQuestUnitTip", nil, "GameTooltipTemplate")
 function Module:UpdateQuestUnit(_, unit)
 	if not C["Nameplates"].QuestInfo then
 		return
@@ -1031,18 +1030,6 @@ function Module:NameplatesCallback(nameplate, event, unit)
 				nameplate.ClassPower:Show()
 				nameplate:EnableElement("ClassPower")
 				nameplate.ClassPower:ForceUpdate()
-
-				if (K.Class == "DEATHKNIGHT") then
-					nameplate.Runes:Show()
-					nameplate:EnableElement("Runes")
-					nameplate.Runes:ForceUpdate()
-				end
-
-				if (K.Class == "MONK") then
-					nameplate.Stagger:Show()
-					nameplate:EnableElement("Stagger")
-					nameplate.Stagger:ForceUpdate()
-				end
 			end
 		else
 			nameplate:EnableElement("Castbar")
@@ -1052,16 +1039,6 @@ function Module:NameplatesCallback(nameplate, event, unit)
 			if nameplate.ClassPower then
 				nameplate.ClassPower:Hide()
 				nameplate:DisableElement("ClassPower")
-
-				if (K.Class == "DEATHKNIGHT") then
-					nameplate.Runes:Hide()
-					nameplate:DisableElement("Runes")
-				end
-
-				if (K.Class == "MONK") then
-					nameplate.Stagger:Hide()
-					nameplate:DisableElement("Stagger")
-				end
 			end
 		end
 	elseif event == "NAME_PLATE_UNIT_REMOVED" then
@@ -1070,8 +1047,6 @@ function Module:NameplatesCallback(nameplate, event, unit)
 		end
 
 		nameplate:DisableElement("ClassPower")
-		nameplate:DisableElement("Runes")
-		nameplate:DisableElement("Stagger")
 
 		nameplate:EnableElement("Castbar")
 		nameplate:EnableElement("RaidTargetIndicator")
@@ -1083,22 +1058,6 @@ function Module:NameplatesCallback(nameplate, event, unit)
 			nameplate.ClassPower:SetParent(nameplate)
 			nameplate.ClassPower:SetPoint(Point, nameplate.Health, Relpoint, xOffset, yOffset)
 		end
-
-		if nameplate.Runes then
-			nameplate.Runes:Hide()
-			nameplate.Runes:ClearAllPoints()
-			nameplate.Runes:SetParent(nameplate)
-			nameplate.Runes:SetPoint(Point, nameplate.Health, Relpoint, xOffset, yOffset)
-		end
-
-		if nameplate.Stagger then
-			nameplate.Stagger:Hide()
-			nameplate.Stagger:ClearAllPoints()
-			nameplate.Stagger:SetParent(nameplate)
-			nameplate.Stagger:SetPoint(Point, nameplate.Health, Relpoint, xOffset, yOffset)
-		end
-	elseif event == "PLAYER_TARGET_CHANGED" then -- we need to check if nameplate exists in here
-		-- Do some shit here
 	end
 
 
@@ -1114,18 +1073,6 @@ function Module:NameplatesCallback(nameplate, event, unit)
 				Player.unitFrame.ClassPower:ClearAllPoints()
 				Player.unitFrame.ClassPower:SetParent(Anchor)
 				Player.unitFrame.ClassPower:SetPoint(Point, Anchor.Castbar, Relpoint, xOffset, yOffset)
-			end
-
-			if Player.unitFrame.Runes then
-				Player.unitFrame.Runes:ClearAllPoints()
-				Player.unitFrame.Runes:SetParent(Anchor)
-				Player.unitFrame.Runes:SetPoint(Point, Anchor.Castbar, Relpoint, xOffset, yOffset)
-			end
-
-			if Player.unitFrame.Stagger then
-				Player.unitFrame.Stagger:ClearAllPoints()
-				Player.unitFrame.Stagger:SetParent(Anchor)
-				Player.unitFrame.Stagger:SetPoint(Point, Anchor.Castbar, Relpoint, xOffset, yOffset)
 			end
 		end
 	end
@@ -1243,10 +1190,6 @@ function Module:CreateStyle(unit)
 		Module.CreateTargetOfTarget(self)
 	elseif (unit == "pet") then
 		Module.CreatePet(self)
-	-- elseif (unit == "focus") then
-	-- 	Module.CreateFocus(self)
-	-- elseif (unit == "focustarget") then
-	-- 	Module.CreateFocusTarget(self)
 	-- elseif string_find(unit, "arena%d") then
 		-- Module.CreateArena(self)
 	elseif string_find(unit, "boss%d") then
@@ -1290,22 +1233,9 @@ function Module:CreateUnits()
 		Pet:SetPoint("TOPRIGHT", Player, "BOTTOMLEFT", 48, -6)
 		Pet:SetSize(116, 28)
 
-		local Focus = oUF:Spawn("focus")
-		Focus:SetPoint("BOTTOMRIGHT", Player, "TOPLEFT", -60, 30)
-		Focus:SetSize(210, 48)
-
-		if not C["Unitframe"].HideTargetofTarget then
-			local FocusTarget = oUF:Spawn("focustarget")
-			FocusTarget:SetPoint("TOPRIGHT", Focus, "BOTTOMLEFT", 48, -6)
-			FocusTarget:SetSize(116, 28)
-
-			self.Units.FocusTarget = FocusTarget
-		end
-
 		self.Units.Player = Player
 		self.Units.Target = Target
 		self.Units.Pet = Pet
-		self.Units.Focus = Focus
 
 		-- if (C["Arena"].Enable) then
 		-- 	local Arena = {}
@@ -1376,40 +1306,35 @@ function Module:CreateUnits()
 		K.Mover(Player, "Player", "Player", {"BOTTOM", UIParent, "BOTTOM", -290, 320}, 210, 50)
 		K.Mover(Target, "Target", "Target", {"BOTTOM", UIParent, "BOTTOM", 290, 320}, 210, 50)
 		K.Mover(Pet, "Pet", "Pet", {"TOPRIGHT", Player, "BOTTOMLEFT", 48, -6}, 116, 28)
-		K.Mover(Focus, "Focus", "Focus", {"BOTTOMRIGHT", Player, "TOPLEFT", -60, 30}, 210, 48)
 	end
 
 	if C["Nameplates"].Enable then
-		oUF:SpawnNamePlates(" ", function(nameplate, event, unit) Module:NameplatesCallback(nameplate, event, unit) end)
+		oUF:SpawnNamePlates(" ", function(nameplate, event, unit)
+			Module:NameplatesCallback(nameplate, event, unit)
+		end)
 	end
 end
 
 function Module:SetNameplateCVars()
-	-- SetCVar("showQuestTrackingTooltips", 1)
-
 	if C["Nameplates"].Clamp then
 		SetCVar("nameplateOtherTopInset", 0.05)
 		SetCVar("nameplateOtherBottomInset", 0.08)
-	elseif _G.GetCVar("nameplateOtherTopInset") == "0.05" and _G.GetCVar("nameplateOtherBottomInset") == "0.08" then
+	else
 		SetCVar("nameplateOtherTopInset", -1)
 		SetCVar("nameplateOtherBottomInset", -1)
 	end
 
-	if C["Nameplates"].TankMode == true then
-		SetCVar("threatWarning", 3)
-	end
-
+	SetCVar("nameplateSelectedAlpha", 1)
 	SetCVar("namePlateMinScale", 1)
 	SetCVar("namePlateMaxScale", 1)
 	SetCVar("nameplateLargerScale", 1)
-	SetCVar("nameplateMinAlpha", 1)
-	SetCVar("nameplateMaxAlpha", 1)
-	SetCVar("nameplateMaxDistance", C["Nameplates"].Distance or 40)
-	SetCVar("nameplateOverlapH", 0.5)
+	SetCVar("nameplateMinAlpha", GetCVarDefault("nameplateMinAlpha"))
+	SetCVar("nameplateMaxAlpha", GetCVarDefault("nameplateMaxAlpha"))
+	SetCVar("nameplateMaxDistance", GetCVarDefault("nameplateMaxDistance"))
+	SetCVar("nameplateOverlapH", 0.8)
 	SetCVar("nameplateOverlapV", 0.7)
 	SetCVar("nameplateSelectedScale", C["Nameplates"].SelectedScale or 1)
 end
-
 
 function Module:NameplatesVarsReset()
 	if InCombatLockdown() then
@@ -1657,51 +1582,11 @@ function Module:OnEnable()
 		self:PLAYER_REGEN_ENABLED()
 		self:SetNameplateCVars()
 		self:QuestIconCheck()
-
-		-- Disable The Default Class Resource Bars
-		for _,object in pairs({
-			ClassNameplateBarFrame,
-			ClassNameplateBarShardFrame,
-			ClassNameplateBarWarlockFrame,
-			ClassNameplateBarComboPointFrame,
-			ClassNameplateBarRogueDruidFrame,
-			ClassNameplateBarPaladinRuneFrame,
-			ClassNameplateBarPaladinFrame,
-			ClassNameplateBarWindwalkerMonkFrame,
-			ClassNameplateBrewmasterBarFrame,
-			ClassNameplateBarChiFrame,
-			ClassNameplateBarMageFrame,
-			ClassNameplateBarArcaneChargeFrame,
-			ClassNameplateBarDeathKnightRuneButton,
-			DeathKnightResourceOverlayFrame,
-
-			ClassNameplateManaBarFrame,
-			ClassNameplateManaBarFrame and ClassNameplateManaBarFrame.Border,
-			ClassNameplateManaBarFrame and ClassNameplateManaBarFrame.FeedbackFrame,
-			ClassNameplateManaBarFrame and ClassNameplateManaBarFrame.FullPowerFrame,
-			ClassNameplateManaBarFrame and ClassNameplateManaBarFrame.ManaCostPredictionBar,
-			ClassNameplateManaBarFrame and ClassNameplateManaBarFrame.background,
-			ClassNameplateManaBarFrame and ClassNameplateManaBarFrame.Texture
-		}) do
-			if object then
-				object:ClearAllPoints()
-				object:SetParent(K.UIFrameHider)
-				hooksecurefunc(object, "SetParent", function(self, parent)
-					if (parent ~= K.UIFrameHider) then
-						self:SetParent(K.UIFrameHider)
-					end
-				end)
-			end
-		end
 	end
 
 	if C["Unitframe"].Enable then
 		K.HideInterfaceOption(InterfaceOptionsCombatPanelTargetOfTarget)
-
 		K:RegisterEvent("PLAYER_TARGET_CHANGED", self.PLAYER_TARGET_CHANGED)
-		--K:RegisterEvent("PLAYER_FOCUS_CHANGED", self.PLAYER_FOCUS_CHANGED)
 		K:RegisterEvent("UNIT_FACTION", self.UNIT_FACTION)
-
-		--self:UpdateRangeCheckSpells()
 	end
 end

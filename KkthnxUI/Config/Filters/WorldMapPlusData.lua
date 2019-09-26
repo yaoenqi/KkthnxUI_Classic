@@ -66,9 +66,9 @@ K.WorldMapPlusPinData = {
 		{"FlightA", 65.5, 24.3, L["Nethergarde Keep"]..", "..L["Blasted Lands"], nil, tATex, nil, nil},
 	},
 	[1420] = {-- Tirisfal Glades
-		{"Dungeon", 82.6, 33.8, L["Scarlet Monastery"], L["Dungeon"], dnTex, 34, 45},
-		{"TravelH", 60.7, 58.8, L["Zeppelin to"].." "..L["Orgrimmar"]..", "..L["Durotar"], nil, fHTex, nil, nil},
-		{"TravelH", 61.9, 59.1, L["Zeppelin to"].." "..L["Grom'gol Base Camp"]..", "..L["Stranglethorn Vale"], nil, fHTex, nil, nil},
+		--{"Dungeon", 82.6, 33.8, L["Scarlet Monastery"], L["Dungeon"], dnTex, 34, 45},
+		{"TravelH", 60.7, 58.8, L["Zeppelin to"] .. " " .. L["Orgrimmar"] .. ", " .. L["Durotar"], nil, fHTex, nil, nil},
+		{"TravelH", 61.9, 59.1, L["Zeppelin to"] .. " " .. L["Grom'gol Base Camp"] .. ", " .. L["Stranglethorn Vale"], nil, fHTex, nil, nil},
 	},
 	[1421] = {-- Silverpine Forest
 		{"Dungeon", 44.8, 67.8, L["Shadowfang Keep"], L["Dungeon"], dnTex, 22, 30},
@@ -256,7 +256,7 @@ K.WorldMapLevelZoneData = {
 	[1434] = {minLevel = 30, maxLevel = 45}, -- Stranglethorn Vale
 	[1435] = {minLevel = 35, maxLevel = 45}, -- Swamp of Sorrows
 	[1425] = {minLevel = 40, maxLevel = 50}, -- The Hinterlands
-	[1420] = {minLevel = 1, maxLevel = 10, faction = "Horde"}, -- Tirisfal Glades
+	-- [1420] = {minLevel = 1, maxLevel = 10, faction = "Horde"}, -- Tirisfal Glades
 	[1436] = {minLevel = 10, maxLevel = 20, faction = "Alliance"}, -- Westfall
 	[1422] = {minLevel = 51, maxLevel = 58}, -- Western Plaguelands
 	[1437] = {minLevel = 20, maxLevel = 30}, -- Wetlands

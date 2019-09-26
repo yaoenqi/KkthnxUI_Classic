@@ -9,6 +9,7 @@ local math_floor = _G.math.floor
 local pairs = _G.pairs
 local select = _G.select
 local string_find = _G.string.find
+local string_join = _G.string.join
 local string_lower = _G.string.lower
 local table_insert = _G.table.insert
 local table_remove = _G.table.remove
@@ -43,20 +44,9 @@ local SetItemButtonTexture = _G.SetItemButtonTexture
 local UIParent = _G.UIParent
 local hooksecurefunc = _G.hooksecurefunc
 
-local BAGS_FONT = K.GetFont(C["UIFonts"].InventoryFonts)
-local BAGS_BACKPACK = {0, 1, 2, 3, 4}
-local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
-local ST_NORMAL = 1
-local ST_FISHBAG = 2
-local ST_SPECIAL = 3
-local ST_QUIVER = 4
-local ST_SOULBAG = 5
-local bag_bars = 0
-local Profit = 0
-local Spent = 0
-local Unusable
-local resetCountersFormatter = strjoin("", "|cffaaaaaa", "Reset Counters: Hold Shift + Left Click", "|r")
-local resetInfoFormatter = strjoin("", "|cffaaaaaa", "Reset Data: Hold Shift + Right Click", "|r")
+local ST_NORMAL, ST_FISHBAG, ST_SPECIAL, ST_QUIVER, ST_SOULBAG = 1, 2, 3, 4, 5
+local BAGS_FONT, BAGS_BACKPACK, BAGS_BANK = K.GetFont(C["UIFonts"].InventoryFonts), {0, 1, 2, 3, 4}, {-1, 5, 6, 7, 8, 9, 10}
+local BagBars, Profit, Spent, sortCache, Unusable = 0, 0, 0, {}
 
 do
 	if K.Class == 'DRUID' then
@@ -210,8 +200,8 @@ local function StuffingBank_OnHide()
 		Stuffing.frame:Hide()
 	end
 
-	if bag_bars == 1 then
-		bag_bars = 0
+	if BagBars == 1 then
+		BagBars = 0
 	end
 
 	PlaySound(SOUNDKIT.IG_BACKPACK_CLOSE)
@@ -222,8 +212,8 @@ local function Stuffing_OnHide()
 		Stuffing.bankFrame:Hide()
 	end
 
-	if bag_bars == 1 then
-		bag_bars = 0
+	if BagBars == 1 then
+		BagBars = 0
 	end
 
 	PlaySound(SOUNDKIT.IG_BACKPACK_CLOSE)
@@ -824,10 +814,10 @@ function Stuffing:CreateBagFrame(w)
 		f.bagsButton:SetScript("OnLeave", Stuffing_TooltipHide)
 		f.bagsButton:SetScript("OnClick", function()
 			PlaySound(PlaySoundKitID and "igmainmenuoption" or SOUNDKIT.IG_MAINMENU_OPTION)
-			if bag_bars == 1 then
-				bag_bars = 0
+			if BagBars == 1 then
+				BagBars = 0
 			else
-				bag_bars = 1
+				BagBars = 1
 			end
 
 			if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
@@ -862,7 +852,7 @@ function Stuffing:CreateBagFrame(w)
 			end
 
 			if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
-				Stuffing:SortBags()
+				SortBankBags()
 			end
 		end)
 
@@ -1073,8 +1063,8 @@ function Stuffing:InitBags()
 		GameTooltip:AddDoubleLine("Total: ", K.FormatMoney(totalGold), 1, 1, 1, 1, 1, 1)
 
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(resetCountersFormatter)
-		GameTooltip:AddLine(resetInfoFormatter)
+		GameTooltip:AddLine(string_join("", "|cffaaaaaa", "Reset Counters: Hold Shift + Left Click", "|r"))
+		GameTooltip:AddLine(string_join("", "|cffaaaaaa", "Reset Data: Hold Shift + Right Click", "|r"))
 
 		GameTooltip:Show()
 	end
@@ -1134,10 +1124,10 @@ function Stuffing:InitBags()
 	f.bagsButton:SetScript("OnLeave", Stuffing_TooltipHide)
 	f.bagsButton:SetScript("OnClick", function()
 		PlaySound(PlaySoundKitID and "igmainmenuoption" or SOUNDKIT.IG_MAINMENU_OPTION)
-		if bag_bars == 1 then
-			bag_bars = 0
+		if BagBars == 1 then
+			BagBars = 0
 		else
-			bag_bars = 1
+			BagBars = 1
 		end
 
 		if Stuffing.frame and Stuffing.frame:IsShown() then
@@ -1172,11 +1162,13 @@ function Stuffing:InitBags()
 		end
 
 		if Stuffing.frame:IsShown() then
-			if btn == "LeftButton" then
-				Stuffing:SortBags()
-			elseif btn == "RightButton" then
-				Stuffing:SetBagsForSorting("d")
-				Stuffing:Restack()
+			if C["Inventory"].ReverseSort then
+				SortBags()
+				wipe(sortCache)
+				Stuffing.isSorting = true
+				K.Delay(0.5, Stuffing.ReverseSort)
+			else
+				SortBags()
 			end
 		end
 	end)
@@ -1239,7 +1231,7 @@ function Stuffing:Layout(isBank)
 	f:CreateBorder()
 
 	local fb = f.bags_frame
-	if bag_bars == 1 then
+	if BagBars == 1 then
 		fb:SetClampedToScreen(1)
 		fb:CreateBorder()
 
@@ -1388,44 +1380,6 @@ function Stuffing:Layout(isBank)
 	end
 end
 
-function Stuffing:SetBagsForSorting(c)
-	Stuffing_Open()
-
-	self.sortBags = {}
-
-	local cmd = ((c == nil or c == "") and {"d"} or {strsplit("/", c)})
-
-	for _, s in ipairs(cmd) do
-		if s == "c" then
-			self.sortBags = {}
-		elseif s == "d" then
-			if not self.bankFrame or not self.bankFrame:IsShown() then
-				for _, i in ipairs(BAGS_BACKPACK) do
-					if self.bags[i] and self.bags[i].bagType == ST_NORMAL then
-						table.insert(self.sortBags, i)
-					end
-				end
-			end
-		elseif s == "p" then
-			if not self.bankFrame or not self.bankFrame:IsShown() then
-				for _, i in ipairs(BAGS_BACKPACK) do
-					if self.bags[i] and self.bags[i].bagType == ST_SPECIAL then
-						table.insert(self.sortBags, i)
-					end
-				end
-			else
-				for _, i in ipairs(BAGS_BANK) do
-					if self.bags[i] and self.bags[i].bagType == ST_SPECIAL then
-						table.insert(self.sortBags, i)
-					end
-				end
-			end
-		else
-			table.insert(self.sortBags, tonumber(s))
-		end
-	end
-end
-
 function Stuffing:ADDON_LOADED(addon)
 	if addon ~= "KkthnxUI" then
 		return nil
@@ -1452,6 +1406,7 @@ function Stuffing:ADDON_LOADED(addon)
 	CloseAllBags = Stuffing_Close
 	CloseBackpack = Stuffing_Close
 
+	SetSortBagsRightToLeft(not C["Inventory"].ReverseSort)
 	SetInsertItemsLeftToRight(false)
 
 	BankFrame:UnregisterAllEvents()
@@ -1582,212 +1537,24 @@ function Stuffing:BAG_UPDATE_COOLDOWN()
 	end
 end
 
-local function InBags(x)
-	if not Stuffing.bags[x] then
-		return false
-	end
-
-	for _, v in ipairs(Stuffing.sortBags) do
-		if x == v then
-			return true
-		end
-	end
-	return false
-end
-
-local BS_bagGroups
-local BS_itemSwapGrid
-local function BS_clearData()
-	BS_itemSwapGrid = {}
-	BS_bagGroups = {}
-end
-
-function Stuffing:SortOnUpdate(elapsed)
-	self.elapsed = (self.elapsed or 0) + elapsed
-
-	if self.elapsed < 0.05 then
-		return
-	end
-
-	self.elapsed = 0
-
-	local changed = false
-	local blocked = false
-
-	for bagIndex in pairs(BS_itemSwapGrid) do
-		for slotIndex in pairs(BS_itemSwapGrid[bagIndex]) do
-			local destinationBag = BS_itemSwapGrid[bagIndex][slotIndex].destinationBag
-			local destinationSlot = BS_itemSwapGrid[bagIndex][slotIndex].destinationSlot
-
-			local _, _, locked1 = GetContainerItemInfo(bagIndex, slotIndex)
-			local _, _, locked2 = GetContainerItemInfo(destinationBag, destinationSlot)
-
-			if locked1 or locked2 then
-				blocked = true
-			elseif bagIndex ~= destinationBag or slotIndex ~= destinationSlot then
-				PickupContainerItem(bagIndex, slotIndex)
-				PickupContainerItem(destinationBag, destinationSlot)
-
-				local tempItem = BS_itemSwapGrid[destinationBag][destinationSlot]
-				BS_itemSwapGrid[destinationBag][destinationSlot] = BS_itemSwapGrid[bagIndex][slotIndex]
-				BS_itemSwapGrid[bagIndex][slotIndex] = tempItem
-
-				changed = true
+function Stuffing:ReverseSort()
+	for bag = 0, 4 do
+		local numSlots = GetContainerNumSlots(bag)
+		for slot = 1, numSlots do
+			local texture, _, locked = GetContainerItemInfo(bag, slot)
+			if (slot <= numSlots / 2) and texture and not locked and not sortCache["b"..bag.."s"..slot] then
+				ClearCursor()
+				PickupContainerItem(bag, slot)
+				PickupContainerItem(bag, numSlots+1 - slot)
+				sortCache["b"..bag.."s"..slot] = true
+				K.Delay(0.1, Stuffing.ReverseSort)
 				return
 			end
 		end
 	end
 
-	if not changed and not blocked then
-		self:SetScript("OnUpdate", nil)
-		BS_clearData()
-	end
-end
-
-function Stuffing:SortBags()
-	BS_clearData()
-
-	local bagList
-	if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
-		bagList = {10, 9, 8, 7, 6, 5, -1}
-	else
-		bagList = {4, 3, 2, 1, 0}
-	end
-
-	for _, slotNum in pairs(bagList) do
-		if GetContainerNumSlots(slotNum) > 0 then
-			BS_itemSwapGrid[slotNum] = {}
-			local family = select(2, GetContainerNumFreeSlots(slotNum))
-			if family then
-				if family == 0 then family = "Default" end
-				if not BS_bagGroups[family] then
-					BS_bagGroups[family] = {}
-					BS_bagGroups[family].bagSlotNumbers = {}
-				end
-				table.insert(BS_bagGroups[family].bagSlotNumbers, slotNum)
-			end
-		end
-	end
-
-	for _, group in pairs(BS_bagGroups) do
-		group.itemList = {}
-		for _, bagSlot in pairs(group.bagSlotNumbers) do
-			for itemSlot = 1, GetContainerNumSlots(bagSlot) do
-
-				local itemLink = GetContainerItemLink(bagSlot, itemSlot)
-				if itemLink ~= nil then
-
-					local newItem = {}
-
-					local n, _, q, iL, rL, c1, c2, _, Sl = GetItemInfo(itemLink)
-					-- Hearthstone
-					if n == GetItemInfo(6948) or n == GetItemInfo(110560) or n == GetItemInfo(140192) then
-						q = 9
-					end
-					-- Fix for battle pets
-					if not n then
-						n = itemLink
-						q = select(4, GetContainerItemInfo(bagSlot, itemSlot))
-						iL = 1
-						rL = 1
-						c1 = "Pet"
-						c2 = "Pet"
-						Sl = ""
-					end
-
-					newItem.sort = q..c1..c2..rL..n..iL..Sl
-
-					tinsert(group.itemList, newItem)
-
-					BS_itemSwapGrid[bagSlot][itemSlot] = newItem
-					newItem.startBag = bagSlot
-					newItem.startSlot = itemSlot
-				end
-			end
-		end
-
-		table.sort(group.itemList, function(a, b)
-			return a.sort > b.sort
-		end)
-
-		for index, item in pairs(group.itemList) do
-			local gridSlot = index
-			for _, bagSlotNumber in pairs(group.bagSlotNumbers) do
-				if gridSlot <= GetContainerNumSlots(bagSlotNumber) then
-					BS_itemSwapGrid[item.startBag][item.startSlot].destinationBag = bagSlotNumber
-					BS_itemSwapGrid[item.startBag][item.startSlot].destinationSlot = GetContainerNumSlots(bagSlotNumber) - gridSlot + 1
-					break
-				else
-					gridSlot = gridSlot - GetContainerNumSlots(bagSlotNumber)
-				end
-			end
-		end
-	end
-
-	self:SetScript("OnUpdate", Stuffing.SortOnUpdate)
-end
-
-function Stuffing:RestackOnUpdate(e)
-	if not self.elapsed then
-		self.elapsed = 0
-	end
-
-	self.elapsed = self.elapsed + e
-
-	if self.elapsed < 0.1 then
-		return
-	end
-
-	self.elapsed = 0
-	self:Restack()
-end
-
-function Stuffing:Restack()
-	local st = {}
-
-	Stuffing_Open()
-
-	for _, v in pairs(self.buttons) do
-		if InBags(v.bag) then
-			local _, cnt, _, _, _, _, clink = GetContainerItemInfo(v.bag, v.slot)
-			if clink then
-				local n, _, _, _, _, _, _, s = GetItemInfo(clink)
-
-				if n and cnt ~= s then
-					if not st[clink] then
-						st[clink] = {{item = v, size = cnt, max = s}}
-					else
-						table.insert(st[clink], {item = v, size = cnt, max = s})
-					end
-				end
-			end
-		end
-	end
-
-	local did_restack = false
-	for _, v in pairs(st) do
-		if #v > 1 then
-			for j = 2, #v, 2 do
-				local a, b = v[j - 1], v[j]
-				local _, _, l1 = GetContainerItemInfo(a.item.bag, a.item.slot)
-				local _, _, l2 = GetContainerItemInfo(b.item.bag, b.item.slot)
-
-				if l1 or l2 then
-					did_restack = true
-				else
-					PickupContainerItem(a.item.bag, a.item.slot)
-					PickupContainerItem(b.item.bag, b.item.slot)
-					did_restack = true
-				end
-			end
-		end
-	end
-
-	if did_restack then
-		self:SetScript("OnUpdate", Stuffing.RestackOnUpdate)
-	else
-		self:SetScript("OnUpdate", nil)
-	end
+	Stuffing.isSorting = false
+	Stuffing:BAG_UPDATE()
 end
 
 do

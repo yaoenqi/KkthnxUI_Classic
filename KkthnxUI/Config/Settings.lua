@@ -83,6 +83,7 @@ C["Inventory"] = {
 	["ItemLevel"] = false,
 	["JunkIcon"] = true,
 	["PulseNewItem"] = false,
+	["ReverseSort"] = true,
 	["AutoRepair"] = {
 		["Options"] = {
 			[NONE] = "NONE",
