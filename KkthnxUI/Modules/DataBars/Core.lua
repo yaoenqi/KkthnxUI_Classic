@@ -55,10 +55,10 @@ function Module:SetupExperience()
 	local restbar = CreateFrame("StatusBar", "KkthnxUI_RestBar", self.Container)
 	restbar:SetStatusBarTexture(self.DatabaseTexture)
 	restbar:SetStatusBarColor(C["DataBars"].RestedColor[1], C["DataBars"].RestedColor[2], C["DataBars"].RestedColor[3], C["DataBars"].RestedColor[4])
-	restbar:SetFrameLevel(3)
 	restbar:SetSize(C["DataBars"].Width, C["DataBars"].Height)
-	restbar:SetAlpha(0.5)
+	restbar:SetAlpha(0.8)
 	restbar:SetAllPoints(expbar)
+
 
 	local espark = expbar:CreateTexture(nil, "OVERLAY")
 	espark:SetTexture(C["Media"].Spark_16)
@@ -211,7 +211,7 @@ function Module:OnEnter()
 		if rested then
 			GameTooltip:AddDoubleLine(L["Rested"], string_format("+%s (%s%%)", K.ShortValue(rested), math_floor(rested / max * 100)), 1, 1, 1)
 		end
-		GameTooltip:AddDoubleLine("|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:118:218|t "..L["Middle Click"], L["Share Your Experience"], 1, 1, 1)
+		-- GameTooltip:AddDoubleLine("|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:118:218|t "..L["Middle Click"], L["Share Your Experience"], 1, 1, 1)
 	end
 
 	if GetWatchedFactionInfo() then
@@ -223,11 +223,11 @@ function Module:OnEnter()
 		if name then
 			GameTooltip:AddLine(name)
 
-			GameTooltip:AddDoubleLine(STANDING..':', _G['FACTION_STANDING_LABEL'..reaction], 1, 1, 1)
+			GameTooltip:AddDoubleLine(STANDING..":", _G["FACTION_STANDING_LABEL"..reaction], 1, 1, 1)
 			if reaction ~= _G.MAX_REPUTATION_REACTION then
-				GameTooltip:AddDoubleLine(REPUTATION..':', string_format("%d / %d (%d%%)", value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
+				GameTooltip:AddDoubleLine(REPUTATION..":", string_format("%d / %d (%d%%)", value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
 			end
-			GameTooltip:AddDoubleLine("|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:218:318|t "..L["Left Click"], L["Toggle Reputation"], 1, 1, 1)
+			-- GameTooltip:AddDoubleLine("|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:218:318|t "..L["Left Click"], L["Toggle Reputation"], 1, 1, 1)
 		end
 	end
 
@@ -242,31 +242,8 @@ function Module:OnLeave()
 	GameTooltip:Hide()
 end
 
-function Module:OnClick(_, clicked)
-	if K.CodeDebug then
-		K.Print("|cFFFF0000DEBUG:|r |cFF808080Line 430 - KkthnxUI|Modules|DataBars|Core -|r |cFFFFFF00" .. clicked .. " Clicked|r")
-	end
+function Module.OnClick(_, btn)
 
-	if clicked == "LeftButton" then
-		if GetWatchedFactionInfo() then
-			ToggleCharacter("ReputationFrame")
-		end
-	elseif clicked == "RightButton" then
-		if C["DataBars"].TrackHonor then
-			if IsPlayerMaxLevel() and UnitIsPVP("player") then
-				TogglePVPUI()
-			end
-		end
-	elseif clicked == "MiddleButton" then
-		if not IsPlayerMaxLevel() then
-			local cur, max = GetUnitXP("player")
-
-			if IsInGroup(LE_PARTY_CATEGORY_HOME) then
-				SendChatMessage(L["XP"] .." ".. string_format("%s / %s (%d%%)", K.ShortValue(cur), K.ShortValue(max), math.floor(cur / max * 100)), "PARTY")
-				SendChatMessage(L["Remaining"] .." ".. string_format("%s (%s%% - %s "..L["Bars"]..")", K.ShortValue(max - cur), math.floor((max - cur) / max * 100), math.floor(20 * (max - cur) / max)), "PARTY")
-			end
-		end
-	end
 end
 
 function Module.OnUpdate()
@@ -304,18 +281,18 @@ function Module:OnEnable()
 
 	if C["DataBars"].Enable ~= true then
 		return
-    end
+	end
 
-    Module.Bars = {}
+	Module.Bars = {}
 
 	self.Container = CreateFrame("button", "KkthnxUI_Databars", K.PetBattleHider)
 	self.Container:SetWidth(C["DataBars"].Width)
 	self.Container:SetPoint("TOP", "Minimap", "BOTTOM", 0, -6)
-	self.Container:RegisterForClicks("RightButtonUp", "LeftButtonUp", "MiddleButtonUp")
+	-- self.Container:RegisterForClicks("RightButtonUp", "LeftButtonUp", "MiddleButtonUp")
 
 	self.Container:HookScript("OnEnter", self.OnEnter)
 	self.Container:HookScript("OnLeave", self.OnLeave)
-    self.Container:HookScript("OnClick", self.OnClick)
+	-- self.Container:HookScript("OnClick", self.OnClick)
 
 	self:SetupExperience()
 	self:SetupReputation()
@@ -326,7 +303,7 @@ function Module:OnEnable()
 	K:RegisterEvent("PLAYER_XP_UPDATE", self.OnUpdate)
 	K:RegisterEvent("UPDATE_EXHAUSTION", self.OnUpdate)
 	K:RegisterEvent("UPDATE_FACTION", self.OnUpdate)
-	K:RegisterEvent('CHAT_MSG_COMBAT_FACTION_CHANGE', self.OnUpdate)
+	K:RegisterEvent("CHAT_MSG_COMBAT_FACTION_CHANGE", self.OnUpdate)
 
 	K.Mover(self.Container, "DataBars", "DataBars", {"TOP", "Minimap", "BOTTOM", 0, -6}, C["DataBars"].Width, self.Container:GetHeight())
 end

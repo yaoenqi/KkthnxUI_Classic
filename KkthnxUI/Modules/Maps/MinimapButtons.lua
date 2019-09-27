@@ -43,28 +43,6 @@ function Module:CreateRecycleBin()
 		["RecycleBinFrame"] = true,
 		["RecycleBinToggleButton"] = true,
 		["TimeManagerClockButton"] = true,
-		-- ADDONS
-		["Archy"] = true,
-		["GatherMatePin"] = true,
-		["GatherNote"] = true,
-		["GuildInstance"] = true,
-		["HandyNotesPin"] = true,
-		["MiniMap"] = true,
-		["Spy_MapNoteList_mini"] = true,
-		["ZGVMarker"] = true,
-		["poiMinimap"] = true,
-		["GuildMap3Mini"] = true,
-		["LibRockConfig-1.0_MinimapButton"] = true,
-		["NauticusMiniIcon"] = true,
-		["WestPointer"] = true,
-		["Cork"] = true,
-		["DugisArrowMinimapPoint"] = true,
-		["QuestieFrame"] = true,
-
-		["Node"] = true,
-		["Note"] = true,
-		["Pin"] = true,
-		["POI"] = true
 	}
 
 	local bu = CreateFrame("Button", "RecycleBinToggleButton", Minimap)
@@ -100,10 +78,25 @@ function Module:CreateRecycleBin()
 		C_Timer_After(0.5, hideBinButton)
 	end
 
+	local secureAddons = {
+		["HANDYNOTES"] = true,
+		["GUIDELIME"] = true,
+		["TOWNSFOLKTRACKER"] = true,
+	}
+
+	local function isButtonSecure(name)
+		name = string_upper(name)
+		for addonName in pairs(secureAddons) do
+			if string_match(name, addonName) then
+				return true
+			end
+		end
+	end
+
 	local function CollectRubbish()
 		for _, child in ipairs({Minimap:GetChildren()}) do
 			local name = child:GetName()
-			if name and not blackList[name] and not string_match(string_upper(name), "HANDYNOTES") and not string_match(string_upper(name), "GUIDELIME") then
+			if name and not blackList[name] and not isButtonSecure(name) then
 				if child:GetObjectType() == "Button" or string_match(string_upper(name), "BUTTON") then
 					child:SetParent(bin)
 					child:SetSize(22, 22)
@@ -190,4 +183,9 @@ function Module:CreateRecycleBin()
 		CollectRubbish()
 		SortRubbish()
 	end)
+
+	if LibDBIcon10_TownsfolkTracker then
+		LibDBIcon10_TownsfolkTracker:DisableDrawLayer("OVERLAY")
+		LibDBIcon10_TownsfolkTracker:DisableDrawLayer("BACKGROUND")
+	end
 end
