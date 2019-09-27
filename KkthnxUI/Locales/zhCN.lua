@@ -30,7 +30,7 @@ if GetLocale() == "zhCN" then
 	L["CVars Installed"] = "CVars 设置"
 	L["Camp Mojache"] = "莫沙彻营地"
 	L["Camp Taurajo"] = "陶拉祖营地"
-	L["Can't Buy Slot"] = "不能再买空格了!"
+	L["Can't Buy Slot"] = "不能再买空栏位了!"
 	L["Cenarion Hold"] = "塞纳里奥要塞"
 	L["Central Mesa"] = "中央台地"
 	L["Changelog"] = "更新日志"
