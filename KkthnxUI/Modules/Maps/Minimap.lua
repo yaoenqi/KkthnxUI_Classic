@@ -42,6 +42,10 @@ local function SetupZoomReset()
 end
 hooksecurefunc(Minimap, "SetZoom", SetupZoomReset)
 
+if(C["Minimap"].Enable) then
+	function GetMinimapShape() return "SQUARE" end
+end
+
 function Module:UpdateSettings()
 	if InCombatLockdown() then
 		return self:RegisterEvent("PLAYER_REGEN_ENABLED", "OnEvent")
