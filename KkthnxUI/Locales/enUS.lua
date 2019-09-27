@@ -1,6 +1,5 @@
 local K, _, L = unpack(select(2, ...))
 
-
 L["%s to dismount."] = "%s to dismount."
 L["%s to leave the vehicle."] = "%s to leave the vehicle."
 L["AP"] = "AP:"
