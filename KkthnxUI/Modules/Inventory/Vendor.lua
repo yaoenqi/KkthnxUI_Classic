@@ -55,7 +55,7 @@ do -- Auto Sell Junk
 	end
 
 	local function updateSelling(event, ...)
-		if not C["Inventory"].AutoSell then
+		if not C["Inventory"].AutoSell or UnitAffectingCombat("player") then
 			return
 		end
 
