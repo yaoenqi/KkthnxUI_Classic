@@ -1,8 +1,4 @@
 local K, C = unpack(select(2, ...))
-if C["Tooltip"].Enable ~= true then
-	return
-end
-
 if IsAddOnLoaded("Leatrix_Plus")
 or IsAddOnLoaded("BetterVendorPrice")
 or IsAddOnLoaded("VendorPrice") then
