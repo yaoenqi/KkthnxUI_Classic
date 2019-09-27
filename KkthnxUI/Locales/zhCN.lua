@@ -199,7 +199,7 @@ if GetLocale() == "zhCN" then
 	L["Sun Rock Retreat"] = "烈日石居"
 	L["Swamp of Sorrows"] = "悲伤沼泽"
 	L["Switch to Bank"] = "切换到银行"
-	L["Talonbranch Glade"] = "刺枝林地
+	L["Talonbranch Glade"] = "刺枝林地"
 	L["Talrendis Point"] = "塔伦迪斯营地"
 	L["Tanaris"] = "塔纳利斯"
 	L["Targeted By"] = "被谁标记:"
