@@ -4,20 +4,12 @@ local Module = K:GetModule("Skins")
 local table_insert = table.insert
 
 local function SkinFactionbarTextures()
-	local function UpdateFactionbarTextures()
-		for i = 1, GetNumFactions() do
-			local statusbar = _G["ReputationBar"..i.."ReputationBar"]
-			local factionTexture = K.GetTexture(C["UITextures"].SkinTextures)
+	for i = 1, NUM_FACTIONS_DISPLAYED do
+		local factionBar = _G["ReputationBar"..i]
+		local factionBarTexture = K.GetTexture(C["UITextures"].SkinTextures)
 
-			if statusbar then
-				statusbar:SetStatusBarTexture(factionTexture)
-			end
-		end
+		factionBar:SetStatusBarTexture(factionBarTexture)
 	end
-
-	ReputationFrame:HookScript("OnShow", UpdateFactionbarTextures)
-	hooksecurefunc("ExpandFactionHeader", UpdateFactionbarTextures)
-	hooksecurefunc("CollapseFactionHeader", UpdateFactionbarTextures)
 end
 
 table_insert(Module.NewSkin["KkthnxUI"], SkinFactionbarTextures)

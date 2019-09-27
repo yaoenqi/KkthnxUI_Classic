@@ -1,42 +1,55 @@
-local select, tonumber, type, strfind = select, tonumber, type, string.find
-local MerchantFrame = MerchantFrame
-local GetMouseFocus, GetItemInfo, SetTooltipMoney = GetMouseFocus, GetItemInfo, SetTooltipMoney
-local SELL_PRICE_TEXT = format("%s:", SELL_PRICE)
+local K, C = unpack(select(2, ...))
+if IsAddOnLoaded("Leatrix_Plus")
+or IsAddOnLoaded("BetterVendorPrice")
+or IsAddOnLoaded("VendorPrice") then
+	return
+end
 
-local function SetGameToolTipPrice(tt)
+local _G = _G
+
+local GetMouseFocus = _G.GetMouseFocus
+local GetItemInfo = _G.GetItemInfo
+local hooksecurefunc = _G.hooksecurefunc
+local SetTooltipMoney = _G.SetTooltipMoney
+local SELL_PRICE = _G.SELL_PRICE
+
+-- Function to show vendor price
+local function SetGameToolTipPrice(tooltip, tooltipObject)
+	if tooltip.shownMoneyFrames then
+		return
+	end
+
+	tooltipObject = tooltipObject or GameTooltip
+
 	local container = GetMouseFocus()
-	if container and container.GetName then -- Auctionator sanity check
-		local name = container:GetName() or ""
-		-- price is already shown at vendor for bag items
-		if not MerchantFrame:IsShown() or strfind(name, "Character") or strfind(name, "TradeSkill") then
-			local itemLink = select(2, tt:GetItem())
-			if itemLink then
-				local itemSellPrice = select(11, GetItemInfo(itemLink))
-				if itemSellPrice and itemSellPrice > 0 then
-					local name = container:GetName()
-					local object = container:GetObjectType()
-					local count
-					if object == "Button" then -- ContainerFrameItem, QuestInfoItem, PaperDollItem
-						count = container.count
-					elseif object == "CheckButton" then -- MailItemButton or ActionButton
-						count = container.count or tonumber(container.Count:GetText())
-					end
-					local cost = (type(count) == "number" and count or 1) * itemSellPrice
-					SetTooltipMoney(tt, cost, nil, SELL_PRICE_TEXT)
-				end
-			end
-		end
+	if not container then
+		return
 	end
-end
-GameTooltip:HookScript("OnTooltipSetItem", SetGameToolTipPrice)
 
-local function SetItemRefToolTipPrice(tt)
-	local itemLink = select(2, tt:GetItem())
-	if itemLink then
-		local itemSellPrice = select(11, GetItemInfo(itemLink))
-		if itemSellPrice and itemSellPrice > 0 then
-			SetTooltipMoney(tt, itemSellPrice, nil, SELL_PRICE_TEXT)
+	local _, itemlink = tooltipObject:GetItem()
+	if not itemlink then
+		return
+	end
+
+	local _, _, _, _, _, _, _, _, _, _, sellPrice = GetItemInfo(itemlink)
+	if sellPrice and sellPrice > 0 then
+		local count = container and type(container.count) == "number" and container.count or 1
+		if sellPrice and count > 0 then
+			SetTooltipMoney(tooltip, sellPrice * count, "STATIC", SELL_PRICE..":")
 		end
 	end
+
+	if tooltipObject == ItemRefTooltip then
+		ItemRefTooltip:Show()
+	end
 end
-ItemRefTooltip:HookScript("OnTooltipSetItem", SetItemRefToolTipPrice)
+
+-- Show vendor price when tooltips are shown
+GameTooltip:HookScript("OnTooltipSetItem", SetGameToolTipPrice)
+hooksecurefunc(GameTooltip, "SetHyperlink", function(tooltip)
+	SetGameToolTipPrice(tooltip, GameTooltip)
+end)
+
+hooksecurefunc(ItemRefTooltip, "SetHyperlink", function(tooltip)
+	SetGameToolTipPrice(tooltip, ItemRefTooltip)
+end)

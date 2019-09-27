@@ -843,7 +843,6 @@ function Stuffing:CreateBagFrame(w)
 		f.sortButton:SetScript("OnMouseUp", function()
 			if InCombatLockdown() then
 				UIErrorsFrame:AddMessage(K.InfoColor.._G.ERR_NOT_IN_COMBAT)
-
 				return
 			end
 
@@ -1147,7 +1146,7 @@ function Stuffing:InitBags()
 	f.sortButton:GetDisabledTexture():SetTexCoord(K.TexCoords[1], K.TexCoords[2], K.TexCoords[3], K.TexCoords[4])
 	f.sortButton:GetDisabledTexture():SetAllPoints()
 	f.sortButton:GetDisabledTexture():SetDesaturated(1)
-	f.sortButton.ttText = "|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:218:318|t "..L["Left Click"].." Sort|n|TInterface\\TutorialFrame\\UI-TUTORIAL-FRAME:16:12:0:0:512:512:1:76:321:421|t "..L["Right Click"].." Stack"
+	f.sortButton.ttText = BAG_FILTER_CLEANUP
 	f.sortButton:SetScript("OnEnter", Stuffing_TooltipShow)
 	f.sortButton:SetScript("OnLeave", Stuffing_TooltipHide)
 	f.sortButton:SetScript("OnMouseUp", function(_, btn)

@@ -140,7 +140,7 @@ _G.KkthnxUIConfig["enUS"] = {
 		},
 
 		["AutoDisenchant"] = {
-			["Name"] = "Auto Disenchant With 'CTRL'",
+			["Name"] = "Auto Disenchant With 'ALT'",
 		},
 
 		["AutoQuest"] = {
@@ -175,16 +175,8 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Block Movies You Already Seen",
 		},
 
-		["DeclinePetDuel"] = {
-			["Name"] = "Decline BattlePet Duels",
-		},
-
 		["DeclinePvPDuel"] = {
 			["Name"] = "Decline PvP Duels",
-		},
-
-		["ScreenShot"] = {
-			["Name"] = "Auto Achievement Screenshots",
 		},
 
 		["WhisperInvite"] = {
@@ -358,10 +350,6 @@ _G.KkthnxUIConfig["enUS"] = {
 
 	-- Databars Local
 	["DataBars"] = {
-		["AzeriteColor"] = {
-			["Name"] = "Azerite Bar Color",
-		},
-
 		["Enable"] = {
 			["Name"] = "Enable DataBars",
 		},
@@ -476,7 +464,7 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Disable Tutorial Buttons",
 		},
 
-		["ShowTooltip"] = {
+		["FixGarbageCollect"] = {
 			["Name"] = "Fix Garbage Collection",
 		},
 
@@ -524,7 +512,7 @@ _G.KkthnxUIConfig["enUS"] = {
 		},
 
 		["AutoGreed"] = {
-			["Name"] = "Auto Greed/Disenchant Green Items",
+			["Name"] = "Auto Greed Green Items",
 		},
 
 		["Enable"] = {
@@ -652,10 +640,6 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["Combat"] = {
 			["Name"] = "Show Nameplates In Combat",
-		},
-
-		["Distance"] = {
-			["Name"] = "Nameplate Distance",
 		},
 
 		["Enable"] = {
@@ -1072,10 +1056,14 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Show Player/Mouse Coordinates",
 		},
 
-		["FadeWhenMoving"] = {
+		["MapFader"] = {
 			["Name"] = "Fade Worldmap When Moving",
 		},
-
+		
+		["MapScale"] = {
+			["Name"] = "Worldmap Scale",
+		},
+		
 		["SmallWorldMap"] = {
 			["Name"] = "Show Smaller Worldmap",
 		},
@@ -1087,10 +1075,6 @@ _G.KkthnxUIConfig["enUS"] = {
 
 	-- Tooltip Local
 	["Tooltip"] = {
-		["AzeriteArmor"] = {
-			["Name"] = "Show AzeriteArmor Info",
-		},
-
 		["ClassColor"] = {
 			["Name"] = "Quality Color Border",
 		},
