@@ -231,7 +231,6 @@ C["Nameplates"] = {
 	["Clamp"] = false,
 	["TankMode"] = false,
 	-- ["ClassResource"] = true,
-	["Distance"] = 50,
 	["Enable"] = true,
 	["HealthValue"] = true,
 	["Height"] = 13,

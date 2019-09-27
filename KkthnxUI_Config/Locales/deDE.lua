@@ -7,343 +7,343 @@ local _G = _G
 
 local REVERSE_NEW_LOOT_TEXT = _G.REVERSE_NEW_LOOT_TEXT
 
-_G.KkthnxUIConfig["enUS"] = {
+_G.KkthnxUIConfig["deDE"] = {
 	-- Menu Groups Display Names
 	["GroupNames"] = {
 		-- Let's Keep This In Alphabetical Order, Shall We?
-		["ActionBar"] = "Action Bar",
-		["Announcements"] = "Announcements",
+		["ActionBar"] = "Aktionsleisten",
+		["Announcements"] = "Ansagen",
 		["Arena"] = "Arena",
-		["Auras"] = "Auras",
-		["Automation"] = "Automation",
+		["Auras"] = "Buffs",
+		["Automation"] = "Automatisierung",
 		["Boss"] = "Boss",
 		["Chat"] = "Chat",
-		["DataBars"] = "Data Bars",
-		["DataText"] = "Data Text",
+		["DataBars"] = "Datenleisten",
+		["DataText"] = "Datentext",
 		["Filger"] = "Filger",
-		["General"] = "General",
-		["Inventory"] = "Inventory",
-		["Loot"] = "Loot",
-		["Minimap"] = "Minimap",
-		["Misc"] = "Miscellaneous",
-		["Nameplates"] = "Nameplates",
-		["Party"] = "Party",
-		["QuestNotifier"] = "Quest Notifier",
+		["General"] = "Allgemein",
+		["Inventory"] = "Inventar",
+		["Loot"] = "Beute",
+		["Minimap"] = "Minikarte",
+		["Misc"] = "Diverses",
+		["Nameplates"] = "Namensplaketten",
+		["Party"] = "Gruppe",
+		["QuestNotifier"] = "Quest Benachrichtigung",
 		["Raid"] = "Raid",
 		["Skins"] = "Skins",
 		["Tooltip"] = "Tooltip",
-		["UIFonts"] = ModuleNewFeature.."Fonts",
-		["UITextures"] = ModuleNewFeature.."Textures",
-		["Unitframe"] = "Unit Frames",
-		["WorldMap"] = "World Map",
+		["UIFonts"] = ModuleNewFeature.."Schriftarten",
+		["UITextures"] = ModuleNewFeature.."Texturen",
+		["Unitframe"] = "Einheitenfenster",
+		["WorldMap"] = "Weltkarte",
 	},
 
 	-- Actionbar Local
 	["ActionBar"] = {
 		["Cooldowns"] = {
-			["Name"] = "Show Cooldowns",
+			["Name"] = "Zeige Abklingzeiten",
 		},
 
 		["Count"] = {
-			["Name"] = "Show Item Counts",
+			["Name"] = "Zeige Gegenstandsanzahl",
 		},
 
 		["DecimalCD"] = {
-			["Name"] = "Decimal for Cooldown in 3s",
+			["Name"] = "Dezimal für Abklingzeiten in 3s",
 		},
 
 		["DefaultButtonSize"] = {
-			["Name"] = "Main ActionBar Button Size",
+			["Name"] = "Größe der Knöpfe der Hauptaktionsleiste",
 		},
 
 		["DisableStancePages"] = {
-			["Name"] = "Disable Stance Pages (Druid & Rogues)",
+			["Name"] = "Deaktiviere Haltungsseiten (Druiden & Schurken )",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable ActionBars",
+			["Name"] = "Aktiviere Aktionsleisten",
 		},
 
 		["EquipBorder"] = {
-			["Name"] = "Equiped Border Indicator",
+			["Name"] = "Angelegte Gegenstände mit Rahmen hervorheben",
 		},
 
 		["FadeRightBar"] = {
-			["Name"] = "Fade RightBar 1",
+			["Name"] = "Rechte Aktionsleiste 1 verblassen",
 		},
 
 		["FadeRightBar2"] = {
-			["Name"] = "Fade RightBar 2",
+			["Name"] = "Rechte Aktionsleiste 2 verblassen",
 		},
 
 		["HideHighlight"] = {
-			["Name"] = "Hide Proc Highlight",
+			["Name"] = "Deaktiviere Proc-Hervorhebung",
 		},
 
 		["Hotkey"] = {
-			["Name"] = "Show Hotkey",
+			["Name"] = "Tastaturkürzel anzeigen",
 		},
 
 		["Macro"] = {
-			["Name"] = "Show Macro",
+			["Name"] = "Makronamen anzeigen",
 		},
 
 		["MicroBar"] = {
-			["Name"] = "Show MicroBar",
+			["Name"] = "Mikroleiste anzeigen",
 		},
 
 		["MicroBarMouseover"] = {
-			["Name"] = "Fade MicroBar",
+			["Name"] = "Mikroleiste ausblenden",
 		},
 
 		["OverrideWA"] = {
-			["Name"] = "Hide Cooldowns on WeakAuras",
+			["Name"] = "Verstecke Cooldowns auf WeakAuras",
 		},
 
 		["RightButtonSize"] = {
-			["Name"] = "RightBars Button Size",
+			["Name"] = "Größe der Knöpfe der rechten Aktionsleisten",
 		},
 
 		["StancePetSize"] = {
-			["Name"] = "Stance & Pet Button Size",
+			["Name"] = "Größe der Begleiter- & Haltungsknöpfe",
 		}
 	},
 
 	-- Announcements Local
 	["Announcements"] = {
 		["PullCountdown"] = {
-			["Name"] = "Announce Pull Countdown (/pc #)",
+			["Name"] = "Pull-Countdown ansagen (/pc #)",
 		},
 
 		["SaySapped"] = {
-			["Name"] = "Announce When Sapped",
+			["Name"] = "Ansagen wenn betäubt",
 		},
 
 		["Interrupt"] = {
-			["Name"] = "Announce Interrupts",
+			["Name"] = "Unterbrechungen ansagen",
 		}
 	},
 
 	-- Automation Local
 	["Automation"] = {
 		["AutoBubbles"] = {
-			["Name"] = "Auto Toggle Chat Bubbles",
-			["Desc"] = "Toggle chat bubbles depending on your InstanceType. If you are in a Dungeon/Raid, It will be toggled off."
+			["Name"] = "Nachrichtenblasen automatich aktivieren",
+			["Desc"] = "Nachrichtenblasen abhängig von der Instanz-Art aktivieren. Werden in Schlachtzügen/Instanzen deaktiviert."
 		},
 
 		["AutoCollapse"] = {
-			["Name"] = "Auto Collapse Objective Tracker",
+			["Name"] = "Zielverfolgung automatisch zusammenklappen",
 		},
 
 		["AutoInvite"] = {
-			["Name"] = "Accept Invites From Friends & Guild Members",
+			["Name"] = "Einladungen von Freunden & Gildenmitgliedern annehmen",
 		},
 
 		["AutoDisenchant"] = {
-			["Name"] = "Auto Disenchant With 'ALT'",
+			["Name"] = "Automatisch mit der 'ALT' Taste entzaubern",
 		},
 
 		["AutoQuest"] = {
-			["Name"] = "Auto Accept & Turnin Quests",
+			["Name"] = "Quests automatisch abgeben & annehmen",
 		},
 
 		["AutoRelease"] = {
-			["Name"] = "Auto Release in Battlegrounds & Arenas",
+			["Name"] = "In Schlachtfeldern & Arenen automatisch freilassen",
 		},
 
 		["AutoResurrect"] = {
-			["Name"] = "Auto Accept Resurrect Requests",
+			["Name"] = "Wiederbelebungsversuche automatisch annehmen",
 		},
 
 		["AutoResurrectThank"] = {
-			["Name"] = "Say 'Thank You' When Resurrected",
+			["Name"] = "'Danke' sagen wenn wiederbelebt",
 		},
 
 		["AutoReward"] = {
-			["Name"] = "Auto Select Quest Rewards",
+			["Name"] = "Questbelohnungen automatisch auswählen",
 		},
 
 		["AutoTabBinder"] = {
-			["Name"] = "Only Tab Target Enemy Players",
+			["Name"] = "Nur anderen Spieler mit der Tab-Taste ins Ziel nehmen",
 		},
 
 		["BuffThanks"] = {
-			["Name"] = "Thank Players For Buffs (Open World Only)",
+			["Name"] = "Bei Spielern für Buffs bedanken (nur in der offenen Welt)",
 		},
 
 		["BlockMovies"] = {
-			["Name"] = "Block Movies You Already Seen",
+			["Name"] = "Filme blockieren, die du bereits gesehen hast",
 		},
 
 		["DeclinePvPDuel"] = {
-			["Name"] = "Decline PvP Duels",
+			["Name"] = "PvP Duelle ablehnen",
 		},
 
 		["WhisperInvite"] = {
-			["Name"] = "Auto Invites Keyword",
+			["Name"] = "Schlüsselwort für automatische Einladung (durch flüstern)",
 		},
 	},
 
 	-- Bags Local
 	["Inventory"] = {
 		["AutoSell"] = {
-			["Name"] = "Auto Vendor Grays",
-			["Desc"] = "Automatically vendor gray items when visiting a vendor.",
+			["Name"] = "Automatsicher Verkauf grauer Gegenstände",
+			["Desc"] = "Bei Besuch eines Händlers automatisch alle grauen Gegenstände verkaufen.",
 		},
 
 		["BagBar"] = {
-			["Name"] = "Show Bagbar",
+			["Name"] = "Taschenleiste zeigen",
 		},
 
 		["BagBarMouseover"] = {
-			["Name"] = "Fade Bagbar",
+			["Name"] = "Taschenleiste ausblenden",
 		},
 
 		["BagColumns"] = {
-			["Name"] = "Number of Columns In Bags",
+			["Name"] = "Anzahl von Spalten in den Taschen",
 		},
 
 		["BankColumns"] = {
-			["Name"] = "Number of Columns In Bank",
+			["Name"] = "Anzahl von Spalten in der Bank",
 		},
 
 		["ButtonSize"] = {
-			["Name"] = "Bag Button Size",
+			["Name"] = "Größe der einzelnen Taschenknöpfe",
 		},
 
 		["ButtonSpace"] = {
-			["Name"] = "Bag Button Spacing",
+			["Name"] = "Abstand der Taschenknöpfe zueinander",
 		},
 
 		["DetailedReport"] = {
-			["Name"] = "Vendor Gray Detailed Report",
-			["Desc"] = "Displays a detailed report of every item sold when enabled.",
+			["Name"] = "Verkauf grauer Gegenstände - genauer Bericht",
+			["Desc"] = "Zeigt einen genauen Bericht über jeden verkauften Gegenstand, wenn aktiviert.",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable",
-			["Desc"] = "Enable/Disable the Inventory Module.",
+			["Name"] = "Aktivieren",
+			["Desc"] = "(De-)Aktivieren des Taschenmoduls.",
 		},
 
 		["ItemLevel"] = {
-			["Name"] = "Display Item Level",
-			["Desc"] = "Displays item level on equippable items.",
+			["Name"] = "Gegenstandsstufe anzeigen",
+			["Desc"] = "Zeigt die Gegenstandsstufe auf anlegbaren Gegenständen.",
 		},
 
 		["JunkIcon"] = {
-			["Name"] = "Show Junk Icon",
-			["Desc"] = "Display the junk icon on all grey items that can be vendored.",
+			["Name"] = "Zeige Müll SymbolShow Junk Icon",
+			["Desc"] = "Zeige Müll Symbol auf allen grauen Gegenständen die verkauft werden können.",
 		},
 
 		["PulseNewItem"] = {
-			["Name"] = "Show New Item Glow",
+			["Name"] = "Hebe neue Gegenstände durch einen glühenden Rahmen hervor.",
 		},
 
 		["AutoRepair"] = {
-			["Name"] = "Auto Repair Gear",
+			["Name"] = "Ausrüstung automatisch reparieren",
 		},
 	},
 
 	-- Auras Local
 	["Auras"] = {
 		["BuffSize"] = {
-			["Name"] = "Buff Icon Size",
+			["Name"] = "Größe für Stärkungszaubersymbole",
 		},
 
 		["BuffsPerRow"] = {
-			["Name"] = "Buffs per Row",
+			["Name"] = "Stärkungszauber pro Reihe",
 		},
 
 		["DebuffSize"] = {
-			["Name"] = "DeBuff Icon Size",
+			["Name"] = "Schwächungszaubersymbolgröße",
 		},
 
 		["DebuffsPerRow"] = {
-			["Name"] = "DeBuffs per Row",
+			["Name"] = "Schwächungszauber pro Reihe",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable",
+			["Name"] = "Aktivieren",
 		},
 
 		["Reminder"] = {
-			["Name"] = "Auras Reminder (Shout/Intellect/Poison)",
+			["Name"] = "Bufferinnerungen (Ruf/Intelligenz/Gift)",
 		},
 
 		["ReverseBuffs"] = {
-			["Name"] = "Buffs Grow Right",
+			["Name"] = "Stärkungszauber erweitern nach Rechts",
 		},
 
 		["ReverseDebuffs"] = {
-			["Name"] = "DeBuffs Grow Right",
+			["Name"] = "Schwächungszauber erweitern nach Links",
 		},
 	},
 
 	-- Chat Local
 	["Chat"] = {
 		["Background"] = {
-			["Name"] = "Show Chat Background",
+			["Name"] = "Chathintergrund anzeigen",
 		},
 
 		["BackgroundAlpha"] = {
-			["Name"] = "Chat Background Alpha",
+			["Name"] = "Chat Hintergrund Alpha",
 		},
 
 		["BlockAddonAlert"] = {
-			["Name"] = "Block Addon Alerts",
+			["Name"] = "AddOn Warnungen blockieren",
 		},
 
 		["ChatItemLevel"] = {
-			["Name"] = "Show iLvl on ChatFrames",
+			["Name"] = "Zeige Gegenstandstufe in Chatfenstern",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Chat",
+			["Name"] = "Chat aktivieren",
 		},
 
 		["EnableFilter"] = {
-			["Name"] = "Enable Chat Filter",
+			["Name"] = "Chat-Filter aktivieren",
 		},
 
 		["Fading"] = {
-			["Name"] = "Fade Chat",
+			["Name"] = "Chat verblassen",
 		},
 
 		["FadingTimeFading"] = {
-			["Name"] = "Fade Chat Time",
+			["Name"] = "Dauer des Verblassens des Chats",
 		},
 
 		["FadingTimeVisible"] = {
-			["Name"] = "Fading Chat Visible TIme",
+			["Name"] = "Zeit, bevor der Chat verblassst wird",
 		},
 
 		["Height"] = {
-			["Name"] = "Chat Height",
+			["Name"] = "Chat-Höhe",
 		},
 
 		["QuickJoin"] = {
-			["Name"] = "Quick Join Messages",
-			["Desc"] = "Show clickable Quick Join messages inside of the chat."
+			["Name"] = "Schnellbeitrittnachrichten",
+			["Desc"] = "Zeige anklickbare Schnellbeitrittnachrichten im Chat an."
 		},
 
 		["ScrollByX"] = {
-			["Name"] = "Scroll by '#' Lines",
+			["Name"] = "Scrollen um '#' Zeilen",
 		},
 
 		["ShortenChannelNames"] = {
-			["Name"] = "Shorten Channel Names",
+			["Name"] = "Kanalnamen einkürzen",
 		},
 
 		["TabsMouseover"] = {
-			["Name"] = "Fade Chat Tabs",
+			["Name"] = "Chat-Tabs verblassen",
 		},
 
 		["WhisperSound"] = {
-			["Name"] = "Whisper Sound",
+			["Name"] = "Geräusch bei Flüstern",
 		},
 
 		["Width"] = {
-			["Name"] = "Chat Width",
+			["Name"] = "Chat-Breite",
 		},
 
 	},
@@ -351,39 +351,39 @@ _G.KkthnxUIConfig["enUS"] = {
 	-- Databars Local
 	["DataBars"] = {
 		["Enable"] = {
-			["Name"] = "Enable DataBars",
+			["Name"] = "Datenleisten aktivieren",
 		},
 
 		["ExperienceColor"] = {
-			["Name"] = "Experience Bar Color",
+			["Name"] = "Farbe der Erfahrungsleiste",
 		},
 
 		["Height"] = {
-			["Name"] = "DataBars Height",
+			["Name"] = "Datenleistenhöhe",
 		},
 
 		["HonorColor"] = {
-			["Name"] = "Honor Bar Color",
+			["Name"] = "Farbe der Ehrenleiste",
 		},
 
 		["MouseOver"] = {
-			["Name"] = "Fade DataBars",
+			["Name"] = "Datenleisten verblassen",
 		},
 
 		["RestedColor"] = {
-			["Name"] = "Rested Bar Color",
+			["Name"] = "Farbe der Leiste wenn ausgeruht",
 		},
 
 		["Text"] = {
-			["Name"] = "Show Text",
+			["Name"] = "Text anzeigen",
 		},
 
 		["TrackHonor"] = {
-			["Name"] = "Track Honor",
+			["Name"] = "Ehre verfolgen",
 		},
 
 		["Width"] = {
-			["Name"] = "DataBars Width",
+			["Name"] = "Datenleistenbreite",
 		},
 
 	},
@@ -391,453 +391,453 @@ _G.KkthnxUIConfig["enUS"] = {
 	-- DataText Local
 	["DataText"] = {
 		["Battleground"] = {
-			["Name"] = "Battleground Info",
+			["Name"] = "Schlachtfeldinformationen",
 		},
 
 		["LocalTime"] = {
-			["Name"] = "12 Hour Time",
+			["Name"] = "12 Stunden Zeitformat",
 		},
 
 		["System"] = {
-			["Name"] = "Show FPS/MS on Minimap",
+			["Name"] = "Zeige FPS/MS an der Minikarte",
 		},
 
 		["Time"] = {
-			["Name"] = "Show Time on Minimap",
+			["Name"] = "Zeige Uhrzeit an der Minikarte",
 		},
 
 		["Time24Hr"] = {
-			["Name"] = "24 Hour Time",
+			["Name"] = "24 Stunden Zeitformat",
 		},
 	},
 
 	-- Filger Local
 	["Filger"] = {
 		["BuffSize"] = {
-			["Name"] = "Buff Size",
+			["Name"] = "Stärkungszaubergröße",
 		},
 
 		["CooldownSize"] = {
-			["Name"] = "Cooldown Size",
+			["Name"] = "Cooldown Größe",
 		},
 
 		["DisableCD"] = {
-			["Name"] = "Disable Cooldown Tracking",
+			["Name"] = "Cooldown-Verfolgung deaktivieren",
 		},
 
 		["DisablePvP"] = {
-			["Name"] = "Disable PvP Tracking",
+			["Name"] = "PvP-Verfolgung deaktivieren",
 		},
 
 		["Expiration"] = {
-			["Name"] = "Sort by Expiration",
+			["Name"] = "Nach Auslaufzeit sortieren",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Filger",
+			["Name"] = "Filger aktivieren",
 		},
 
 		["MaxTestIcon"] = {
-			["Name"] = "Max Test Icons",
+			["Name"] = "Maximale Anzahgl von Testsymbolen",
 		},
 
 		["PvPSize"] = {
-			["Name"] = "PvP Icon Size",
+			["Name"] = "PvP-Symbolgröße",
 		},
 
 		["ShowTooltip"] = {
-			["Name"] = "Show Tooltip On Hover",
+			["Name"] = "Zeige Tooltip, wenn Maus darüber",
 		},
 
 		["TestMode"] = {
-			["Name"] = "Test Mode",
+			["Name"] = "Test-Modus",
 		},
 	},
 
 	-- General Local
 	["General"] = {
 		["ColorTextures"] = {
-			["Name"] = "Color 'Most' KkthnxUI Borders",
+			["Name"] = "Einfärben der 'meisten' KkthnxUI Ränder",
 		},
 
 		["DisableTutorialButtons"] = {
-			["Name"] = "Disable Tutorial Buttons",
+			["Name"] = "Tutorial-Knöpfe deaktivieren",
 		},
 
 		["ShowTooltip"] = {
-			["Name"] = "Fix Garbage Collection",
+			["Name"] = "Müllsammlung korrigieren",
 		},
 
 		["FontSize"] = {
-			["Name"] = "General Font Size",
+			["Name"] = "Allgemeine Schriftgröße",
 		},
 
 		["HideErrors"] = {
-			["Name"] = "Hide 'Some' UI Errors",
+			["Name"] = "Verstecke 'einige' UI Fehler",
 		},
 
 		["LagTolerance"] = {
-			["Name"] = "Auto Lag Tolerance",
+			["Name"] = "Lagtoleranz automatisch einstellen",
 		},
 
 		["MoveBlizzardFrames"] = {
-			["Name"] = "Move Blizzard Frames",
+			["Name"] = "Blizzard-Fenster verschieben",
 		},
 
 		["ReplaceBlizzardFonts"] = {
-			["Name"] = "Replace 'Some' Blizzard Fonts",
+			["Name"] = "Ersetze 'einige' Blizzard Schriftarten",
 		},
 
 		["TexturesColor"] = {
-			["Name"] = "Textures Color",
+			["Name"] = "Texturenfarbe",
 		},
 
 		["Welcome"] = {
-			["Name"] = "Show Welcome Message",
+			["Name"] = "Zeige Willkommensnachricht",
 		},
 
 		["NumberPrefixStyle"] = {
-			["Name"] = "Unitframe Number Prefix Style",
+			["Name"] = "Nummernpräfix-Stil für Einheitenfenster",
 		},
 
 		["PortraitStyle"] = {
-			["Name"] = "Unitframe Portrait Style",
+			["Name"] = "Portraitstil für Einheitenfenster",
 		},
 	},
 
 	-- Loot Local
 	["Loot"] = {
 		["AutoConfirm"] = {
-			["Name"] = "Auto Confirm Loot Dialogs",
+			["Name"] = "Beutedialoge automatisch bestätigen",
 		},
 
 		["AutoGreed"] = {
-			["Name"] = "Auto Greed Green Items",
+			["Name"] = "Automatisch 'Gier' für grüne Gegenstände wählen",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Loot",
+			["Name"] = "Beute-Modul aktivieren",
 		},
 
 		["FastLoot"] = {
-			["Name"] = "Faster Auto-Looting",
+			["Name"] = "Schnelleres Schnellplündern",
 		},
 
 		["GroupLoot"] = {
-			["Name"] = "Enable Group Loot",
+			["Name"] = "Gruppenbeute aktivieren",
 		},
 	},
 
 	-- Minimap Local
 	["Minimap"] = {
 		["Calendar"] = {
-			["Name"] = "Show Calendar",
+			["Name"] = "Kalender anzeigen",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Minimap",
+			["Name"] = "Minikarte aktivieren",
 		},
 
 		["ResetZoom"] = {
-			["Name"] = "Reset Minimap Zoom",
+			["Name"] = "Zoom der Minikarte zurücksetzen",
 		},
 
 		["ResetZoomTime"] = {
-			["Name"] = "Reset Zoom Time",
+			["Name"] = "Zeit, nach der der Zoom zurückgesetzt wird",
 		},
 
 		["ShowRecycleBin"] = {
-			["Name"] = "Show Recycle Bin",
+			["Name"] = "Zeige Papierkorb",
 		},
 
 		["Size"] = {
-			["Name"] = "Minimap Size",
+			["Name"] = "Größe der Minikarte",
 		},
 	},
 
 	-- Miscellaneous Local
 	["Misc"] = {
 		["AFKCamera"] = {
-			["Name"] = "AFK Camera",
+			["Name"] = "AFK Kamera",
 		},
 
 		["AutoDismountStand"] = {
-			["Name"] = "Auto Stand/Dismount",
-			["Desc"] = "Will make you stand/dismount when you want to cast or fight something",
+			["Name"] = "Automatisch aufstehen/absitzen",
+			["Desc"] = "Lässst dich aufstehen/absitzen wenn du einen Zauber wirken oder etwas bekämpfen willst",
 		},
 
 		["ColorPicker"] = {
-			["Name"] = "Enhanced Color Picker",
+			["Name"] = "Verbesserter Farbwähler",
 		},
 
 		["EnhancedFriends"] = {
-			["Name"] = "Enhanced Colors (Friends/Guild +)",
+			["Name"] = "Verbesserte Farben (Freunde/Gilde +)",
 		},
 
 		["EnhancedMenu"] = {
-			["Name"] = "Add guild invite and more to dropdowns",
+			["Name"] = "Füge Gildeneinladung und mehr zu Kontextmenüs hinzu",
 		},
 
 		["GemEnchantInfo"] = {
-			["Name"] = "Character/Inspect Gem/Enchant Info",
+			["Name"] = "Charakter/Betrachten Edelsteine-/Verzauberungsinfo",
 		},
 
 		["ImprovedQuestLog"] = {
-			["Name"] = "Display A Better Questlog Style",
+			["Name"] = "Verbessere das Aussehen des Questlogs",
 		},
 
 		["ItemLevel"] = {
-			["Name"] = "Show Character/Inspect ItemLevel Info",
+			["Name"] = "Zeige Charakter/Betrachten Gegenstandsstufe",
 		},
 
 		["KillingBlow"] = {
-			["Name"] = "Show Your Killing Blow Info",
+			["Name"] = "Zeige Informationen über deine Tötungsschläge/-treffer",
 		},
 
 		["PvPEmote"] = {
-			["Name"] = "Auto Emote On Your Killing Blow",
+			["Name"] = "Automatisches Emote bei Tötungsschlag/-treffer",
 		},
 
 		["ShowHelmCloak"] = {
-			["Name"] = "Show Helm/Cloak Buttons On Character Frame",
+			["Name"] = "Zeige Knöpfe für Helm/Umhang im Charakterfenster",
 		},
 
 		["ShowWowHeadLinks"] = {
-			["Name"] = "Show Wowhead Links Above Questlog Frame",
+			["Name"] = "Zeige Wowhead Links über dem Questlog Fenster",
 		},
 
 		["SlotDurability"] = {
-			["Name"] = "Show Slot Durability %",
+			["Name"] = "Zeige Slothaltbarkeit in %",
 		},
 	},
 
 	-- Nameplates Local
 	["Nameplates"] = {
 		["GoodColor"] = {
-			["Name"] = "Good Threat Color",
+			["Name"] = "Farbe für gute Bedrohung",
 		},
 
 		["NearColor"] = {
-			["Name"] = "Near Threat Color",
+			["Name"] = "Farbe nahe der Bedrohungsgrenze",
 		},
 
 		["BadColor"] = {
-			["Name"] = "Bad Threat Color",
+			["Name"] = "Farbe für schlechte Bedrohung",
 		},
 
 		["SlotDurability"] = {
-			["Name"] = "Off Tank Threat Color",
+			["Name"] = "Farbe für die Bedrohung des Nebentanks",
 		},
 
 		["Clamp"] = {
-			["Name"] = "Clamp Nameplates",
-			["Desc"] = "Clamp nameplates to the top of the screen when outside of view."
+			["Name"] = "In Sicht halten",
+			["Desc"] = "Behält die Namensplaketten am oberen Rand in Sicht wenn diese außerhalb des Sichtfeldes geraten würden."
 		},
 
 		["ClassResource"] = {
-			["Name"] = "Show Class Resources",
+			["Name"] = "Zeige Klassenressourcen",
 		},
 
 		["Combat"] = {
-			["Name"] = "Show Nameplates In Combat",
+			["Name"] = "Zeige Namensplaketten im Kampf",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Nameplates",
+			["Name"] = "Aktiviere Namensplaketten",
 		},
 
 		["HealthValue"] = {
-			["Name"] = "Show Health Value",
+			["Name"] = "Zeige Werte für Lebenspunkte",
 		},
 
 		["Height"] = {
-			["Name"] = "Nameplate Height",
+			["Name"] = "Höhe der Namensplaketten",
 		},
 
 		["NonTargetAlpha"] = {
-			["Name"] = "Non-Target Nameplate Alpha",
+			["Name"] = "Alpha für Nichtziel Namensplaketten",
 		},
 
 		["OverlapH"] = {
-			["Name"] = "Overlap Horizontal",
+			["Name"] = "Horizontale Überlappung",
 		},
 
 		["OverlapV"] = {
-			["Name"] = "Overlap Vertical",
+			["Name"] = "Veritkale Überlappung",
 		},
 
 		["QuestInfo"] = {
-			["Name"] = "Show Quest Info Icon",
+			["Name"] = "Zeige Questinformationssymbol",
 		},
 
 		["SelectedScale"] = {
-			["Name"] = "Selected Nameplate Scale",
+			["Name"] = "Ausgewählte Skalierung für Namensplaketten",
 		},
 
 		["Smooth"] = {
-			["Name"] = "Smooth Bars",
+			["Name"] = "Leisten flüssiger zeichnen",
 		},
 
 		["TankMode"] = {
-			["Name"] = "Tank Mode",
+			["Name"] = "Tank Modus",
 		},
 
 		["Threat"] = {
-			["Name"] = "Nameplate Threat",
+			["Name"] = "Bedrohung an Namensplakette",
 		},
 
 		["TrackAuras"] = {
-			["Name"] = "Track Buffs/DeBuffs",
+			["Name"] = "Stärkungs-/Schwächungszauber verfolgen",
 		},
 
 		["Width"] = {
-			["Name"] = "Nameplate Width",
+			["Name"] = "Breite der Namensplaketten",
 		},
 
 		["LevelFormat"] = {
-			["Name"] = "Level Format Display",
+			["Name"] = "Anzeigeformat für das Level",
 		},
 
 		["TargetArrowMark"] = {
-			["Name"] = "Show Target Arrows",
+			["Name"] = "Zeige Zielpfeile",
 		},
 
 		["HealthFormat"] = {
-			["Name"] = "Health Format Display",
+			["Name"] = "ANzeigeformat für Lebenspunkte",
 		},
 
 		["ShowEnemyCombat"] = {
-			["Name"] = "Show Enemy Combat",
+			["Name"] = "Zeige feindliche im Kampf",
 		},
 
 		["ShowFriendlyCombat"] = {
-			["Name"] = "Show Friendly Combat",
+			["Name"] = "Zeige feindliche im Kampf",
 		},
 	},
 
 	-- Skins Local
 	["Skins"] = {
 		["ChatBubbles"] = {
-			["Name"] = "Skin Chat Bubbles",
+			["Name"] = "Verändere das Aussehen von Nachrichtenblasen",
 		},
 
 		["DBM"] = {
-			["Name"] = "Skin DeadlyBossMods",
+			["Name"] = "Verändere das Aussehen von DeadlyBossMods",
 		},
 
 		["Details"] = {
-			["Name"] = "Skin Details",
+			["Name"] = "Verändere das Aussehen von Details",
 		},
 
 		["Hekili"] = {
-			["Name"] = "Skin Hekili",
+			["Name"] = "Verändere das Aussehen von Hekili",
 		},
 
 		["Skada"] = {
-			["Name"] = "Skin Skada",
+			["Name"] = "Verändere das Aussehen von Skada",
 		},
 
 		["TalkingHeadBackdrop"] = {
-			["Name"] = "Show TalkingHead Backdrop",
+			["Name"] = "Zeige den Hintergrund des Redenden Kopfes",
 		},
 
 		["WeakAuras"] = {
-			["Name"] = "Skin WeakAuras",
+			["Name"] = "Verändere das Aussehen von WeakAuras",
 		},
 	},
 
 	-- Unitframe Local
 	["Unitframe"] = {
 		["AdditionalPower"] = {
-			["Name"] = "Show Druid Mana (Shapeshift Only)",
+			["Name"] = "Zeige Druidenmana (nur bei gewandelter Gestalt)",
 		},
 
 		["CastClassColor"] = {
-			["Name"] = "Class Color Castbars",
+			["Name"] = "Zauberleisten in Klassenfarbe",
 		},
 
 		["CastReactionColor"] = {
-			["Name"] = "Reaction Color Castbars",
+			["Name"] = "Zauberleisten in Reaktionsfarbe",
 		},
 
 		["CastbarLatency"] = {
-			["Name"] = "Show Castbar Latency",
+			["Name"] = "Zeige Latenz in Zauberleiste",
 		},
 
 		["Castbars"] = {
-			["Name"] = "Enable Castbars",
+			["Name"] = "Zauberleisten aktivieren",
 		},
 
 		["ClassResource"] = {
-			["Name"] = "Show Class Resources",
+			["Name"] = "Klassenressourcen anzeigen",
 		},
 
 		["CombatFade"] = {
-			["Name"] = "Fade Unitframes",
+			["Name"] = "Einheitenfenster ausblenden (außerhalb des Kampfes)",
 		},
 
 		["CombatText"] = {
-			["Name"] = "Show CombatText Feedback",
+			["Name"] = "Zeige Meldungen des Kamptextes",
 		},
 
 		["DebuffHighlight"] = {
-			["Name"] = "Show Health Debuff Highlight",
+			["Name"] = "Zeige Hervorhebung bei Lebenspunkteschwächungszauber",
 		},
 
 		["DebuffsOnTop"] = {
-			["Name"] = "Show Target Debuffs On-top",
+			["Name"] = "Zeige Schwächungszauber des Ziels oberhalb",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Unitframes",
+			["Name"] = "Einheitenfenster aktivieren",
 		},
 
 		["EnergyTick"] = {
-			["Name"] = "Show EnergyTicks (Druid / Rogue)",
+			["Name"] = "Zeige Energie-Ticks (Druide / Schurke)",
 		},
 
 		["GlobalCooldown"] = {
-			["Name"] = "Show Global Cooldown",
+			["Name"] = "Zeige die Globale Abklingzeit",
 		},
 
 		["HideTargetofTarget"] = {
-			["Name"] = "Hide TargetofTarget Frame",
+			["Name"] = "Verstecke das Ziel des Zieles",
 		},
 
 		["OnlyShowPlayerDebuff"] = {
-			["Name"] = "Only Show Your Debuffs",
+			["Name"] = "Nur eigene Schwächungszauber anzeigen",
 		},
 
 		["PlayerBuffs"] = {
-			["Name"] = "Show Player Frame Buffs",
+			["Name"] = "Zeige Stärkungszauber am Spielerfenster",
 		},
 
 		["PlayerCastbarHeight"] = {
-			["Name"] = "Player Castbar Height",
+			["Name"] = "Höhe der Spielerzauberleiste",
 		},
 
 		["PlayerCastbarWidth"] = {
-			["Name"] = "Player Castbar Width",
+			["Name"] = "Breite der Spielerzauberleiste",
 		},
 
 		["PortraitTimers"] = {
-			["Name"] = "Portrait Spell Timers",
+			["Name"] = "Zauberzeiten im Portrait anzeigen",
 		},
 
 		["PvPIndicator"] = {
-			["Name"] = "Show PvP Indicator on Player / Target",
+			["Name"] = "Zeige PvP-Symbole am Spieler/Ziel",
 		},
 
 		["ShowPlayerLevel"] = {
-			["Name"] = "Show Player Frame Level",
+			["Name"] = "Zeige Spielerlevel am Spielerfenster",
 		},
 
 		["ShowPlayerName"] = {
-			["Name"] = "Show Player Frame Name",
+			["Name"] = "Zeige Spielername am Spielerfenster",
 		},
 
 		["Smooth"] = {
-			["Name"] = "Smooth Bars",
+			["Name"] = "Leisten flüssiger zeichnen",
 		},
 
 		["Swingbar"] = {
