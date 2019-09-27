@@ -407,6 +407,7 @@ function Stuffing:SlotUpdate(b)
 		end
 
 		if itemClassID == LE_ITEM_CLASS_QUESTITEM then
+			b.frame.QuestBorder:SetTexture(TEXTURE_ITEM_QUEST_BANG)
 			_G[b.frame:GetName() .. "IconQuestTexture"]:Show()
 		else
 			_G[b.frame:GetName() .. "IconQuestTexture"]:Hide()
@@ -418,7 +419,12 @@ function Stuffing:SlotUpdate(b)
 		elseif questId and not isActiveQuest then
 			b.frame:SetBackdropBorderColor(1, 0.3, 0.3)
 		elseif questId or isQuestItem then
-			b.frame:SetBackdropBorderColor(1, 1, 0)
+			b.frame.questIcon = _G[b.frame:GetName() .. "IconQuestTexture"]
+			b.frame.questIcon:SetTexture(TEXTURE_ITEM_QUEST_BANG)
+			b.frame.questIcon:SetTexCoord(0,1,0,1)
+			b.frame.questIcon:SetInside()
+			b.frame.questIcon:Show()
+			--b.frame:SetBackdropBorderColor(1, 1, 0)
 		end
 	else
 		b.name, b.level = nil, nil
