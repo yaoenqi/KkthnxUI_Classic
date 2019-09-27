@@ -14,3 +14,4 @@ KkthnxUI_Config.lua
 
 # -- Load Locales
 Locales\enUS.lua
+Locales\zhCN.lua
