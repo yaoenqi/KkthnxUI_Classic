@@ -289,8 +289,6 @@ end
 function Stuffing:SlotUpdate(b)
 	local texture, count, locked, quality, _, _, _, _, noValue = GetContainerItemInfo(b.bag, b.slot)
 	local clink = GetContainerItemLink(b.bag, b.slot)
-	local isQuestItem, questId, isActiveQuest
-	if b.itemClassID == LE_ITEM_CLASS_QUESTITEM then isQuestItem = true end
 
 	if not b.frame.lock then
 		b.frame:SetBackdropBorderColor()
@@ -362,18 +360,8 @@ function Stuffing:SlotUpdate(b)
 		newItemTexture:SetSize(b.frame:GetSize())
 	end
 
-	local questTexture = _G[b.frame:GetName() .. "IconQuestTexture"]
-	if questTexture then
-		questTexture:ClearAllPoints()
-		if questId and not isActiveQuest then
-			questTexture:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\QuestIcon.tga")
-			questTexture:SetPoint("BOTTOMLEFT", 1, 1)
-			questTexture:SetSize(C["Inventory"].ButtonSize / 1.2, C["Inventory"].ButtonSize / 1.2)
-			questTexture:SetTexCoord(0, 1, 0, 1)
-			questTexture:Show()
-		else
-			questTexture:Hide()
-		end
+	if b.frame.QuestIcon then
+		b.frame.QuestIcon:Hide()
 	end
 
 	if IsAddOnLoaded("CanIMogIt") then
@@ -391,7 +379,6 @@ function Stuffing:SlotUpdate(b)
 		if C["Inventory"].ItemLevel then
 			if b.link and b.level and b.rarity > 1 and (b.itemClassID == LE_ITEM_CLASS_WEAPON or b.itemClassID == LE_ITEM_CLASS_ARMOR) then
 				local level = _getRealItemLevel(clink, self, b.bag, b.slot) or b.itemlevel
-				--local level = b.level
 				local color = BAG_ITEM_QUALITY_COLORS[b.rarity]
 				b.frame.text:SetText(level)
 				b.frame.text:SetTextColor(color.r, color.g, color.b)
@@ -406,25 +393,14 @@ function Stuffing:SlotUpdate(b)
 			_G[b.frame:GetName().."IconTexture"]:SetVertexColor(1, 1, 1)
 		end
 
-		if itemClassID == LE_ITEM_CLASS_QUESTITEM then
-			b.frame.QuestBorder:SetTexture(TEXTURE_ITEM_QUEST_BANG)
-			_G[b.frame:GetName() .. "IconQuestTexture"]:Show()
-		else
-			_G[b.frame:GetName() .. "IconQuestTexture"]:Hide()
-		end
-
-		-- Color slot according to item quality
-		if not b.frame.lock and quality and quality > 1 and not (isQuestItem or questId) then
+		-- color slot according to item quality
+		if b.itemClassID == LE_ITEM_CLASS_QUESTITEM then
+			b.frame:SetBackdropBorderColor(1, 1, 0)
+			if b.frame.QuestIcon then
+				b.frame.QuestIcon:Show()
+			end
+		elseif not b.frame.lock and quality and quality > LE_ITEM_QUALITY_COMMON then
 			b.frame:SetBackdropBorderColor(GetItemQualityColor(quality))
-		elseif questId and not isActiveQuest then
-			b.frame:SetBackdropBorderColor(1, 0.3, 0.3)
-		elseif questId or isQuestItem then
-			b.frame.questIcon = _G[b.frame:GetName() .. "IconQuestTexture"]
-			b.frame.questIcon:SetTexture(TEXTURE_ITEM_QUEST_BANG)
-			b.frame.questIcon:SetTexCoord(0,1,0,1)
-			b.frame.questIcon:SetInside()
-			b.frame.questIcon:Show()
-			--b.frame:SetBackdropBorderColor(1, 1, 0)
 		end
 	else
 		b.name, b.level = nil, nil
@@ -625,6 +601,14 @@ function Stuffing:SlotNew(bag, slot)
 			ret.frame.JunkIcon:SetAtlas("bags-junkcoin")
 			ret.frame.JunkIcon:SetPoint("TOPLEFT", 1, 0)
 			ret.frame.JunkIcon:Hide()
+		end
+
+		if not ret.frame.QuestIcon then
+			ret.frame.QuestIcon = _G[ret.frame:GetName().."IconQuestTexture"] or _G[ret.frame:GetName()].IconQuestTexture
+			ret.frame.QuestIcon:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Inventory\\QuestIcon.tga")
+			ret.frame.QuestIcon:SetTexCoord(0, 1, 0, 1)
+			ret.frame.QuestIcon:SetAllPoints()
+			ret.frame.QuestIcon:Hide()
 		end
 
 		local Battlepay = _G[ret.frame:GetName()].BattlepayItemTexture
