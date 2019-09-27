@@ -132,7 +132,7 @@ _G.KkthnxUIConfig["zhCN"] = {
 		},
 
 		["AutoCollapse"] = {
-			["Name"] = "Auto Collapse Objective Tracker",
+			["Name"] = "自动折叠目标追踪器",
 		},
 
 		["AutoInvite"] = {
