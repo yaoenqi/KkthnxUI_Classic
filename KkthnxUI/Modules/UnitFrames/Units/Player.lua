@@ -344,6 +344,7 @@ function Module:CreatePlayer()
 		self.Swing = CreateFrame("StatusBar", nil, self)
 		self.Swing:SetSize(250, 12)
 		self.Swing:SetPoint("TOP", self.Castbar, "BOTTOM", 0, -5)
+		K.SmoothBar(self.Swing)
 
 		self.Swing.Twohand = CreateFrame("StatusBar", nil, self.Swing)
 		self.Swing.Twohand:SetStatusBarTexture(UnitframeTexture)
@@ -351,6 +352,7 @@ function Module:CreatePlayer()
 		self.Swing.Twohand:CreateBorder()
 		self.Swing.Twohand:Hide()
 		self.Swing.Twohand:SetAllPoints()
+		K.SmoothBar(self.Swing.Twohand)
 
 		self.Swing.Mainhand = CreateFrame("StatusBar", nil, self.Swing)
 		self.Swing.Mainhand:SetStatusBarTexture(UnitframeTexture)
@@ -358,6 +360,7 @@ function Module:CreatePlayer()
 		self.Swing.Mainhand:CreateBorder()
 		self.Swing.Mainhand:Hide()
 		self.Swing.Mainhand:SetAllPoints()
+		K.SmoothBar(self.Swing.Mainhand)
 
 		self.Swing.Offhand = CreateFrame("StatusBar", nil, self.Swing)
 		self.Swing.Offhand:SetStatusBarTexture(UnitframeTexture)
@@ -366,6 +369,7 @@ function Module:CreatePlayer()
 		self.Swing.Offhand:Hide()
 		self.Swing.Offhand:SetPoint("TOPLEFT", self.Swing, "BOTTOMLEFT", 0, -8)
 		self.Swing.Offhand:SetPoint("BOTTOMRIGHT", self.Swing, "BOTTOMRIGHT", 0, -10)
+		K.SmoothBar(self.Swing.Offhand)
 
 		if C["Unitframe"].SwingbarTimer then
 			self.Swing.Text = self.Swing:CreateFontString(nil, "OVERLAY")
@@ -383,7 +387,7 @@ function Module:CreatePlayer()
 			self.Swing.TextOH:SetPoint("CENTER", 1, 0)
 			self.Swing.TextOH:SetWordWrap(false)
 		end
-		self.Swing.hideOoc = true
+		self.Swing.hideOoc = false
 	end
 
 	if C["Unitframe"].PvPIndicator then

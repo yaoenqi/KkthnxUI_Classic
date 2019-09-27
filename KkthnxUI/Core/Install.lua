@@ -93,6 +93,7 @@ end
 
 function Install:Step1()
 	_G.SetActionBarToggles(1, 1, 1, 1)
+
 	SetCVar("ActionButtonUseKeyDown", 1)
 	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("UberTooltips", 1)
@@ -104,17 +105,23 @@ function Install:Step1()
 	SetCVar("autoQuestWatch", 1)
 	SetCVar("buffDurations", 1)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
+	SetCVar("cameraSmoothStyle", 0)
 	SetCVar("chatClassColorOverride", 0)
 	SetCVar("chatMouseScroll", 1)
 	SetCVar("chatStyle", "im")
+	SetCVar("colorChatNamesByClass", 1)
 	SetCVar("countdownForCooldowns", 0)
+	SetCVar("instantQuestText", 1)
 	SetCVar("lockActionBars", 1)
+	SetCVar("lootUnderMouse", 1)
 	SetCVar("nameplateMotion", 1)
 	SetCVar("nameplateShowFriendlyNPCs", 1)
 	SetCVar("overrideArchive", 0)
+	SetCVar("profanityFilter", 0)
 	SetCVar("removeChatDelay", 1)
 	SetCVar("screenshotQuality", 10)
 	SetCVar("showArenaEnemyFrames", 0)
+	SetCVar("showLootSpam", 1)
 	SetCVar("showTutorials", 0)
 	SetCVar("showVKeyCastbar", 1)
 	SetCVar("spamFilter", 0)
@@ -386,87 +393,85 @@ function Install:WelcomeMessageDelay()
 end
 
 -- On login function
-Install:RegisterEvent("ADDON_LOADED")
-Install:SetScript("OnEvent", function(self, _, name)
-	if (name ~= "KkthnxUI") then
-		return
-	end
-
+Install:RegisterEvent("VARIABLES_LOADED")
+Install:RegisterEvent("PLAYER_ENTERING_WORLD")
+Install:SetScript("OnEvent", function(self, event)
 	local playerName = UnitName("player")
 	local playerRealm = GetRealmName()
 
 	-- Define the saved variables first. This is important
-	if (not _G.KkthnxUIData) then
-		_G.KkthnxUIData = _G.KkthnxUIData or {}
-	end
+	if (event == "VARIABLES_LOADED") then
+		if (not _G.KkthnxUIData) then
+			_G.KkthnxUIData = _G.KkthnxUIData or {}
+		end
 
-	-- Create missing entries in the saved vars if they don"t exist.
-	if (not _G.KkthnxUIData[playerRealm]) then
-		_G.KkthnxUIData[playerRealm] = _G.KkthnxUIData[playerRealm] or {}
-	end
+		-- Create missing entries in the saved vars if they don"t exist.
+		if (not _G.KkthnxUIData[playerRealm]) then
+			_G.KkthnxUIData[playerRealm] = _G.KkthnxUIData[playerRealm] or {}
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName]) then
-		_G.KkthnxUIData[playerRealm][playerName] = _G.KkthnxUIData[playerRealm][playerName] or {}
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName]) then
+			_G.KkthnxUIData[playerRealm][playerName] = _G.KkthnxUIData[playerRealm][playerName] or {}
+		end
 
-	if (_G.KkthnxUIDataPerChar) then
-		_G.KkthnxUIData[playerRealm][playerName] = _G.KkthnxUIDataPerChar
-		_G.KkthnxUIDataPerChar = nil
-	end
+		if (_G.KkthnxUIDataPerChar) then
+			_G.KkthnxUIData[playerRealm][playerName] = _G.KkthnxUIDataPerChar
+			_G.KkthnxUIDataPerChar = nil
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName].UIScale) then
-		_G.KkthnxUIData[playerRealm][playerName].UIScale = _G.KkthnxUIData[playerRealm][playerName].UIScale or 0.71111
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName].UIScale) then
+			_G.KkthnxUIData[playerRealm][playerName].UIScale = _G.KkthnxUIData[playerRealm][playerName].UIScale or 0.71111
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName].LockUIScale) then
-		_G.KkthnxUIData[playerRealm][playerName].LockUIScale = _G.KkthnxUIData[playerRealm][playerName].LockUIScale or false
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName].LockUIScale) then
+			_G.KkthnxUIData[playerRealm][playerName].LockUIScale = _G.KkthnxUIData[playerRealm][playerName].LockUIScale or false
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName].RevealWorldMap) then
-		_G.KkthnxUIData[playerRealm][playerName].RevealWorldMap = _G.KkthnxUIData[playerRealm][playerName].RevealWorldMap or false
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName].RevealWorldMap) then
+			_G.KkthnxUIData[playerRealm][playerName].RevealWorldMap = _G.KkthnxUIData[playerRealm][playerName].RevealWorldMap or false
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName].AutoInvite) then
-		_G.KkthnxUIData[playerRealm][playerName].AutoInvite = _G.KkthnxUIData[playerRealm][playerName].AutoInvite or false
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName].AutoInvite) then
+			_G.KkthnxUIData[playerRealm][playerName].AutoInvite = _G.KkthnxUIData[playerRealm][playerName].AutoInvite or false
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName].AutoQuest) then
-		_G.KkthnxUIData[playerRealm][playerName].AutoQuest = _G.KkthnxUIData[playerRealm][playerName].AutoQuest or false
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName].AutoQuest) then
+			_G.KkthnxUIData[playerRealm][playerName].AutoQuest = _G.KkthnxUIData[playerRealm][playerName].AutoQuest or false
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName].BindType) then
-		_G.KkthnxUIData[playerRealm][playerName].BindType = _G.KkthnxUIData[playerRealm][playerName].BindType or 1
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName].BindType) then
+			_G.KkthnxUIData[playerRealm][playerName].BindType = _G.KkthnxUIData[playerRealm][playerName].BindType or 1
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName].WatchedMovies) then
-		_G.KkthnxUIData[playerRealm][playerName].WatchedMovies = _G.KkthnxUIData[playerRealm][playerName].WatchedMovies or {}
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName].WatchedMovies) then
+			_G.KkthnxUIData[playerRealm][playerName].WatchedMovies = _G.KkthnxUIData[playerRealm][playerName].WatchedMovies or {}
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName]["Mover"]) then
-		_G.KkthnxUIData[playerRealm][playerName]["Mover"] = _G.KkthnxUIData[playerRealm][playerName]["Mover"] or {}
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName]["Mover"]) then
+			_G.KkthnxUIData[playerRealm][playerName]["Mover"] = _G.KkthnxUIData[playerRealm][playerName]["Mover"] or {}
+		end
 
-	if (not _G.KkthnxUIData[playerRealm][playerName]["TempAnchor"]) then
-		_G.KkthnxUIData[playerRealm][playerName]["TempAnchor"] = _G.KkthnxUIData[playerRealm][playerName]["TempAnchor"] or {}
-	end
+		if (not _G.KkthnxUIData[playerRealm][playerName]["TempAnchor"]) then
+			_G.KkthnxUIData[playerRealm][playerName]["TempAnchor"] = _G.KkthnxUIData[playerRealm][playerName]["TempAnchor"] or {}
+		end
 
-	if (_G.KkthnxUIData and _G.KkthnxUIData[playerRealm] and _G.KkthnxUIData[playerRealm][playerName] and _G.KkthnxUIData[playerRealm][playerName].Movers) then
-		_G.KkthnxUIData[playerRealm][playerName]["Mover"] = _G.KkthnxUIData[playerRealm][playerName].Movers
-		_G.KkthnxUIData[playerRealm][playerName].Movers = nil
-	end
+		if (_G.KkthnxUIData and _G.KkthnxUIData[playerRealm] and _G.KkthnxUIData[playerRealm][playerName] and _G.KkthnxUIData[playerRealm][playerName].Movers) then
+			_G.KkthnxUIData[playerRealm][playerName]["Mover"] = _G.KkthnxUIData[playerRealm][playerName].Movers
+			_G.KkthnxUIData[playerRealm][playerName].Movers = nil
+		end
+	elseif (event == "PLAYER_ENTERING_WORLD") then
+		-- Install default if we never ran KkthnxUI on this character.
+		local IsInstalled = _G.KkthnxUIData[playerRealm][playerName].InstallComplete
+		if (not IsInstalled) then
+			self:Launch()
+		end
 
-	-- Install default if we never ran KkthnxUI on this character.
-	local IsInstalled = _G.KkthnxUIData[playerRealm][playerName].InstallComplete
-	if (not IsInstalled) then
-		self:Launch()
-	end
+		-- Welcome message
+		if (not _G.KkthnxUIData[playerRealm][playerName].InstallComplete) then
+			K.Delay(8, Install.WelcomeMessageDelay)
+		end
 
-	-- Welcome message
-	if (not _G.KkthnxUIData[playerRealm][playerName].InstallComplete) then
-		K.Delay(8, Install.WelcomeMessageDelay)
 	end
-
-	self:UnregisterEvent("ADDON_LOADED")
 end)
 
 Install.CreateUIScale:RegisterEvent("PLAYER_LOGIN")

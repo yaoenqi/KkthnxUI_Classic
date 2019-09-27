@@ -406,6 +406,12 @@ function Stuffing:SlotUpdate(b)
 			_G[b.frame:GetName().."IconTexture"]:SetVertexColor(1, 1, 1)
 		end
 
+		if itemClassID == LE_ITEM_CLASS_QUESTITEM then
+			_G[b.frame:GetName() .. "IconQuestTexture"]:Show()
+		else
+			_G[b.frame:GetName() .. "IconQuestTexture"]:Hide()
+		end
+
 		-- Color slot according to item quality
 		if not b.frame.lock and quality and quality > 1 and not (isQuestItem or questId) then
 			b.frame:SetBackdropBorderColor(GetItemQualityColor(quality))

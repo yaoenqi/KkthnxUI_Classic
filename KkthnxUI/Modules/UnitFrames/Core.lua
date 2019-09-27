@@ -791,15 +791,13 @@ function Module:PostCreateAura(button)
 	end
 end
 
-function Module:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
+function Module:PostUpdateAura(unit, button, index)
 	local Name, _, _, DType, Duration, ExpirationTime, UnitCaster, IsStealable, _, SpellID = UnitAura(unit, index, button.filter)
 
 	if Duration == 0 and ExpirationTime == 0 then
 		Duration, ExpirationTime = LCD:GetAuraDurationByUnit(unit, SpellID, UnitCaster, Name)
 
 		button.IsLibClassicDuration = true
-	else
-		button.IsLibClassicDuration = false
 	end
 
 	local isPlayer = (UnitCaster == "player" or UnitCaster == "vehicle")

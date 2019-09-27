@@ -66,7 +66,7 @@ K.WorldMapPlusPinData = {
 		{"FlightA", 65.5, 24.3, L["Nethergarde Keep"]..", "..L["Blasted Lands"], nil, tATex, nil, nil},
 	},
 	[1420] = {-- Tirisfal Glades
-		--{"Dungeon", 82.6, 33.8, L["Scarlet Monastery"], L["Dungeon"], dnTex, 34, 45},
+		{"Dungeon", 82.6, 33.8, L["Scarlet Monastery"], L["Dungeon"], dnTex, 34, 45},
 		{"TravelH", 60.7, 58.8, L["Zeppelin to"] .. " " .. L["Orgrimmar"] .. ", " .. L["Durotar"], nil, fHTex, nil, nil},
 		{"TravelH", 61.9, 59.1, L["Zeppelin to"] .. " " .. L["Grom'gol Base Camp"] .. ", " .. L["Stranglethorn Vale"], nil, fHTex, nil, nil},
 	},

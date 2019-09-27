@@ -244,15 +244,26 @@ function Module:OnEnable()
 
 	MinimapCluster:EnableMouse(false)
 
-	-- Tracking icon
-	if MiniMapTrackingFrame then
-		MiniMapTrackingFrame:SetScale(.7)
+	if (MiniMapTrackingFrame) then
 		MiniMapTrackingFrame:ClearAllPoints()
-		MiniMapTrackingFrame:SetPoint("BOTTOMLEFT", Minimap, 0, 5)
-		MiniMapTrackingBorder:Hide()
-		MiniMapTrackingIcon:SetTexCoord(unpack(K.TexCoords))
-		-- MiniMapTrackingIcon:CreateBorder()
-		-- MiniMapTrackingIcon:SetBackdropBorderColor(K.r, K.g, K.b)
+		MiniMapTrackingFrame:SetPoint("BOTTOMLEFT", Minimap, -4, -6)
+
+		if (MiniMapTrackingBorder) then
+			MiniMapTrackingBorder:Hide()
+		end
+
+		if (MiniMapTrackingIcon) then
+			MiniMapTrackingIcon:SetDrawLayer("ARTWORK")
+			MiniMapTrackingIcon:SetTexCoord(unpack(K.TexCoords))
+			MiniMapTrackingIcon:SetSize(18, 18)
+		end
+
+		MiniMapTrackingFrame:CreateBackdrop()
+		MiniMapTrackingFrame.Backdrop:SetFrameLevel(MiniMapTrackingFrame:GetFrameLevel())
+		MiniMapTrackingFrame.Backdrop:SetAllPoints(MiniMapTrackingIcon)
+		MiniMapTrackingFrame.Backdrop:CreateBorder()
+		MiniMapTrackingFrame.Backdrop:CreateInnerShadow()
+		MiniMapTrackingFrame.Backdrop:SetBackdropBorderColor(K.r, K.g, K.b)
 	end
 
 	if QueueStatusMinimapButtonBorder then
