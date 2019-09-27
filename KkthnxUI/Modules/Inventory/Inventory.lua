@@ -395,7 +395,7 @@ function Stuffing:SlotUpdate(b)
 
 		-- color slot according to item quality
 		if b.itemClassID == LE_ITEM_CLASS_QUESTITEM then
-			b.frame:SetBackdropBorderColor(1, 1, 0)
+			b.frame:SetBackdropBorderColor(1, 0.30, 0.30)
 			if b.frame.QuestIcon then
 				b.frame.QuestIcon:Show()
 			end
