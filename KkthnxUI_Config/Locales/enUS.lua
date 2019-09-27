@@ -1127,6 +1127,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Item Icons",
 		},
 
+		["ShowIDs"] = {
+			["Name"] = "Show Tooltip IDs",
+		},
+
 		["LFDRole"] = {
 			["Name"] = "Show Roles Assigned Icon",
 		},
