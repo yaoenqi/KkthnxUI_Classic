@@ -18,7 +18,7 @@
 ## X-Discord: https://discord.gg/YUmxqQm
 ## X-BugReport: https://github.com/kkthnx-wow/KkthnxUI_Classic/issues/new
 ## X-License: The MIT License (MIT)
-## X-Localizations: enUS
+## X-Localizations: enUS, deDE, ruRU, zhCN
 ## X-oUF: oUFKkthnxUI
 ## X-Website: https://github.com/kkthnx-wow/KkthnxUI_Classic
 
