@@ -464,7 +464,7 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Disable Tutorial Buttons",
 		},
 
-		["ShowTooltip"] = {
+		["FixGarbageCollect"] = {
 			["Name"] = "Fix Garbage Collection",
 		},
 
@@ -1056,10 +1056,14 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Show Player/Mouse Coordinates",
 		},
 
-		["FadeWhenMoving"] = {
+		["MapFader"] = {
 			["Name"] = "Fade Worldmap When Moving",
 		},
-
+		
+		["MapScale"] = {
+			["Name"] = "Worldmap Scale",
+		},
+		
 		["SmallWorldMap"] = {
 			["Name"] = "Show Smaller Worldmap",
 		},
@@ -1071,10 +1075,6 @@ _G.KkthnxUIConfig["enUS"] = {
 
 	-- Tooltip Local
 	["Tooltip"] = {
-		["AzeriteArmor"] = {
-			["Name"] = "Show AzeriteArmor Info",
-		},
-
 		["ClassColor"] = {
 			["Name"] = "Quality Color Border",
 		},

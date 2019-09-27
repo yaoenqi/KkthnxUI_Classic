@@ -207,7 +207,6 @@ function K.LoadKkthnxUIProfile()
 					["DisablePvP"] = true,
 				},
 				["Tooltip"] = {
-					["AzeriteArmor"] = true,
 					["ShowMount"] = true,
 					["PlayerRoles"] = true,
 					["TargetInfo"] = true,

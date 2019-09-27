@@ -28,9 +28,9 @@ _G.KkthnxUIConfig["deDE"] = {
 		["Misc"] = "Diverses",
 		["Nameplates"] = "Namensplaketten",
 		["Party"] = "Gruppe",
-		["QuestNotifier"] = "Quest Benachrichtigung",
+		["QuestNotifier"] = "Questbenachrichtigung",
 		["Raid"] = "Raid",
-		["Skins"] = "Skins",
+		["Skins"] = "Aussehen",
 		["Tooltip"] = "Tooltip",
 		["UIFonts"] = ModuleNewFeature.."Schriftarten",
 		["UITextures"] = ModuleNewFeature.."Texturen",
@@ -464,7 +464,7 @@ _G.KkthnxUIConfig["deDE"] = {
 			["Name"] = "Tutorial-Knöpfe deaktivieren",
 		},
 
-		["ShowTooltip"] = {
+		["FixGarbageCollect"] = {
 			["Name"] = "Müllsammlung korrigieren",
 		},
 
@@ -841,168 +841,168 @@ _G.KkthnxUIConfig["deDE"] = {
 		},
 
 		["Swingbar"] = {
-			["Name"] = "Unitframe Swingbar",
+			["Name"] = "Zeige Swing-Leiste",
 		},
 
 		["SwingbarTimer"] = {
-			["Name"] = "Unitframe Swingbar Timer",
+			["Name"] = "Zeige Timer in Swingleiste",
 		},
 
 		["TargetCastbarHeight"] = {
-			["Name"] = "Target Castbar Height",
+			["Name"] = "Höhe der Zielzauberleiste",
 		},
 
 		["TargetCastbarWidth"] = {
-			["Name"] = "Target Castbar Width",
+			["Name"] = "Breite der Zielzauberleiste",
 		},
 
 		["TotemBar"] = {
-			["Name"] = "Show Totembar",
+			["Name"] = "Zeige Totemleiste",
 		},
 
 		["PlayerHealthFormat"] = {
-			["Name"] = "Player Health Format",
+			["Name"] = "Anzeigeformat für Lebenspunkte des Spielers",
 		},
 
 		["PlayerPowerFormat"] = {
-			["Name"] = "Player Power Format",
+			["Name"] = "Anzeigeformat für die Ressource des Spielers",
 		},
 
 		["TargetHealthFormat"] = {
-			["Name"] = "Target Health Format",
+			["Name"] = "Anzeigeformat für Lebenspunkte des Zieles",
 		},
 
 		["TargetPowerFormat"] = {
-			["Name"] = "Target Power Format",
+			["Name"] = "Anzeigeformat für die Ressource des Zieles",
 		},
 
 		["TargetLevelFormat"] = {
-			["Name"] = "Target Level Format",
+			["Name"] = "Anzeigeformat für das Level des Zieles",
 		},
 	},
 
 	-- Arena Local
 	["Arena"] = {
 		["Castbars"] = {
-			["Name"] = "Show Castbars",
+			["Name"] = "Zeige Zauberleisten",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Arena",
+			["Name"] = "Arena-Modul aktivieren",
 		},
 
 		["Smooth"] = {
-			["Name"] = "Smooth Bars",
+			["Name"] = "Leisten flüssiger zeichnen",
 		},
 	},
 
 	-- Boss Local
 	["Boss"] = {
 		["Castbars"] = {
-			["Name"] = "Show Castbars",
+			["Name"] = "Zeige Zauberleisten",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Boss",
+			["Name"] = "Aktiviere Boss-Modul",
 		},
 
 		["Smooth"] = {
-			["Name"] = "Smooth Bars",
+			["Name"] = "Leisten flüssiger zeichnen",
 		},
 	},
 
 	-- Party Local
 	["Party"] = {
 		["Castbars"] = {
-			["Name"] = "Show Castbars",
+			["Name"] = "Zeige Zauberleisten",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Party",
+			["Name"] = "Aktiviere Gruppen-Modul",
 		},
 
 		["PortraitTimers"] = {
-			["Name"] = "Portrait Spell Timers",
+			["Name"] = "Zauberzeiten im Portrait anzeigen",
 		},
 
 		["ShowBuffs"] = {
-			["Name"] = "Show Party Buffs",
+			["Name"] = "Zeige Stärkungszauber der Gruppe",
 		},
 
 		["ShowPlayer"] = {
-			["Name"] = "Show Player In Party",
+			["Name"] = "Zeige Spieler in der Gruppen an",
 		},
 
 		["Smooth"] = {
-			["Name"] = "Smooth Bars",
+			["Name"] = "Leisten flüssiger zeichnen",
 		},
 
 		["TargetHighlight"] = {
-			["Name"] = "Show Highlighted Target",
+			["Name"] = "Hebe das ausgewählte Ziel hervor",
 		},
 
 		["PartyHealthFormat"] = {
-			["Name"] = "Party Health Format",
+			["Name"] = "Anzeigeformat für das Leben der Gruppe",
 		},
 
 		["PartyPowerFormat"] = {
-			["Name"] = "Party Power Format",
+			["Name"] = "Anzeigeformat für die Ressourcen der Gruppe",
 		},
 	},
 
 	-- QuestNotifier Local
 	["QuestNotifier"] = {
 		["Enable"] = {
-			["Name"] = "Enable QuestNotifier",
+			["Name"] = "Questbenachrichtigungen aktivieren",
 		},
 
 		["QuestProgress"] = {
-			["Name"] = "Quest Progress",
-			["Desc"] = "Alert on QuestProgress in chat. This can get spammy so do not piss off your groups!",
+			["Name"] = "Questfortschritt",
+			["Desc"] = "Benachrichtige über Questfortschritt im Chat. Das kann u.U. sehr viel werden, also verärgere deine Gruppe nicht!",
 		},
 
 		["OnlyCompleteRing"] = {
-			["Name"] = "Only Complete Sound",
-			["Desc"] = "Only play the complete sound at the end of completing the quest"
+			["Name"] = "Nur 'Fertig' Sound",
+			["Desc"] = "Spiele nur den Sound ab, wenn eine Quest abgeschlossen wurde"
 		},
 	},
 
 	-- Raidframe Local
 	["Raid"] = {
 		["AuraDebuffIconSize"] = {
-			["Name"] = "Aura Debuff Icon Size",
+			["Name"] = "Schwächungszaubersymbolgröße",
 		},
 
 		["AuraWatch"] = {
-			["Name"] = "Show AuraWatch Icons",
+			["Name"] = "Zeige Symbole für überwachte Zauber",
 		},
 
 		["AuraWatchIconSize"] = {
-			["Name"] = "AuraWatch Icon Size",
+			["Name"] = "Größe der Symbole für überwachte Zauber",
 		},
 
 		["AuraWatchTexture"] = {
-			["Name"] = "Show Color AuraWatch Texture",
+			["Name"] = "Textur für Symbole für überwachte Zauber",
 		},
 
 		["Enable"] = {
-			["Name"] = "Enable Raidframes",
+			["Name"] = "Schlachtzugsfenster aktivieren",
 		},
 
 		["Height"] = {
-			["Name"] = "Raidframe Height",
+			["Name"] = "Höhe des Schlachtzuges",
 		},
 
 		["MainTankFrames"] = {
-			["Name"] = "Show MainTank Frames",
+			["Name"] = "Zeige Fenster für Haupttanks",
 		},
 
 		["ManabarShow"] = {
-			["Name"] = "Show Manabars",
+			["Name"] = "Zeige Manaleisten",
 		},
 
 		["MaxUnitPerColumn"] = {
-			["Name"] = "MaxUnit Per Column",
+			["Name"] = "Maximale Anzahl von Einheiten pro Spalte",
 		},
 
 		["RaidUtility"] = {
@@ -1010,132 +1010,132 @@ _G.KkthnxUIConfig["deDE"] = {
 		},
 
 		["ShowGroupText"] = {
-			["Name"] = "Show Player Group #",
+			["Name"] = "Zeige Spielergruppen #",
 		},
 
 		["ShowNotHereTimer"] = {
-			["Name"] = "Show Away/DND Status",
+			["Name"] = "Zeige AFK/DND Status",
 		},
 
 		["ShowRolePrefix"] = {
-			["Name"] = "Show Healer/Tank Roles",
+			["Name"] = "Zeige Heiler/Tank Rollen",
 		},
 
 		["Smooth"] = {
-			["Name"] = "Smooth Bars",
+			["Name"] = "Leisten flüssiger zeichnen",
 		},
 
 		["TargetHighlight"] = {
-			["Name"] = "Show Highlighted Target",
+			["Name"] = "Hebe das ausgewählte Ziel hervor",
 		},
 
 		["Width"] = {
-			["Name"] = "Raidframe Width",
+			["Name"] = "Breite des Schlachtzuges",
 		},
 
 		["RaidLayout"] = {
-			["Name"] = "Raid Layouts",
+			["Name"] = "Schlachtzugslayout",
 		},
 
 		["GroupBy"] = {
-			["Name"] = "Sort Raid Frames",
+			["Name"] = "Sortiere Schlachtzugsfenster",
 		},
 
 		["HealthFormat"] = {
-			["Name"] = "Health Format Display",
+			["Name"] = "Anzeigeformat für Lebenspunkte",
 		},
 	},
 
 	-- Worldmap Local
 	["WorldMap"] = {
 		["AlphaWhenMoving"] = {
-			["Name"] = "Alpha When Moving",
+			["Name"] = "Alpha bei Bewegung",
 		},
 
 		["Coordinates"] = {
-			["Name"] = "Show Player/Mouse Coordinates",
+			["Name"] = "Zeige Spieler/Maus Koordinaten",
 		},
 
-		["FadeWhenMoving"] = {
-			["Name"] = "Fade Worldmap When Moving",
+		["MapFader"] = {
+			["Name"] = "Weltkarte verblassen lassen bei Bewegung",
+		},
+		
+		["MapScale"] = {
+			["Name"] = "Skalierung der Weltkarte",
 		},
 
 		["SmallWorldMap"] = {
-			["Name"] = "Show Smaller Worldmap",
+			["Name"] = "Kleinere Weltkarte nutzen",
 		},
 
 		["WorldMapPlus"] = {
-			["Name"] = "Show Enhanced World Map Features",
+			["Name"] = "Zeige erweiterte Funktionen der Weltkarte",
 		},
 	},
 
 	-- Tooltip Local
 	["Tooltip"] = {
-		["AzeriteArmor"] = {
-			["Name"] = "Show AzeriteArmor Info",
-		},
-
 		["ClassColor"] = {
-			["Name"] = "Quality Color Border",
+			["Name"] = "Färbe Rahmen abhängig von der Qualität",
 		},
 
 		["CombatHide"] = {
-			["Name"] = "Hide Tooltip in Combat",
+			["Name"] = "Verstecke Tooltip im Kampf",
 		},
 
 		["Cursor"] = {
-			["Name"] = "Follow Cursor",
+			["Name"] = "Tooltip am Mauszeiger",
 		},
 
 		["FactionIcon"] = {
-			["Name"] = "Show Faction Icon",
+			["Name"] = "Zeige Fraktionssymbol",
 		},
 
 		["HideJunkGuild"] = {
-			["Name"] = "Abbreviate Guild Names",
+			["Name"] = "Gildennamen abkürzen",
 		},
 
 		["HideRank"] = {
-			["Name"] = "Hide Guild Rank",
+			["Name"] = "Verstecke Gildenrang",
 		},
 
 		["HideRealm"] = {
-			["Name"] = "Show realm name by SHIFT",
+			["Name"] = "Zeige Realm-Namen wenn 'UMSCHALT' gedrückt wird",
 		},
 
 		["HideTitle"] = {
-			["Name"] = "Hide Unit Title",
+			["Name"] = "Verstecke Einheiten Titel",
 		},
 
 		["Icons"] = {
-			["Name"] = "Item Icons",
+			["Name"] = "Gegenstandssymbole",
 		},
 
 		["ShowIDs"] = {
-			["Name"] = "Show Tooltip IDs",
+			["Name"] = "Zeige IDs im Tooltip",
 		},
 
 		["LFDRole"] = {
-			["Name"] = "Show Roles Assigned Icon",
+			["Name"] = "Zeige Symbole für die zugewiesen Rolle",
 		},
 
 		["SpecLevelByShift"] = {
-			["Name"] = "Show Spec/iLvl by SHIFT",
+			["Name"] = "Zeige Spezialisierung/Gegenstandsstufe wenn 'UMSCHALT' gedürckt wird",
 		},
 
 		["TargetBy"] = {
-			["Name"] = "Show Unit Targeted By",
+			["Name"] = "Zeige 'Einheit ist Ziel von'",
 		},
 	},
 
 	-- Fonts Local
 	["UIFonts"] = {
 		["ActionBarsFonts"] = {
-			["Name"] = "ActionBar",
+			["Name"] = "Aktionsleiten",
 		},
 
 		["AuraFonts"] = {
-			["Name"] = "Auras",
+			["Name"] = "Stärkungs-/Schwächungszauber",
 		},
 
 		["ChatFonts"] = {
@@ -1143,35 +1143,35 @@ _G.KkthnxUIConfig["deDE"] = {
 		},
 
 		["DataBarsFonts"] = {
-			["Name"] = "DataBars",
+			["Name"] = "Datenleisten",
 		},
 
 		["DataTextFonts"] = {
-			["Name"] = "DataTexts",
+			["Name"] = "Datentexte",
 		},
 
 		["GeneralFonts"] = {
-			["Name"] = "General",
+			["Name"] = "Allgemein",
 		},
 
 		["InventoryFonts"] = {
-			["Name"] = "Inventory",
+			["Name"] = "Inventar",
 		},
 
 		["MinimapFonts"] = {
-			["Name"] = "Minimap",
+			["Name"] = "Minikarte",
 		},
 
 		["NameplateFonts"] = {
-			["Name"] = "Nameplate",
+			["Name"] = "Namensplaketten",
 		},
 
 		["QuestTrackerFonts"] = {
-			["Name"] = "Quest Tracker",
+			["Name"] = "Questverfolgung",
 		},
 
 		["SkinFonts"] = {
-			["Name"] = "Skins",
+			["Name"] = "Aussehen",
 		},
 
 		["TooltipFonts"] = {
@@ -1179,14 +1179,14 @@ _G.KkthnxUIConfig["deDE"] = {
 		},
 
 		["UnitframeFonts"] = {
-			["Name"] = "Unitframes",
+			["Name"] = "Einheitenfenster",
 		},
 	},
 
 	-- Textures Local
 	["UITextures"] = {
 		["DataBarsTexture"] = {
-			["Name"] = "Data Bars",
+			["Name"] = "Datenleisten",
 		},
 
 		["FilgerTextures"] = {
@@ -1194,23 +1194,23 @@ _G.KkthnxUIConfig["deDE"] = {
 		},
 
 		["GeneralTextures"] = {
-			["Name"] = "General",
+			["Name"] = "Allgemein",
 		},
 
 		["LootTextures"] = {
-			["Name"] = "Loot",
+			["Name"] = "Beute",
 		},
 
 		["NameplateTextures"] = {
-			["Name"] = "Nameplate",
+			["Name"] = "Namensplaketten",
 		},
 
 		["QuestTrackerTexture"] = {
-			["Name"] = "Quest Tracker",
+			["Name"] = "Questverfolgung",
 		},
 
 		["SkinTextures"] = {
-			["Name"] = "Skins",
+			["Name"] = "Aussehen",
 		},
 
 		["TooltipTextures"] = {
@@ -1218,11 +1218,11 @@ _G.KkthnxUIConfig["deDE"] = {
 		},
 
 		["UnitframeTextures"] = {
-			["Name"] = "Unitframes",
+			["Name"] = "Einheitenfenster",
 		},
 
 		["HealPredictionTextures"] = {
-			["Name"] = "Heal Prediction",
+			["Name"] = "Heilungsvorhersage",
 		},
 	}
 }
