@@ -508,16 +508,16 @@ function Module:CreateWowHeadLinks()
 
 	-- Get localised Wowhead URL
 	local wowheadLoc
-	if GameLocale == "deDE" then wowheadLoc = "de.classic.wowhead.com"
-	elseif GameLocale == "esMX" then wowheadLoc = "es.classic.wowhead.com"
-	elseif GameLocale == "esES" then wowheadLoc = "es.classic.wowhead.com"
-	elseif GameLocale == "frFR" then wowheadLoc = "fr.classic.wowhead.com"
-	elseif GameLocale == "itIT" then wowheadLoc = "it.classic.wowhead.com"
-	elseif GameLocale == "ptBR" then wowheadLoc = "pt.classic.wowhead.com"
-	elseif GameLocale == "ruRU" then wowheadLoc = "ru.classic.wowhead.com"
-	elseif GameLocale == "koKR" then wowheadLoc = "ko.classic.wowhead.com"
-	elseif GameLocale == "zhCN" then wowheadLoc = "cn.classic.wowhead.com"
-	elseif GameLocale == "zhTW" then wowheadLoc = "cn.classic.wowhead.com"
+	if K.Client == "deDE" then wowheadLoc = "de.classic.wowhead.com"
+	elseif K.Client == "esMX" then wowheadLoc = "es.classic.wowhead.com"
+	elseif K.Client == "esES" then wowheadLoc = "es.classic.wowhead.com"
+	elseif K.Client == "frFR" then wowheadLoc = "fr.classic.wowhead.com"
+	elseif K.Client == "itIT" then wowheadLoc = "it.classic.wowhead.com"
+	elseif K.Client == "ptBR" then wowheadLoc = "pt.classic.wowhead.com"
+	elseif K.Client == "ruRU" then wowheadLoc = "ru.classic.wowhead.com"
+	elseif K.Client == "koKR" then wowheadLoc = "ko.classic.wowhead.com"
+	elseif K.Client == "zhCN" then wowheadLoc = "cn.classic.wowhead.com"
+	elseif K.Client == "zhTW" then wowheadLoc = "cn.classic.wowhead.com"
 	else							 wowheadLoc = "classic.wowhead.com"
 	end
 
