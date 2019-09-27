@@ -69,6 +69,7 @@ K.DebuffWhiteList = {
 	[SpellName(1130)] = true,	-- hunters mark
 	[SpellName(13797)] = true,	-- immolation trap
 	[SpellName(1513)] = true,	-- scare beast
+	[SpellName(1978)] = true,	-- serpent sting
 	[SpellName(3043)] = true,	-- scorpid sting
 	[SpellName(3034)] = true,	-- viper sting
 
