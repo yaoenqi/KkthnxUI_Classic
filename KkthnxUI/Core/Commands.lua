@@ -485,3 +485,29 @@ end
 
 _G.SLASH_CLEARCHAT1 = "/clearchat"
 _G.SLASH_CLEARCHAT2 = "/chatclear"
+
+-- Show fishing levels per faction
+SlashCmdList["FISHINGZONES"] = function()
+	local playerFaction = UnitFactionGroup("player")
+	if playerFaction == "Alliance" then
+		K.Print("Fishing Levels for |cff162c57Alliance|r")
+		print(" ")
+		K.Print("Up to 55: All starting zones.")
+		K.Print("Up to 75: Darkshore, Darnassus, Ironforge, Loch Modan, Stormwind City, Westfall.")
+		K.Print("Up to 150: Ashenvale, Duskwood, Hillsbrad Foothills, Redridge Mountains, Wetlands.")
+		K.Print("Up to 225: Alterac Mountains, Arathi Highlands, Desolace, Dustwallow Marsh, Stranglethorn Vale, Swamp of Sorrows, Thousand Needles.")
+		K.Print("Up to 300: Felwood, Feralas, The Hinterlands, Moonglade, Tanaris, Un'Goro Crater, Western Plaguelands.")
+		print(" ")
+	else
+		K.Print("Fishing Levels for |cff8c1616Horde|r")
+		print(" ")
+		K.Print("Up to 55: All starting zones.")
+		K.Print("Up to 75: The Barrens, Orgrimmar, Silverpine Forest, Thunderbluff, Undercity.")
+		K.Print("Up to 150: Ashenvale, Stonetalon Mountains, Wetlands.")
+		K.Print("Up to 225: Alterac Mountains, Arathi Highlands, Desolace, Dustwallow Marsh, Stranglethorn Vale, Swamp of Sorrows, Thousand Needles.")
+		K.Print("Up to 300: Felwood, Feralas, The Hinterlands, Moonglade, Tanaris, Un'Goro Crater, Western Plaguelands.")
+		print(" ")
+	end
+end
+_G.SLASH_FISHINGZONES1 = "/fish"
+_G.SLASH_FISHINGZONES2 = "/fishing"
