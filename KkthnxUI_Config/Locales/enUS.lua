@@ -694,6 +694,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Nameplate Width",
 		},
 
+		["HealthbarColor"] = {
+			["Name"] = "Health Color Format",
+		},
+
 		["LevelFormat"] = {
 			["Name"] = "Level Format Display",
 		},
@@ -860,6 +864,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Show Totembar",
 		},
 
+		["HealthbarColor"] = {
+			["Name"] = "Health Color Format",
+		},
+
 		["PlayerHealthFormat"] = {
 			["Name"] = "Player Health Format",
 		},
@@ -939,6 +947,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["TargetHighlight"] = {
 			["Name"] = "Show Highlighted Target",
+		},
+
+		["HealthbarColor"] = {
+			["Name"] = "Health Color Format",
 		},
 
 		["PartyHealthFormat"] = {
@@ -1033,6 +1045,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Raidframe Width",
 		},
 
+		["HealthbarColor"] = {
+			["Name"] = "Health Color Format",
+		},
+
 		["RaidLayout"] = {
 			["Name"] = "Raid Layouts",
 		},
@@ -1059,11 +1075,11 @@ _G.KkthnxUIConfig["enUS"] = {
 		["MapFader"] = {
 			["Name"] = "Fade Worldmap When Moving",
 		},
-		
+
 		["MapScale"] = {
 			["Name"] = "Worldmap Scale",
 		},
-		
+
 		["SmallWorldMap"] = {
 			["Name"] = "Show Smaller Worldmap",
 		},

@@ -224,12 +224,12 @@ C["Misc"] = {
 }
 
 C["Nameplates"] = {
-	["GoodColor"] = {0.2, 0.8, 0.2},
-	["NearColor"] = {1, 1, 0},
-	["BadColor"] = {1, 0, 0},
-	["OffTankColor"] = {0, 0.5, 1},
+	-- ["GoodColor"] = {0.2, 0.8, 0.2},
+	-- ["NearColor"] = {1, 1, 0},
+	-- ["BadColor"] = {1, 0, 0},
+	-- ["OffTankColor"] = {0, 0.5, 1},
 	["Clamp"] = false,
-	["TankMode"] = false,
+	-- ["TankMode"] = false,
 	-- ["ClassResource"] = true,
 	["Enable"] = true,
 	["HealthValue"] = true,
@@ -242,6 +242,14 @@ C["Nameplates"] = {
 	["Smooth"] = false,
 	["TrackAuras"] = true,
 	["Width"] = 150,
+	["HealthbarColor"] = {
+        ["Options"] = {
+            ["Dark"] = "Dark",
+            ["Value"] = "Value",
+            ["Class"] = "Class",
+        },
+        ["Value"] = "Class"
+    },
 	["LevelFormat"] = {
 		["Options"] = {
 			["Smart Level"] = "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]",
@@ -374,6 +382,14 @@ C["Unitframe"] = {
 	["TargetCastbarHeight"] = 24,
 	["TargetCastbarWidth"] = 260,
 	-- ["TotemBar"] = true,
+	["HealthbarColor"] = {
+        ["Options"] = {
+            ["Dark"] = "Dark",
+            ["Value"] = "Value",
+            ["Class"] = "Class",
+        },
+        ["Value"] = "Class"
+	},
 	["PlayerHealthFormat"] = {
 		["Options"] = {
 			["Current"] = "[KkthnxUI:HealthCurrent]",
@@ -425,7 +441,16 @@ C["Party"] = {
 	["PortraitTimers"] = false,
 	["ShowBuffs"] = true,
 	["ShowPlayer"] = true,
+	["Smooth"] = false,
 	["TargetHighlight"] = false,
+	["HealthbarColor"] = {
+        ["Options"] = {
+            ["Dark"] = "Dark",
+            ["Value"] = "Value",
+            ["Class"] = "Class",
+        },
+        ["Value"] = "Class"
+    },
 	["PartyHealthFormat"] = {
 		["Options"] = {
 			["Current"] = "[KkthnxUI:HealthCurrent]",
@@ -476,6 +501,14 @@ C["Raid"] = {
 	["Smooth"] = false,
 	["TargetHighlight"] = false,
 	["Width"] = 66,
+	["HealthbarColor"] = {
+        ["Options"] = {
+            ["Dark"] = "Dark",
+            ["Value"] = "Value",
+            ["Class"] = "Class",
+        },
+        ["Value"] = "Class"
+    },
 	["RaidLayout"] = {
 		["Options"] = {
 			[DAMAGE] = "Damage",

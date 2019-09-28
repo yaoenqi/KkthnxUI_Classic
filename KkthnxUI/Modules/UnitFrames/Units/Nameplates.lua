@@ -145,11 +145,23 @@ function Module:CreateNameplates(unit)
 	self.Health:CreateShadow(true)
 
 	self.Health.colorTapping = true
-	self.Health.colorReaction = true
-	self.Health.colorClass = true
-	self.Health.colorHealth = true
 	self.Health.colorDisconnected = true
 	self.Health.frequentUpdates = true
+
+	if C["Nameplates"].HealthbarColor.Value == "Value" then
+        self.Health.colorSmooth = true
+        self.Health.colorClass = false
+        self.Health.colorReaction = false
+    elseif C["Nameplates"].HealthbarColor.Value == "Dark" then
+        self.Health.colorSmooth = false
+        self.Health.colorClass = false
+        self.Health.colorReaction = false
+        self.Health:SetStatusBarColor(0.31, 0.31, 0.31)
+    else
+        self.Health.colorSmooth = false
+        self.Health.colorClass = true
+        self.Health.colorReaction = true
+    end
 
 	if C["Nameplates"].Smooth then
 		K.SmoothBar(self.Health)
