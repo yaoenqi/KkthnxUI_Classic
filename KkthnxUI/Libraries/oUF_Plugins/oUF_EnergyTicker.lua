@@ -54,10 +54,11 @@ local Enable = function(self, unit)
 
 		if not EnergyTicker.Texture then
 			EnergyTicker.Texture = self.EnergyTicker:CreateTexture(nil, 'OVERLAY', 8)
-			EnergyTicker.Texture:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
-			EnergyTicker.Texture:SetSize(Power:GetHeight() + 4, Power:GetHeight() + 4)
+			EnergyTicker.Texture:SetTexture([[Interface\AddOns\KkthnxUI\Media\Textures\Spark_128]])
+			EnergyTicker.Texture:SetSize(64, Power:GetHeight() - 2)
 			EnergyTicker.Texture:SetPoint("CENTER", Power, 0, 0)
 			EnergyTicker.Texture:SetBlendMode("ADD")
+			EnergyTicker.Texture:SetAlpha(0.6)
 		end
 
 		EnergyTicker:SetAlpha(1)

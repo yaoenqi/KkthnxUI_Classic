@@ -1,6 +1,7 @@
 local K, C = unpack(select(2, ...))
 local Module = K:GetModule("Unitframes")
 local oUF = oUF or K.oUF
+local LibBanzai = LibStub("LibBanzai-2.0", true)
 
 if (not oUF) then
 	K.Print("Could not find a vaild instance of oUF. Stopping Player.lua code!")
@@ -27,10 +28,9 @@ local function PostUpdateAddPower(element, _, cur, max)
 	end
 end
 
-function Module:CreatePlayer()
+function Module:CreatePlayer(unit)
 	local UnitframeFont = K.GetFont(C["UIFonts"].UnitframeFonts)
 	local UnitframeTexture = K.GetTexture(C["UITextures"].UnitframeTextures)
-	-- local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)
 
 	self.Overlay = CreateFrame("Frame", nil, self) -- We will use this to overlay onto our special borders.
 	self.Overlay:SetAllPoints()
@@ -210,64 +210,6 @@ function Module:CreatePlayer()
 
 		K.Mover(self.Castbar, "PlayerCastBar", "PlayerCastBar", {"BOTTOM", UIParent, "BOTTOM", 0, 266})
 	end
-
-	-- HealPredictionAndAbsorb
-	-- do
-	-- 	local mhpb = self.Health:CreateTexture(nil, "BORDER", nil, 5)
-	-- 	mhpb:SetWidth(1)
-	-- 	mhpb:SetTexture(HealPredictionTexture)
-	-- 	mhpb:SetVertexColor(0, 1, 0.5, 0.25)
-
-	-- 	local ohpb = self.Health:CreateTexture(nil, "BORDER", nil, 5)
-	-- 	ohpb:SetWidth(1)
-	-- 	ohpb:SetTexture(HealPredictionTexture)
-	-- 	ohpb:SetVertexColor(0, 1, 0, 0.25)
-
-	-- 	local abb = self.Health:CreateTexture(nil, "BORDER", nil, 5)
-	-- 	abb:SetWidth(1)
-	-- 	abb:SetTexture(HealPredictionTexture)
-	-- 	abb:SetVertexColor(1, 1, 0, 0.25)
-
-	-- 	local abbo = self.Health:CreateTexture(nil, "ARTWORK", nil, 1)
-	-- 	abbo:SetAllPoints(abb)
-	-- 	abbo:SetTexture("Interface\\RaidFrame\\Shield-Overlay", true, true)
-	-- 	abbo.tileSize = 32
-
-	-- 	local oag = self.Health:CreateTexture(nil, "ARTWORK", nil, 1)
-	-- 	oag:SetWidth(15)
-	-- 	oag:SetTexture("Interface\\RaidFrame\\Shield-Overshield")
-	-- 	oag:SetBlendMode("ADD")
-	-- 	oag:SetAlpha(.7)
-	-- 	oag:SetPoint("TOPLEFT", self.Health, "TOPRIGHT", -5, 2)
-	-- 	oag:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", -5, -2)
-
-	-- 	local hab = CreateFrame("StatusBar", nil, self.Health)
-	-- 	hab:SetPoint("TOP")
-	-- 	hab:SetPoint("BOTTOM")
-	-- 	hab:SetPoint("RIGHT", self.Health:GetStatusBarTexture())
-	-- 	hab:SetWidth(156)
-	-- 	hab:SetReverseFill(true)
-	-- 	hab:SetStatusBarTexture(HealPredictionTexture)
-	-- 	hab:SetStatusBarColor(1, 0, 0, 0.25)
-
-	-- 	local ohg = self.Health:CreateTexture(nil, "ARTWORK", nil, 1)
-	-- 	ohg:SetWidth(15)
-	-- 	ohg:SetTexture("Interface\\RaidFrame\\Absorb-Overabsorb")
-	-- 	ohg:SetBlendMode("ADD")
-	-- 	ohg:SetPoint("TOPRIGHT", self.Health, "TOPLEFT", 5, 2)
-	-- 	ohg:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", 5, -2)
-
-	-- 	self.HealPredictionAndAbsorb = {
-	-- 		myBar = mhpb,
-	-- 		otherBar = ohpb,
-	-- 		absorbBar = abb,
-	-- 		absorbBarOverlay = abbo,
-	-- 		overAbsorbGlow = oag,
-	-- 		healAbsorbBar = hab,
-	-- 		overHealAbsorbGlow = ohg,
-	-- 		maxOverflow = 1,
-	-- 	}
-	-- end
 
 	if C["Unitframe"].ShowPlayerName then
 		self.Name = self:CreateFontString(nil, "OVERLAY")
@@ -482,6 +424,17 @@ function Module:CreatePlayer()
 	self.Highlight:SetVertexColor(.6, .6, .6)
 	self.Highlight:SetBlendMode("ADD")
 	self.Highlight:Hide()
+
+	-- Agro border
+	table.insert(self.__elements, Module.UpdateThreat)
+	self:RegisterEvent("PLAYER_TARGET_CHANGED", Module.UpdateThreat, true)
+	if LibBanzai then
+		LibBanzai:RegisterCallback(function()
+			Module.UpdateThreat(self, "UNIT_THREAT_LIST_UPDATE", unit)
+		end)
+		self:RegisterEvent("PLAYER_REGEN_ENABLED", Module.UpdateThreat, true)
+		self:RegisterEvent("PLAYER_REGEN_DISABLED", Module.UpdateThreat, true)
+	end
 
 	self.CombatFade = C["Unitframe"].CombatFade
 end

@@ -81,8 +81,8 @@ end
 function Module:SetupCoords()
 	if not C["WorldMap"].Coordinates then return end
 
-	playerCoords = K.CreateFontString(WorldMapFrame, 14, nil, "", "system", "TOPLEFT", 20, -6)
-	cursorCoords = K.CreateFontString(WorldMapFrame, 14, nil, "", "system", "TOPLEFT", 170, -6)
+	playerCoords = K.CreateFontString(WorldMapFrame, 12, nil, "", "system", "TOPLEFT", 20, -7)
+	cursorCoords = K.CreateFontString(WorldMapFrame, 12, nil, "", "system", "TOPLEFT", 170, -7)
 
 	hooksecurefunc(WorldMapFrame, "OnFrameSizeChanged", Module.UpdateMapID)
 	hooksecurefunc(WorldMapFrame, "OnMapChanged", Module.UpdateMapID)

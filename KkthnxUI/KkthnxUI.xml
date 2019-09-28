@@ -7,7 +7,7 @@
 	<!-- Settings -->
 	<Script file="Config\Settings.lua" />
 	<!-- Compatibility -->
-	<Script file="Compatibility\Classic.lua"/>
+	<Include file="Compatibility\Load_Compatibility.xml" />
 	<!-- Media -->
 	<Script file="Media\Media.lua" />
 	<!-- Locales -->

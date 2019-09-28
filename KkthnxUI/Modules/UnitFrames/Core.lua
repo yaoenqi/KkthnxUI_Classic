@@ -1,5 +1,6 @@
 local K, C = unpack(select(2, ...))
 local Module = K:NewModule("Unitframes", "AceEvent-3.0")
+local LibBanzai = LibStub("LibBanzai-2.0", true)
 local LCD = K.LibClassicDurations
 
 local oUF = oUF or K.oUF
@@ -21,13 +22,11 @@ local CLASS_ICON_TCOORDS = _G.CLASS_ICON_TCOORDS
 local COOLDOWN_Anchor = _G.COOLDOWN_Anchor
 local C_NamePlate_GetNamePlateForUnit = _G.C_NamePlate.GetNamePlateForUnit
 local CreateFrame = _G.CreateFrame
--- local DebuffTypeColor = _G.DebuffTypeColor
+local DebuffTypeColor = _G.DebuffTypeColor
 local GetCVarDefault = _G.GetCVarDefault
 local GetTime = _G.GetTime
 local InCombatLockdown = _G.InCombatLockdown
 local IsInInstance = _G.IsInInstance
--- local MAX_ARENA_ENEMIES = _G.MAX_ARENA_ENEMIES or 5
-local MAX_BOSS_FRAMES = _G.MAX_BOSS_FRAMES or 5
 local PVE_PVP_CC_Anchor = _G.PVE_PVP_CC_Anchor
 local PVE_PVP_DEBUFF_Anchor = _G.PVE_PVP_DEBUFF_Anchor
 local P_BUFF_ICON_Anchor = _G.P_BUFF_ICON_Anchor
@@ -47,7 +46,6 @@ local UnitExists = _G.UnitExists
 local UnitFactionGroup = _G.UnitFactionGroup
 local UnitFrame_OnEnter = _G.UnitFrame_OnEnter
 local UnitFrame_OnLeave = _G.UnitFrame_OnLeave
--- local UnitInVehicle = _G.UnitInVehicle
 local UnitIsConnected = _G.UnitIsConnected
 local UnitIsDead = _G.UnitIsDead
 local UnitIsEnemy = _G.UnitIsEnemy
@@ -60,8 +58,7 @@ local UnitIsUnit = _G.UnitIsUnit
 local UnitReaction = _G.UnitReaction
 local hooksecurefunc = _G.hooksecurefunc
 local oUF_RaidDebuffs = _G.oUF_RaidDebuffs
--- local UnitThreatSituation = _G.UnitThreatSituation
--- local GetThreatStatusColor = _G.GetThreatStatusColor
+local GetThreatStatusColor = _G.GetThreatStatusColor
 
 Module.Units = {}
 Module.Headers = {}
@@ -74,7 +71,7 @@ local classify = {
 	worldboss = {0, 1, 0},
 }
 
-local LibClassicCasterino = LibStub('LibClassicCasterino', true)
+local LibClassicCasterino = LibStub("LibClassicCasterino", true)
 if (LibClassicCasterino) then
 	UnitChannelInfo = function(unit)
 		return LibClassicCasterino:UnitChannelInfo(unit)
@@ -262,22 +259,28 @@ function Module:UpdateThreat(_, unit)
 		return
 	end
 
-	local Status = UnitThreatSituation(unit)
-	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then
-		if not self.Portrait then return end
+	if not LibBanzai then
+		return
+	end
 
-		if (Status and Status > 0) then
-			local r, g, b = GetThreatStatusColor(Status)
-			self.Portrait:SetBackdropBorderColor(r, g, b)
+	local Status = LibBanzai:GetUnitAggroByUnitId(unit)
+	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then
+		if not self.Portrait then
+			return
+		end
+
+		if (Status) then
+			self.Portrait:SetBackdropBorderColor(1, 0, 0)
 		else
 			self.Portrait:SetBackdropBorderColor()
 		end
 	elseif C["General"].PortraitStyle.Value ~= "ThreeDPortraits" then
-		if not self.Portrait.Border then return end
+		if not self.Portrait.Border then
+			return
+		end
 
-		if (Status and Status > 0) then
-			local r, g, b = GetThreatStatusColor(Status)
-			self.Portrait.Border:SetBackdropBorderColor(r, g, b)
+		if (Status) then
+			self.Portrait.Border:SetBackdropBorderColor(1, 0, 0)
 		else
 			self.Portrait.Border:SetBackdropBorderColor()
 		end
@@ -808,13 +811,13 @@ function Module:PostUpdateAura(unit, button, index)
 		if (button.filter == "HARMFUL") then
 			if (not isFriend and not isPlayer) then
 				button:SetBackdropBorderColor()
-				button.icon:SetDesaturated((unit and not string_find(unit, "arena%d")) and true or false)
+				button.icon:SetDesaturated(unit and true or false)
 
 				if plateShadow then
 					button.Shadow:SetBackdropBorderColor(0, 0, 0, 0.8)
 				end
 			else
-				local color = (button.DType and _G.DebuffTypeColor[button.DType]) or _G.DebuffTypeColor.none
+				local color = (button.DType and DebuffTypeColor[button.DType]) or DebuffTypeColor.none
 				if Name and (Name == "Unstable Affliction" or Name == "Vampiric Touch") and K.Class ~= "WARLOCK" then
 					button:SetBackdropBorderColor(0.05, 0.85, 0.94)
 
@@ -1058,7 +1061,6 @@ function Module:NameplatesCallback(nameplate, event, unit)
 		end
 	end
 
-
 	if _G.GetCVarBool("nameplateResourceOnTarget") then
 		local Player, Target = C_NamePlate_GetNamePlateForUnit("player"), UnitExists("target") and C_NamePlate_GetNamePlateForUnit("target")
 		if Target and Target:IsForbidden() then
@@ -1181,17 +1183,13 @@ function Module:CreateStyle(unit)
 	local Parent = self:GetParent():GetName()
 
 	if (unit == "player") then
-		Module.CreatePlayer(self)
+		Module.CreatePlayer(self, unit)
 	elseif (unit == "target") then
 		Module.CreateTarget(self)
 	elseif (unit == "targettarget") then
 		Module.CreateTargetOfTarget(self)
 	elseif (unit == "pet") then
 		Module.CreatePet(self)
-	-- elseif string_find(unit, "arena%d") then
-		-- Module.CreateArena(self)
-	elseif string_find(unit, "boss%d") then
-		Module.CreateBoss(self)
 	elseif (string_find(unit, "raid") or string_find(unit, "maintank")) then
 		if string_match(Parent, "Party") then
 			Module.CreateParty(self)
@@ -1199,7 +1197,7 @@ function Module:CreateStyle(unit)
 			Module.CreateRaid(self)
 		end
 	elseif string_match(unit, "nameplate") and C["Nameplates"].Enable then
-		Module.CreateNameplates(self)
+		Module.CreateNameplates(self, unit)
 	end
 
 	return self
@@ -1234,39 +1232,6 @@ function Module:CreateUnits()
 		self.Units.Player = Player
 		self.Units.Target = Target
 		self.Units.Pet = Pet
-
-		-- if (C["Arena"].Enable) then
-		-- 	local Arena = {}
-		-- 	for i = 1, MAX_ARENA_ENEMIES or 5 do
-		-- 		Arena[i] = oUF:Spawn("arena" .. i, nil)
-		-- 		Arena[i]:SetSize(156, 44)
-		-- 		if (i == 1) then
-		-- 			Arena.Position = {"BOTTOMRIGHT", UIParent, "RIGHT", -250, 140}
-		-- 		else
-		-- 			Arena.Position = {"TOPLEFT", Arena[i - 1], "BOTTOMLEFT", 0, -50}
-		-- 		end
-
-		-- 		K.Mover(Arena[i], "Arena"..i, "Arena"..i, Arena.Position)
-		-- 	end
-
-		-- 	self.Units.Arena = Arena
-		-- end
-
-		if C["Boss"].Enable then
-			local Boss = {}
-			for i = 1, MAX_BOSS_FRAMES do
-				Boss[i] = oUF:Spawn("boss" .. i)
-				Boss[i]:SetSize(210, 44)
-				if (i == 1) then
-					Boss.Position = {"BOTTOMRIGHT", UIParent, "RIGHT", -250, 140}
-				else
-					Boss.Position = {"TOPLEFT", Boss[i - 1], "BOTTOMLEFT", 0, -50}
-				end
-
-				K.Mover(Boss[i], "Boss"..i, "Boss"..i, Boss.Position)
-			end
-			self.Units.Boss = Boss
-		end
 
 		if C["Party"].Enable then
 			local Party = oUF:SpawnHeader(Module:GetPartyFramesAttributes())
@@ -1571,9 +1536,6 @@ function Module:OnEnable()
 	end
 
 	if C["Nameplates"].Enable then
-		K.HideInterfaceOption(InterfaceOptionsNamesPanelUnitNameplatesMakeLarger)
-		K.HideInterfaceOption(InterfaceOptionsNamesPanelUnitNameplatesAggroFlash)
-
 		K:RegisterEvent("PLAYER_REGEN_ENABLED", self.PLAYER_REGEN_ENABLED)
 		K:RegisterEvent("PLAYER_REGEN_DISABLED", self.PLAYER_REGEN_DISABLED)
 		self:PLAYER_REGEN_ENABLED()

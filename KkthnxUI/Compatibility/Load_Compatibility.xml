@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+   <Include file="Libraries\AceAddon-3.0\AceAddon-3.0.xml" />
+   <Include file="Libraries\AceBucket-3.0\AceBucket-3.0.xml" />
+   <Include file="Libraries\AceComm-3.0\AceComm-3.0.xml" />
+   <Include file="Libraries\AceEvent-3.0\AceEvent-3.0.xml" />
+   <Include file="Libraries\AceTimer-3.0\AceTimer-3.0.xml" />
+   <Include file="Libraries\AceSerializer-3.0\AceSerializer-3.0.xml" />
+   <Include file="Libraries\ThreatClassic-1.0\lib.xml" />
+   <Script file="Libraries\LibBanzai\LibBanzai-2.0.lua" />
+   <Script file="Classic.lua" />
+</Ui>
