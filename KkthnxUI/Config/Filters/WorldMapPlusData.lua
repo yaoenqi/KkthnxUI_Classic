@@ -238,44 +238,51 @@ K.WorldMapPlusPinData = {
 }
 
 K.WorldMapLevelZoneData = {
-	[1416] = {minLevel = 30, maxLevel = 40}, -- Alterac Mountains
-	[1417] = {minLevel = 30, maxLevel = 40}, -- Arathi Highlands
-	[1418] = {minLevel = 35, maxLevel = 45}, -- Badlands
-	[1419] = {minLevel = 45, maxLevel = 55}, -- Blasted Lands
-	[1428] = {minLevel = 50, maxLevel = 58}, -- Burning Steppes
-	[1430] = {minLevel = 55, maxLevel = 60}, -- Deadwind Pass
-	[1426] = {minLevel = 1, maxLevel = 10, faction = "Alliance"}, -- Dun Morogh
-	[1431] = {minLevel = 18, maxLevel = 30}, -- Duskwood
-	[1423] = {minLevel = 53, maxLevel = 60}, -- Eastern Plaguelands
-	[1429] = {minLevel = 1, maxLevel = 10, faction = "Alliance"}, -- Elwynn Forest
-	[1424] = {minLevel = 20, maxLevel = 35}, -- Hillsbrad Foothills
-	[1432] = {minLevel = 10, maxLevel = 20, faction = "Alliance"}, 	-- Loch Modan
-	[1433] = {minLevel = 15, maxLevel = 25}, -- Redridge Mountains
-	[1427] = {minLevel = 45, maxLevel = 50}, -- Searing Gorge
-	[1421] = {minLevel = 10, maxLevel = 20, faction = "Horde"}, 	-- Silverpine Forest
-	[1434] = {minLevel = 30, maxLevel = 45}, -- Stranglethorn Vale
-	[1435] = {minLevel = 35, maxLevel = 45}, -- Swamp of Sorrows
-	[1425] = {minLevel = 40, maxLevel = 50}, -- The Hinterlands
-	-- [1420] = {minLevel = 1, maxLevel = 10, faction = "Horde"}, -- Tirisfal Glades
-	[1436] = {minLevel = 10, maxLevel = 20, faction = "Alliance"}, -- Westfall
-	[1422] = {minLevel = 51, maxLevel = 58}, -- Western Plaguelands
-	[1437] = {minLevel = 20, maxLevel = 30}, -- Wetlands
-	[1440] = {minLevel = 18, maxLevel = 30}, -- Ashenvale
-	[1447] = {minLevel = 45, maxLevel = 55}, -- Azshara
-	[1439] = {minLevel = 10, maxLevel = 20, faction = "Alliance"}, -- Darkshore
-	[1443] = {minLevel = 30, maxLevel = 40}, -- Desolace
-	[1411] = {minLevel = 1, maxLevel = 10, faction = "Horde"}, -- Durotar
-	[1445] = {minLevel = 35, maxLevel = 45}, -- Dustwallow Marsh
-	[1448] = {minLevel = 48, maxLevel = 55}, -- Felwood
-	[1444] = {minLevel = 40, maxLevel = 50}, -- Feralas
-	[1450] = {minLevel = 55, maxLevel = 60}, -- Moonglade
-	[1412] = {minLevel = 1, maxLevel = 10, faction = "Horde"}, -- Mulgore
-	[1451] = {minLevel = 55, maxLevel = 60}, -- Silithus
-	[1442] = {minLevel = 15, maxLevel = 27}, -- Stonetalon Mountains
-	[1446] = {minLevel = 40, maxLevel = 50}, -- Tanaris
-	[1438] = {minLevel = 1, maxLevel = 10, faction = "Alliance"}, -- Teldrassil
-	[1413] = {minLevel = 10, maxLevel = 25, faction = "Horde"}, -- The Barrens
-	[1441] = {minLevel = 24, maxLevel = 35}, -- Thousand Needles
-	[1449] = {minLevel = 48, maxLevel = 55}, -- Un'Goro Crater
-	[1452] = {minLevel = 55, maxLevel = 60} -- Winterspring
+	[1411] = {minLevel = 1, maxLevel = 10, faction = "Horde", minFish = "1"},
+	[1412] = {minLevel = 1, maxLevel = 10, faction = "Horde", minFish = "1"},
+	[1413] = {minLevel = 10, maxLevel = 25, faction = "Horde", minFish = "1"},
+	[1416] = {minLevel = 30, maxLevel = 40, minFish = "130"},
+	[1417] = {minLevel = 30, maxLevel = 40, minFish = "130"},
+	[1418] = {minLevel = 35, maxLevel = 45},
+	[1419] = {minLevel = 45, maxLevel = 55},
+	[1420] = {minLevel = 1, maxLevel = 10, faction = "Horde", minFish = "1"},
+	[1421] = {minLevel = 10, maxLevel = 20, faction = "Horde", minFish = "1"},
+	[1422] = {minLevel = 51, maxLevel = 58, minFish = "205"},
+	[1423] = {minLevel = 53, maxLevel = 60, minFish = "330"},
+	[1424] = {minLevel = 20, maxLevel = 30, minFish = "55"},
+	[1425] = {minLevel = 40, maxLevel = 50, minFish = "205"},
+	[1426] = {minLevel = 1, maxLevel = 10, faction = "Alliance", minFish = "1"},
+	[1427] = {minLevel = 43, maxLevel = 50},
+	[1428] = {minLevel = 50, maxLevel = 58, minFish = "330"},
+	[1429] = {minLevel = 1, maxLevel = 10, faction = "Alliance", minFish = "1"},
+	[1430] = {minLevel = 55, maxLevel = 60, minFish = "330"},
+	[1431] = {minLevel = 18, maxLevel = 30, minFish = "55"},
+	[1432] = {minLevel = 10, maxLevel = 20, faction = "Alliance", minFish = "1"},
+	[1433] = {minLevel = 15, maxLevel = 25, minFish = "55"},
+	[1434] = {minLevel = 30, maxLevel = 45, minFish = "130 (205)"},
+	[1435] = {minLevel = 35, maxLevel = 45, minFish = "130"},
+	[1436] = {minLevel = 10, maxLevel = 20, faction = "Alliance", minFish = "1"},
+	[1437] = {minLevel = 20, maxLevel = 30, minFish = "55"},
+	[1438] = {minLevel = 1, maxLevel = 10, faction = "Alliance", minFish = "1"},
+	[1439] = {minLevel = 10, maxLevel = 20, faction = "Alliance", minFish = "1"},
+	[1440] = {minLevel = 18, maxLevel = 30, minFish = "55",},
+	[1441] = {minLevel = 25, maxLevel = 35, minFish = "130"},
+	[1442] = {minLevel = 15, maxLevel = 27, minFish = "55"},
+	[1443] = {minLevel = 30, maxLevel = 40, minFish = "130"},
+	[1444] = {minLevel = 40, maxLevel = 50, minFish = "205 (330)"},
+	[1445] = {minLevel = 35, maxLevel = 45, minFish = "130"},
+	[1446] = {minLevel = 40, maxLevel = 50, minFish = "205"},
+	[1447] = {minLevel = 45, maxLevel = 55, minFish = "205 (330)"},
+	[1448] = {minLevel = 48, maxLevel = 55, minFish = "205"},
+	[1449] = {minLevel = 48, maxLevel = 55, minFish = "205"},
+	[1450] = {minFish = 205},
+	[1451] = {minLevel = 55, maxLevel = 60, minFish = "330"},
+	[1452] = {minLevel = 55, maxLevel = 60, minFish = "330"},
+	[1453] = {minFish = 1},
+	[1454] = {minFish = 1},
+	[1455] = {minFish = 1},
+	[1456] = {minFish = 1},
+	[1457] = {minFish = 1},
+	[1458] = {minFish = 1},
 }
+

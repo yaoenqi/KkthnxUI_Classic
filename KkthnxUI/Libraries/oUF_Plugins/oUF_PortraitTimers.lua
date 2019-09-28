@@ -1,8 +1,8 @@
 local _, ns = ...
 local oUF = ns.oUF or oUF
+local LibClassicDurations = LibStub("LibClassicDurations")
 
 ns.PortraitTimerDB = {
-
 	-- Immunitys
 	[45438] = true, -- Ice Block
 	[33786] = true, -- Cyclone (PvP Talent)
@@ -104,16 +104,22 @@ local Update = function(self, event, unit)
 	end
 
 	local element = self.PortraitTimer
-	local name, texture, duration, expirationTime, spellId
+	local name, texture, duration, expirationTime, unitCaster, spellId
 	local results
 
 	for i = 1, 40 do
-		name, texture, _, _, duration, expirationTime, _, _, _, spellId = UnitBuff(unit, i)
+		name, texture, _, _, duration, expirationTime, unitCaster, _, _, spellId = UnitBuff(unit, i)
 
 		if name then
 			results = ns.PortraitTimerDB[spellId]
 
 			if results then
+				local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
+				if durationNew and durationNew > 0 then
+					duration = durationNew
+					expirationTime = expirationTimeNew
+				end
+
 				element.Icon:SetTexture(texture)
 				CooldownFrame_Set(element.cooldownFrame, expirationTime - duration, duration, duration > 0)
 				element:Show()
@@ -127,12 +133,18 @@ local Update = function(self, event, unit)
 	end
 
 	for i = 1, 40 do
-		name, texture, _, _, duration, expirationTime, _, _, _, spellId = UnitDebuff(unit, i)
+		name, texture, _, _, duration, expirationTime, unitCaster, _, _, spellId = UnitDebuff(unit, i)
 
 		if name then
 			results = ns.PortraitTimerDB[spellId]
 
 			if results then
+				local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
+				if durationNew and durationNew > 0 then
+					duration = durationNew
+					expirationTime = expirationTimeNew
+				end
+
 				element.Icon:SetTexture(texture)
 				CooldownFrame_Set(element.cooldownFrame, expirationTime - duration, duration, duration > 0)
 				element:Show()

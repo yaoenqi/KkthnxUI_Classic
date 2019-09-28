@@ -298,11 +298,12 @@ local function AreaLabel_OnUpdate(self)
 			-- print(positionMapInfo.mapID)
 			name = positionMapInfo.name
 			-- Get level range from table
-			local playerMinLevel, playerMaxLevel, playerFaction
+			local playerMinLevel, playerMaxLevel, playerFaction, PlayerFishLevel
 			if K.WorldMapLevelZoneData[positionMapInfo.mapID] then
 				playerMinLevel = K.WorldMapLevelZoneData[positionMapInfo.mapID]["minLevel"]
 				playerMaxLevel = K.WorldMapLevelZoneData[positionMapInfo.mapID]["maxLevel"]
 				playerFaction = K.WorldMapLevelZoneData[positionMapInfo.mapID].faction
+				PlayerFishLevel = K.WorldMapLevelZoneData[positionMapInfo.mapID]["minFish"]
 			end
 
 			if (playerFaction) then
@@ -337,6 +338,9 @@ local function AreaLabel_OnUpdate(self)
 				else
 					name = name..color.." ("..playerMaxLevel..")"..FONT_COLOR_CODE_CLOSE
 				end
+			end
+			if PlayerFishLevel then
+				description = "Fishing"..": "..PlayerFishLevel
 			end
 		else
 			name = MapUtil.FindBestAreaNameAtMouse(mapID, normalizedCursorX, normalizedCursorY)
