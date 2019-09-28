@@ -58,7 +58,6 @@ local UnitIsUnit = _G.UnitIsUnit
 local UnitReaction = _G.UnitReaction
 local hooksecurefunc = _G.hooksecurefunc
 local oUF_RaidDebuffs = _G.oUF_RaidDebuffs
-local GetThreatStatusColor = _G.GetThreatStatusColor
 
 Module.Units = {}
 Module.Headers = {}
@@ -1185,14 +1184,14 @@ function Module:CreateStyle(unit)
 	if (unit == "player") then
 		Module.CreatePlayer(self, unit)
 	elseif (unit == "target") then
-		Module.CreateTarget(self)
+		Module.CreateTarget(self, unit)
 	elseif (unit == "targettarget") then
 		Module.CreateTargetOfTarget(self)
 	elseif (unit == "pet") then
 		Module.CreatePet(self)
 	elseif (string_find(unit, "raid") or string_find(unit, "maintank")) then
 		if string_match(Parent, "Party") then
-			Module.CreateParty(self)
+			Module.CreateParty(self, unit)
 		else
 			Module.CreateRaid(self)
 		end

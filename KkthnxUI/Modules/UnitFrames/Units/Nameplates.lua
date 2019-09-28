@@ -448,6 +448,9 @@ function Module:CreateNameplates(unit)
 	end
 
 	if ThreatLib then
+		if UnitIsPlayer(unit) or UnitIsFriend("player", unit) then
+			print(unit)
+		end
 		if not UnitIsPlayer(unit) and not UnitIsFriend("player", unit) then
 			self.Health:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		end
