@@ -1,9 +1,8 @@
--------------------------
--- oUF_Swing, by p3lim
--- KkthnxUI MOD
--------------------------
 local _, ns = ...
 local oUF = ns.oUF or oUF
+
+-- oUF_Swing, by p3lim
+-- KkthnxUI MOD
 
 local meleeing, rangeing, lasthit
 local MainhandID = GetInventoryItemID("player", 16)

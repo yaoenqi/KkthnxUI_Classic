@@ -341,10 +341,9 @@ function Module:CreatePlayer()
 	end
 
 	if C["Unitframe"].Swingbar then
-		self.Swing = CreateFrame("StatusBar", nil, self)
+		self.Swing = CreateFrame("StatusBar", "PlayerSwingbar", self)
 		self.Swing:SetSize(250, 12)
 		self.Swing:SetPoint("TOP", self.Castbar, "BOTTOM", 0, -5)
-		-- K.SmoothBar(self.Swing)
 
 		self.Swing.Twohand = CreateFrame("StatusBar", nil, self.Swing)
 		self.Swing.Twohand:SetStatusBarTexture(UnitframeTexture)
@@ -352,7 +351,6 @@ function Module:CreatePlayer()
 		self.Swing.Twohand:CreateBorder()
 		self.Swing.Twohand:Hide()
 		self.Swing.Twohand:SetAllPoints()
-		K.SmoothBar(self.Swing.Twohand)
 
 		self.Swing.Twohand.Spark = self.Swing.Twohand:CreateTexture(nil, "OVERLAY")
 		self.Swing.Twohand.Spark:SetTexture(C["Media"].Spark_16)
@@ -366,7 +364,6 @@ function Module:CreatePlayer()
 		self.Swing.Mainhand:CreateBorder()
 		self.Swing.Mainhand:Hide()
 		self.Swing.Mainhand:SetAllPoints()
-		K.SmoothBar(self.Swing.Mainhand)
 
 		self.Swing.Mainhand.Spark = self.Swing.Mainhand:CreateTexture(nil, "OVERLAY")
 		self.Swing.Mainhand.Spark:SetTexture(C["Media"].Spark_16)
@@ -381,13 +378,14 @@ function Module:CreatePlayer()
 		self.Swing.Offhand:Hide()
 		self.Swing.Offhand:SetPoint("TOPLEFT", self.Swing, "BOTTOMLEFT", 0, -8)
 		self.Swing.Offhand:SetPoint("BOTTOMRIGHT", self.Swing, "BOTTOMRIGHT", 0, -10)
-		K.SmoothBar(self.Swing.Offhand)
 
 		self.Swing.Offhand.Spark = self.Swing.Offhand:CreateTexture(nil, "OVERLAY")
 		self.Swing.Offhand.Spark:SetTexture(C["Media"].Spark_16)
 		self.Swing.Offhand.Spark:SetHeight(C["DataBars"].Height)
 		self.Swing.Offhand.Spark:SetBlendMode("ADD")
 		self.Swing.Offhand.Spark:SetPoint("CENTER", self.Swing.Offhand:GetStatusBarTexture(), "RIGHT", 0, 0)
+
+		K.Mover(self.Swing, "PlayerSwingBar", "PlayerSwingBar", {"TOP", self.Castbar, "BOTTOM", 0, -5})
 
 		if C["Unitframe"].SwingbarTimer then
 			self.Swing.Text = self.Swing:CreateFontString(nil, "OVERLAY")
