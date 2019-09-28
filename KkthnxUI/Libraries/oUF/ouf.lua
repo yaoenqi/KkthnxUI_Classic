@@ -19,6 +19,11 @@ local callback, objects, headers = {}, {}, {}
 local elements = {}
 local activeElements = {}
 
+local PetBattleFrameHider = CreateFrame('Frame', (global or parent) .. '_PetBattleFrameHider', UIParent, 'SecureHandlerStateTemplate')
+PetBattleFrameHider:SetAllPoints()
+PetBattleFrameHider:SetFrameStrata('LOW')
+RegisterStateDriver(PetBattleFrameHider, 'visibility', '[petbattle] hide; show')
+
 -- updating of "invalid" units.
 local function enableTargetUpdate(object)
 	object.onUpdateFrequency = object.onUpdateFrequency or .5
@@ -413,6 +418,15 @@ function oUF:SetActiveStyle(name)
 	style = name
 end
 
+--[[ oUF:GetActiveStyle()
+Used to get the active style.
+
+* self - the global oUF object
+--]]
+function oUF:GetActiveStyle()
+	return style
+end
+
 do
 	local function iter(_, n)
 		-- don't expose the style functions.
@@ -612,9 +626,9 @@ do
 
 		local isPetHeader = template:match('PetHeader')
 		local name = overrideName or generateName(nil, ...)
-		local header = CreateFrame('Frame', name, UIParent, template)
+		local header = CreateFrame('Frame', name, PetBattleFrameHider, template)
 
-		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate')
+		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate, SecureHandlerShowHideTemplate')
 		for i = 1, select('#', ...), 2 do
 			local att, val = select(i, ...)
 			if(not att) then break end
@@ -630,19 +644,6 @@ do
 
 		-- We set it here so layouts can't directly override it.
 		header:SetAttribute('initialConfigFunction', initialConfigFunction)
-		header:SetAttribute('_initialAttributeNames', '_onenter,_onleave')
-		header:SetAttribute('_initialAttribute-_onenter', [[
-			local snippet = self:GetAttribute('clickcast_onenter')
-			if(snippet) then
-				self:Run(snippet)
-			end
-		]])
-		header:SetAttribute('_initialAttribute-_onleave', [[
-			local snippet = self:GetAttribute('clickcast_onleave')
-			if(snippet) then
-				self:Run(snippet)
-			end
-		]])
 		header:SetAttribute('oUF-headerType', isPetHeader and 'pet' or 'group')
 
 		if(Clique) then
@@ -681,17 +682,17 @@ oUF implements some of its own attributes. These can be supplied by the layout, 
 
 * oUF-enableArenaPrep - can be used to toggle arena prep support. Defaults to true (boolean)
 --]]
-function oUF:Spawn(unit, overrideName, overrideTemplate)
+function oUF:Spawn(unit, overrideName, noHandle)
 	argcheck(unit, 2, 'string')
 	if(not style) then return error('Unable to create frame. No styles have been registered.') end
 
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame('Button', name, UIParent, overrideTemplate or 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, PetBattleFrameHider, 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
-	self:DisableBlizzard(unit)
+	if not noHandle then self:DisableBlizzard(unit) end
 	walkObject(object, unit)
 
 	object:SetAttribute('unit', unit)

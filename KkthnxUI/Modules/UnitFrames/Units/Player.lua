@@ -179,7 +179,7 @@ function Module:CreatePlayer(unit)
 		self.Castbar.PostChannelStart = Module.PostCastStart
 		self.Castbar.PostCastStop = Module.PostCastStop
 		self.Castbar.PostChannelStop = Module.PostChannelStop
-		self.Castbar.PostCastFailed = Module.PostCastFailed
+		self.Castbar.PostCastFail = Module.PostCastFailed
 		self.Castbar.PostCastInterrupted = Module.PostCastFailed
 		self.Castbar.PostCastInterruptible = Module.PostUpdateInterruptible
 		self.Castbar.PostCastNotInterruptible = Module.PostUpdateInterruptible

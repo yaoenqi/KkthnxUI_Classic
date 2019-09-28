@@ -58,16 +58,6 @@ if(select(2, UnitClass('player')) ~= 'DRUID') then return end
 local _, ns = ...
 local oUF = ns.oUF
 
--- ElvUI block
-local unpack = unpack
-local UnitIsPlayer = UnitIsPlayer
-local UnitClass = UnitClass
-local UnitPower = UnitPower
-local UnitPowerMax = UnitPowerMax
-local UnitPowerType = UnitPowerType
--- end block
-
-
 local function UpdateColor(self, event, unit, powertype)
 	if(not (unit and unit == 'player') and powertype == 'MANA') then return end
 	local element = self.AdditionalPower
@@ -145,7 +135,7 @@ local function Update(self, event, unit, powertype)
 	* max  - the maximum value of the player's additional power (number)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, max, event) -- ElvUI adds event
+		return element:PostUpdate(unit, cur, max)
 	end
 end
 
@@ -176,14 +166,6 @@ local function ElementEnable(self)
 
 	element:Show()
 
-	-- ElvUI block
-	if element.PostUpdateVisibility then
-		element:PostUpdateVisibility(true, not element.isEnabled)
-	end
-
-	element.isEnabled = true
-	-- end block
-
 	Path(self, 'ElementEnable', 'player', 'MANA')
 end
 
@@ -199,14 +181,6 @@ local function ElementDisable(self)
 	self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 	self.AdditionalPower:Hide()
-
-	-- ElvUI block
-	if element.PostUpdateVisibility then
-		element:PostUpdateVisibility(false, element.isEnabled)
-	end
-
-	element.isEnabled = nil
-	-- end block
 
 	Path(self, 'ElementDisable', 'player', 'MANA')
 end
@@ -233,11 +207,11 @@ local function VisibilityPath(self, ...)
 	* event - the event triggering the update (string)
 	* unit  - the unit accompanying the event (string)
 	--]]
-	(self.AdditionalPower.OverrideVisibility or Visibility) (self, ...)
+	return (self.AdditionalPower.OverrideVisibility or Visibility) (self, ...)
 end
 
 local function ForceUpdate(element)
-	VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
 local function Enable(self, unit)

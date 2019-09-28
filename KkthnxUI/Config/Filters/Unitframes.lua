@@ -1,15 +1,14 @@
 local K = unpack(select(2, ...))
 
 local _G = _G
--- local print = _G.print
-local unpack = _G.unpack
+local print = _G.print
 
 local GetSpellInfo = _G.GetSpellInfo
 
 local function SpellName(id)
 	local name = GetSpellInfo(id)
 	if not name then
-		-- print("|cff3c9bedKkthnxUI:|r SpellID is not valid: " .. id .. ". Please check for an updated version, if none exists report to Kkthnx in Discord.")
+		print("|cff3c9bedKkthnxUI:|r SpellID is not valid: " .. id .. ". Please check for an updated version, if none exists report to Kkthnx in Discord.")
 		return "Impale"
 	else
 		return name
@@ -21,14 +20,15 @@ local function Defaults(priorityOverride)
 end
 
 K.RaidBuffsTrackingPosition = {
-	TOPLEFT = {6, 1},
-	TOPRIGHT = {-6, 1},
+	BOTTOM = {0, 0},
 	BOTTOMLEFT = {6, 1},
 	BOTTOMRIGHT = {-6, 1},
+	CENTER = {0, 0},
 	LEFT = {6, 1},
 	RIGHT = {-6, 1},
 	TOP = {0, 0},
-	BOTTOM = {0, 0}
+	TOPLEFT = {6, 1},
+	TOPRIGHT = {-6, 1}
 }
 
 K.DebuffHighlightColors = {
@@ -255,12 +255,12 @@ K.RaidBuffsTracking = {
 		{9856, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, -- Regrowth (Rank 7)
 		{9857, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, -- Regrowth (Rank 8)
 		{9858, "BOTTOMRIGHT", {0.33, 0.73, 0.75}}, -- Regrowth (Rank 9)
-		-- {29166, "CENTER", {0.49, 0.60, 0.55}, true}, -- Innervate
+		{29166, "CENTER", {0.49, 0.60, 0.55}, true}, -- Innervate
 	},
 	PALADIN = {
-		-- {1044, "CENTER", {0.89, 0.45, 0}}, -- Blessing of Freedom
-		-- {6940, "CENTER", {0.89, 0.1, 0.1}}, -- Blessing Sacrifice (Rank 1)
-		-- {20729, "CENTER", {0.89, 0.1, 0.1}}, -- Blessing Sacrifice (Rank 2)
+		{1044, "CENTER", {0.89, 0.45, 0}}, -- Blessing of Freedom
+		{6940, "CENTER", {0.89, 0.1, 0.1}}, -- Blessing Sacrifice (Rank 1)
+		{20729, "CENTER", {0.89, 0.1, 0.1}}, -- Blessing Sacrifice (Rank 2)
 		{19740, "TOPLEFT", {0.2, 0.8, 0.2}, true}, -- Blessing of Might (Rank 1)
 		{19834, "TOPLEFT", {0.2, 0.8, 0.2}, true}, -- Blessing of Might (Rank 2)
 		{19835, "TOPLEFT", {0.2, 0.8, 0.2}, true}, -- Blessing of Might (Rank 3)
@@ -350,7 +350,7 @@ K.RaidBuffsTracking = {
 		{8455, "TOPRIGHT", {0.2, 0.8, 0.2}, true}, -- Amplify Magic (Rank 2)
 		{10169, "TOPRIGHT", {0.2, 0.8, 0.2}, true}, -- Amplify Magic (Rank 3)
 		{10170, "TOPRIGHT", {0.2, 0.8, 0.2}, true}, -- Amplify Magic (Rank 4)
-		--{12438, "CENTER", {0.00, 0.00, 0.50}, true}, -- Slow Fall
+		{12438, "CENTER", {0.00, 0.00, 0.50}, true}, -- Slow Fall
 	},
 	HUNTER = {
 		{19506, "TOPLEFT", {0.89, 0.09, 0.05}}, -- Trueshot Aura (Rank 1)
@@ -377,121 +377,25 @@ K.RaidBuffsTracking = {
 		{24605, "TOPRIGHT", {0.08, 0.59, 0.41}}, -- Furious Howl (Rank 2)
 		{24603, "TOPRIGHT", {0.08, 0.59, 0.41}}, -- Furious Howl (Rank 3)
 		{24597, "TOPRIGHT", {0.08, 0.59, 0.41}}, -- Furious Howl (Rank 4)
-	},
-	ROGUE = {}, -- No buffs
+	}
 }
 
 -- Filter this. Pointless to see.
-K.UnimportantBuffs = {
-	[SpellName(113942)] = true, -- Demonic: Gateway
-	[SpellName(117870)] = true, -- Touch of The Titans
-	[SpellName(123981)] = true, -- Perdition
-	[SpellName(126434)] = true, -- Tushui Champion
-	[SpellName(126436)] = true, -- Huojin Champion
-	[SpellName(131493)] = true, -- B.F.F. Friends forever!
-	[SpellName(143625)] = true, -- Brawling Champion
-	[SpellName(15007)] = true, -- Ress Sickness
-	[SpellName(170616)] = true, -- Pet Deserter
-	[SpellName(182957)] = true, -- Treasures of Stormheim
-	[SpellName(182958)] = true, -- Treasures of Azsuna
-	[SpellName(185719)] = true, -- Treasures of Val"sharah
-	[SpellName(186401)] = true, -- Sign of the Skirmisher
-	[SpellName(186403)] = true, -- Sign of Battle
-	[SpellName(186404)] = true, -- Sign of the Emissary
-	[SpellName(186406)] = true, -- Sign of the Critter
-	[SpellName(188741)] = true, -- Treasures of Highmountain
-	[SpellName(199416)] = true, -- Treasures of Suramar
-	[SpellName(225787)] = true, -- Sign of the Warrior
-	[SpellName(225788)] = true, -- Sign of the Emissary
-	[SpellName(227723)] = true, -- Mana Divining Stone
-	[SpellName(231115)] = true, -- Treasures of Broken Shore
-	[SpellName(233641)] = true, -- Legionfall Commander
+K.AuraBlackList = {
+	[SpellName(15007)] = true, -- Resurrection Sickness
 	[SpellName(23445)] = true, -- Evil Twin
-	[SpellName(237137)] = true, -- Knowledgeable
-	[SpellName(237139)] = true, -- Power Overwhelming
-	[SpellName(239645)] = true, -- Fel Treasures
-	[SpellName(239647)] = true, -- Epic Hunter
-	[SpellName(239648)] = true, -- Forces of the Order
-	[SpellName(239966)] = true, -- War Effort
-	[SpellName(239967)] = true, -- Seal Your Fate
-	[SpellName(239968)] = true, -- Fate Smiles Upon You
-	[SpellName(239969)] = true, -- Netherstorm
-	[SpellName(240979)] = true, -- Reputable
-	[SpellName(240980)] = true, -- Light As a Feather
-	[SpellName(240985)] = true, -- Reinforced Reins
-	[SpellName(240986)] = true, -- Worthy Champions
-	[SpellName(240987)] = true, -- Well Prepared
-	[SpellName(240989)] = true, -- Heavily Augmented
 	[SpellName(24755)] = true, -- Tricked or Treated
-	[SpellName(25163)] = true, -- Oozeling"s Disgusting Aura
+	[SpellName(25163)] = true, -- Oozeling's Disgusting Aura
+	[SpellName(25771)] = true, -- Forbearance (pally: divine shield, hand of protection, and lay on hands)
 	[SpellName(26013)] = true, -- Deserter
-	[SpellName(36032)] = true, -- Arcane Charge
-	[SpellName(36893)] = true, -- Transporter Malfunction
-	[SpellName(36900)] = true, -- Soul Split: Evil!
-	[SpellName(36901)] = true, -- Soul Split: Good
-	[SpellName(39953)] = true, -- A"dal"s Song of Battle
-	[SpellName(41425)] = true, -- Hypothermia
-	[SpellName(44212)] = true, -- Jack-o"-Lanterned!
-	[SpellName(55711)] = true, -- Weakened Heart
-	[SpellName(57723)] = true, -- Exhaustion (heroism debuff)
-	[SpellName(57724)] = true, -- Sated (lust debuff)
-	[SpellName(57819)] = true, -- Argent Champion
-	[SpellName(57820)] = true, -- Ebon Champion
-	[SpellName(57821)] = true, -- Champion of the Kirin Tor
-	[SpellName(58539)] = true, -- Watcher"s Corpse
-	[SpellName(71041)] = true, -- Dungeon Deserter
-	[SpellName(72968)] = true, -- Precious"s Ribbon
-	[SpellName(80354)] = true, -- Temporal Displacement (timewarp debuff)
 	[SpellName(8326)] = true, -- Ghost
-	[SpellName(85612)] = true, -- Fiona"s Lucky Charm
-	[SpellName(85613)] = true, -- Gidwin"s Weapon Oil
-	[SpellName(85614)] = true, -- Tarenar"s Talisman
-	[SpellName(85615)] = true, -- Pamela"s Doll
-	[SpellName(85616)] = true, -- Vex"tul"s Armbands
-	[SpellName(85617)] = true, -- Argus" Journal
-	[SpellName(85618)] = true, -- Rimblat"s Stone
-	[SpellName(85619)] = true, -- Beezil"s Cog
-	[SpellName(8733)] = true, -- Blessing of Blackfathom
-	[SpellName(89140)] = true, -- Demonic Rebirth: Cooldown
-	[SpellName(93337)] = true, -- Champion of Ramkahen
-	[SpellName(93339)] = true, -- Champion of the Earthen Ring
-	[SpellName(93341)] = true, -- Champion of the Guardians of Hyjal
-	[SpellName(93347)] = true, -- Champion of Therazane
-	[SpellName(93368)] = true, -- Champion of the Wildhammer Clan
-	[SpellName(93795)] = true, -- Stormwind Champion
-	[SpellName(93805)] = true, -- Ironforge Champion
-	[SpellName(93806)] = true, -- Darnassus Champion
-	[SpellName(93811)] = true, -- Exodar Champion
-	[SpellName(93816)] = true, -- Gilneas Champion
-	[SpellName(93821)] = true, -- Gnomeregan Champion
-	[SpellName(93825)] = true, -- Orgrimmar Champion
-	[SpellName(93827)] = true, -- Darkspear Champion
-	[SpellName(93828)] = true, -- Silvermoon Champion
-	[SpellName(93830)] = true, -- Bilgewater Champion
-	[SpellName(94158)] = true, -- Champion of the Dragonmaw Clan
-	[SpellName(94462)] = true, -- Undercity Champion
-	[SpellName(94463)] = true, -- Thunder Bluff Champion
-	[SpellName(95809)] = true, -- Insanity debuff (hunter pet heroism: ancient hysteria)
-	[SpellName(97340)] = true, -- Guild Champion
-	[SpellName(97341)] = true, -- Guild Champion
-	[SpellName(97821)] = true -- Void-Touched
+	[SpellName(8733)] = true -- Blessing of Blackfathom
 }
 
 K.ChannelingTicks = {
-	[SpellName(6948)] = 4,
-	-- Warlock
-	[SpellName(198590)] = 6, -- Drain Soul
-	[SpellName(755)] = 6, -- Health Funnel
-	[SpellName(234153)] = 6, -- Drain Life
-	-- Priest
-	[SpellName(64843)] = 4, -- Divine Hymn
-	[SpellName(15407)] = 4, -- Mind Flay
-	[SpellName(48045)] = 5, -- Mind Sear
-	-- Mage
-	[SpellName(5143)] = 5, -- Arcane Missiles
 	[SpellName(12051)] = 3, -- Evocation
-	[SpellName(205021)] = 10, -- Ray of Frost
-	-- Druid
+	[SpellName(15407)] = 4, -- Mind Flay
+	[SpellName(5143)] = 5, -- Arcane Missiles
 	[SpellName(740)] = 4, -- Tranquility
-
+	[SpellName(755)] = 3 -- Health Funnel
 }

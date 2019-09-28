@@ -12,18 +12,21 @@ local pairs = _G.pairs
 local select = _G.select
 local string_find = _G.string.find
 local string_match = _G.string.match
+local table_getn = _G.table.getn
 local table_insert = _G.table.insert
 local tonumber = _G.tonumber
 local unpack = _G.unpack
 
-local UnitChannelInfo = _G.UnitChannelInfo or _G.ChannelInfo
-local UnitIsPVPSanctuary = _G.UnitIsPVPSanctuary
 local CLASS_ICON_TCOORDS = _G.CLASS_ICON_TCOORDS
 local COOLDOWN_Anchor = _G.COOLDOWN_Anchor
 local C_NamePlate_GetNamePlateForUnit = _G.C_NamePlate.GetNamePlateForUnit
 local CreateFrame = _G.CreateFrame
 local DebuffTypeColor = _G.DebuffTypeColor
 local GetCVarDefault = _G.GetCVarDefault
+local GetNumQuestLeaderBoards = _G.GetNumQuestLeaderBoards
+local GetNumQuestLogEntries = _G.GetNumQuestLogEntries
+local GetQuestLogLeaderBoard = _G.GetQuestLogLeaderBoard
+local GetQuestLogTitle = _G.GetQuestLogTitle
 local GetTime = _G.GetTime
 local InCombatLockdown = _G.InCombatLockdown
 local IsInInstance = _G.IsInInstance
@@ -41,6 +44,7 @@ local T_DE_BUFF_BAR_Anchor = _G.T_DE_BUFF_BAR_Anchor
 local UIParent = _G.UIParent
 local UnitAura = _G.UnitAura
 local UnitCanAttack = _G.UnitCanAttack
+local UnitChannelInfo = _G.UnitChannelInfo or _G.ChannelInfo
 local UnitClass = _G.UnitClass
 local UnitExists = _G.UnitExists
 local UnitFactionGroup = _G.UnitFactionGroup
@@ -53,6 +57,7 @@ local UnitIsFriend = _G.UnitIsFriend
 local UnitIsGhost = _G.UnitIsGhost
 local UnitIsPVP = _G.UnitIsPVP
 local UnitIsPVPFreeForAll = _G.UnitIsPVPFreeForAll
+local UnitIsPVPSanctuary = _G.UnitIsPVPSanctuary
 local UnitIsPlayer = _G.UnitIsPlayer
 local UnitIsUnit = _G.UnitIsUnit
 local UnitReaction = _G.UnitReaction
@@ -62,6 +67,7 @@ local oUF_RaidDebuffs = _G.oUF_RaidDebuffs
 Module.Units = {}
 Module.Headers = {}
 Module.ticks = {}
+Module.guidToPlate = {}
 
 local classify = {
 	rare = {1, 1, 1, true},
@@ -77,109 +83,10 @@ if (LibClassicCasterino) then
 	end
 end
 
-local auraBlackList = {
-	[113942] = true, -- Demonic: Gateway
-	[117870] = true, -- Touch of The Titans
-	[123981] = true, -- Perdition
-	[124273] = true, -- Stagger
-	[124274] = true, -- Stagger
-	[124275] = true, -- Stagger
-	[126434] = true, -- Tushui Champion
-	[126436] = true, -- Huojin Champion
-	[143625] = true, -- Brawling Champion
-	[15007] = true, -- Ress Sickness
-	[170616] = true, -- Pet Deserter
-	[182957] = true, -- Treasures of Stormheim
-	[182958] = true, -- Treasures of Azsuna
-	[185719] = true, -- Treasures of Val'sharah
-	[186401] = true, -- Sign of the Skirmisher
-	[186403] = true, -- Sign of Battle
-	[186404] = true, -- Sign of the Emissary
-	[186406] = true, -- Sign of the Critter
-	[188741] = true, -- Treasures of Highmountain
-	[199416] = true, -- Treasures of Suramar
-	[225787] = true, -- Sign of the Warrior
-	[225788] = true, -- Sign of the Emissary
-	[227723] = true, -- Mana Divining Stone
-	[231115] = true, -- Treasures of Broken Shore
-	[233641] = true, -- Legionfall Commander
-	[23445] = true, -- Evil Twin
-	[237137] = true, -- Knowledgeable
-	[237139] = true, -- Power Overwhelming
-	[239966] = true, -- War Effort
-	[239967] = true, -- Seal Your Fate
-	[239968] = true, -- Fate Smiles Upon You
-	[239969] = true, -- Netherstorm
-	[240979] = true, -- Reputable
-	[240980] = true, -- Light As a Feather
-	[240985] = true, -- Reinforced Reins
-	[240986] = true, -- Worthy Champions
-	[240987] = true, -- Well Prepared
-	[240989] = true, -- Heavily Augmented
-	[245686] = true, -- Fashionable!
-	[24755] = true, -- Tricked or Treated
-	[25163] = true, -- Oozeling's Disgusting Aura
-	[25771] = true, -- Forbearance (pally: divine shield, hand of protection, and lay on hands)
-	[258803] = true, -- Argus Filter
-	[26013] = true, -- Deserter
-	[264408] = true, -- Soldier of the Horde
-	[264420] = true, -- Soldier of the Alliance
-	[269083] = true, -- Enlisted
-	[36032] = true, -- Arcane Charge
-	[36893] = true, -- Transporter Malfunction
-	[36900] = true, -- Soul Split: Evil!
-	[36901] = true, -- Soul Split: Good
-	[39953] = true, -- A'dal's Song of Battle
-	[41425] = true, -- Hypothermia
-	[55711] = true, -- Weakened Heart
-	[57723] = true, -- Exhaustion (heroism debuff)
-	[57724] = true, -- Sated (lust debuff)
-	[57819] = true, -- Argent Champion
-	[57820] = true, -- Ebon Champion
-	[57821] = true, -- Champion of the Kirin Tor
-	[58539] = true, -- Watcher's Corpse
-	[71041] = true, -- Dungeon Deserter
-	[72968] = true, -- Precious's Ribbon
-	[80354] = true, -- Temporal Displacement (timewarp debuff)
-	[8326] = true, -- Ghost
-	[85612] = true, -- Fiona's Lucky Charm
-	[85613] = true, -- Gidwin's Weapon Oil
-	[85614] = true, -- Tarenar's Talisman
-	[85615] = true, -- Pamela's Doll
-	[85616] = true, -- Vex'tul's Armbands
-	[85617] = true, -- Argus' Journal
-	[85618] = true, -- Rimblat's Stone
-	[85619] = true, -- Beezil's Cog
-	[8733] = true, -- Blessing of Blackfathom
-	[89140] = true, -- Demonic Rebirth: Cooldown
-	[93337] = true, -- Champion of Ramkahen
-	[93339] = true, -- Champion of the Earthen Ring
-	[93341] = true, -- Champion of the Guardians of Hyjal
-	[93347] = true, -- Champion of Therazane
-	[93368] = true, -- Champion of the Wildhammer Clan
-	[93795] = true, -- Stormwind Champion
-	[93805] = true, -- Ironforge Champion
-	[93806] = true, -- Darnassus Champion
-	[93811] = true, -- Exodar Champion
-	[93816] = true, -- Gilneas Champion
-	[93821] = true, -- Gnomeregan Champion
-	[93825] = true, -- Orgrimmar Champion
-	[93827] = true, -- Darkspear Champion
-	[93828] = true, -- Silvermoon Champion
-	[93830] = true, -- Bilgewater Champion
-	[94158] = true, -- Champion of the Dragonmaw Clan
-	[94462] = true, -- Undercity Champion
-	[94463] = true, -- Thunder Bluff Champion
-	[95809] = true, -- Insanity debuff (hunter pet heroism: ancient hysteria)
-	[97340] = true, -- Guild Champion
-	[97341] = true, -- Guild Champion
-	[97821] = true, -- Void-Touched
-}
-
 Module.CustomAuraFilter = {
 	Blacklist = function(_, _, _, _, _, _, _, _, _, _, _, _, spellID)
 		-- Don't allow blacklisted auras
-		if auraBlackList[spellID] then
+		if K.AuraBlackList[spellID] then
 			return false
 		end
 
@@ -455,9 +362,9 @@ function Module:UpdateCodexQuestUnit(name)
 										foundObjective = true
 										break
 									end
-								elseif table.getn(meta["item"]) > 0 and type == "item" and meta["dropRate"] then
+								elseif table_getn(meta["item"]) > 0 and type == "item" and meta["dropRate"] then
 									local _, _, itemName, objNum, objNeeded = string_find(text, Codex:SanitizePattern(QUEST_OBJECTS_FOUND))
-									for mid, item in pairs(meta["item"]) do
+									for _, item in pairs(meta["item"]) do
 										if item == itemName then
 											progressText = objNeeded - objNum
 											foundObjective = true
@@ -520,8 +427,19 @@ local function updateCastBarTicks(bar, numTicks)
 	end
 end
 
+function Module:FixTargetCastbarUpdate()
+	if UnitIsUnit("target", "player") and not CastingInfo() then
+		self.casting = nil
+		self.channeling = nil
+		self.Text:SetText(INTERRUPTED)
+		self.holdTime = 0
+	end
+end
+
 function Module:OnCastbarUpdate(elapsed)
 	if self.casting or self.channeling then
+		Module.FixTargetCastbarUpdate(self)
+
 		local decimal = self.decimal
 
 		local duration = self.casting and self.duration + elapsed or self.duration - elapsed
@@ -986,8 +904,23 @@ function Module:UpdateNameplateTarget()
 	end
 end
 
-function Module:UpdatePlateGUID(nameplate, guid)
-	Module.PlateGUID[nameplate.unitGUID] = (guid and nameplate) or nil
+function Module:UpdatePlateCastbarInterrupt(...)
+	local _, eventType, _, sourceGUID, sourceName, _, _, destGUID = ...
+	if eventType == "SPELL_INTERRUPT" and destGUID and sourceName and sourceName ~= "" then
+		local nameplate = Module.guidToPlate[destGUID]
+		if nameplate and nameplate.Castbar then
+			local _, class = GetPlayerInfoByGUID(sourceGUID)
+			local r, g, b = K.ClassColor(class)
+			local color = K.RGBToHex(r, g, b)
+			local sourceName = Ambiguate(sourceName, "short")
+			nameplate.Castbar.Text:SetText(INTERRUPTED.." > "..color..sourceName)
+			nameplate.Castbar.Time:SetText("")
+		end
+	end
+end
+
+function Module:AddPlateInterruptInfo()
+	K:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", self.UpdatePlateCastbarInterrupt)
 end
 
 function Module:NameplatesCallback(nameplate, event, unit)
@@ -997,12 +930,12 @@ function Module:NameplatesCallback(nameplate, event, unit)
 	if event == "NAME_PLATE_UNIT_ADDED" then
 		unit = unit or nameplate.unit
 
-		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.unitName = UnitName(unit)
-		nameplate.npcID = nameplate.unitGUID and select(6, string.split("-", nameplate.unitGUID))
+		nameplate.unitGUID = UnitGUID(unit)
 		if nameplate.unitGUID then
-			Module:UpdatePlateGUID(nameplate, nameplate.unitGUID)
+			Module.guidToPlate[nameplate.unitGUID] = nameplate
 		end
+		nameplate.npcID = K.GetNPCID(nameplate.unitGUID)
 
 		if UnitIsUnit(unit, "player") then
 			nameplate.frameType = "PLAYER"
@@ -1043,7 +976,7 @@ function Module:NameplatesCallback(nameplate, event, unit)
 		end
 	elseif event == "NAME_PLATE_UNIT_REMOVED" then
 		if nameplate.unitGUID then
-			Module:UpdatePlateGUID(nameplate)
+			Module.guidToPlate[nameplate.unitGUID] = nil
 		end
 
 		nameplate:DisableElement("ClassPower")
@@ -1278,22 +1211,27 @@ function Module:CreateUnits()
 end
 
 function Module:SetNameplateCVars()
-	if C["Nameplates"].Clamp then
-		SetCVar("nameplateOtherTopInset", 0.05)
-		SetCVar("nameplateOtherBottomInset", 0.08)
-	else
-		SetCVar("nameplateOtherTopInset", -1)
-		SetCVar("nameplateOtherBottomInset", -1)
+	if InCombatLockdown() then
+		return
 	end
 
-	SetCVar("nameplateSelectedAlpha", 1)
-	SetCVar("namePlateMinScale", 1)
+	if C["Nameplates"].Clamp then
+		SetCVar("nameplateOtherBottomInset", 0.08)
+		SetCVar("nameplateOtherTopInset", 0.05)
+	else
+		SetCVar("nameplateOtherBottomInset", -1)
+		SetCVar("nameplateOtherTopInset", -1)
+	end
+
 	SetCVar("namePlateMaxScale", 1)
+	SetCVar("namePlateMinScale", 1)
 	SetCVar("nameplateLargerScale", 1)
-	SetCVar("nameplateMinAlpha", GetCVarDefault("nameplateMinAlpha"))
 	SetCVar("nameplateMaxAlpha", GetCVarDefault("nameplateMaxAlpha"))
+	SetCVar("nameplateMaxDistance", GetCVarDefault("nameplateMaxDistance"))
+	SetCVar("nameplateMinAlpha", GetCVarDefault("nameplateMinAlpha"))
 	SetCVar("nameplateOverlapH", 0.8)
 	SetCVar("nameplateOverlapV", 0.7)
+	SetCVar("nameplateSelectedAlpha", 1)
 	SetCVar("nameplateSelectedScale", C["Nameplates"].SelectedScale or 1)
 end
 
@@ -1539,6 +1477,7 @@ function Module:OnEnable()
 		K:RegisterEvent("PLAYER_REGEN_DISABLED", self.PLAYER_REGEN_DISABLED)
 		self:PLAYER_REGEN_ENABLED()
 		self:SetNameplateCVars()
+		self:AddPlateInterruptInfo()
 		self:QuestIconCheck()
 	end
 
