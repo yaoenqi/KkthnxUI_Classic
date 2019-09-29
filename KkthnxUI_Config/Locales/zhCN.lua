@@ -112,7 +112,7 @@ _G.KkthnxUIConfig["zhCN"] = {
 	-- Announcements Local
 	["Announcements"] = {
 		["PullCountdown"] = {
-			["Name"] = "通告拉怪倒计时 (/pc #)",
+			["Name"] = "通告倒计时 (/pc #)",
 		},
 
 		["SaySapped"] = {
