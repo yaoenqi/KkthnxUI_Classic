@@ -2,100 +2,72 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 local LibClassicDurations = LibStub("LibClassicDurations")
 
+local function SpellName(id)
+	local name = GetSpellInfo(id)
+	if not name then
+		print("|cff3c9bedKkthnxUI:|r PortraitTimer SpellID is not valid: " .. id .. ". Please check for an updated version, if none exists report to Kkthnx in Discord.")
+		return "Impale"
+	else
+		return name
+	end
+end
+
 ns.PortraitTimerDB = {
-	-- Immunitys
-	[45438] = true, -- Ice Block
-	[33786] = true, -- Cyclone (PvP Talent)
-	[642] = true, -- Divine Shield
-	[1022] = true, -- Hand of Protection
-	[204018] = true, -- Blessing of Spellwarding (Talented verion of Blessing of Protection)
-	[46924] = true, -- Bladestorm
-	[104773] = true, -- Unending Resolve
-	[18499] = true, -- Berserker Rage
-	[47585] = true, -- Dispersion
-	[196555] = true, -- Netherwalk (Talent)
-
-	-- Stuns
-	[408] = true, -- Kidney Shot
-	[1833] = true, -- Cheap Shot
-	[46968] = true, -- Shockwave
-	[853] = true, -- Hammer of Justice
-	[5211] = true, -- Mighty Bash
-	[30283] = true, -- Shadowfury
-	[89766] = true, -- Axe Toss
-	[22570] = true, -- Maim
-	[47481] = true, -- Gnaw
-	[1776] = true, -- Gouge
-	[6770] = true, -- Sap
-	[88625] = true, -- Holy Word: Chastise
-	[91797] = true, -- Monstrous Blow (Gnaw with DT)
-	[179057] = true, -- Chaos Nova
-	[221562] = true, -- Asphyxiate
-	[199804] = true, -- Between the Eyes
-	[207165] = true, -- Abomination's Might
-	[211794] = true, -- Winter is Coming
-	[211881] = true, -- Fel Eruption
-
-	-- CC
-	[605] = true, -- Mind Control
-	[205364] = true, -- Dominant Mind (Talented verion of Mind Control)
-	[2094] = true, -- Blind
-	[118] = true, -- Polymorph
-	[51514] = true, -- Hex
-	[6789] = true, -- Death Coil
-	[5246] = true, -- Intimidating Shout
-	[8122] = true, -- Psychic Scream
-	[5484] = true, -- Howl of Terror
-	[5782] = true, -- Fear
-	[6358] = true, -- Seduction
-	[187650] = true, -- Freezing Trap
-	[20066] = true, -- Repentance
-	[339] = true, -- Entangling Roots
-	[31661] = true, -- Dragon's Breath
-	[217832] = true, -- Imprison
-	[9484] = true, -- Shackle Undead
-	[115078] = true, -- Paralysis
-
-	-- CC immune
-	[53271] = true, -- Master's Call
-	[1044] = true, -- Hand of Freedom
-	[31224] = true, -- Cloak of Shadows
-	[51271] = true, -- Pillar of Frost
-
-	-- Dmg reductions
-	[48707] = true, -- Anti-Magic Shell
-	[33206] = true, -- Pain Suppression
-	[871] = true, -- Shield Wall
-	[48792] = true, -- Icebound Fortitude
-	[498] = true, -- Divine Protection
-	[22812] = true, -- Barkskin
-	[61336] = true, -- Survival Instincts
-	[5277] = true, -- Evasion
-	[186265] = true, -- Aspect of the Turtle
-	[198589] = true, -- Blur
-	[203720] = true, -- Demon Spikes
-	[218256] = true, -- Empower Wards
-
-	-- Silences
-	[47476] = true, -- Strangulate
-	[1330] = true, -- Garrote - Silence
-	[15487] = true, -- Silence (priest)
-	[19647] = true, -- Spell Lock
-	[183752] = true, -- Consume Magic
-	[202137] = true, -- Sigil of Silence
-
-	-- Dmg buffs
-	[31884] = true, -- Avenging Wrath
-	[211048] = true, -- Chaos Blades
-
-	-- Helpful buffs
-	[6940] = true, -- Hand of Sacrifice
-	[23920] = true, -- Spell Reflection (warrior)
-	[68992] = true, -- Darkflight (Worgen racial)
-	[2983] = true, -- Sprint
-	[47788] = true, -- Guardian Spirit
-	[1850] = true, -- Dash
-	[121557] = true, -- Feather
+	[SpellName(1022)] = true, -- Hand of Protection
+	[SpellName(1044)] = true, -- Hand of Freedom
+	[SpellName(118)] = true, -- Polymorph
+	[SpellName(11958)] = true, -- Ice Block
+	[SpellName(122)] = true, -- Frost Nova
+	[SpellName(12489)] = true, -- Improved Cone of Cold
+	[SpellName(12809)] = true, -- Concussion Blow
+	[SpellName(1330)] = true, -- Garrote - Silence
+	[SpellName(1499)] = true, -- Freezing Trap
+	[SpellName(1513)] = true, -- Scare Beast
+	[SpellName(15487)] = true, -- Silence (priest)
+	[SpellName(16689)] = true, -- Nature's Grasp
+	[SpellName(1702)] = true, -- Shockwave
+	[SpellName(1776)] = true, -- Gouge
+	[SpellName(1833)] = true, -- Cheap Shot
+	[SpellName(18499)] = true, -- Berserker Rage
+	[SpellName(1850)] = true, -- Dash
+	[SpellName(19263)] = true, -- Deterrence
+	[SpellName(19387)] = true, -- Entrapment
+	[SpellName(19503)] = true, -- Scatter Shot
+	[SpellName(19647)] = true, -- Spell Lock
+	[SpellName(20066)] = true, -- Repentance
+	[SpellName(20253)] = true, -- Intercept
+	[SpellName(2094)] = true, -- Blind
+	[SpellName(22570)] = true, -- Maim
+	[SpellName(22812)] = true, -- Barkskin
+	[SpellName(23694)] = true, -- Improved Hamstring
+	[SpellName(23920)] = true, -- Spell Reflection (warrior)
+	[SpellName(2637)] = true, -- Hibernate
+	[SpellName(29166)] = true, -- Innervate
+	[SpellName(2983)] = true, -- Sprint
+	[SpellName(339)] = true, -- Entangling Roots
+	[SpellName(408)] = true, -- Kidney Shot
+	[SpellName(498)] = true, -- Divine Protection
+	[SpellName(5197)] = true, -- Cyclone
+	[SpellName(5211)] = true, -- Bash
+	[SpellName(5211)] = true, -- Mighty Bash
+	[SpellName(5246)] = true, -- Intimidating Shout
+	[SpellName(5277)] = true, -- Evasion
+	[SpellName(5484)] = true, -- Howl of Terror
+	[SpellName(5782)] = true, -- Fear
+	[SpellName(605)] = true, -- Mind Control
+	[SpellName(6358)] = true, -- Seduction
+	[SpellName(642)] = true, -- Divine Shield
+	[SpellName(6466)] = true, -- Axe Toss
+	[SpellName(676)] = true, -- Disarm
+	[SpellName(6770)] = true, -- Sap
+	[SpellName(6789)] = true, -- Death Coil
+	[SpellName(6940)] = true, -- Hand of Sacrifice
+	[SpellName(8122)] = true, -- Psychic Scream
+	[SpellName(8377)] = true, -- Earthgrab
+	[SpellName(853)] = true, -- Hammer of Justice
+	[SpellName(871)] = true, -- Shield Wall
+	[SpellName(9005)] = true, -- Pounce
+	[SpellName(9484)] = true, -- Shackle Undead
 }
 
 local Update = function(self, event, unit)
