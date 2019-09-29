@@ -374,6 +374,30 @@ UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned or function(unit) -- Needs wo
 	end
 end
 
+-- function K.GetSpellID(spellName, unit, auraType)
+-- 	-- change localized MELEE string into the appropriate spellID
+-- 	if spellName == MELEE then
+-- 		return 6603
+-- 	-- get spellID from auras
+-- 	elseif auraType and unit then
+-- 		if auraType == AURA_TYPE_DEBUFF then
+-- 			return select(10, AuraUtil.FindAuraByName(spellName, unit, "HARMFUL")) or 0
+-- 		else
+-- 			return select(10, AuraUtil.FindAuraByName(spellName, unit)) or 0
+-- 		end
+-- 	-- get spellID from lookup/spellbook
+-- 	else
+-- 		-- eventually build a cache from UNIT_SPELLCAST_* events to track lower ranks
+-- 		-- for now, we just assume max rank and get that spellID from the spellbook
+-- 		local spellID = spellLookup[spellName]
+-- 		if not spellID then
+-- 			spellID = select(7, GetSpellInfo(spellName))
+-- 		end
+
+-- 		return spellID or 0
+-- 	end
+-- end
+
 -- Threat Functions
 if ThreatLib then
 	local ThreatFrame = CreateFrame("Frame")
