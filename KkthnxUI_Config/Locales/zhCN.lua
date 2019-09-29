@@ -175,16 +175,8 @@ _G.KkthnxUIConfig["zhCN"] = {
 			["Name"] = "屏蔽你已看过的动画",
 		},
 
-		["DeclinePetDuel"] = {
-			["Name"] = "拒绝宠物决斗",
-		},
-
 		["DeclinePvPDuel"] = {
 			["Name"] = "拒绝PVP决斗",
-		},
-
-		["ScreenShot"] = {
-			["Name"] = "自动成就截图",
 		},
 
 		["WhisperInvite"] = {
@@ -358,10 +350,6 @@ _G.KkthnxUIConfig["zhCN"] = {
 
 	-- Databars Local
 	["DataBars"] = {
-		["AzeriteColor"] = {
-			["Name"] = "艾泽里特条颜色",
-		},
-
 		["Enable"] = {
 			["Name"] = "启用数据条",
 		},
@@ -654,10 +642,6 @@ _G.KkthnxUIConfig["zhCN"] = {
 			["Name"] = "战斗中显示姓名板",
 		},
 
-		["Distance"] = {
-			["Name"] = "姓名板距离",
-		},
-
 		["Enable"] = {
 			["Name"] = "启用姓名板",
 		},
@@ -708,6 +692,10 @@ _G.KkthnxUIConfig["zhCN"] = {
 
 		["Width"] = {
 			["Name"] = "姓名板宽度",
+		},
+
+		["HealthbarColor"] = {
+			["Name"] = "生命条颜色格式",
 		},
 
 		["LevelFormat"] = {
@@ -876,6 +864,10 @@ _G.KkthnxUIConfig["zhCN"] = {
 			["Name"] = "显示图腾条",
 		},
 
+		["HealthbarColor"] = {
+			["Name"] = "生命条颜色格式",
+		},
+
 		["PlayerHealthFormat"] = {
 			["Name"] = "玩家生命值格式",
 		},
@@ -955,6 +947,10 @@ _G.KkthnxUIConfig["zhCN"] = {
 
 		["TargetHighlight"] = {
 			["Name"] = "高亮显示目标",
+		},
+
+		["HealthbarColor"] = {
+			["Name"] = "生命条颜色格式",
 		},
 
 		["PartyHealthFormat"] = {
@@ -1049,6 +1045,10 @@ _G.KkthnxUIConfig["zhCN"] = {
 			["Name"] = "团队框体宽度",
 		},
 
+		["HealthbarColor"] = {
+			["Name"] = "生命条颜色格式",
+		},
+
 		["RaidLayout"] = {
 			["Name"] = "团队布局",
 		},
@@ -1072,8 +1072,12 @@ _G.KkthnxUIConfig["zhCN"] = {
 			["Name"] = "显示 玩家/鼠标 坐标",
 		},
 
-		["FadeWhenMoving"] = {
+		["MapFader"] = {
 			["Name"] = "移动时渐隐世界地图",
+		},
+
+		["MapScale"] = {
+			["Name"] = "世界地图缩放",
 		},
 
 		["SmallWorldMap"] = {
@@ -1087,10 +1091,6 @@ _G.KkthnxUIConfig["zhCN"] = {
 
 	-- Tooltip Local
 	["Tooltip"] = {
-		["AzeriteArmor"] = {
-			["Name"] = "显示艾泽里特信息",
-		},
-
 		["ClassColor"] = {
 			["Name"] = "按品质显示边框颜色",
 		},
@@ -1125,6 +1125,10 @@ _G.KkthnxUIConfig["zhCN"] = {
 
 		["Icons"] = {
 			["Name"] = "物品图标",
+		},
+
+		["ShowIDs"] = {
+			["Name"] = "显示鼠标提示ID",
 		},
 
 		["LFDRole"] = {
