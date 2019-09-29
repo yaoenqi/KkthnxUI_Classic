@@ -16,3 +16,4 @@ KkthnxUI_Config.lua
 Locales\enUS.lua
 Locales\zhCN.lua
 Locales\deDE.lua
+Locales\ruRU.lua
