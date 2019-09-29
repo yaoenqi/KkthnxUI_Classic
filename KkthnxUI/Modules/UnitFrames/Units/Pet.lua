@@ -37,7 +37,6 @@ function Module:CreatePet()
 	self.Health.colorSmooth = false
 	self.Health.colorClass = true
 	self.Health.colorReaction = true
-	self.Health.colorHappiness = K.Class == "HUNTER"
 	self.Health.frequentUpdates = false
 
 	self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")
@@ -100,6 +99,13 @@ function Module:CreatePet()
 	self.RaidTargetIndicator:SetPoint("TOP", self.Portrait, "TOP", 0, 8)
 	self.RaidTargetIndicator:SetSize(12, 12)
 
+	if C["Unitframe"].ShowPetHappinessIcon and K.Class == "HUNTER" then
+		self.PetHappinessIcon = self.Health:CreateFontString(nil, "OVERLAY")
+		self.PetHappinessIcon:SetPoint("TOPRIGHT", self.Portrait, 11, 6)
+		self.PetHappinessIcon:SetFontObject(UnitframeFont)
+		self:Tag(self.PetHappinessIcon, "[KkthnxUI:PetHappinessIcon]")
+	end
+
 	if C["Unitframe"].DebuffHighlight then
 		self.DebuffHighlight = self.Health:CreateTexture(nil, "OVERLAY")
 		self.DebuffHighlight:SetAllPoints(self.Health)
@@ -119,11 +125,4 @@ function Module:CreatePet()
 	self.Highlight:SetVertexColor(.6, .6, .6)
 	self.Highlight:SetBlendMode("ADD")
 	self.Highlight:Hide()
-
-	self.ThreatIndicator = {
-		IsObjectType = function() end,
-		Override = Module.UpdateThreat,
-	}
-
-	self.Range = Module.CreateRangeIndicator(self)
 end

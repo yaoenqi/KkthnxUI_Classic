@@ -1,5 +1,6 @@
-local K = unpack(select(2, ...))
+local K, _, L = unpack(select(2, ...))
 local oUF = oUF or K.oUF
+
 if not oUF then
 	K.Print("Could not find a vaild instance of oUF. Tags.lua code!")
 	return
@@ -19,27 +20,21 @@ local AFK = _G.AFK
 local ALTERNATE_POWER_INDEX = _G.ALTERNATE_POWER_INDEX
 local DEAD = _G.DEAD
 local DND = _G.DND
-local GHOST = _G.GetLocale() == "deDE" and "Geist" or _G.GetSpellInfo(8326)
 local GROUP = _G.GROUP
 local GetNumGroupMembers = _G.GetNumGroupMembers
+local GetPetHappiness = _G.GetPetHappiness
 local GetQuestGreenRange = _G.GetQuestGreenRange
 local GetRaidRosterInfo = _G.GetRaidRosterInfo
-local GetThreatStatusColor = _G.GetThreatStatusColor
-local HEALER = _G.HEALER
-local IsInGroup = _G.IsInGroup
+local HasPetUI = _G.HasPetUI
 local IsInRaid = _G.IsInRaid
 local MAX_RAID_MEMBERS = _G.MAX_RAID_MEMBERS or 40
 local PLAYER_OFFLINE = _G.PLAYER_OFFLINE
-local TANK = _G.TANK
 local UNITNAME_SUMMON_TITLE17 = _G.UNITNAME_SUMMON_TITLE17
 local UNKNOWN = _G.UNKNOWN
 local UnitBattlePetLevel = _G.UnitBattlePetLevel
 local UnitClass = _G.UnitClass
 local UnitClassification = _G.UnitClassification
-local UnitDetailedThreatSituation = _G.UnitDetailedThreatSituation
 local UnitEffectiveLevel = _G.UnitEffectiveLevel
-local UnitExists = _G.UnitExists
-local UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned
 local UnitHealth = _G.UnitHealth
 local UnitHealthMax = _G.UnitHealthMax
 local UnitIsAFK = _G.UnitIsAFK
@@ -59,6 +54,8 @@ local UnitPower = _G.UnitPower
 local UnitPowerMax = _G.UnitPowerMax
 local UnitPowerType = _G.UnitPowerType
 local UnitReaction = _G.UnitReaction
+local UnitPlayerControlled = _G.UnitPlayerControlled
+
 
 local function UnitHealthValues(unit)
 	if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
@@ -189,7 +186,7 @@ end
 
 oUF.Tags.Events["KkthnxUI:HealthCurrent"] = "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED"
 oUF.Tags.Methods["KkthnxUI:HealthCurrent"] = function(unit)
-	local status = UnitIsDead(unit) and "|cffFFFFFF" .. DEAD .. "|r" or UnitIsGhost(unit) and "|cffFFFFFF" .. GHOST .. "|r" or not UnitIsConnected(unit) and "|cffFFFFFF" .. PLAYER_OFFLINE .. "|r"
+	local status = UnitIsDead(unit) and "|cffFFFFFF" .. DEAD .. "|r" or UnitIsGhost(unit) and "|cffFFFFFF" .. L["Ghost"] .. "|r" or not UnitIsConnected(unit) and "|cffFFFFFF" .. PLAYER_OFFLINE .. "|r"
 	if (status) then
 		return status
 	else
@@ -199,7 +196,7 @@ end
 
 oUF.Tags.Events["KkthnxUI:HealthPercent"] = "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED"
 oUF.Tags.Methods["KkthnxUI:HealthPercent"] = function(unit)
-	local status = UnitIsDead(unit) and "|cffFFFFFF" .. DEAD .. "|r" or UnitIsGhost(unit) and "|cffFFFFFF" .. GHOST .. "|r" or not UnitIsConnected(unit) and "|cffFFFFFF" .. PLAYER_OFFLINE .. "|r"
+	local status = UnitIsDead(unit) and "|cffFFFFFF" .. DEAD .. "|r" or UnitIsGhost(unit) and "|cffFFFFFF" .. L["Ghost"] .. "|r" or not UnitIsConnected(unit) and "|cffFFFFFF" .. PLAYER_OFFLINE .. "|r"
 	if (status) then
 		return status
 	else
@@ -209,7 +206,7 @@ end
 
 oUF.Tags.Events["KkthnxUI:HealthCurrent-Percent"] = "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED"
 oUF.Tags.Methods["KkthnxUI:HealthCurrent-Percent"] = function(unit)
-	local status = UnitIsDead(unit) and "|cffFFFFFF" .. DEAD .. "|r" or UnitIsGhost(unit) and "|cffFFFFFF" .. GHOST .. "|r" or not UnitIsConnected(unit) and "|cffFFFFFF" .. PLAYER_OFFLINE .. "|r"
+	local status = UnitIsDead(unit) and "|cffFFFFFF" .. DEAD .. "|r" or UnitIsGhost(unit) and "|cffFFFFFF" .. L["Ghost"] .. "|r" or not UnitIsConnected(unit) and "|cffFFFFFF" .. PLAYER_OFFLINE .. "|r"
 	if (status) then
 		return status
 	else
@@ -220,7 +217,7 @@ end
 oUF.Tags.Events["KkthnxUI:HealthDeficit"] = "UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED"
 oUF.Tags.Methods["KkthnxUI:HealthDeficit"] = function(unit)
 	local status =
-	UnitIsDead(unit) and "|cffFFFFFF" .. DEAD .. "|r" or UnitIsGhost(unit) and "|cffFFFFFF" .. GHOST .. "|r" or not UnitIsConnected(unit) and "|cffFFFFFF" .. PLAYER_OFFLINE .. "|r"
+	UnitIsDead(unit) and "|cffFFFFFF" .. DEAD .. "|r" or UnitIsGhost(unit) and "|cffFFFFFF" .. L["Ghost"] .. "|r" or not UnitIsConnected(unit) and "|cffFFFFFF" .. PLAYER_OFFLINE .. "|r"
 	if (status) then
 		return status
 	else
@@ -344,6 +341,26 @@ oUF.Tags.Methods["KkthnxUI:Status"] = function(unit)
 		return nil
 	end
 end
+
+oUF.Tags.Events["KkthnxUI:PetHappinessIcon"] = "UNIT_HAPPINESS PET_UI_UPDATE"
+oUF.Tags.Methods["KkthnxUI:PetHappinessIcon"] = function(unit)
+	local hasPetUI, isHunterPet = HasPetUI()
+	if (unit == "pet" and hasPetUI and isHunterPet) then
+		local left, right, top, bottom
+		local happiness = GetPetHappiness()
+
+		if (happiness == 1) then
+			left, right, top, bottom = 0.375, 0.5625, 0, 0.359375
+		elseif (happiness == 2) then
+			left, right, top, bottom = 0.1875, 0.375, 0, 0.359375
+		elseif (happiness == 3) then
+			left, right, top, bottom = 0, 0.1875, 0, 0.359375
+		end
+
+		return CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 18, 16, 0, 0.1875, 0, 0.359375, 0, 0)
+	end
+end
+
 
 oUF.Tags.Events["KkthnxUI:Leader"] = "PARTY_LEADER_CHANGED GROUP_ROSTER_UPDATE"
 oUF.Tags.Methods["KkthnxUI:Leader"] = function(unit)

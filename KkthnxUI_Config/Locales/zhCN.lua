@@ -844,6 +844,10 @@ _G.KkthnxUIConfig["zhCN"] = {
 			["Name"] = "在玩家 / 目标上显示PvP指示器",
 		},
 
+		["ShowPetHappinessIcon"] = { -- Translate Me "Show Player Pet Happiness Icon"
+			["Name"] = "Show Player Pet Happiness Icon"..CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 16, 14, 0, 0.1875, 0, 0.359375, 0, 0),
+		},
+
 		["ShowPlayerLevel"] = {
 			["Name"] = "显示玩家框体等级",
 		},

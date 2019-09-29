@@ -832,6 +832,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Show PvP Indicator on Player / Target",
 		},
 
+		["ShowPetHappinessIcon"] = {
+			["Name"] = "Show Player Pet Happiness Icon"..CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 16, 14, 0, 0.1875, 0, 0.359375, 0, 0),
+		},
+
 		["ShowPlayerLevel"] = {
 			["Name"] = "Show Player Frame Level",
 		},

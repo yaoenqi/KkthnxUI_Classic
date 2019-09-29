@@ -828,6 +828,10 @@ _G.KkthnxUIConfig["deDE"] = {
 			["Name"] = "Zeige PvP-Symbole am Spieler/Ziel",
 		},
 
+		["ShowPetHappinessIcon"] = { -- Translate Me "Show Player Pet Happiness Icon"
+			["Name"] = "Show Player Pet Happiness Icon"..CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 16, 14, 0, 0.1875, 0, 0.359375, 0, 0),
+		},
+
 		["ShowPlayerLevel"] = {
 			["Name"] = "Zeige Spielerlevel am Spielerfenster",
 		},
@@ -1059,7 +1063,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		["MapFader"] = {
 			["Name"] = "Weltkarte verblassen lassen bei Bewegung",
 		},
-		
+
 		["MapScale"] = {
 			["Name"] = "Skalierung der Weltkarte",
 		},

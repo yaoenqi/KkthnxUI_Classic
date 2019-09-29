@@ -374,6 +374,7 @@ C["Unitframe"] = {
 	["PlayerCastbarWidth"] = 260,
 	["PortraitTimers"] = false,
 	["PvPIndicator"] = true,
+	["ShowPetHappinessIcon"] = true,
 	["ShowPlayerLevel"] = true,
 	["ShowPlayerName"] = false,
 	["Smooth"] = false,

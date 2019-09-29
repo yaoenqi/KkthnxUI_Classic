@@ -202,19 +202,22 @@ function Module:CreateToggleHelmCloak()
     end
 
 	local helmCheck = CreateFrame("CheckButton", "HelmCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
-	helmCheck:SetSize(16, 16)
-	helmCheck:SetPoint("TOPLEFT", CharacterHeadSlot, "BOTTOMRIGHT", 12, 16)
+	helmCheck:SetSize(14, 14)
+	helmCheck:SetPoint("BOTTOMLEFT", CharacterStatFrame1, "TOPLEFT", -2, 4)
     helmCheck:SetScript("OnClick", function ()
         ShowHelm(not ShowingHelm())
     end)
 
+    helmCheck.Text = K.CreateFontString(helmCheck, 11, SHOW_HELM)
+    helmCheck.Text:SetPoint("LEFT", helmCheck, "RIGHT", 2, 0)
+    helmCheck.Text:Hide()
+
 	helmCheck:SetScript("OnEnter", function ()
-		GameTooltip:SetOwner(helmCheck, "ANCHOR_RIGHT")
-		GameTooltip:SetText(SHOW_HELM)
+        helmCheck.Text:Show()
     end)
 
     helmCheck:SetScript("OnLeave", function ()
-        GameTooltip:Hide()
+        helmCheck.Text:Hide()
     end)
 
 	helmCheck:SetFrameStrata("HIGH")
@@ -222,19 +225,22 @@ function Module:CreateToggleHelmCloak()
 	helmCheck:SkinCheckBox()
 
 	local cloakCheck = CreateFrame("CheckButton", "CloakCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
-	cloakCheck:SetSize(16, 16)
-	cloakCheck:SetPoint("TOPLEFT", CharacterBackSlot, "BOTTOMRIGHT", 12, 16)
+	cloakCheck:SetSize(14, 14)
+	cloakCheck:SetPoint("BOTTOMRIGHT", CharacterAttributesFrame, "TOPRIGHT", -2, 1)
     cloakCheck:SetScript("OnClick", function ()
         ShowCloak(not ShowingCloak())
     end)
 
+    cloakCheck.Text = K.CreateFontString(cloakCheck, 11, SHOW_CLOAK)
+    cloakCheck.Text:SetPoint("RIGHT", cloakCheck, "LEFT", -2, 0)
+    cloakCheck.Text:Hide()
+
 	cloakCheck:SetScript("OnEnter", function ()
-		GameTooltip:SetOwner(cloakCheck, "ANCHOR_RIGHT")
-		GameTooltip:SetText(SHOW_CLOAK)
+        cloakCheck.Text:Show()
     end)
 
     cloakCheck:SetScript("OnLeave", function ()
-        GameTooltip:Hide()
+        cloakCheck.Text:Hide()
     end)
 
 	cloakCheck:SetFrameStrata("HIGH")
