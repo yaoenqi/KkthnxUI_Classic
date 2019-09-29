@@ -67,30 +67,27 @@ local function CreateUICommands()
             return
 		end
 
-		local offset = 36
+        local offset = 10
 
-		local titleText = self:CreateFontString(nil, "OVERLAY")
-		titleText:FontTemplate(nil, 20, "")
-		titleText:SetPoint("CENTER", self, "TOP", 0, -16)
-		titleText:SetText(K.Title.." Commands")
-
-		local headerBar = self:CreateTexture(nil, "ARTWORK")
-		headerBar:SetTexture("Interface\\LFGFrame\\UI-LFG-SEPARATOR")
-		headerBar:SetTexCoord(0, 0.6640625, 0, 0.3125)
-		headerBar:SetVertexColor(1, 1, 1)
-		headerBar:SetPoint("CENTER", titleText)
-		headerBar:SetSize(titleText:GetWidth() + 4, 30)
+		local titleText = self:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
+        titleText:FontTemplate(nil, 20, "")
+        titleText:SetShadowColor(0, 0, 0)
+        titleText:SetShadowOffset(1, -1)
+		titleText:SetPoint("TOPLEFT", 16, -16)
+		titleText:SetText("Commands")
 
         for i = 1, #UI_COMMANDS do
             local button = CreateFrame("Frame", "Button"..i, self)
             button:SetSize(375, 16)
-            button:SetPoint("TOPLEFT", self, "TOPLEFT", 5, -offset)
+            button:SetPoint("TOPLEFT", titleText, "BOTTOMLEFT", 0, -offset)
 
             if i <= #UI_COMMANDS then
                 local string = ModifiedString(GetUICommandsInfo(i))
 
                 button.Text = button:CreateFontString(nil, "OVERLAY")
                 button.Text:FontTemplate(nil, 12, "")
+                button.Text:SetShadowColor(0, 0, 0)
+                button.Text:SetShadowOffset(1, -1)
                 button.Text:SetPoint("CENTER")
                 button.Text:SetPoint("LEFT", 0, 0)
                 button.Text:SetText(string)

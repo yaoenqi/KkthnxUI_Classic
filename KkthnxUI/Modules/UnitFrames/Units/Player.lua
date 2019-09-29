@@ -31,6 +31,7 @@ end
 function Module:CreatePlayer(unit)
 	local UnitframeFont = K.GetFont(C["UIFonts"].UnitframeFonts)
 	local UnitframeTexture = K.GetTexture(C["UITextures"].UnitframeTextures)
+	local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)
 
 	self.Overlay = CreateFrame("Frame", nil, self) -- We will use this to overlay onto our special borders.
 	self.Overlay:SetAllPoints()
@@ -209,6 +210,30 @@ function Module:CreatePlayer(unit)
 		self.Castbar.Button:SetAllPoints(self.Castbar.Icon)
 
 		K.Mover(self.Castbar, "PlayerCastBar", "PlayerCastBar", {"BOTTOM", UIParent, "BOTTOM", 0, 266})
+	end
+
+	if C["Unitframe"].ShowHealPrediction then
+		local myBar = CreateFrame("StatusBar", nil, self)
+		myBar:SetWidth(self:GetWidth())
+		myBar:SetPoint("TOP", self.Health, "TOP")
+		myBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
+		myBar:SetPoint("LEFT", self.Health:GetStatusBarTexture(), "RIGHT")
+		myBar:SetStatusBarTexture(HealPredictionTexture)
+		myBar:SetStatusBarColor(0, 1, .5, .5)
+
+		local otherBar = CreateFrame("StatusBar", nil, self)
+		otherBar:SetWidth(self:GetWidth())
+		otherBar:SetPoint("TOP", self.Health, "TOP")
+		otherBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
+		otherBar:SetPoint("LEFT", myBar:GetStatusBarTexture(), "RIGHT")
+		otherBar:SetStatusBarTexture(HealPredictionTexture)
+		otherBar:SetStatusBarColor(0, 1, 0, .5)
+
+		self.HealthPrediction = {
+			myBar = myBar,
+			otherBar = otherBar,
+			maxOverflow = 1,
+		}
 	end
 
 	if C["Unitframe"].ShowPlayerName then
