@@ -174,8 +174,8 @@ local eventFilter = {
 }
 
 local envTexture = {
-	["Drowning"] = "spell_shadow_demonbreath",
-	["Falling"] = "ability_rogue_quickrecovery",
+	["Drowning"] = "ability_suffocate",
+	["Falling"] = "ability_fiegndead",
 	["Fatigue"] = "ability_creature_cursed_05",
 	["Fire"] = "spell_fire_fire",
 	["Lava"] = "ability_rhyolith_lavapool",
@@ -204,7 +204,7 @@ local function getFloatingIconTexture(iconType, spellID, isPet)
 	elseif iconType == "range" then
 		texture = getTexture(75)
 	elseif iconType == "env" then
-		texture = envTexture[spellID] or "ability_creature_cursed_05"
+		texture = envTexture[spellID] or "Ability_creature_cursed_05"
 		texture = "Interface\\Icons\\"..texture
 	end
 
