@@ -56,7 +56,6 @@ local UnitPowerType = _G.UnitPowerType
 local UnitReaction = _G.UnitReaction
 local UnitPlayerControlled = _G.UnitPlayerControlled
 
-
 local function UnitHealthValues(unit)
 	if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
 		local c, m, _, _ = RealMobHealth.GetUnitHealth(unit)
@@ -360,7 +359,6 @@ oUF.Tags.Methods["KkthnxUI:PetHappinessIcon"] = function(unit)
 		return CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 18, 16, left, right, top, bottom, 0, 0)
 	end
 end
-
 
 oUF.Tags.Events["KkthnxUI:Leader"] = "PARTY_LEADER_CHANGED GROUP_ROSTER_UPDATE"
 oUF.Tags.Methods["KkthnxUI:Leader"] = function(unit)

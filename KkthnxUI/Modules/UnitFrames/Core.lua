@@ -45,7 +45,7 @@ local UIParent = _G.UIParent
 local UnitAura = _G.UnitAura
 local UnitCanAttack = _G.UnitCanAttack
 local CastingInfo = _G.CastingInfo
-local ChannelInfo = ChannelInfo
+local ChannelInfo = _G.ChannelInfo
 local UnitClass = _G.UnitClass
 local UnitExists = _G.UnitExists
 local UnitFactionGroup = _G.UnitFactionGroup
@@ -1478,7 +1478,7 @@ function Module:OnEnable()
 		K:RegisterEvent("PLAYER_REGEN_DISABLED", self.PLAYER_REGEN_DISABLED)
 		self:PLAYER_REGEN_ENABLED()
 		self:SetNameplateCVars()
-		-- self:AddPlateInterruptInfo()
+		self:AddPlateInterruptInfo()
 		self:QuestIconCheck()
 	end
 
