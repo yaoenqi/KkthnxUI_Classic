@@ -582,6 +582,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Character/Inspect Gem/Enchant Info",
 		},
 
+		["ImprovedProfessionWindow"] = {
+			["Name"] = "Display A Better Profession Window Style",
+		},
+
 		["ImprovedQuestLog"] = {
 			["Name"] = "Display A Better Questlog Style",
 		},
@@ -797,7 +801,7 @@ _G.KkthnxUIConfig["enUS"] = {
 		},
 
 		["EnergyTick"] = {
-			["Name"] = "Show EnergyTicks (Druid / Rogue)",
+			["Name"] = "Show Energy/Mana Ticks",
 		},
 
 		["GlobalCooldown"] = {
@@ -830,6 +834,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["PvPIndicator"] = {
 			["Name"] = "Show PvP Indicator on Player / Target",
+		},
+
+		["ShowHealPrediction"] = {
+			["Name"] = "Show HealPrediction Statusbars",
 		},
 
 		["ShowPetHappinessIcon"] = {
@@ -939,6 +947,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["ShowBuffs"] = {
 			["Name"] = "Show Party Buffs",
+		},
+
+		["ShowHealPrediction"] = {
+			["Name"] = "Show HealPrediction Statusbars",
 		},
 
 		["ShowPlayer"] = {
