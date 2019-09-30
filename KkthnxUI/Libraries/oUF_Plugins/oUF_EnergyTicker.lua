@@ -74,10 +74,10 @@ local function Enable(self, unit)
 		if not EnergyTicker.Texture then
 			EnergyTicker.Texture = self.EnergyTicker:CreateTexture(nil, 'OVERLAY', 8)
 			EnergyTicker.Texture:SetTexture([[Interface\AddOns\KkthnxUI\Media\Textures\Spark_128]])
-			EnergyTicker.Texture:SetSize(128, Power:GetHeight() - 2)
+			EnergyTicker.Texture:SetHeight(Power:GetHeight() - 2)
 			EnergyTicker.Texture:SetPoint("CENTER", Power, 0, 0)
 			EnergyTicker.Texture:SetBlendMode("ADD")
-			EnergyTicker.Texture:SetAlpha(0.4)
+			EnergyTicker.Texture:SetAlpha(0.6)
 		end
 		EnergyTicker:SetAlpha(1)
 		EnergyTicker.UpdateFrame:SetScript("OnUpdate", function()

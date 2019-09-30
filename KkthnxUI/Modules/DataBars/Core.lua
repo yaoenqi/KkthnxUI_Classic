@@ -23,7 +23,6 @@ local LEVEL = _G.LEVEL
 local MAX_PLAYER_LEVEL_TABLE = _G.MAX_PLAYER_LEVEL_TABLE
 local REPUTATION = _G.REPUTATION
 local STANDING = _G.STANDING
-local UnitIsPVP = _G.UnitIsPVP
 local UnitLevel = _G.UnitLevel
 local UnitXP = _G.UnitXP
 local UnitXPMax = _G.UnitXPMax

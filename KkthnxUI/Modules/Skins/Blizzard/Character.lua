@@ -11,8 +11,13 @@ local hooksecurefunc = _G.hooksecurefunc
 local unpack = _G.unpack
 
 local function ReskinCharacterFrame()
-	CharacterModelFrameRotateLeftButton:Kill()
-	CharacterModelFrameRotateRightButton:Kill()
+	if CharacterModelFrameRotateLeftButton then
+		CharacterModelFrameRotateLeftButton:Kill()
+	end
+
+	if CharacterModelFrameRotateRightButton then
+		CharacterModelFrameRotateRightButton:Kill()
+	end
 
 	local ResistanceCoords = {
 		[1] = {0.21875, 0.8125, 0.25, 0.32421875}, -- Arcane
@@ -75,6 +80,34 @@ local function ReskinCharacterFrame()
 			self:SetBackdropBorderColor()
 		end
 	end)
+
+	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
+		local factionBar = _G["ReputationBar"..i]
+		local factionBarTexture = K.GetTexture(C["UITextures"].SkinTextures)
+
+		factionBar:SetStatusBarTexture(factionBarTexture)
+
+		factionBar.spark = factionBar:CreateTexture(nil, "OVERLAY")
+		factionBar.spark:SetTexture(C["Media"].Spark_16)
+		factionBar.spark:SetHeight(C["DataBars"].Height - 1)
+		factionBar.spark:SetBlendMode("ADD")
+		factionBar.spark:SetPoint("CENTER", factionBar:GetStatusBarTexture(), "RIGHT", 0, 0)
+		factionBar.spark:SetAlpha(0.6)
+	end
+
+	for i = 1, _G.SKILLS_TO_DISPLAY do
+		local skillsBar = _G["SkillRankFrame"..i]
+		local skillsBarTexture = K.GetTexture(C["UITextures"].SkinTextures)
+
+		skillsBar:SetStatusBarTexture(skillsBarTexture)
+
+		skillsBar.spark = skillsBar:CreateTexture(nil, "OVERLAY")
+		skillsBar.spark:SetTexture(C["Media"].Spark_16)
+		skillsBar.spark:SetHeight(C["DataBars"].Height - 1)
+		skillsBar.spark:SetBlendMode("ADD")
+		skillsBar.spark:SetPoint("CENTER", skillsBar:GetStatusBarTexture(), "RIGHT", 0, 0)
+		skillsBar.spark:SetAlpha(0.6)
+	end
 end
 
 table_insert(Module.NewSkin["KkthnxUI"], ReskinCharacterFrame)

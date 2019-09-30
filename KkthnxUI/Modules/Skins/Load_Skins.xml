@@ -14,7 +14,6 @@
    <Include file="Blizzard\Inspect.lua" />
    <Include file="Blizzard\Mail.lua" />
    <!-- <Include file="Blizzard\Miscellaneous.lua" /> -->
-   <Include file="Blizzard\Reputation.lua" />
    <Include file="Blizzard\SpellBook.lua" />
    <Include file="Blizzard\Talent.lua" />
 </Ui>
