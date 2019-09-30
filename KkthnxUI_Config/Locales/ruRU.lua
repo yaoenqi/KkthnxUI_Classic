@@ -583,6 +583,10 @@ _G.KkthnxUIConfig["ruRU"] = {
 			["Name"] = "Показывать зачарования в окне персонажа",
 		},
 
+		["ImprovedProfessionWindow"] = {
+			["Name"] = "Улучшенное окно Профессий",
+		},
+
 		["ImprovedQuestLog"] = {
 			["Name"] = "Улучшение журнала заданий",
 		},
@@ -833,8 +837,11 @@ _G.KkthnxUIConfig["ruRU"] = {
 			["Name"] = "Show PvP Indicator on Player / Target",
 		},
 
+		["ShowHealPrediction"] = { --Перевести
+			["Name"] = "Show HealPrediction Statusbars",
+		},
 		["ShowPetHappinessIcon"] = {
-			["Name"] = "Show Player Pet Happiness Icon"..CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 16, 14, 0, 0.1875, 0, 0.359375, 0, 0),
+			["Name"] = "Показывать иконку Счастья у пета"..CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 16, 14, 0, 0.1875, 0, 0.359375, 0, 0),
 		},
 
 		["ShowPlayerLevel"] = {
@@ -940,6 +947,10 @@ _G.KkthnxUIConfig["ruRU"] = {
 
 		["ShowBuffs"] = {
 			["Name"] = "Показывать баффы группы",
+		},
+
+		["ShowHealPrediction"] = { --Перевести
+			["Name"] = "Show HealPrediction Statusbars",
 		},
 
 		["ShowPlayer"] = {
@@ -1069,9 +1080,9 @@ _G.KkthnxUIConfig["ruRU"] = {
 
 	-- Worldmap Local
 	["WorldMap"] = {
-		--["AlphaWhenMoving"] = {
-		--	["Name"] = "Alpha When Moving",
-		--},
+		["AlphaWhenMoving"] = { -- Нет применения в данной версии, MapFader ниже не то же самое?
+			["Name"] = "Alpha When Moving",
+		},
 
 		["Coordinates"] = {
 			["Name"] = "Показывать ваши и курсора координаты",
