@@ -45,7 +45,7 @@ local UIParent = _G.UIParent
 local UnitAura = _G.UnitAura
 local UnitCanAttack = _G.UnitCanAttack
 local CastingInfo = _G.CastingInfo
-local UnitChannelInfo = _G.ChannelInfo
+local ChannelInfo = ChannelInfo
 local UnitClass = _G.UnitClass
 local UnitExists = _G.UnitExists
 local UnitFactionGroup = _G.UnitFactionGroup
@@ -429,7 +429,7 @@ local function updateCastBarTicks(bar, numTicks)
 end
 
 function Module:FixTargetCastbarUpdate()
-	if UnitIsUnit("target", "player") and not CastingInfo() and not UnitChannelInfo() then
+	if UnitIsUnit("target", "player") and not CastingInfo() and not ChannelInfo() then
 		self.casting = nil
 		self.channeling = nil
 		self.Text:SetText(INTERRUPTED)
