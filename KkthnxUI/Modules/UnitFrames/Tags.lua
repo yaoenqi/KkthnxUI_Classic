@@ -357,7 +357,7 @@ oUF.Tags.Methods["KkthnxUI:PetHappinessIcon"] = function(unit)
 			left, right, top, bottom = 0, 0.1875, 0, 0.359375
 		end
 
-		return CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 18, 16, 0, 0.1875, 0, 0.359375, 0, 0)
+		return CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 18, 16, left, right, top, bottom, 0, 0)
 	end
 end
 
