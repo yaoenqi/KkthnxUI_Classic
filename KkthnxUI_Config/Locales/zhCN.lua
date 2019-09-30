@@ -171,7 +171,7 @@ _G.KkthnxUIConfig["zhCN"] = {
 			["Name"] = "感谢玩家给BUFF",
 		},
 
-		["BlockMovies"] = {	
+		["BlockMovies"] = {
 			["Name"] = "屏蔽你已看过的动画",
 		},
 
@@ -625,7 +625,7 @@ _G.KkthnxUIConfig["zhCN"] = {
 			["Name"] = "高仇恨颜色",
 		},
 
-		["SlotDurability"] = {
+		["OffTankColor"] = {
 			["Name"] = "OT颜色",
 		},
 
@@ -832,7 +832,7 @@ _G.KkthnxUIConfig["zhCN"] = {
 			["Name"] = "在玩家 / 目标上显示PvP指示器",
 		},
 
-		["ShowPetHappinessIcon"] = { 
+		["ShowPetHappinessIcon"] = {
 			["Name"] = "显示玩家宠物快乐度图标"..CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 16, 14, 0, 0.1875, 0, 0.359375, 0, 0),
 		},
 

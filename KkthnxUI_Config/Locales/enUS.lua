@@ -629,7 +629,7 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Bad Threat Color",
 		},
 
-		["SlotDurability"] = {
+		["OffTankColor"] = {
 			["Name"] = "Off Tank Threat Color",
 		},
 

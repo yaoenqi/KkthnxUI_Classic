@@ -625,7 +625,7 @@ _G.KkthnxUIConfig["deDE"] = {
 			["Name"] = "Farbe für schlechte Bedrohung",
 		},
 
-		["SlotDurability"] = {
+		["OffTankColor"] = {
 			["Name"] = "Farbe für die Bedrohung des Nebentanks",
 		},
 
