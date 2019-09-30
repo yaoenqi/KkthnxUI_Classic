@@ -1,6 +1,10 @@
 local K, C = unpack(select(2, ...))
 local Module = K:GetModule("Miscellaneous")
 
+local _G = _G
+
+local IsAddOnLoaded = _G.IsAddOnLoaded
+
 function Module:SetupImprovedQuestLog()
 	-- Make the quest log frame double-wide
 	UIPanelWindows["QuestLogFrame"] = {
@@ -14,7 +18,7 @@ function Module:SetupImprovedQuestLog()
 		whileDead = 1
 	}
 
-	-- Widen the window (including padding to the right)
+	-- Size the quest log frame
 	QuestLogFrame:SetWidth(714)
 	QuestLogFrame:SetHeight(487)
 
@@ -42,7 +46,9 @@ function Module:SetupImprovedQuestLog()
 	end
 
 	-- Get quest frame textures
-	local regions = {QuestLogFrame:GetRegions()}
+	local regions = {
+		QuestLogFrame:GetRegions()
+	}
 
 	-- Set top left texture
 	regions[3]:SetTexture("Interface\\QUESTFRAME\\UI-QuestLogDualPane-Left")

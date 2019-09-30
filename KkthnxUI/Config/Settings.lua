@@ -214,6 +214,7 @@ C["Misc"] = {
 	["EnhancedFriends"] = false,
 	["EnhancedMenu"] = true,
 	["GemEnchantInfo"] = false,
+	["ImprovedProfessionWindow"] = true,
 	["ImprovedQuestLog"] = true,
 	["ItemLevel"] = false,
 	["KillingBlow"] = false,

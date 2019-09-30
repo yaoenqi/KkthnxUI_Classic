@@ -911,7 +911,7 @@ function Module:UpdatePlateCastbarInterrupt(...)
 		local nameplate = Module.guidToPlate[destGUID]
 		if nameplate and nameplate.Castbar then
 			local _, class = GetPlayerInfoByGUID(sourceGUID)
-			local r, g, b = K.ClassColor(class)
+			local r, g, b = K.ColorClass(class)
 			local color = K.RGBToHex(r, g, b)
 			local sourceName = Ambiguate(sourceName, "short")
 			nameplate.Castbar.Text:SetText(INTERRUPTED.." > "..color..sourceName)
@@ -1478,7 +1478,7 @@ function Module:OnEnable()
 		K:RegisterEvent("PLAYER_REGEN_DISABLED", self.PLAYER_REGEN_DISABLED)
 		self:PLAYER_REGEN_ENABLED()
 		self:SetNameplateCVars()
-		self:AddPlateInterruptInfo()
+		-- self:AddPlateInterruptInfo()
 		self:QuestIconCheck()
 	end
 

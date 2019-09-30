@@ -261,10 +261,10 @@ function Module:CreatePlayer(unit)
 	end
 
 	if C["Unitframe"].EnergyTick then
-		if K.Class == "DRUID" or K.Class == "ROGUE" then
+		--if K.Class == "DRUID" or K.Class == "ROGUE" then
 			self.EnergyTicker = CreateFrame("Frame", nil, self)
 			self.EnergyTicker:SetFrameLevel(self.Power:GetFrameLevel() + 1)
-		end
+		--end
 	end
 
 	if C["Unitframe"].AdditionalPower then
