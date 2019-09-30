@@ -184,6 +184,13 @@ C["FilgerSpells"] = {
 			{spellID = 1822, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Rip
 			{spellID = 1079, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- TODO: test if filger needs multiple spell ids
+			{spellID = 1079, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 9492, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 9493, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 9752, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 9894, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 9896, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Soothe Animal
 			-- {spellID = 2908, unitID = "target", caster = "player", filter = "DEBUFF"},
 

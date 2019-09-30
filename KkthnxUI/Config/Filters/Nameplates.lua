@@ -17,50 +17,25 @@ end
 
 K.DebuffWhiteList = {
 	-- Druid
-	[SpellName(5211)] = true,	-- Bash
-	[SpellName(16922)] = true,	-- Celestial Focus (Starfire Stun)
-	[SpellName(5209)] = true,	-- Challenging Roar
-	[SpellName(99)] = true,		-- Demoralizing Roar
-	[SpellName(339)] = true,	-- Entangling Roots
-	-- [SpellName(19975)] = true,	-- Entangling Roots (Nature's Grasp)
-	[SpellName(770)] = true,	-- Faerie Fire
-	[SpellName(16857)] = true,	-- Faerie Fire (Feral)
-	[SpellName(19675)] = true,	-- Feral Charge Effect
-	[SpellName(2637)] = true,	-- Hibernate
-	-- [SpellName(16914)] = true,	-- Hurricane
-	[SpellName(5570)] = true,	-- Insect Swarm
-	[SpellName(22570)] = true,	-- Mangle
-	[SpellName(8921)] = true,	-- Moonfire
-	[SpellName(9005)] = true,	-- Pounce
-	[SpellName(9007)] = true,	-- Pounce Bleed
-	[SpellName(1822)] = true,	-- Rake
-	[SpellName(2908)] = true,	-- Soothe Animal
+	[SpellName(5211)] = true,	--bash
+	[SpellName(5209)] = true,	--challenging roar
+	[SpellName(99)] = true,		--demoralizing roar
+	[SpellName(339)] = true,	--entangling roots
+	[SpellName(770)] = true,	--faerie fire
+	[SpellName(2637)] = true,	--hibernate
+	[SpellName(16914)] = true,	--hurricane
+	[SpellName(5570)] = true,	--insect swarm
+	[SpellName(8921)] = true,	--moonfire
+	[SpellName(9005)] = true,	--pounce
+	[SpellName(1822)] = true,	--rake
+	[SpellName(1079)] = true,	--rip
+	[SpellName(2908)] = true,	--soothe animal
+
+	[SpellName(16857)] = true,	--faerie fire feral
+	[SpellName(16979)] = true,	--feral charge
+
 
 	-- Hunter
-	-- -- [SpellName(1462)] = true,	-- Beast Lore
-	-- [SpellName(3674)] = true,	-- Black Arrow
-	-- [SpellName(25999)] = true,	-- Charge (Boar)
-	-- [SpellName(5116)] = true,	-- Concussive Shot
-	-- [SpellName(19306)] = true,	-- Counterattack
-	-- [SpellName(19185)] = true,	-- Entrapment
-	-- [SpellName(13812)] = true,	-- Explosive Trap Effect
-	-- [SpellName(1543)] = true,	-- Flare
-	-- [SpellName(3355)] = true,	-- Freezing Trap Effect
-	-- [SpellName(13810)] = true,	-- Frost Trap Aura
-	-- [SpellName(1130)] = true,	-- Hunter's Mark
-	-- [SpellName(13797)] = true,	-- Immolation Trap Effect
-	-- [SpellName(19410)] = true,	-- Improved Concussive Shot
-	-- [SpellName(19229)] = true,	-- Improved Wing Clip
-	-- [SpellName(24394)] = true,	-- Intimidation
-	-- [SpellName(1513)] = true,	-- Scare Beast
-	-- [SpellName(19503)] = true,	-- Scatter Shot
-	-- [SpellName(24640)] = true,	-- Scorpid Poison (Scorpid)
-	-- [SpellName(3043)] = true,	-- Scorpid Sting
-	-- [SpellName(24423)] = true,	-- Screech (Bat / Bird of Prey / Carrion Bird)
-	-- [SpellName(1978)] = true,	-- Serpent Sting
-	-- [SpellName(3034)] = true,	-- Viper Sting
-	-- [SpellName(2974)] = true,	-- Wing Clip
-	-- [SpellName(19386)] = true,	-- Wyvern Sting
 	[SpellName(5116)] = true,	-- concussive shot
 	[SpellName(13812)] = true,	-- explosive trap
 	[SpellName(1543)] = true,	-- flare
@@ -72,6 +47,11 @@ K.DebuffWhiteList = {
 	[SpellName(1978)] = true,	-- serpent sting
 	[SpellName(3043)] = true,	-- scorpid sting
 	[SpellName(3034)] = true,	-- viper sting
+	[SpellName(1462)] = true,	--beast-lore
+	[SpellName(19306)] = true,	--counterattack
+	[SpellName(19410)] = true,	--improved-concussive-shot
+	[SpellName(19229)] = true,	--improved-wing-clip
+	[SpellName(24394)] = true,	--intimidation
 
 	-- Mage
 	[SpellName(11113)] = true,	-- Blast Wave
