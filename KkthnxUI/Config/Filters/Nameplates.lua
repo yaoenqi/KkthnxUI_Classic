@@ -47,11 +47,12 @@ K.DebuffWhiteList = {
 	[SpellName(1978)] = true,	-- serpent sting
 	[SpellName(3043)] = true,	-- scorpid sting
 	[SpellName(3034)] = true,	-- viper sting
-	[SpellName(1462)] = true,	--beast-lore
-	[SpellName(19306)] = true,	--counterattack
-	[SpellName(19410)] = true,	--improved-concussive-shot
-	[SpellName(19229)] = true,	--improved-wing-clip
-	[SpellName(24394)] = true,	--intimidation
+	[SpellName(1462)] = true,	-- beast-lore
+	[SpellName(19306)] = true,	-- counterattack
+	[SpellName(19410)] = true,	-- improved-concussive-shot
+	[SpellName(2974)] = true,	-- wing-clip
+	[SpellName(19229)] = true,	-- improved-wing-clip
+	[SpellName(24394)] = true,	-- intimidation
 
 	-- Mage
 	[SpellName(11113)] = true,	-- Blast Wave
