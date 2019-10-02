@@ -93,7 +93,7 @@ _G.KkthnxUIConfig["ruRU"] = {
 		},
 
 		["MicroBarMouseover"] = {
-			["Name"] = "Затенять Микропанель",
+			["Name"] = "Микропанель при наведении мыши",
 		},
 
 		["OverrideWA"] = {
@@ -163,8 +163,8 @@ _G.KkthnxUIConfig["ruRU"] = {
 			["Name"] = "Автоматически выбирать награду за задания",
 		},
 
-		["AutoTabBinder"] = { -- Перевести
-			["Name"] = "Only Tab Target Enemy Players",
+		["AutoTabBinder"] = {
+			["Name"] = "По 'Tab' выбирать только враждебных игроков",
 		},
 
 		["BuffThanks"] = {
@@ -197,7 +197,7 @@ _G.KkthnxUIConfig["ruRU"] = {
 		},
 
 		["BagBarMouseover"] = {
-			["Name"] = "Затенять Панель сумок",
+			["Name"] = "Панель сумок при наведении мыши",
 		},
 
 		["BagColumns"] = {
@@ -268,7 +268,7 @@ _G.KkthnxUIConfig["ruRU"] = {
 		},
 
 		["Reminder"] = {
-			["Name"] = "Напоминания о баффах (Крик/Интеллект/Яды)",
+			["Name"] = "Напоминания о баффах (Крик/Интеллект/Яды и т.д.)",
 		},
 
 		["ReverseBuffs"] = {
@@ -336,7 +336,7 @@ _G.KkthnxUIConfig["ruRU"] = {
 		},
 
 		["TabsMouseover"] = {
-			["Name"] = "Затенять имена вкладок",
+			["Name"] = "Имена вкладок при наведении мыши",
 		},
 
 		["WhisperSound"] = {
@@ -368,7 +368,7 @@ _G.KkthnxUIConfig["ruRU"] = {
 		},
 
 		["MouseOver"] = {
-			["Name"] = "Затенять полосы",
+			["Name"] = "Полосы при наведении мыши",
 		},
 
 		["RestedColor"] = {
@@ -782,11 +782,11 @@ _G.KkthnxUIConfig["ruRU"] = {
 		},
 
 		["CombatFade"] = {
-			["Name"] = "Затенять рамки",
+			["Name"] = "Показывать рамки только во время боя",
 		},
 
-		["CombatText"] = { --Перевести
-			["Name"] = "Show CombatText Feedback",
+		["CombatText"] = {
+			["Name"] = "Текст боя по краям экрана",
 		},
 
 		["DebuffHighlight"] = { --Перевести
@@ -817,8 +817,8 @@ _G.KkthnxUIConfig["ruRU"] = {
 			["Name"] = "Показывать только ваши дебаффы",
 		},
 
-		["PlayerBuffs"] = { --Перевести
-			["Name"] = "Show Player Frame Buffs",
+		["PlayerBuffs"] = {
+			["Name"] = "Показывать баффы внизу рамки Игрока",
 		},
 
 		["PlayerCastbarHeight"] = {
@@ -856,12 +856,12 @@ _G.KkthnxUIConfig["ruRU"] = {
 			["Name"] = "Плавные полосы",
 		},
 
-		["Swingbar"] = { --Перевести
-			["Name"] = "Unitframe Swingbar",
+		["Swingbar"] = {
+			["Name"] = "Показывать полосу автоатак",
 		},
 
-		["SwingbarTimer"] = { --Перевести
-			["Name"] = "Unitframe Swingbar Timer",
+		["SwingbarTimer"] = {
+			["Name"] = "Таймер полосы автоатак",
 		},
 
 		["TargetCastbarHeight"] = {
@@ -986,7 +986,7 @@ _G.KkthnxUIConfig["ruRU"] = {
 
 		["QuestProgress"] = {
 			["Name"] = "Прогресс квеста в чат",
-			["Desc"] = "Информирует о прогрессе заданий в чат. Лучше не использовать в группе!",
+			["Desc"] = "Информирует о прогрессе заданий в чат группы. Спаммит, поэтому лучше не использовать в группе с незнакомцами!",
 		},
 
 		["OnlyCompleteRing"] = { --Перевести
