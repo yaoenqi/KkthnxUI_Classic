@@ -285,11 +285,9 @@ function Module:OnTooltipSetUnit()
 			GameTooltipStatusBar:SetStatusBarColor(r, g, b)
 
 			if GameTooltipStatusBar.text then
-				if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
-					local c, m, _, _ = _G.RealMobHealth.GetUnitHealth(unit)
-					GameTooltipStatusBar.text:SetText(c.." / "..m)
-				else
-					-- GameTooltipStatusBar.text:SetText(value.." / "..max)
+				if RealMobHealth and RealMobHealth.UnitHasHealthData(unit) then
+					local value, max = RealMobHealth.GetUnitHealth(unit)
+					GameTooltipStatusBar.text:SetText(K.ShortValue(value).." / "..K.ShortValue(max))
 				end
 			end
 		else
@@ -307,31 +305,24 @@ function Module:StatusBar_OnValueChanged(value)
 		return
 	end
 
-	local unit = select(2, self:GetParent():GetUnit())
-	if (not unit) then
-		local GMF = GetMouseFocus()
-		if(GMF and GMF.GetAttribute and GMF:GetAttribute("unit")) then
-			unit = GMF:GetAttribute("unit")
-		end
+	local min, max = self:GetMinMaxValues()
+	if (value < min) or (value > max) then
+		return
 	end
 
 	if not self.text then
 		self.text = K.CreateFontString(self, 11, nil, "")
 	end
 
-	local _, max = self:GetMinMaxValues()
-	if (value > 0 and max == 1) then
-		self.text:SetFormattedText("%d%%", floor(value * 100))
-		self:SetStatusBarColor(0.6, 0.6, 0.6) --most effeciant?
-	elseif(value == 0 or (unit and UnitIsDeadOrGhost(unit))) then
-		self.text:SetText(_G.DEAD)
+	if value > 0 and max == 1 then
+		self.text:SetFormattedText("%d%%", value * 100)
 	else
-		if RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
-			local c, m, _, _ = RealMobHealth.GetUnitHealth(unit);
-			self.text:SetText(c.." / "..m)
-		else
-			self.text:SetText(value.." / "..max)
+		local unit = Module.GetUnit(GameTooltip)
+		if RealMobHealth and RealMobHealth.UnitHasHealthData(unit) then
+			value, max = RealMobHealth.GetUnitHealth(unit)
 		end
+
+		self.text:SetText(K.ShortValue(value).." / "..K.ShortValue(max))
 	end
 end
 

@@ -31,23 +31,26 @@ local UnitIsGhost = _G.UnitIsGhost
 local UnitIsPlayer = _G.UnitIsPlayer
 local UnitIsTapDenied = _G.UnitIsTapDenied
 local UnitLevel = _G.UnitLevel
-local UnitName = _G.UnitName
-local UnitPlayerControlled = _G.UnitPlayerControlled
 local UnitPower = _G.UnitPower
 local UnitPowerMax = _G.UnitPowerMax
 local UnitPowerType = _G.UnitPowerType
 local UnitReaction = _G.UnitReaction
 
+local GetUnitHealth
+local function updateHealthAPI(event)
+	if RealMobHealth then
+		GetUnitHealth = RealMobHealth.GetUnitHealth
+	end
+
+	K:UnregisterEvent(event, updateHealthAPI)
+end
+K:RegisterEvent("PLAYER_ENTERING_WORLD", updateHealthAPI)
+
 local function GetRealHealth(unit)
-	if _G.RealMobHealth and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
-		local c, m, _, _ = _G.RealMobHealth.GetUnitHealth(unit);
-		return c, m
-	elseif _G.MobHealthFrame and unit and not UnitIsPlayer(unit) and not UnitPlayerControlled(unit) then
-		local name, level = UnitName(unit), UnitLevel(unit)
-		local cur, full = _G.MI2_GetMobData(name, level, unit).healthCur, _G.MI2_GetMobData(name, level, unit).healthMax
-		return cur, full
+	if GetUnitHealth and RealMobHealth.UnitHasHealthData(unit) then
+		return GetUnitHealth(unit)
 	else
-		return UnitHealth(unit), UnitHealthMax(unit)
+		return UnitHealth(unit)
 	end
 end
 
