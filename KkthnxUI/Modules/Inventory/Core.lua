@@ -366,7 +366,9 @@ function Module:CreateDeleteButton()
 end
 
 local function deleteButtonOnClick(self)
-	if not deleteEnable then return end
+	if not deleteEnable then
+		return
+	end
 
 	local texture, _, _, quality = GetContainerItemInfo(self.bagID, self.slotID)
 	if IsControlKeyDown() and IsAltKeyDown() and texture and (quality < LE_ITEM_QUALITY_RARE) then
@@ -514,7 +516,7 @@ function Module:OnEnable()
 	local iconSize = C["Inventory"].IconSize
 	local showItemLevel = C["Inventory"].BagsiLvl
 	local deleteButton = C["Inventory"].DeleteButton
-	local itemSetFilter = C["Inventory"].ItemSetFilter
+	-- local itemSetFilter = C["Inventory"].ItemSetFilter
 
 	-- Init
 	local Backpack = cargBags:NewImplementation("KKUI_Backpack")
@@ -532,7 +534,7 @@ function Module:OnEnable()
 	local f = {}
 	Module.AmmoBags = {}
 	Module.SpecialBags = {}
-	local onlyBags, bagClass, bagAmmo, bagEquipment, bagConsumble, bagTradeGoods, bagQuestItem, bagsJunk, onlyBank, bankClass, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite = self:GetFilters()
+	local onlyBags, bagAmmo, bagEquipment, bagConsumble, bagsJunk, onlyBank, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite = self:GetFilters()
 	function Backpack:OnInit()
 		local MyContainer = self:GetContainerClass()
 
@@ -555,15 +557,6 @@ function Module:OnEnable()
 		f.consumble = MyContainer:New("Consumble", {Columns = bagsWidth, Parent = f.main})
 		f.consumble:SetFilter(bagConsumble, true)
 
-		f.tradegoods = MyContainer:New("TradeGoods", {Columns = bagsWidth, Parent = f.main})
-		f.tradegoods:SetFilter(bagTradeGoods, true)
-
-		f.questitem = MyContainer:New("QuestItem", {Columns = bagsWidth, Parent = f.main})
-		f.questitem:SetFilter(bagQuestItem, true)
-
-		f.classItem = MyContainer:New("ClassItem", {Columns = bagsWidth, Parent = f.main})
-		f.classItem:SetFilter(bagClass, true)
-
 		f.bank = MyContainer:New("Bank", {Columns = bankWidth, Bags = "bank"})
 		f.bank:SetFilter(onlyBank, true)
 		f.bank:SetPoint("BOTTOMRIGHT", f.main, "BOTTOMLEFT", -10, 0)
@@ -583,9 +576,6 @@ function Module:OnEnable()
 
 		f.bankConsumble = MyContainer:New("BankConsumble", {Columns = bankWidth, Parent = f.bank})
 		f.bankConsumble:SetFilter(bankConsumble, true)
-
-		f.bankClassItem = MyContainer:New("BankClassItem", {Columns = bankWidth, Parent = f.bank})
-		f.bankClassItem:SetFilter(bankClass, true)
 	end
 
 	function Backpack:OnBankOpened()
@@ -745,11 +735,11 @@ function Module:OnEnable()
 				col = columns
 			end
 
-			local xPos = (col-1) * (iconSize + spacing)
-			local yPos = -1 * (row-1) * (iconSize + spacing)
+			local xPos = (col - 1) * (iconSize + spacing)
+			local yPos = -1 * (row - 1) * (iconSize + spacing)
 
 			self.freeSlot:ClearAllPoints()
-			self.freeSlot:SetPoint("TOPLEFT", self, "TOPLEFT", xPos+xOffset, yPos+yOffset)
+			self.freeSlot:SetPoint("TOPLEFT", self, "TOPLEFT", xPos + xOffset, yPos + yOffset)
 
 			if height < 0 then
 				width, height = columns * (iconSize+spacing)-spacing, iconSize
@@ -757,10 +747,10 @@ function Module:OnEnable()
 				height = height + iconSize + spacing
 			end
 		end
-		self:SetSize(width + xOffset*2, height + offset)
+		self:SetSize(width + xOffset * 2, height + offset)
 
-		Module:UpdateAnchors(f.main, {f.classItem, f.ammoItem, f.equipment, f.bagFavourite, f.consumble, f.tradegoods, f.questitem, f.junk})
-		Module:UpdateAnchors(f.bank, {f.bankClassItem, f.bankAmmoItem, f.bankEquipment, f.bankLegendary, f.bankFavourite, f.bankConsumble})
+		Module:UpdateAnchors(f.main, {f.ammoItem, f.equipment, f.bagFavourite, f.consumble, f.junk})
+		Module:UpdateAnchors(f.bank, {f.bankAmmoItem, f.bankEquipment, f.bankLegendary, f.bankFavourite, f.bankConsumble})
 	end
 
 	function MyContainer:OnCreate(name, settings)
@@ -774,22 +764,16 @@ function Module:OnEnable()
 		local label
 		if strmatch(name, "AmmoItem$") then
 			label = INVTYPE_AMMO
-		elseif strmatch(name, "ClassItem$") then
-			label = L["INVENTORY_CLASS_RELATED"]
 		elseif strmatch(name, "Equipment$") then
-			if itemSetFilter then
-				label = L["Equipement Set"]
-			else
-				label = BAG_FILTER_EQUIPMENT
-			end
+			--if itemSetFilter then
+			--	label = L["Equipement Set"]
+			--else
+			label = BAG_FILTER_EQUIPMENT
+			--end
 		elseif name == "BankLegendary" then
 			label = LOOT_JOURNAL_LEGENDARIES
 		elseif strmatch(name, "Consumble$") then
 			label = BAG_FILTER_CONSUMABLES
-		elseif strmatch(name, "TradeGoods$") then
-			label = BAG_FILTER_TRADE_GOODS
-		elseif strmatch(name, "QuestItem$") then
-			label = AUCTION_CATEGORY_QUEST_ITEMS
 		elseif name == "Junk" then
 			label = BAG_FILTER_JUNK
 		elseif strmatch(name, "Favourite") then

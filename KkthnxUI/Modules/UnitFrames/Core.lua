@@ -347,15 +347,17 @@ function Module:UpdateCodexQuestUnit(name)
 	if name and CodexMap.tooltips[name] then
 		for _, meta in pairs(CodexMap.tooltips[name]) do
 			local questData = meta["quest"]
+			local quests = CodexDB.quests.loc
+
 			if questData then
-				for questId = 1, GetNumQuestLogEntries() do
-					local title, _, _, _, _, complete = GetQuestLogTitle(questId)
-					if questData == title then
-						local objectives = GetNumQuestLeaderBoards(questId)
+				for questIndex = 1, GetNumQuestLogEntries() do
+					local _, _, _, header, _, _, _, questId = GetQuestLogTitle(questIndex)
+					if not header and quests[questId] and questData == quests[questId].T then
+						local objectives = GetNumQuestLeaderBoards(questIndex)
 						local foundObjective, progressText = nil
 						if objectives then
 							for i = 1, objectives do
-								local text, type, complete = GetQuestLogLeaderBoard(i, questId)
+								local text, type = GetQuestLogLeaderBoard(i, questIndex)
 								if type == "monster" then
 									local _, _, monsterName, objNum, objNeeded = string_find(text, Codex:SanitizePattern(QUEST_MONSTERS_KILLED))
 									if meta["spawn"] == monsterName then
@@ -379,7 +381,7 @@ function Module:UpdateCodexQuestUnit(name)
 						if foundObjective and progressText > 0 then
 							self.questIcon:Show()
 							self.questCount:SetText(progressText)
-						elseif not foundObjective and meta["questLevel"] and meta["texture"] then
+						elseif not foundObjective then
 							self.questIcon:Show()
 						end
 					end
@@ -539,7 +541,7 @@ function Module:PostCastStart(unit)
 	end
 
 	-- Fix for empty icon
-	if self.Icon and not self.Icon:GetTexture() then
+	if self.Icon and not self.Icon:GetTexture() or self.Icon:GetTexture() == 136235 then
 		self.Icon:SetTexture(136243)
 	end
 end
