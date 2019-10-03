@@ -290,9 +290,19 @@ do
 		subLocalizations:SetJustifyH("LEFT")
 		subLocalizations:SetText(GetAddOnMetadata("KkthnxUI", "X-Localizations"))
 
+		local titleTranslators = self:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
+		titleTranslators:SetPoint("TOPLEFT", subLocalizations, "BOTTOMLEFT", 0, -16)
+		titleTranslators:SetText("Translators:")
+
+		local subTranslators = self:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+		subTranslators:SetWidth(580)
+		subTranslators:SetPoint("TOPLEFT", titleTranslators, "BOTTOMLEFT", 0, -8)
+		subTranslators:SetJustifyH("LEFT")
+		subTranslators:SetText(GetAddOnMetadata("KkthnxUI", "X-Translation"))
+
 		-- Social Buttion, because why not?
 		local titleButtons = self:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
-		titleButtons:SetPoint("TOPLEFT", subLocalizations, "BOTTOMLEFT", 0, -16)
+		titleButtons:SetPoint("TOPLEFT", subTranslators, "BOTTOMLEFT", 0, -16)
 		titleButtons:SetText("Keep Calm I'm Adding Buttons:")
 
 		local buttonGitHub = CreateFrame("Button", nil, self, "UIPanelButtonTemplate")
