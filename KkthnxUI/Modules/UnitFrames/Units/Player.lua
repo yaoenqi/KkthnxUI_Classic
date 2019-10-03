@@ -73,7 +73,7 @@ function Module:CreatePlayer(unit)
 	self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")
 	self.Health.Value:SetFontObject(UnitframeFont)
 	self.Health.Value:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
-	self:Tag(self.Health.Value, C["Unitframe"].PlayerHealthFormat.Value)
+	self:Tag(self.Health.Value, "[hp]")
 
 	self.Power = CreateFrame("StatusBar", nil, self)
 	self.Power:SetHeight(14)
@@ -93,7 +93,7 @@ function Module:CreatePlayer(unit)
 	self.Power.Value:SetPoint("CENTER", self.Power, "CENTER", 0, 0)
 	self.Power.Value:SetFontObject(UnitframeFont)
 	self.Power.Value:SetFont(select(1, self.Power.Value:GetFont()), 11, select(3, self.Power.Value:GetFont()))
-	self:Tag(self.Power.Value, C["Unitframe"].PlayerPowerFormat.Value)
+	self:Tag(self.Power.Value, "[power]")
 
 	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then
 		self.Portrait = CreateFrame("PlayerModel", nil, self.Health)
@@ -145,7 +145,7 @@ function Module:CreatePlayer(unit)
 
 	if (C["Unitframe"].Castbars) then
 		self.Castbar = CreateFrame("StatusBar", "PlayerCastbar", self)
-		self.Castbar:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 266)
+		self.Castbar:SetPoint("BOTTOM", UIParent, "BOTTOM", 15, 266)
 		self.Castbar:SetStatusBarTexture(UnitframeTexture)
 		self.Castbar:SetSize(C["Unitframe"].PlayerCastbarWidth, C["Unitframe"].PlayerCastbarHeight)
 		self.Castbar:SetClampedToScreen(true)
@@ -209,7 +209,7 @@ function Module:CreatePlayer(unit)
 
 		self.Castbar.Button:SetAllPoints(self.Castbar.Icon)
 
-		K.Mover(self.Castbar, "PlayerCastBar", "PlayerCastBar", {"BOTTOM", UIParent, "BOTTOM", 0, 266})
+		K.Mover(self.Castbar, "PlayerCastBar", "PlayerCastBar", {"BOTTOM", UIParent, "BOTTOM", 15, 266})
 	end
 
 	if C["Unitframe"].ShowHealPrediction then
@@ -219,7 +219,7 @@ function Module:CreatePlayer(unit)
 		myBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
 		myBar:SetPoint("LEFT", self.Health:GetStatusBarTexture(), "RIGHT")
 		myBar:SetStatusBarTexture(HealPredictionTexture)
-		myBar:SetStatusBarColor(0, 1, .5, .5)
+		myBar:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 		local otherBar = CreateFrame("StatusBar", nil, self)
 		otherBar:SetWidth(self:GetWidth())
@@ -227,7 +227,7 @@ function Module:CreatePlayer(unit)
 		otherBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
 		otherBar:SetPoint("LEFT", myBar:GetStatusBarTexture(), "RIGHT")
 		otherBar:SetStatusBarTexture(HealPredictionTexture)
-		otherBar:SetStatusBarColor(0, 1, 0, .5)
+		otherBar:SetStatusBarColor(0, 1, 0, 0.25)
 
 		self.HealthPrediction = {
 			myBar = myBar,
@@ -241,7 +241,7 @@ function Module:CreatePlayer(unit)
 		self.Name:SetPoint("TOP", self.Health, 0, 16)
 		self.Name:SetWidth(self.Health:GetWidth())
 		self.Name:SetFontObject(UnitframeFont)
-		self:Tag(self.Name, "[KkthnxUI:DifficultyColor][KkthnxUI:NameMedium]")
+		self:Tag(self.Name, " [color][name]")
 	end
 
 	-- Level
@@ -249,20 +249,14 @@ function Module:CreatePlayer(unit)
 		self.Level = self:CreateFontString(nil, "OVERLAY")
 		self.Level:SetPoint("TOP", self.Portrait, 0, 15)
 		self.Level:SetFontObject(UnitframeFont)
-		self:Tag(self.Level, "[KkthnxUI:DifficultyColor][level]")
-	end
-
-	if C["Raid"].ShowGroupText then
-		self.GroupNumber = self.Overlay:CreateFontString(nil, "OVERLAY")
-		self.GroupNumber:SetPoint("BOTTOM", self.Portrait, 0, 0)
-		self.GroupNumber:SetFontObject(UnitframeFont)
-		self.GroupNumber:SetFont(select(1, self.GroupNumber:GetFont()), 11, select(3, self.GroupNumber:GetFont()))
-		self:Tag(self.GroupNumber, "[KkthnxUI:GetNameColor][KkthnxUI:GroupNumber]")
+		self:Tag(self.Level, "[fulllevel]")
 	end
 
 	if C["Unitframe"].EnergyTick then
-		self.EnergyTicker = CreateFrame("Frame", nil, self)
-		self.EnergyTicker:SetFrameLevel(self.Power:GetFrameLevel() + 1)
+		self.EnergyManaRegen = CreateFrame("StatusBar", nil, self.Power)
+		self.EnergyManaRegen:SetFrameLevel(self.Power:GetFrameLevel() + 3)
+		self.EnergyManaRegen:SetAllPoints()
+		self.EnergyManaRegen.Spark = self.EnergyManaRegen:CreateTexture(nil, 'OVERLAY')
 	end
 
 	if C["Unitframe"].AdditionalPower then

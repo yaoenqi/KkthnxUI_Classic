@@ -977,7 +977,7 @@ function KkthnxUIConfig:CreateConfigWindow()
 	local Height = (12 + (NumGroups * 20) + ((NumGroups - 1) * 4)) -- Padding + (NumButtons * ButtonSize) + ((NumButtons - 1) * ButtonSpacing)
 
 	local ConfigFrame = CreateFrame("Frame", "KkthnxUIConfigFrame", UIParent)
-	ConfigFrame:SetSize(606, Height)
+	ConfigFrame:SetSize(636, Height)
 	ConfigFrame:SetPoint("CENTER")
 	ConfigFrame:SetFrameStrata("HIGH")
 
@@ -990,13 +990,13 @@ function KkthnxUIConfig:CreateConfigWindow()
 
 	local LeftWindow = CreateFrame("Frame", "KkthnxUIConfigFrameLeft", ConfigFrame)
 	LeftWindow:CreateBorder()
-	LeftWindow:SetSize(169, Height)
+	LeftWindow:SetSize(170, Height)
 	LeftWindow:SetPoint("LEFT", ConfigFrame, 0, 0)
 	LeftWindow:EnableMouse(true)
 
 	local RightWindow = CreateFrame("Frame", "KkthnxUIConfigFrameRight", ConfigFrame)
 	RightWindow:CreateBorder()
-	RightWindow:SetSize(430, Height)
+	RightWindow:SetSize(460, Height)
 	RightWindow:SetPoint("RIGHT", ConfigFrame, 0, 0)
 	RightWindow:EnableMouse(true)
 
@@ -1026,7 +1026,7 @@ function KkthnxUIConfig:CreateConfigWindow()
 
 	local CloseButton = CreateFrame("Button", nil, InfoFrame)
 	CloseButton:SkinButton()
-	CloseButton:SetSize(186, 22)
+	CloseButton:SetSize(624/3, 22)
 	CloseButton:SetScript("OnClick", function()
 		ConfigFrame:Hide()
 	end)
@@ -1042,7 +1042,7 @@ function KkthnxUIConfig:CreateConfigWindow()
 
 	local ReloadButton = CreateFrame("Button", nil, InfoFrame)
 	ReloadButton:SkinButton()
-	ReloadButton:SetSize(218, 22)
+	ReloadButton:SetSize(624/3, 22)
 	ReloadButton:SetScript("OnClick", function()
 		ReloadUI()
 	end)
@@ -1057,7 +1057,7 @@ function KkthnxUIConfig:CreateConfigWindow()
 
 	local GlobalButton = CreateFrame("Button", nil, InfoFrame)
 	GlobalButton:SkinButton()
-	GlobalButton:SetSize(186, 22)
+	GlobalButton:SetSize(624/3, 22)
 	GlobalButton:SetScript("OnClick", function()
 		if not KkthnxUIConfigPerAccount then
 			KkthnxUIConfigPerAccount = true
@@ -1079,7 +1079,7 @@ function KkthnxUIConfig:CreateConfigWindow()
 
 	local ResetCVarsButton = CreateFrame("Button", nil, InfoFrame)
 	ResetCVarsButton:SkinButton()
-	ResetCVarsButton:SetSize(186, 22)
+	ResetCVarsButton:SetSize(624/3, 22)
 	ResetCVarsButton:SetScript("OnClick", K["Install"].Step1)
 	ResetCVarsButton:SetFrameLevel(InfoFrame:GetFrameLevel() + 1)
 	ResetCVarsButton:SetPoint("TOP", CloseButton, "BOTTOM", 0, -6)
@@ -1092,7 +1092,7 @@ function KkthnxUIConfig:CreateConfigWindow()
 
 	local ResetChatButton = CreateFrame("Button", nil, InfoFrame)
 	ResetChatButton:SkinButton()
-	ResetChatButton:SetSize(218, 22)
+	ResetChatButton:SetSize(624/3, 22)
 	ResetChatButton:SetScript("OnClick", K["Install"].Step2)
 	ResetChatButton:SetFrameLevel(InfoFrame:GetFrameLevel() + 1)
 	ResetChatButton:SetPoint("TOP", ReloadButton, "BOTTOM", 0, -6)
@@ -1105,7 +1105,7 @@ function KkthnxUIConfig:CreateConfigWindow()
 
 	local ResetButton = CreateFrame("Button", nil, InfoFrame)
 	ResetButton:SkinButton()
-	ResetButton:SetSize(186, 22)
+	ResetButton:SetSize(624/3, 22)
 	ResetButton:SetScript("OnClick", K["Install"].ResetData)
 	ResetButton:SetFrameLevel(InfoFrame:GetFrameLevel() + 1)
 	ResetButton:SetPoint("TOP", GlobalButton, "BOTTOM", 0, -6)
@@ -1140,15 +1140,15 @@ function KkthnxUIConfig:CreateConfigWindow()
 			local GroupHeight = 8 + (NumOptions * 25)
 
 			local GroupPage = CreateFrame("Frame", nil, ConfigFrame)
-			GroupPage:SetSize(430, Height)
+			GroupPage:SetSize(460, Height)
 			GroupPage:SetPoint("TOPRIGHT", ConfigFrame)
 			GroupPage.Controls = {}
 
 			if (GroupHeight > Height) then
-				GroupPage:SetSize(430, GroupHeight)
+				GroupPage:SetSize(460, GroupHeight)
 
 				local ScrollFrame = CreateFrame("ScrollFrame", nil, RightWindow)
-				ScrollFrame:SetSize(430, Height)
+				ScrollFrame:SetSize(460, Height)
 				ScrollFrame:SetAllPoints(RightWindow, 0, 4)
 				ScrollFrame:SetScrollChild(GroupPage)
 				ScrollFrame:SetClipsChildren(true) -- https://www.wowinterface.com/forums/showthread.php?t=55664

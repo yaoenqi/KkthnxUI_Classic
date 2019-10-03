@@ -37,188 +37,158 @@ local hooksecurefunc = _G.hooksecurefunc
 local ACTIVE_QUEST_ICON_FILEID = GetFileIDFromPath("Interface\\GossipFrame\\ActiveQuestIcon")
 local AVAILABLE_QUEST_ICON_FILEID = GetFileIDFromPath("Interface\\GossipFrame\\AvailableQuestIcon")
 
-do -- Fix blank tooltip
-	local bug = nil
-	local FixTooltip = CreateFrame("Frame")
-	FixTooltip:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
-	FixTooltip:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
-	FixTooltip:SetScript("OnEvent", function()
-		if GameTooltip:IsShown() then
-			bug = true
-		end
-	end)
-
-	local FixTooltipBags = CreateFrame("Frame")
-	FixTooltipBags:RegisterEvent("BAG_UPDATE_DELAYED")
-	FixTooltipBags:SetScript("OnEvent", function()
-		if StuffingFrameBags and StuffingFrameBags:IsShown() then
-			if GameTooltip:IsShown() then
-				bug = true
-			end
-		end
-	end)
-
-	GameTooltip:HookScript("OnTooltipCleared", function(self)
-		if self:IsForbidden() then return end
-		if bug and self:NumLines() == 0 then
-			self:Hide()
-			bug = false
-		end
-	end)
-end
-
 do
-    local AutoSpellQueueTolerance = CreateFrame("Frame", "KkthnxUI_AutoLagTolerance")
-    AutoSpellQueueTolerance.cache = GetCVar("SpellQueueWindow")
-    AutoSpellQueueTolerance.timer = 0
-    local function AutoSpellQueueTolerance_OnUpdate(self, elapsed)
-        self.timer = self.timer + elapsed
-        if self.timer < 1.0 then
-            return
-        end
+	local AutoSpellQueueTolerance = CreateFrame("Frame", "KkthnxUI_AutoLagTolerance")
+	AutoSpellQueueTolerance.cache = GetCVar("SpellQueueWindow")
+	AutoSpellQueueTolerance.timer = 0
+	local function AutoSpellQueueTolerance_OnUpdate(self, elapsed)
+		self.timer = self.timer + elapsed
+		if self.timer < 1.0 then
+			return
+		end
 
-        self.timer = 0
+		self.timer = 0
 
-        local latency = math_min(400, select(4, GetNetStats()))
+		local latency = math_min(400, select(4, GetNetStats()))
 
-        if latency == 0 then
-            return
-        end
+		if latency == 0 then
+			return
+		end
 
-        if latency == self.cache then
-            return
-        end
+		if latency == self.cache then
+			return
+		end
 
-        SetCVar("SpellQueueWindow", latency)
-        -- K.Print("SpellQueueWindow has been updated to "..latency) -- DEBUG
+		SetCVar("SpellQueueWindow", latency)
+		-- K.Print("SpellQueueWindow has been updated to "..latency) -- DEBUG
 
-        self.cache = latency
-    end
+		self.cache = latency
+	end
 
-    if C["General"].LagTolerance then
-        AutoSpellQueueTolerance:SetScript("OnUpdate", AutoSpellQueueTolerance_OnUpdate)
-    end
+	if C["General"].LagTolerance then
+		AutoSpellQueueTolerance:SetScript("OnUpdate", AutoSpellQueueTolerance_OnUpdate)
+	end
 end
 
 -- Repoint Vehicle
 function Module:VehicleSeatMover()
-    local frame = CreateFrame("Frame", "KkthnxUIVehicleSeatMover", UIParent)
-    frame:SetSize(120, 120)
-    K.Mover(frame, "VehicleSeat", "VehicleSeat", {"BOTTOM", UIParent, -364, 4})
+	local frame = CreateFrame("Frame", "KkthnxUIVehicleSeatMover", UIParent)
+	frame:SetSize(120, 120)
+	K.Mover(frame, "VehicleSeat", "VehicleSeat", {"BOTTOM", UIParent, -364, 4})
 
-    hooksecurefunc(_G.VehicleSeatIndicator, "SetPoint", function(self, _, parent)
-        if parent == "MinimapCluster" or parent == _G.MinimapCluster then
-            self:ClearAllPoints()
-            self:SetPoint("CENTER", frame)
-            self:SetScale(0.9)
-        end
-    end)
+	hooksecurefunc(_G.VehicleSeatIndicator, "SetPoint", function(self, _, parent)
+		if parent == "MinimapCluster" or parent == _G.MinimapCluster then
+			self:ClearAllPoints()
+			self:SetPoint("CENTER", frame)
+			self:SetScale(0.9)
+		end
+	end)
 end
 
 -- Grids
 do
-    local grid
-    local boxSize = 32
-    local function Grid_Create()
-        grid = CreateFrame("Frame", nil, UIParent)
-        grid.boxSize = boxSize
-        grid:SetAllPoints(UIParent)
+	local grid
+	local boxSize = 32
+	local function Grid_Create()
+		grid = CreateFrame("Frame", nil, UIParent)
+		grid.boxSize = boxSize
+		grid:SetAllPoints(UIParent)
 
-        local size = 2
-        local width = GetScreenWidth()
-        local ratio = width / GetScreenHeight()
-        local height = GetScreenHeight() * ratio
+		local size = 2
+		local width = GetScreenWidth()
+		local ratio = width / GetScreenHeight()
+		local height = GetScreenHeight() * ratio
 
-        local wStep = width / boxSize
-        local hStep = height / boxSize
+		local wStep = width / boxSize
+		local hStep = height / boxSize
 
-        for i = 0, boxSize do
-            local tx = grid:CreateTexture(nil, "BACKGROUND")
-            if i == boxSize / 2 then
-                tx:SetColorTexture(1, 0, 0, .5)
-            else
-                tx:SetColorTexture(0, 0, 0, .5)
-            end
-            tx:SetPoint("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0)
-            tx:SetPoint("BOTTOMRIGHT", grid, "BOTTOMLEFT", i*wStep + (size/2), 0)
-        end
-        height = GetScreenHeight()
+		for i = 0, boxSize do
+			local tx = grid:CreateTexture(nil, "BACKGROUND")
+			if i == boxSize / 2 then
+				tx:SetColorTexture(1, 0, 0, .5)
+			else
+				tx:SetColorTexture(0, 0, 0, .5)
+			end
+			tx:SetPoint("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0)
+			tx:SetPoint("BOTTOMRIGHT", grid, "BOTTOMLEFT", i*wStep + (size/2), 0)
+		end
+		height = GetScreenHeight()
 
-        do
-            local tx = grid:CreateTexture(nil, "BACKGROUND")
-            tx:SetColorTexture(1, 0, 0, .5)
-            tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
-            tx:SetPoint("BOTTOMRIGHT", grid, "TOPRIGHT", 0, -(height/2 + size/2))
-        end
+		do
+			local tx = grid:CreateTexture(nil, "BACKGROUND")
+			tx:SetColorTexture(1, 0, 0, .5)
+			tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
+			tx:SetPoint("BOTTOMRIGHT", grid, "TOPRIGHT", 0, -(height/2 + size/2))
+		end
 
-        for i = 1, math_floor((height/2)/hStep) do
-            local tx = grid:CreateTexture(nil, "BACKGROUND")
-            tx:SetColorTexture(0, 0, 0, .5)
+		for i = 1, math_floor((height/2)/hStep) do
+			local tx = grid:CreateTexture(nil, "BACKGROUND")
+			tx:SetColorTexture(0, 0, 0, .5)
 
-            tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
-            tx:SetPoint("BOTTOMRIGHT", grid, "TOPRIGHT", 0, -(height/2+i*hStep + size/2))
+			tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
+			tx:SetPoint("BOTTOMRIGHT", grid, "TOPRIGHT", 0, -(height/2+i*hStep + size/2))
 
-            tx = grid:CreateTexture(nil, "BACKGROUND")
-            tx:SetColorTexture(0, 0, 0, .5)
+			tx = grid:CreateTexture(nil, "BACKGROUND")
+			tx:SetColorTexture(0, 0, 0, .5)
 
-            tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
-            tx:SetPoint("BOTTOMRIGHT", grid, "TOPRIGHT", 0, -(height/2-i*hStep + size/2))
-        end
-    end
+			tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
+			tx:SetPoint("BOTTOMRIGHT", grid, "TOPRIGHT", 0, -(height/2-i*hStep + size/2))
+		end
+	end
 
-    local function Grid_Show()
-        if not grid then
-            Grid_Create()
-        elseif grid.boxSize ~= boxSize then
-            grid:Hide()
-            Grid_Create()
-        else
-            grid:Show()
-        end
-    end
+	local function Grid_Show()
+		if not grid then
+			Grid_Create()
+		elseif grid.boxSize ~= boxSize then
+			grid:Hide()
+			Grid_Create()
+		else
+			grid:Show()
+		end
+	end
 
-    local isAligning = false
-    SlashCmdList["KKUI_TOGGLEGRID"] = function(arg)
-        if isAligning or arg == "1" then
-            if grid then grid:Hide() end
-            isAligning = false
-        else
-            boxSize = (math.ceil((tonumber(arg) or boxSize) / 32) * 32)
-            if boxSize > 256 then boxSize = 256 end
-            Grid_Show()
-            isAligning = true
-        end
-    end
+	local isAligning = false
+	SlashCmdList["KKUI_TOGGLEGRID"] = function(arg)
+		if isAligning or arg == "1" then
+			if grid then grid:Hide() end
+			isAligning = false
+		else
+			boxSize = (math.ceil((tonumber(arg) or boxSize) / 32) * 32)
+			if boxSize > 256 then boxSize = 256 end
+			Grid_Show()
+			isAligning = true
+		end
+	end
 
-    SLASH_KKUI_TOGGLEGRID1 = "/showgrid"
-    SLASH_KKUI_TOGGLEGRID2 = "/align"
-    SLASH_KKUI_TOGGLEGRID3 = "/grid"
+	SLASH_KKUI_TOGGLEGRID1 = "/showgrid"
+	SLASH_KKUI_TOGGLEGRID2 = "/align"
+	SLASH_KKUI_TOGGLEGRID3 = "/grid"
 end
 
 -- Easily hide helm and cloak
 function Module:CreateToggleHelmCloak()
-    if not C["Misc"].ShowHelmCloak then
-        return
-    end
+	if not C["Misc"].ShowHelmCloak then
+		return
+	end
 
 	local helmCheck = CreateFrame("CheckButton", "HelmCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
 	helmCheck:SetSize(14, 14)
 	helmCheck:SetPoint("BOTTOMLEFT", CharacterStatFrame1, "TOPLEFT", -2, 4)
-    helmCheck:SetScript("OnClick", function ()
-        ShowHelm(not ShowingHelm())
-    end)
+	helmCheck:SetScript("OnClick", function ()
+		ShowHelm(not ShowingHelm())
+	end)
 
-    helmCheck.Text = K.CreateFontString(helmCheck, 11, SHOW_HELM)
-    helmCheck.Text:SetPoint("LEFT", helmCheck, "RIGHT", 2, 0)
-    helmCheck.Text:Hide()
+	helmCheck.Text = K.CreateFontString(helmCheck, 11, SHOW_HELM)
+	helmCheck.Text:SetPoint("LEFT", helmCheck, "RIGHT", 2, 0)
+	helmCheck.Text:Hide()
 
 	helmCheck:SetScript("OnEnter", function ()
-        helmCheck.Text:Show()
-    end)
+		helmCheck.Text:Show()
+	end)
 
-    helmCheck:SetScript("OnLeave", function ()
-        helmCheck.Text:Hide()
-    end)
+	helmCheck:SetScript("OnLeave", function ()
+		helmCheck.Text:Hide()
+	end)
 
 	helmCheck:SetFrameStrata("HIGH")
 	helmCheck:SetHitRectInsets(0, 0, 0, 0)
@@ -227,38 +197,38 @@ function Module:CreateToggleHelmCloak()
 	local cloakCheck = CreateFrame("CheckButton", "CloakCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
 	cloakCheck:SetSize(14, 14)
 	cloakCheck:SetPoint("BOTTOMRIGHT", CharacterAttributesFrame, "TOPRIGHT", -2, 1)
-    cloakCheck:SetScript("OnClick", function ()
-        ShowCloak(not ShowingCloak())
-    end)
+	cloakCheck:SetScript("OnClick", function ()
+		ShowCloak(not ShowingCloak())
+	end)
 
-    cloakCheck.Text = K.CreateFontString(cloakCheck, 11, SHOW_CLOAK)
-    cloakCheck.Text:SetPoint("RIGHT", cloakCheck, "LEFT", -2, 0)
-    cloakCheck.Text:Hide()
+	cloakCheck.Text = K.CreateFontString(cloakCheck, 11, SHOW_CLOAK)
+	cloakCheck.Text:SetPoint("RIGHT", cloakCheck, "LEFT", -2, 0)
+	cloakCheck.Text:Hide()
 
 	cloakCheck:SetScript("OnEnter", function ()
-        cloakCheck.Text:Show()
-    end)
+		cloakCheck.Text:Show()
+	end)
 
-    cloakCheck:SetScript("OnLeave", function ()
-        cloakCheck.Text:Hide()
-    end)
+	cloakCheck:SetScript("OnLeave", function ()
+		cloakCheck.Text:Hide()
+	end)
 
 	cloakCheck:SetFrameStrata("HIGH")
 	cloakCheck:SetHitRectInsets(0, 0, 0, 0)
 	cloakCheck:SkinCheckBox()
 
-    hooksecurefunc("ShowHelm", function(v)
-        helmCheck:SetChecked(v)
-    end)
+	hooksecurefunc("ShowHelm", function(v)
+		helmCheck:SetChecked(v)
+	end)
 
-    hooksecurefunc("ShowCloak", function(v)
-        cloakCheck:SetChecked(v)
-    end)
+	hooksecurefunc("ShowCloak", function(v)
+		cloakCheck:SetChecked(v)
+	end)
 
 	local checked_UpdateFrame = CreateFrame("Frame")
 	checked_UpdateFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-    checked_UpdateFrame:SetScript("OnEvent", function(self)
-        self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	checked_UpdateFrame:SetScript("OnEvent", function(self)
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 		helmCheck:SetChecked(ShowingHelm())
 		cloakCheck:SetChecked(ShowingCloak())
 	end)
@@ -266,7 +236,7 @@ end
 
 function Module:FixQuestFrameIcons()
 	local titleLines = {}
-    local questIconTextures = {}
+	local questIconTextures = {}
 
 	for i = 1, MAX_NUM_QUESTS do
 		local titleLine = _G["QuestTitleButton"..i]
@@ -313,112 +283,112 @@ end
 
 -- ALT+RightClick to buy a stack
 do
-    local old_MerchantItemButton_OnModifiedClick = _G.MerchantItemButton_OnModifiedClick
-    local cache = {}
-    function MerchantItemButton_OnModifiedClick(self, ...)
-        if IsAltKeyDown() then
-            local id = self:GetID()
-            local itemLink = GetMerchantItemLink(id)
-            if not itemLink then return end
-            local name, _, quality, _, _, _, _, maxStack, _, texture = GetItemInfo(itemLink)
-            if maxStack and maxStack > 1 then
-                if not cache[itemLink] then
-                    StaticPopupDialogs["BUY_STACK"] = {
-                        text = "Stack Buying Check",
-                        button1 = YES,
-                        button2 = NO,
-                        OnAccept = function()
-                            _G.BuyMerchantItem(id, GetMerchantItemMaxStack(id))
-                            cache[itemLink] = true
-                        end,
-                        hideOnEscape = 1,
-                        hasItemFrame = 1,
-                    }
+	local old_MerchantItemButton_OnModifiedClick = _G.MerchantItemButton_OnModifiedClick
+	local cache = {}
+	function MerchantItemButton_OnModifiedClick(self, ...)
+		if IsAltKeyDown() then
+			local id = self:GetID()
+			local itemLink = GetMerchantItemLink(id)
+			if not itemLink then return end
+			local name, _, quality, _, _, _, _, maxStack, _, texture = GetItemInfo(itemLink)
+			if maxStack and maxStack > 1 then
+				if not cache[itemLink] then
+					StaticPopupDialogs["BUY_STACK"] = {
+						text = "Stack Buying Check",
+						button1 = YES,
+						button2 = NO,
+						OnAccept = function()
+							_G.BuyMerchantItem(id, GetMerchantItemMaxStack(id))
+							cache[itemLink] = true
+						end,
+						hideOnEscape = 1,
+						hasItemFrame = 1,
+					}
 
-                    local r, g, b = GetItemQualityColor(quality or 1)
-                    StaticPopup_Show("BUY_STACK", " ", " ", {["texture"] = texture, ["name"] = name, ["color"] = {r, g, b, 1}, ["link"] = itemLink, ["index"] = id, ["count"] = maxStack})
-                else
-                    _G.BuyMerchantItem(id, GetMerchantItemMaxStack(id))
-                end
-            end
-        end
+					local r, g, b = GetItemQualityColor(quality or 1)
+					StaticPopup_Show("BUY_STACK", " ", " ", {["texture"] = texture, ["name"] = name, ["color"] = {r, g, b, 1}, ["link"] = itemLink, ["index"] = id, ["count"] = maxStack})
+				else
+					_G.BuyMerchantItem(id, GetMerchantItemMaxStack(id))
+				end
+			end
+		end
 
-        old_MerchantItemButton_OnModifiedClick(self, ...)
-    end
+		old_MerchantItemButton_OnModifiedClick(self, ...)
+	end
 end
 
 -- Select target when click on raid units
 do
-    local function fixRaidGroupButton()
-        for i = 1, 40 do
-            local bu = _G["RaidGroupButton"..i]
-            if bu and bu.unit and not bu.clickFixed then
-                bu:SetAttribute("type", "target")
-                bu:SetAttribute("unit", bu.unit)
+	local function fixRaidGroupButton()
+		for i = 1, 40 do
+			local bu = _G["RaidGroupButton"..i]
+			if bu and bu.unit and not bu.clickFixed then
+				bu:SetAttribute("type", "target")
+				bu:SetAttribute("unit", bu.unit)
 
-                bu.clickFixed = true
-            end
-        end
-    end
+				bu.clickFixed = true
+			end
+		end
+	end
 
-    local function setupMisc(event, addon)
-        if event == "ADDON_LOADED" and addon == "Blizzard_RaidUI" then
-            if not InCombatLockdown() then
-                fixRaidGroupButton()
-            else
-                K:RegisterEvent("PLAYER_REGEN_ENABLED", setupMisc)
-            end
-            K:UnregisterEvent(event, setupMisc)
-        elseif event == "PLAYER_REGEN_ENABLED" then
-            if _G.RaidGroupButton1 and _G.RaidGroupButton1:GetAttribute("type") ~= "target" then
-                fixRaidGroupButton()
-                K:UnregisterEvent(event, setupMisc)
-            end
-        end
-    end
+	local function setupMisc(event, addon)
+		if event == "ADDON_LOADED" and addon == "Blizzard_RaidUI" then
+			if not InCombatLockdown() then
+				fixRaidGroupButton()
+			else
+				K:RegisterEvent("PLAYER_REGEN_ENABLED", setupMisc)
+			end
+			K:UnregisterEvent(event, setupMisc)
+		elseif event == "PLAYER_REGEN_ENABLED" then
+			if _G.RaidGroupButton1 and _G.RaidGroupButton1:GetAttribute("type") ~= "target" then
+				fixRaidGroupButton()
+				K:UnregisterEvent(event, setupMisc)
+			end
+		end
+	end
 
-    K:RegisterEvent("ADDON_LOADED", setupMisc)
+	K:RegisterEvent("ADDON_LOADED", setupMisc)
 end
 
 -- Show BID and highlight price
 do
-    local function setupMisc(event, addon)
-        if addon == "Blizzard_AuctionUI" then
-            hooksecurefunc("AuctionFrameBrowse_Update", function()
-                local numBatchAuctions = GetNumAuctionItems("list")
-                local offset = FauxScrollFrame_GetOffset(BrowseScrollFrame)
-                local name, buyoutPrice, bidAmount, hasAllInfo
-                for i = 1, NUM_BROWSE_TO_DISPLAY do
-                    local index = offset + i + (NUM_AUCTION_ITEMS_PER_PAGE * AuctionFrameBrowse.page)
-                    local shouldHide = index > (numBatchAuctions + (NUM_AUCTION_ITEMS_PER_PAGE * AuctionFrameBrowse.page))
-                    if not shouldHide then
-                        name, _, _, _, _, _, _, _, _, buyoutPrice, bidAmount, _, _, _, _, _, _, hasAllInfo = GetAuctionItemInfo("list", offset + i)
-                        if not hasAllInfo then shouldHide = true end
-                    end
-                    if not shouldHide then
-                        local alpha = .5
-                        local color = "yellow"
-                        local buttonName = "BrowseButton"..i
-                        local itemName = _G[buttonName.."Name"]
-                        local moneyFrame = _G[buttonName.."MoneyFrame"]
-                        local buyoutMoney = _G[buttonName.."BuyoutFrameMoney"]
-                        if buyoutPrice >= 5*1e7 then color = "red" end
-                        if bidAmount > 0 then
-                            name = name.." |cffffff00"..BID.."|r"
-                            alpha = 1.0
-                        end
-                        itemName:SetText(name)
-                        moneyFrame:SetAlpha(alpha)
-                        SetMoneyFrameColor(buyoutMoney:GetName(), color)
-                    end
-                end
-            end)
+	local function setupMisc(event, addon)
+		if addon == "Blizzard_AuctionUI" then
+			hooksecurefunc("AuctionFrameBrowse_Update", function()
+				local numBatchAuctions = GetNumAuctionItems("list")
+				local offset = FauxScrollFrame_GetOffset(BrowseScrollFrame)
+				local name, buyoutPrice, bidAmount, hasAllInfo
+				for i = 1, NUM_BROWSE_TO_DISPLAY do
+					local index = offset + i + (NUM_AUCTION_ITEMS_PER_PAGE * AuctionFrameBrowse.page)
+					local shouldHide = index > (numBatchAuctions + (NUM_AUCTION_ITEMS_PER_PAGE * AuctionFrameBrowse.page))
+					if not shouldHide then
+						name, _, _, _, _, _, _, _, _, buyoutPrice, bidAmount, _, _, _, _, _, _, hasAllInfo = GetAuctionItemInfo("list", offset + i)
+						if not hasAllInfo then shouldHide = true end
+					end
+					if not shouldHide then
+						local alpha = .5
+						local color = "yellow"
+						local buttonName = "BrowseButton"..i
+						local itemName = _G[buttonName.."Name"]
+						local moneyFrame = _G[buttonName.."MoneyFrame"]
+						local buyoutMoney = _G[buttonName.."BuyoutFrameMoney"]
+						if buyoutPrice >= 5*1e7 then color = "red" end
+						if bidAmount > 0 then
+							name = name.." |cffffff00"..BID.."|r"
+							alpha = 1.0
+						end
+						itemName:SetText(name)
+						moneyFrame:SetAlpha(alpha)
+						SetMoneyFrameColor(buyoutMoney:GetName(), color)
+					end
+				end
+			end)
 
-            K:UnregisterEvent(event, setupMisc)
-        end
-    end
+			K:UnregisterEvent(event, setupMisc)
+		end
+	end
 
-    K:RegisterEvent("ADDON_LOADED", setupMisc)
+	K:RegisterEvent("ADDON_LOADED", setupMisc)
 end
 
 -- Add friend and guild invite on target menu
@@ -466,9 +436,9 @@ function Module:MenuButton_Show(_, unit)
 end
 
 function Module:CreateEnhancedMenu()
-    if not C["Misc"].EnhancedMenu then
-        return
-    end
+	if not C["Misc"].EnhancedMenu then
+		return
+	end
 
 	Module.MenuButtonList = {
 		["name"] = COPY_NAME,
@@ -479,9 +449,9 @@ end
 
 -- Auto dismount and auto stand
 function Module:CreateDismountStand()
-    if not C["Misc"].AutoDismountStand then
-        return
-    end
+	if not C["Misc"].AutoDismountStand then
+		return
+	end
 
 	local standString = {
 		[ERR_LOOT_NOTSTANDING] = true,
@@ -502,29 +472,40 @@ function Module:CreateDismountStand()
 		elseif dismountString[msg] then
 			Dismount()
 		end
-    end
+	end
 
 	K:RegisterEvent("UI_ERROR_MESSAGE", updateEvent)
 end
 
 function Module:CreateWowHeadLinks()
-    if IsAddOnLoaded("Leatrix_Plus") or C["Misc"].ShowWowHeadLinks ~= true then
-        return
-    end
+	if IsAddOnLoaded("Leatrix_Plus") or C["Misc"].ShowWowHeadLinks ~= true then
+		return
+	end
 
 	-- Get localised Wowhead URL
 	local wowheadLoc
-	if K.Client == "deDE" then wowheadLoc = "de.classic.wowhead.com"
-	elseif K.Client == "esMX" then wowheadLoc = "es.classic.wowhead.com"
-	elseif K.Client == "esES" then wowheadLoc = "es.classic.wowhead.com"
-	elseif K.Client == "frFR" then wowheadLoc = "fr.classic.wowhead.com"
-	elseif K.Client == "itIT" then wowheadLoc = "it.classic.wowhead.com"
-	elseif K.Client == "ptBR" then wowheadLoc = "pt.classic.wowhead.com"
-	elseif K.Client == "ruRU" then wowheadLoc = "ru.classic.wowhead.com"
-	elseif K.Client == "koKR" then wowheadLoc = "ko.classic.wowhead.com"
-	elseif K.Client == "zhCN" then wowheadLoc = "cn.classic.wowhead.com"
-	elseif K.Client == "zhTW" then wowheadLoc = "cn.classic.wowhead.com"
-	else							 wowheadLoc = "classic.wowhead.com"
+	if K.Client == "deDE" then
+		wowheadLoc = "de.classic.wowhead.com"
+	elseif K.Client == "esMX" then
+		wowheadLoc = "es.classic.wowhead.com"
+	elseif K.Client == "esES" then
+		wowheadLoc = "es.classic.wowhead.com"
+	elseif K.Client == "frFR" then
+		wowheadLoc = "fr.classic.wowhead.com"
+	elseif K.Client == "itIT" then
+		wowheadLoc = "it.classic.wowhead.com"
+	elseif K.Client == "ptBR" then
+		wowheadLoc = "pt.classic.wowhead.com"
+	elseif K.Client == "ruRU" then
+		wowheadLoc = "ru.classic.wowhead.com"
+	elseif K.Client == "koKR" then
+		wowheadLoc = "ko.classic.wowhead.com"
+	elseif K.Client == "zhCN" then
+		wowheadLoc = "cn.classic.wowhead.com"
+	elseif K.Client == "zhTW" then
+		wowheadLoc = "cn.classic.wowhead.com"
+	else
+		wowheadLoc = "classic.wowhead.com"
 	end
 
 	-- Create editbox
@@ -558,13 +539,13 @@ function Module:CreateWowHeadLinks()
 
 	-- Function to set editbox value
 	local function SetQuestInBox(questListID)
-		local questTitle, void, void, isHeader, void, void, void, questID = GetQuestLogTitle(questListID)
+		local questTitle, _, _, isHeader, _, _, _, questID = GetQuestLogTitle(questListID)
 		if questID and not isHeader then
 
 			-- Hide editbox if quest ID is invalid
-            if questID == 0 then
-                mEB:Hide() else mEB:Show()
-            end
+			if questID == 0 then
+			mEB:Hide() else mEB:Show()
+			end
 
 			-- Set editbox text
 			mEB:SetText("https://"..wowheadLoc.."/quest="..questID)
@@ -579,9 +560,9 @@ function Module:CreateWowHeadLinks()
 				mEB.tiptext = questTitle..L["Press To Copy"]
 			else
 				mEB.tiptext = ""
-                if mEB:IsMouseOver() and GameTooltip:IsShown() then
-                    GameTooltip:Hide()
-                end
+				if mEB:IsMouseOver() and GameTooltip:IsShown() then
+					GameTooltip:Hide()
+				end
 			end
 
 		end
@@ -609,61 +590,61 @@ function Module:CreateWowHeadLinks()
 end
 
 function Module:OnEnable()
-    -- self:CreateKillingBlow()
-    -- self:VehicleSeatMover()
+	-- self:CreateKillingBlow()
+	-- self:VehicleSeatMover()
 
-    self:CreateAFKCam()
-    self:CreateChatBubble()
-    self:CreateDismountStand()
-    self:CreateDurabilityFrame()
-    self:CreateEnhancedMenu()
-    self:CreateImprovedMail()
-    self:CreateImprovedProfessionWindow()
-    self:CreateImprovedQuestLog()
-    self:CreateMerchantItemLevel()
-    self:CreatePvPEmote()
-    self:CreateQuestNotifier()
-    self:CreateRaidMarker()
-    self:CreateSlotDurability()
-    self:CreateSlotItemLevel()
-    self:CreateToggleHelmCloak()
-    self:CreateWowHeadLinks()
-    self:FixQuestFrameIcons()
-    self:TradeTargetInfo()
+	self:CreateAFKCam()
+	--self:CreateChatBubble()
+	self:CreateDismountStand()
+	self:CreateDurabilityFrame()
+	self:CreateEnhancedMenu()
+	self:CreateImprovedMail()
+	self:CreateImprovedProfessionWindow()
+	self:CreateImprovedQuestLog()
+	self:CreateMerchantItemLevel()
+	self:CreatePvPEmote()
+	self:CreateQuestNotifier()
+	self:CreateRaidMarker()
+	self:CreateSlotDurability()
+	self:CreateSlotItemLevel()
+	self:CreateToggleHelmCloak()
+	self:CreateWowHeadLinks()
+	self:FixQuestFrameIcons()
+	self:TradeTargetInfo()
 
-    -- Instant delete
-    hooksecurefunc(StaticPopupDialogs["DELETE_GOOD_ITEM"], "OnShow", function(self)
-        self.editBox:SetText(DELETE_ITEM_CONFIRM_STRING)
-    end)
+	-- Instant delete
+	hooksecurefunc(StaticPopupDialogs["DELETE_GOOD_ITEM"], "OnShow", function(self)
+		self.editBox:SetText(DELETE_ITEM_CONFIRM_STRING)
+	end)
 
-    -- Auto chatBubbles
-    if C["Skins"].ChatBubbles then
-        local function updateBubble()
-            local name, instType = GetInstanceInfo()
-            if name and instType == "raid" or instType == "party" then
-                SetCVar("chatBubbles", 0)
-            else
-                SetCVar("chatBubbles", 1)
-            end
-        end
+	-- Auto chatBubbles
+	if C["Skins"].ChatBubbles then
+		local function updateBubble()
+			local name, instType = GetInstanceInfo()
+			if name and instType == "raid" or instType == "party" then
+				SetCVar("chatBubbles", 0)
+			else
+				SetCVar("chatBubbles", 1)
+			end
+		end
 
-        if InCombatLockdown() or C["Automation"].AutoBubbles ~= true then
-            return
-        end
+		if InCombatLockdown() or C["Automation"].AutoBubbles ~= true then
+			return
+		end
 
-        K:RegisterEvent("PLAYER_ENTERING_WORLD", updateBubble)
-    end
+		K:RegisterEvent("PLAYER_ENTERING_WORLD", updateBubble)
+	end
 
-    do
-        StaticPopupDialogs.RESURRECT.hideOnEscape = nil
-        StaticPopupDialogs.AREA_SPIRIT_HEAL.hideOnEscape = nil
-        StaticPopupDialogs.PARTY_INVITE.hideOnEscape = nil
-        StaticPopupDialogs.CONFIRM_SUMMON.hideOnEscape = nil
-        StaticPopupDialogs.ADDON_ACTION_FORBIDDEN.button1 = nil
-        StaticPopupDialogs.TOO_MANY_LUA_ERRORS.button1 = nil
-    end
+	do
+		StaticPopupDialogs.RESURRECT.hideOnEscape = nil
+		StaticPopupDialogs.AREA_SPIRIT_HEAL.hideOnEscape = nil
+		StaticPopupDialogs.PARTY_INVITE.hideOnEscape = nil
+		StaticPopupDialogs.CONFIRM_SUMMON.hideOnEscape = nil
+		StaticPopupDialogs.ADDON_ACTION_FORBIDDEN.button1 = nil
+		StaticPopupDialogs.TOO_MANY_LUA_ERRORS.button1 = nil
+	end
 
-    -- RealMobHealth override
+	-- RealMobHealth override
 	if RealMobHealth and RealMobHealth.OverrideOption then
 		RealMobHealth.OverrideOption("ShowTooltipHealthText", false)
 	end

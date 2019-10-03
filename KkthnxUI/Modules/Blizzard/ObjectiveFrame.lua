@@ -1,71 +1,60 @@
 local K, C = unpack(select(2, ...))
 local Module = K:GetModule("Blizzard")
 
-local headerString = QUEST_LOG.." %s/%s"
-local MAX_QUESTLOG_QUESTS = MAX_QUESTLOG_QUESTS or 20
+local _G = _G
+local table_insert = _G.table.insert
+local table_remove = _G.table.remove
 
-local function SetupQuestTrackerMover()
-    -- Mover for quest tracker
-	local frame = CreateFrame("Frame", "KkthnxUIQuestMover", UIParent)
-	frame:SetSize(240, 50)
-	K.Mover(frame, "QuestTracker", "QuestTracker", {"TOPRIGHT", Minimap, "BOTTOMRIGHT", -70, -55})
+local CreateFrame = _G.CreateFrame
+local FauxScrollFrame_GetOffset = _G.FauxScrollFrame_GetOffset
+local GetCVarBool = _G.GetCVarBool
+local GetNumQuestLeaderBoards = _G.GetNumQuestLeaderBoards
+local GetNumQuestLogEntries = _G.GetNumQuestLogEntries
+local GetNumQuestWatches = _G.GetNumQuestWatches
+local GetQuestIDFromLogIndex = _G.GetQuestIDFromLogIndex
+local GetQuestIndexForWatch = _G.GetQuestIndexForWatch
+local GetQuestLogLeaderBoard = _G.GetQuestLogLeaderBoard
+local GetQuestLogTitle = _G.GetQuestLogTitle
+local IsShiftKeyDown = _G.IsShiftKeyDown
+local hooksecurefunc = _G.hooksecurefunc
 
-	local tracker = QuestWatchFrame
-	tracker:SetHeight(GetScreenHeight()*.65)
-	tracker:SetClampedToScreen(false)
-	tracker:SetMovable(true)
-	if tracker:IsMovable() then tracker:SetUserPlaced(true) end
+local LE_QUEST_FREQUENCY_DAILY = _G.LE_QUEST_FREQUENCY_DAILY or 2
+local MAX_QUESTLOG_QUESTS = _G.MAX_QUESTLOG_QUESTS or 20
+local MAX_WATCHABLE_QUESTS = _G.MAX_WATCHABLE_QUESTS or 5
+local headerString = _G.QUESTS_LABEL.." %s/%s"
 
-	hooksecurefunc(tracker, "SetPoint", function(self, _, parent)
-		if parent == "MinimapCluster" or parent == _G.MinimapCluster then
-			self:ClearAllPoints()
-			self:SetPoint("TOPLEFT", frame, 5, -5)
-		end
-	end)
+local frame
+function Module:QuestLogLevel()
+	local numEntries = GetNumQuestLogEntries()
 
-	local timerMover = CreateFrame("Frame", "KkthnxUIQuestTimerMover", UIParent)
-	timerMover:SetSize(150, 30)
-	K.Mover(timerMover, QUEST_TIMERS, "QuestTimer", {"TOPRIGHT", frame, "TOPLEFT", -10, 0})
+	for i = 1, QUESTS_DISPLAYED, 1 do
+		local questIndex = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
+		local questLogTitle = _G["QuestLogTitle"..i]
+		local questCheck = _G["QuestLogTitle"..i.."Check"]
 
-	hooksecurefunc(QuestTimerFrame, "SetPoint", function(self, _, parent)
-		if parent ~= timerMover then
-			self:ClearAllPoints()
-			self:SetPoint("TOP", timerMover)
-		end
-	end)
+		if questIndex <= numEntries then
+			local questLogTitleText, level, _, isHeader, _, isComplete, frequency = GetQuestLogTitle(questIndex)
 
-	-- Show quest color and level
-	local function Showlevel(self)
-		local numEntries = GetNumQuestLogEntries()
-
-		for i = 1, QUESTS_DISPLAYED, 1 do
-			local questIndex = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
-			local questLogTitle = _G["QuestLogTitle"..i]
-			local questCheck = _G["QuestLogTitle"..i.."Check"]
-
-			if questIndex <= numEntries then
-				local questLogTitleText, level, _, isHeader, _, isComplete, frequency = GetQuestLogTitle(questIndex)
-
-				if not isHeader then
-					questLogTitleText = "["..level.."] "..questLogTitleText
-					if isComplete then
-						questLogTitleText = "|cffff78ff"..questLogTitleText
-					elseif frequency == LE_QUEST_FREQUENCY_DAILY then
-						questLogTitleText = "|cff3399ff"..questLogTitleText
-					end
-
-					questLogTitle:SetText(questLogTitleText)
-					questCheck:SetPoint("LEFT", questLogTitle, questLogTitle:GetWidth()-22, 0)
+			if not isHeader then
+				questLogTitleText = "["..level.."] "..questLogTitleText
+				if isComplete then
+					questLogTitleText = "|cffff78ff"..questLogTitleText
+				elseif frequency == LE_QUEST_FREQUENCY_DAILY then
+					questLogTitleText = "|cff3399ff"..questLogTitleText
 				end
+
+				questLogTitle:SetText(questLogTitleText)
+				questCheck:SetPoint("LEFT", questLogTitle, questLogTitle:GetWidth()-22, 0)
 			end
 		end
 	end
-	hooksecurefunc("QuestLog_Update", Showlevel)
+end
 
+function Module:EnhancedQuestTracker()
 	local header = CreateFrame("Frame", nil, frame)
-	header:SetAllPoints(frame)
-	header:Hide()
-	header.Text = K.CreateFontString(header, 14, QUEST_LOG, nil, "system", "TOPLEFT", 0, 15)
+	header:SetAllPoints()
+	header:SetParent(QuestWatchFrame)
+	header.Text = K.CreateFontString(header, 14, "", "", true, "TOPLEFT", 0, 15)
 
 	local bg = header:CreateTexture(nil, "ARTWORK")
 	bg:SetTexture("Interface\\LFGFrame\\UI-LFG-SEPARATOR")
@@ -74,13 +63,46 @@ local function SetupQuestTrackerMover()
 	bg:SetPoint("TOPLEFT", 0, 20)
 	bg:SetSize(250, 30)
 
+	local bu = CreateFrame("Button", nil, frame)
+	bu:SetSize(20, 20)
+	bu:SetPoint("TOPRIGHT", 0, 18)
+	bu.collapse = false
+	bu:SetNormalTexture("Interface\\AddOns\\KkthnxUI\\Media\\Textures\\TrackerButton")
+	bu:SetPushedTexture("Interface\\AddOns\\KkthnxUI\\Media\\Textures\\TrackerButton")
+	bu:GetNormalTexture():SetTexCoord(0, 0.5, 0.5, 1)
+	bu:GetPushedTexture():SetTexCoord(0.5, 1, 0.5, 1)
+	bu:SetHighlightTexture(false or "")
+	bu:SetShown(GetNumQuestWatches() > 0)
+
+	bu.Text = K.CreateFontString(bu, 14, TRACKER_HEADER_OBJECTIVE, "", "system", "RIGHT", -24, 0)
+	bu.Text:Hide()
+
+	bu:SetScript("OnClick", function(self)
+		self.collapse = not self.collapse
+		if self.collapse then
+			self:SetNormalTexture("Interface\\AddOns\\KkthnxUI\\Media\\Textures\\TrackerButton")
+			self:GetNormalTexture():SetTexCoord(0, 0.5, 0, 0.5)
+			self:GetPushedTexture():SetTexCoord(0.5, 1, 0, 0.5)
+			self.Text:Show()
+			QuestWatchFrame:Hide()
+		else
+			self:SetNormalTexture("Interface\\AddOns\\KkthnxUI\\Media\\Textures\\TrackerButton")
+			self:GetNormalTexture():SetTexCoord(0, 0.5, 0.5, 1)
+			self:GetPushedTexture():SetTexCoord(0.5, 1, 0.5, 1)
+			self.Text:Hide()
+			if GetNumQuestWatches() > 0 then
+				QuestWatchFrame:Show()
+			end
+		end
+	end)
+
 	-- ModernQuestWatch, Ketho
 	local function onMouseUp(self)
 		if IsShiftKeyDown() then -- untrack quest
 			local questID = GetQuestIDFromLogIndex(self.questIndex)
 			for index, value in ipairs(QUEST_WATCH_LIST) do
 				if value.id == questID then
-					tremove(QUEST_WATCH_LIST, index)
+					table_remove(QUEST_WATCH_LIST, index)
 				end
 			end
 			RemoveQuestWatch(self.questIndex)
@@ -140,12 +162,12 @@ local function SetupQuestTrackerMover()
 	end
 
 	hooksecurefunc("QuestWatch_Update", function()
-		header:SetShown(tracker:IsShown())
 		local numQuests = select(2, GetNumQuestLogEntries())
 		header.Text:SetFormattedText(headerString, numQuests, MAX_QUESTLOG_QUESTS)
 
 		local watchTextIndex = 1
-		for i = 1, GetNumQuestWatches() do
+		local numWatches = GetNumQuestWatches()
+		for i = 1, numWatches do
 			local questIndex = GetQuestIndexForWatch(i)
 			if questIndex then
 				local numObjectives = GetNumQuestLeaderBoards(questIndex)
@@ -163,7 +185,7 @@ local function SetupQuestTrackerMover()
 							objectivesCompleted = objectivesCompleted + 1
 						end
 						_G["QuestWatchLine"..watchTextIndex]:SetPoint("TOPLEFT", "QuestWatchLine"..(watchTextIndex - 1), "BOTTOMLEFT", 0, -5)
-						tinsert(objectivesGroup, _G["QuestWatchLine"..watchTextIndex])
+						table_insert(objectivesGroup, _G["QuestWatchLine"..watchTextIndex])
 						watchTextIndex = watchTextIndex + 1
 					end
 					SetClickFrame(i, questIndex, headerText, objectivesGroup, objectivesCompleted == numObjectives)
@@ -173,6 +195,11 @@ local function SetupQuestTrackerMover()
 		-- hide/show frames so it doesnt eat clicks, since we cant parent to a FontString
 		for _, frame in pairs(ClickFrames) do
 			frame[GetQuestIndexForWatch(frame.watchIndex) and "Show" or "Hide"](frame)
+		end
+
+		bu:SetShown(numWatches > 0)
+		if bu.collapse then
+			QuestWatchFrame:Hide()
 		end
 	end)
 
@@ -186,6 +213,43 @@ local function SetupQuestTrackerMover()
 	K:RegisterEvent("QUEST_ACCEPTED", autoQuestWatch)
 end
 
+function Module:QuestTracker()
+	-- Mover for quest tracker
+	frame = CreateFrame("Frame", "KKUIQuestMover", UIParent)
+	frame:SetSize(240, 50)
+	K.Mover(frame, "QuestTracker", "QuestTracker", {"TOPRIGHT", Minimap, "BOTTOMRIGHT", -70, -55})
+
+	-- QuestWatchFrame:SetHeight(GetScreenHeight()*.65)
+	QuestWatchFrame:SetClampedToScreen(false)
+	QuestWatchFrame:SetMovable(true)
+	QuestWatchFrame:SetUserPlaced(true)
+
+	hooksecurefunc(QuestWatchFrame, "SetPoint", function(self, _, parent)
+		if parent == "MinimapCluster" or parent == _G.MinimapCluster then
+			self:ClearAllPoints()
+			self:SetPoint("TOPLEFT", frame, 5, -5)
+		end
+	end)
+
+	local timerMover = CreateFrame("Frame", "KKUIQuestTimerMover", UIParent)
+	timerMover:SetSize(150, 30)
+	K.Mover(timerMover, QUEST_TIMERS, "QuestTimer", {"TOPRIGHT", frame, "TOPLEFT", -10, 0})
+
+	hooksecurefunc(QuestTimerFrame, "SetPoint", function(self, _, parent)
+		if parent ~= timerMover then
+			self:ClearAllPoints()
+			self:SetPoint("TOP", timerMover)
+		end
+	end)
+
+	-- if not C["Skins"].QuestTracker then
+	-- 	return
+	-- end
+
+	Module:EnhancedQuestTracker()
+	hooksecurefunc("QuestLog_Update", Module.QuestLogLevel)
+end
+
 function Module:CreateQuestTrackerMover()
-    SetupQuestTrackerMover()
+    self:QuestTracker()
 end

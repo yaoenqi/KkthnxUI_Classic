@@ -5,9 +5,8 @@ if not Module then
 	return
 end
 
--- Sourced: Leatrix_Maps by Leatrix
+-- Sourced: Leatrix_Maps Classic by Leatrix
 
--- Function to refresh overlays (Blizzard_SharedMapDataProviders\MapExplorationDataProvider)
 local _G = _G
 local overlayTextures, TileExists = {}, {}
 local strsplit, ceil, mod = _G.string.split, _G.math.ceil, _G.mod

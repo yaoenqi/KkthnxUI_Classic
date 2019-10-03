@@ -9,8 +9,6 @@ local function SkinMiscStuff()
 	if K.CheckAddOnState("Skinner") or K.CheckAddOnState("Aurora") then
 		return
 	end
-
-	-- DO STUFF HERE
 end
 
 table_insert(Module.NewSkin["KkthnxUI"], SkinMiscStuff)

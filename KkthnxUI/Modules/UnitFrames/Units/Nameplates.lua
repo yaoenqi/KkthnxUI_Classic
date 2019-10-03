@@ -140,7 +140,7 @@ function Module:CreateNameplates(unit)
 
 	local NameplateTexture = K.GetTexture(C["UITextures"].NameplateTextures)
 	local Font = K.GetFont(C["UIFonts"].NameplateFonts)
-	-- local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)
+	local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)
 
 	self:SetScale(UIParent:GetEffectiveScale())
 	self:SetSize(C["Nameplates"].Width, C["Nameplates"].Height)
@@ -199,21 +199,23 @@ function Module:CreateNameplates(unit)
 		self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")
 		self.Health.Value:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
 		self.Health.Value:SetFontObject(Font)
-		self:Tag(self.Health.Value, C["Nameplates"].HealthFormat.Value)
+		self:Tag(self.Health.Value, "[nphp]")
 	end
 
 	self.Level = self.Health:CreateFontString(nil, "OVERLAY")
 	self.Level:SetJustifyH("RIGHT")
-	self.Level:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", 0, 4)
+	self.Level:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", 4, 4)
 	self.Level:SetFontObject(Font)
-	self:Tag(self.Level, C["Nameplates"].LevelFormat.Value)
+	self:Tag(self.Level, "[nplevel]")
 
 	self.Name = self.Health:CreateFontString(nil, "OVERLAY")
 	self.Name:SetJustifyH("LEFT")
 	self.Name:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, 4)
 	self.Name:SetPoint("BOTTOMRIGHT", self.Level, "BOTTOMLEFT")
+	self.Name:SetWidth(C["Nameplates"].Width * 0.85)
 	self.Name:SetFontObject(Font)
-	self:Tag(self.Name, "[KkthnxUI:GetNameColor][KkthnxUI:NameAbbrev]")
+	self.Name:SetWordWrap(false)
+	self:Tag(self.Name, "[name]")
 
 	if C["Nameplates"].TrackAuras == true then
 		self.Auras = CreateFrame("Frame", self:GetName().."Debuffs", self)
@@ -314,63 +316,29 @@ function Module:CreateNameplates(unit)
 	self.Castbar:SetScript("OnShow", Module.DisplayNameplatePowerAndCastBar)
 	self.Castbar:SetScript("OnHide", Module.DisplayNameplatePowerAndCastBar)
 
-	-- HealPredictionAndAbsorb
-	-- do
-	-- 	local mhpb = self.Health:CreateTexture(nil, "BORDER", nil, 5)
-	-- 	mhpb:SetWidth(1)
-	-- 	mhpb:SetTexture(HealPredictionTexture)
-	-- 	mhpb:SetVertexColor(0, 1, 0.5, 0.25)
+	if C["Nameplates"].ShowHealPrediction then
+		local myBar = CreateFrame("StatusBar", nil, self)
+		myBar:SetWidth(self:GetWidth())
+		myBar:SetPoint("TOP", self.Health, "TOP")
+		myBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
+		myBar:SetPoint("LEFT", self.Health:GetStatusBarTexture(), "RIGHT")
+		myBar:SetStatusBarTexture(HealPredictionTexture)
+		myBar:SetStatusBarColor(0, 1, 0.5, 0.25)
 
-	-- 	local ohpb = self.Health:CreateTexture(nil, "BORDER", nil, 5)
-	-- 	ohpb:SetWidth(1)
-	-- 	ohpb:SetTexture(HealPredictionTexture)
-	-- 	ohpb:SetVertexColor(0, 1, 0, 0.25)
+		local otherBar = CreateFrame("StatusBar", nil, self)
+		otherBar:SetWidth(self:GetWidth())
+		otherBar:SetPoint("TOP", self.Health, "TOP")
+		otherBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
+		otherBar:SetPoint("LEFT", myBar:GetStatusBarTexture(), "RIGHT")
+		otherBar:SetStatusBarTexture(HealPredictionTexture)
+		otherBar:SetStatusBarColor(0, 1, 0, 0.25)
 
-	-- 	local abb = self.Health:CreateTexture(nil, "BORDER", nil, 5)
-	-- 	abb:SetWidth(1)
-	-- 	abb:SetTexture(HealPredictionTexture)
-	-- 	abb:SetVertexColor(1, 1, 0, 0.25)
-
-	-- 	local abbo = self.Health:CreateTexture(nil, "ARTWORK", nil, 1)
-	-- 	abbo:SetAllPoints(abb)
-	-- 	abbo:SetTexture("Interface\\RaidFrame\\Shield-Overlay", true, true)
-	-- 	abbo.tileSize = 32
-
-	-- 	local oag = self.Health:CreateTexture(nil, "ARTWORK", nil, 1)
-	-- 	oag:SetWidth(15)
-	-- 	oag:SetTexture("Interface\\RaidFrame\\Shield-Overshield")
-	-- 	oag:SetBlendMode("ADD")
-	-- 	oag:SetAlpha(.7)
-	-- 	oag:SetPoint("TOPLEFT", self.Health, "TOPRIGHT", -5, 2)
-	-- 	oag:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", -5, -2)
-
-	-- 	local hab = CreateFrame("StatusBar", nil, self.Health)
-	-- 	hab:SetPoint("TOP")
-	-- 	hab:SetPoint("BOTTOM")
-	-- 	hab:SetPoint("RIGHT", self.Health:GetStatusBarTexture())
-	-- 	hab:SetWidth(C["Nameplates"].Width)
-	-- 	hab:SetReverseFill(true)
-	-- 	hab:SetStatusBarTexture(HealPredictionTexture)
-	-- 	hab:SetStatusBarColor(1, 0, 0, 0.25)
-
-	-- 	local ohg = self.Health:CreateTexture(nil, "ARTWORK", nil, 1)
-	-- 	ohg:SetWidth(15)
-	-- 	ohg:SetTexture("Interface\\RaidFrame\\Absorb-Overabsorb")
-	-- 	ohg:SetBlendMode("ADD")
-	-- 	ohg:SetPoint("TOPRIGHT", self.Health, "TOPLEFT", 5, 2)
-	-- 	ohg:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", 5, -2)
-
-	-- 	self.HealPredictionAndAbsorb = {
-	-- 		myBar = mhpb,
-	-- 		otherBar = ohpb,
-	-- 		absorbBar = abb,
-	-- 		absorbBarOverlay = abbo,
-	-- 		overAbsorbGlow = oag,
-	-- 		healAbsorbBar = hab,
-	-- 		overHealAbsorbGlow = ohg,
-	-- 		maxOverflow = 1,
-	-- 	}
-	-- end
+		self.HealthPrediction = {
+			myBar = myBar,
+			otherBar = otherBar,
+			maxOverflow = 1,
+		}
+	end
 
 	self.RaidTargetIndicator = self.Health:CreateTexture(nil, "OVERLAY")
 	self.RaidTargetIndicator:SetSize(18, 18)

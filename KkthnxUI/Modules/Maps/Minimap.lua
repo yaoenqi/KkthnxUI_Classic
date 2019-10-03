@@ -212,7 +212,7 @@ function Module:OnEnable()
 
 	if not C["Minimap"].Enable then
 		Minimap:SetMaskTexture([[Interface\CharacterFrame\TempPortraitAlphaMask]])
-		-- Minimap:SetBlipTexture("Interface\\MiniMap\\ObjectIconsAtlas")
+		Minimap:SetBlipTexture("Interface\\MiniMap\\ObjectIconsAtlas")
 		return
 	end
 
@@ -234,7 +234,7 @@ function Module:OnEnable()
 	Minimap:CreateBorder()
 	Minimap:CreateInnerShadow(nil, 0.4)
 	Minimap:SetScale(1.0)
-	--Minimap:SetBlipTexture("Interface\\AddOns\\KkthnxUI\\Media\\MiniMap\\Blip-Nandini-New")
+	Minimap:SetBlipTexture("Interface\\AddOns\\KkthnxUI\\Media\\MiniMap\\Classic-Nandini-New")
 
 	_G.MinimapBorder:SetParent(UIHider)
 	_G.MinimapBorderTop:SetParent(UIHider)

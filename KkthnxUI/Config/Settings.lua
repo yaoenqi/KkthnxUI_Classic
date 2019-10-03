@@ -4,7 +4,6 @@ local _G = _G
 
 local DAMAGE = _G.DAMAGE
 local DISABLE = _G.DISABLE
-local GUILD = _G.GUILD
 local HEALER = _G.HEALER
 local IsAddOnLoaded = _G.IsAddOnLoaded
 local NONE = _G.NONE
@@ -32,7 +31,7 @@ C["ActionBar"] = {
 	["Layout"] = {
 		["Options"] = {
 			["Mainbar 3x12"] = "Default Style",
-			["Mainbar 4x6"] = "Four Stacked",
+			["Mainbar 4x12"] = "Four Stacked",
 		},
 		["Value"] = "Default Style"
 	},
@@ -75,19 +74,22 @@ C["Inventory"] = {
 	["AutoSell"] = true,
 	["BagBar"] = true,
 	["BagBarMouseover"] = false,
-	["BagColumns"] = 10,
-	["BankColumns"] = 17,
-	["ButtonSize"] = 32,
-	["ButtonSpace"] = 6,
+	["BagsWidth"] = 12,
+	["BagsiLvl"] = true,
+	["BankWidth"] = 14,
+	["ClassRelatedFilter"] = true,
+	["DeleteButton"] = true,
 	["Enable"] = true,
-	["ItemLevel"] = false,
-	["JunkIcon"] = true,
-	["PulseNewItem"] = false,
-	["ReverseSort"] = true,
+	["GatherEmpty"] = false,
+	["IconSize"] = 34,
+	["ItemFilter"] = true,
+	["ItemSetFilter"] = false,
+	["QuestItemFilter"] = true,
+	["ReverseSort"] = false,
+	["TradeGoodsFilter"] = true,
 	["AutoRepair"] = {
 		["Options"] = {
 			[NONE] = "NONE",
-			[GUILD] = "GUILD",
 			[PLAYER] = "PLAYER",
 		},
 		["Value"] = "PLAYER"
@@ -229,6 +231,7 @@ C["Nameplates"] = {
 	["NearColor"] = {1, 1, 0},
 	["BadColor"] = {1, 0, 0},
 	["OffTankColor"] = {0, 0.5, 1},
+	["ShowFullHealth"] = true,
 	["Clamp"] = false,
 	["TankMode"] = false,
 	["ClassResource"] = true,
@@ -251,13 +254,6 @@ C["Nameplates"] = {
         },
         ["Value"] = "Class"
     },
-	["LevelFormat"] = {
-		["Options"] = {
-			["Smart Level"] = "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]",
-			["Level"] = "[KkthnxUI:DifficultyColor][level][KkthnxUI:ClassificationColor][shortclassification]",
-		},
-		["Value"] = "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]"
-	},
 	["TargetArrowMark"] = {
 		["Options"] = {
 			["None"] = "NONE",
@@ -265,14 +261,6 @@ C["Nameplates"] = {
 			["Top"] = "TOP",
 		},
 		["Value"] = "LEFT/RIGHT"
-	},
-	["HealthFormat"] = {
-		["Options"] = {
-			["Current"] = "[KkthnxUI:HealthCurrent]",
-			["Percent"] = "[KkthnxUI:HealthPercent]",
-			["Current / Percent"] = "[KkthnxUI:HealthCurrent-Percent]",
-		},
-		["Value"] = "[KkthnxUI:HealthPercent]"
 	},
 	["ShowEnemyCombat"] = {
 		["Options"] = {
@@ -393,49 +381,6 @@ C["Unitframe"] = {
         },
         ["Value"] = "Class"
 	},
-	["PlayerHealthFormat"] = {
-		["Options"] = {
-			["Current"] = "[KkthnxUI:HealthCurrent]",
-			["Percent"] = "[KkthnxUI:HealthPercent]",
-			["Current / Percent"] = "[KkthnxUI:HealthCurrent-Percent]",
-			[NONE] = " ",
-		},
-		["Value"] = "[KkthnxUI:HealthCurrent]"
-	},
-	["PlayerPowerFormat"] = {
-		["Options"] = {
-			["Current"] = "[KkthnxUI:PowerCurrent]",
-			["Percent"] = "[KkthnxUI:PowerPercent]",
-			["Current / Percent"] = "[KkthnxUI:PowerCurrent-Percent]",
-			[NONE] = " ",
-		},
-		["Value"] = "[KkthnxUI:PowerCurrent]"
-	},
-	["TargetHealthFormat"] = {
-		["Options"] = {
-			["Current"] = "[KkthnxUI:HealthCurrent]",
-			["Percent"] = "[KkthnxUI:HealthPercent]",
-			["Current / Percent"] = "[KkthnxUI:HealthCurrent-Percent]",
-			[NONE] = " ",
-		},
-		["Value"] = "[KkthnxUI:HealthCurrent-Percent]"
-	},
-	["TargetPowerFormat"] = {
-		["Options"] = {
-			["Current"] = "[KkthnxUI:PowerCurrent]",
-			["Percent"] = "[KkthnxUI:PowerPercent]",
-			["Current / Percent"] = "[KkthnxUI:PowerCurrent-Percent]",
-			[NONE] = " ",
-		},
-		["Value"] = "[KkthnxUI:PowerCurrent]"
-	},
-	["TargetLevelFormat"] = {
-		["Options"] = {
-			["Smart Level"] = "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]",
-			["Level"] = "[KkthnxUI:DifficultyColor][level][KkthnxUI:ClassificationColor][shortclassification]",
-		},
-		["Value"] = "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]"
-	},
 }
 
 C["Party"] = {
@@ -455,35 +400,6 @@ C["Party"] = {
         },
         ["Value"] = "Class"
     },
-	["PartyHealthFormat"] = {
-		["Options"] = {
-			["Current"] = "[KkthnxUI:HealthCurrent]",
-			["Percent"] = "[KkthnxUI:HealthPercent]",
-			["Current / Percent"] = "[KkthnxUI:HealthCurrent-Percent]",
-			[NONE] = " ",
-		},
-		["Value"] = "[KkthnxUI:HealthCurrent]"
-	},
-	["PartyPowerFormat"] = {
-		["Options"] = {
-			["Current"] = "[KkthnxUI:PowerCurrent]",
-			["Percent"] = "[KkthnxUI:PowerPercent]",
-			["Current / Percent"] = "[KkthnxUI:PowerCurrent-Percent]",
-			[NONE] = " ",
-		},
-		["Value"] = " "
-	},
-}
-
--- C["Arena"] = {
--- 	["Castbars"] = true,
--- 	["Enable"] = true,
--- 	-- ["Smooth"] = false,
--- }
-
-C["Boss"] = {
-	["Castbars"] = true,
-	["Enable"] = true,
 }
 
 -- Raidframe
@@ -529,12 +445,14 @@ C["Raid"] = {
 		["Value"] = "GROUP"
 	},
 	["HealthFormat"] = {
-		["Options"] = {
-			["Deficit"] = "[KkthnxUI:HealthDeficit]",
-			["Percent"] = "[KkthnxUI:HealthPercent]",
-		},
-		["Value"] = "[KkthnxUI:HealthDeficit]"
-	}
+        ["Options"] = {
+			["DisableRaidHP"] = 1,
+			["RaidHPPercent"] = 2,
+			["RaidHPCurrent"] = 3,
+			["RaidHPLost"] = 4,
+        },
+        ["Value"] = 1
+    },
 }
 
 if not IsAddOnLoaded("QuestNotifier") then

@@ -56,7 +56,7 @@ function Module:CreateTargetOfTarget()
 	self.Health.Value:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
 	self.Health.Value:SetFontObject(UnitframeFont)
 	self.Health.Value:SetFont(select(1, self.Health.Value:GetFont()), 10, select(3, self.Health.Value:GetFont()))
-	self:Tag(self.Health.Value, "[KkthnxUI:HealthPercent]")
+	self:Tag(self.Health.Value, "[hp]")
 
 	self.Power = CreateFrame("StatusBar", nil, self)
 	self.Power:SetHeight(8)
@@ -70,10 +70,10 @@ function Module:CreateTargetOfTarget()
 
 	self.Name = self:CreateFontString(nil, "OVERLAY")
 	self.Name:SetPoint("BOTTOM", self.Power, "BOTTOM", 0, -16)
-	self.Name:SetWidth(self.Power:GetWidth())
+	self.Name:SetWidth(81 * 0.96)
 	self.Name:SetFontObject(UnitframeFont)
 	self.Name:SetWordWrap(false)
-	self:Tag(self.Name, "[KkthnxUI:GetNameColor][KkthnxUI:NameShort]")
+	self:Tag(self.Name, "[color][name]")
 
 	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then
 		self.Portrait = CreateFrame("PlayerModel", nil, self.Health)
@@ -102,6 +102,11 @@ function Module:CreateTargetOfTarget()
 	self.Health:SetPoint("TOPLEFT")
 	self.Health:SetPoint("TOPRIGHT", -self.Portrait:GetWidth() - 6, 0)
 
+	self.Level = self:CreateFontString(nil, "OVERLAY")
+	self.Level:SetPoint("BOTTOM", self.Portrait, 0, -16)
+	self.Level:SetFontObject(UnitframeFont)
+	self:Tag(self.Level, "[fulllevel]")
+
 	self.Debuffs = CreateFrame("Frame", self:GetName().."Debuffs", self)
 	self.Debuffs:SetWidth(82)
 	self.Debuffs:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -20)
@@ -127,10 +132,8 @@ function Module:CreateTargetOfTarget()
 	self.Highlight:SetBlendMode("ADD")
 	self.Highlight:Hide()
 
-	self.ThreatIndicator = {
-		IsObjectType = function() end,
-		Override = Module.UpdateThreat,
+	self.SpellRange = {
+		insideAlpha = 1,
+		outsideAlpha = 0.4
 	}
-
-	self.Range = Module.CreateRangeIndicator(self)
 end

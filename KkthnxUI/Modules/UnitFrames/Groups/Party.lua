@@ -63,7 +63,7 @@ function Module:CreateParty(unit)
 	self.Health.Value:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
 	self.Health.Value:SetFontObject(UnitframeFont)
 	self.Health.Value:SetFont(select(1, self.Health.Value:GetFont()), 10, select(3, self.Health.Value:GetFont()))
-	self:Tag(self.Health.Value, "[KkthnxUI:HealthCurrent-Percent]")
+	self:Tag(self.Health.Value, "[hp]")
 
 	self.Power = CreateFrame("StatusBar", nil, self)
 	self.Power:SetHeight(10)
@@ -82,7 +82,7 @@ function Module:CreateParty(unit)
 	self.Name:SetWidth(self.Health:GetWidth())
 	self.Name:SetFontObject(UnitframeFont)
 	self.Name:SetWordWrap(false)
-	self:Tag(self.Name, "[KkthnxUI:Leader][KkthnxUI:GetNameColor][KkthnxUI:NameMedium]")
+	self:Tag(self.Name, "[leadassist][color][name]")
 
 	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then
 		self.Portrait = CreateFrame("PlayerModel", nil, self.Health)
@@ -114,7 +114,7 @@ function Module:CreateParty(unit)
 	self.Level = self:CreateFontString(nil, "OVERLAY")
 	self.Level:SetPoint("TOP", self.Portrait, 0, 15)
 	self.Level:SetFontObject(UnitframeFont)
-	self:Tag(self.Level, "[KkthnxUI:DifficultyColor][KkthnxUI:SmartLevel][KkthnxUI:ClassificationColor][shortclassification]")
+	self:Tag(self.Level, "[nplevel]")
 
 	if C["Party"].ShowBuffs then
 		self.Buffs = CreateFrame("Frame", self:GetName().."Buffs", self)
@@ -206,7 +206,7 @@ function Module:CreateParty(unit)
 		myBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
 		myBar:SetPoint("LEFT", self.Health:GetStatusBarTexture(), "RIGHT")
 		myBar:SetStatusBarTexture(HealPredictionTexture)
-		myBar:SetStatusBarColor(0, 1, .5, .5)
+		myBar:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 		local otherBar = CreateFrame("StatusBar", nil, self)
 		otherBar:SetWidth(self:GetWidth())
@@ -214,7 +214,7 @@ function Module:CreateParty(unit)
 		otherBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
 		otherBar:SetPoint("LEFT", myBar:GetStatusBarTexture(), "RIGHT")
 		otherBar:SetStatusBarTexture(HealPredictionTexture)
-		otherBar:SetStatusBarColor(0, 1, 0, .5)
+		otherBar:SetStatusBarColor(0, 1, 0, 0.25)
 
 		self.HealthPrediction = {
 			myBar = myBar,
@@ -227,7 +227,7 @@ function Module:CreateParty(unit)
 	self.StatusIndicator:SetPoint("CENTER", 0, 0.5)
 	self.StatusIndicator:SetFontObject(UnitframeFont)
 	self.StatusIndicator:SetFont(select(1, self.StatusIndicator:GetFont()), 10, select(3, self.StatusIndicator:GetFont()))
-	self:Tag(self.StatusIndicator, "[KkthnxUI:Status]")
+	self:Tag(self.StatusIndicator, "[afkdnd]")
 
 	if (C["Party"].TargetHighlight) then
 		self.HighlightOverlayFrame = CreateFrame("Frame", nil, self)
@@ -305,8 +305,8 @@ function Module:CreateParty(unit)
 		self:RegisterEvent("PLAYER_REGEN_DISABLED", Module.UpdateThreat, true)
 	end
 
-	self.Range = {
+	self.SpellRange = {
 		insideAlpha = 1,
-		outsideAlpha = 0.3
+		outsideAlpha = 0.4
 	}
 end

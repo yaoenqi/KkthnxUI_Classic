@@ -34,7 +34,6 @@ K.DebuffWhiteList = {
 	[SpellName(16857)] = true,	--faerie fire feral
 	[SpellName(16979)] = true,	--feral charge
 
-
 	-- Hunter
 	[SpellName(5116)] = true,	-- concussive shot
 	[SpellName(13812)] = true,	-- explosive trap

@@ -234,7 +234,7 @@ function Module:CreateAuraIcon(button)
     button.count:SetFont(select(1, button.count:GetFont()), fontSize, select(3, button.count:GetFont()))
 
     button.timer = button:CreateFontString(nil, "OVERLAY")
-    button.timer:SetPoint("TOP", button, "BOTTOM", 1, -2)
+    button.timer:SetPoint("TOP", button, "BOTTOM", 1, -4)
     button.timer:SetFontObject(K.GetFont(C["UIFonts"].AuraFonts))
     button.timer:SetFont(select(1, button.timer:GetFont()), fontSize, select(3, button.timer:GetFont()))
 

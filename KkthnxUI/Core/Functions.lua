@@ -1,7 +1,6 @@
 local K, C = unpack(select(2, ...))
 
 local _G = _G
-local assert = _G.assert
 local math_abs = _G.math.abs
 local math_ceil = _G.math.ceil
 local math_floor = _G.math.floor
@@ -204,11 +203,9 @@ end
 local iLvlDB = {}
 local itemLevelString = gsub(ITEM_LEVEL, "%%d", "")
 local enchantString = gsub(ENCHANTED_TOOLTIP_LINE, "%%s", "(.+)")
-local essenceTextureID = 2975691
-local texturesDB, essencesDB = {}, {}
+local texturesDB = {}
 function K:InspectItemTextures(clean, grabTextures)
 	wipe(texturesDB)
-	wipe(essencesDB)
 
 	for i = 1, 5 do
 		local tex = _G[K.ScanTooltip:GetName().."Texture"..i]
@@ -216,19 +213,15 @@ function K:InspectItemTextures(clean, grabTextures)
 		if not texture then break end
 
 		if grabTextures then
-			if texture == essenceTextureID then
-				local selected = (texturesDB[i-1] ~= essenceTextureID and texturesDB[i-1]) or nil
-				essencesDB[i] = {selected, tex:GetAtlas(), texture}
-				if selected then texturesDB[i-1] = nil end
-			else
-				texturesDB[i] = texture
-			end
+			texturesDB[i] = texture
 		end
 
-		if clean then tex:SetTexture() end
+		if clean then
+			tex:SetTexture()
+		end
 	end
 
-	return texturesDB, essencesDB
+	return texturesDB
 end
 
 function K:InspectItemInfo(text, iLvl, enchantText)
@@ -376,14 +369,19 @@ local function tooltipOnEnter(self)
 	GameTooltip:SetOwner(self, "ANCHOR_NONE")
 	GameTooltip:SetPoint(K.GetAnchors(self))
 	GameTooltip:ClearLines()
+	if self.title then
+		GameTooltip:AddLine(self.title)
+	end
 	if tonumber(self.text) then
 		GameTooltip:SetSpellByID(self.text)
-	else
+	elseif self.text then
 		local r, g, b = 1, 1, 1
 		if self.color == "class" then
-			r, g, b = K.Color.r, K.Color.g, K.Color.b
+			r, g, b = K.r, K.g, K.b
 		elseif self.color == "system" then
 			r, g, b = 1, .8, 0
+		elseif self.color == "info" then
+			r, g, b = .6, .8, 1
 		end
 		GameTooltip:AddLine(self.text, r, g, b, 1)
 	end
@@ -456,50 +454,6 @@ function K.ShortenString(string, numChars, dots)
 		else
 			return string
 		end
-	end
-end
-
-local styles = {
-	-- keep percents in this table with `PERCENT` in the key, and `%.1f%%` in the value somewhere.
-	-- we use these two things to follow our setting for decimal length. they need to be EXACT.
-	["CURRENT"] = "%s",
-	["CURRENT_MAX"] = "%s - %s",
-	["CURRENT_PERCENT"] = "%s - %.1f%%",
-	["CURRENT_MAX_PERCENT"] = "%s - %s | %.1f%%",
-	["PERCENT"] = "%.1f%%",
-	["DEFICIT"] = "-%s"
-}
-
-local gftDec, gftUseStyle, gftDeficit
-function K.GetFormattedText(style, min, max)
-	assert(styles[style], "Invalid format style: "..style)
-	assert(min, "You need to provide a current value. Usage: K.GetFormattedText(style, min, max)")
-	assert(max, "You need to provide a maximum value. Usage: K.GetFormattedText(style, min, max)")
-
-	if max == 0 then
-		max = 1
-	end
-
-	gftDec = (C["Unitframe"].DecimalLength or 1)
-	if (gftDec ~= 1) and style:find("PERCENT") then
-		gftUseStyle = styles[style]:gsub("%%%.1f%%%%", "%%."..gftDec.."f%%%%")
-	else
-		gftUseStyle = styles[style]
-	end
-
-	if style == "DEFICIT" then
-		gftDeficit = max - min
-		return ((gftDeficit > 0) and string_format(gftUseStyle, gftDeficit)) or ""
-	elseif style == "PERCENT" then
-		return string_format(gftUseStyle, min / max * 100)
-	elseif style == "CURRENT" or ((style == "CURRENT_MAX" or style == "CURRENT_MAX_PERCENT" or style == "CURRENT_PERCENT") and min == max) then
-		return string_format(styles["CURRENT"], min)
-	elseif style == "CURRENT_MAX" then
-		return string_format(gftUseStyle, min, max)
-	elseif style == "CURRENT_PERCENT" then
-		return string_format(gftUseStyle, min, min / max * 100)
-	elseif style == "CURRENT_MAX_PERCENT" then
-		return string_format(gftUseStyle, min, max, min / max * 100)
 	end
 end
 

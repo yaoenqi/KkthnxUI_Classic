@@ -7,7 +7,7 @@ local IsAddOnLoaded = _G.IsAddOnLoaded
 local Details = _G.Details
 
 local function ReskinDetails()
-	if not IsAddOnLoaded("Details") then
+	if not IsAddOnLoaded("Details") or not C["Skins"].Details then
 		return
 	end
 

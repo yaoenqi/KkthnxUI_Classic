@@ -77,7 +77,7 @@ function Module:CreateRaid()
 	self.Health.Value:SetPoint("CENTER", self.Health, 0, -9)
 	self.Health.Value:SetFontObject(RaidframeFont)
 	self.Health.Value:SetFont(select(1, self.Health.Value:GetFont()), 11, select(3, self.Health.Value:GetFont()))
-	self:Tag(self.Health.Value, C["Raid"].HealthFormat.Value)
+	self:Tag(self.Health.Value, "[raidhp]")
 
 	self.Health.colorDisconnected = true
 	self.Health.frequentUpdates = true
@@ -194,7 +194,7 @@ function Module:CreateRaid()
 	-- else
 	-- 	self:Tag(self.Name, "[KkthnxUI:NameShort]")
 	-- end
-	self:Tag(self.Name, "[KkthnxUI:NameShort]")
+	self:Tag(self.Name, "[name]")
 
 	self.Overlay = CreateFrame("Frame", nil, self)
 	self.Overlay:SetAllPoints(self.Health)
@@ -222,7 +222,7 @@ function Module:CreateRaid()
 		self.StatusIndicator:SetFontObject(RaidframeFont)
 		self.StatusIndicator:SetFont(select(1, self.StatusIndicator:GetFont()), 10, select(3, self.StatusIndicator:GetFont()))
 		self.StatusIndicator:SetTextColor(1, 0, 0)
-		self:Tag(self.StatusIndicator, "[KkthnxUI:Status]")
+		self:Tag(self.StatusIndicator, "[afkdnd]")
 	end
 
 	if C["Raid"].AuraWatch then
@@ -306,8 +306,8 @@ function Module:CreateRaid()
 	self.Highlight:SetBlendMode("ADD")
 	self.Highlight:Hide()
 
-	self.Range = {
+	self.SpellRange = {
 		insideAlpha = 1,
-		outsideAlpha = 0.3
+		outsideAlpha = 0.4
 	}
 end

@@ -3,6 +3,8 @@ if C["Unitframe"].Enable ~= true or C["Filger"].Enable ~= true then
 	return
 end
 
+local LCD = K.LibClassicDurations
+
 local _G = _G
 local ipairs = _G.ipairs
 local pairs = _G.pairs
@@ -20,7 +22,6 @@ local GetTalentInfoByID = _G.GetTalentInfoByID
 local GetTime = _G.GetTime
 local UnitAura = _G.UnitAura
 
-local LibClassicDurations = LibStub("LibClassicDurations")
 local Filger = {}
 local MyUnits = {player = true, vehicle = true, pet = true}
 local SpellGroups = {}
@@ -44,8 +45,8 @@ function Filger:UnitAura(unitID, inSpellID, spellName, filter, absID)
 		local name, icon, count, _, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unitID, i, filter)
 		if not name then break end
 		if (absID and spellID == inSpellID) or (not absID and name == spellName) then
-			if LibClassicDurations then
-				local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unitID, spellID, unitCaster, name)
+			if LCD then
+				local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unitID, spellID, unitCaster, name)
 
 				if durationNew and durationNew > 0 then
 					duration = durationNew
@@ -327,8 +328,8 @@ local function FindAuras(self, unit, force)
 				local isTalent = data.talentID and select(10, GetTalentInfoByID(data.talentID))
 				if ((data.filter == "BUFF" and filter == "HELPFUL") or (data.filter == "DEBUFF" and filter == "HARMFUL")) and (not data.spec or data.spec == K.Spec) and (not data.talentID or isTalent) then
 					if not data.count or count >= data.count then
-						if LibClassicDurations then
-							local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spid, caster, name)
+						if LCD then
+							local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spid, caster, name)
 
 							if duration == 0 and durationNew then
 								duration = durationNew

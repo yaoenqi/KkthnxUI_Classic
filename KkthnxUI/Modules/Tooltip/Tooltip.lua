@@ -571,6 +571,10 @@ Module:RegisterTooltips("KkthnxUI", function()
 		if LootBarToolTip then
 			Module.ReskinTooltip(LootBarToolTip)
 		end
+
+		if WhatsTrainingTooltip then
+			Module.ReskinTooltip(WhatsTrainingTooltip)
+		end
 	end)
 end)
 

@@ -43,7 +43,7 @@ function Module:CreatePet()
 	self.Health.Value:SetPoint("CENTER", self.Health, "CENTER", 0, 0)
 	self.Health.Value:SetFontObject(UnitframeFont)
 	self.Health.Value:SetFont(select(1, self.Health.Value:GetFont()), 10, select(3, self.Health.Value:GetFont()))
-	self:Tag(self.Health.Value, "[KkthnxUI:HealthPercent]")
+	self:Tag(self.Health.Value, "[hp]")
 
 	self.Power = CreateFrame("StatusBar", nil, self)
 	self.Power:SetHeight(8)
@@ -103,7 +103,7 @@ function Module:CreatePet()
 		self.PetHappinessIcon = self.Health:CreateFontString(nil, "OVERLAY")
 		self.PetHappinessIcon:SetPoint("TOPRIGHT", self.Portrait, 11, 6)
 		self.PetHappinessIcon:SetFontObject(UnitframeFont)
-		self:Tag(self.PetHappinessIcon, "[KkthnxUI:PetHappinessIcon]")
+		self:Tag(self.PetHappinessIcon, "[pethappiness]")
 	end
 
 	if C["Unitframe"].DebuffHighlight then
@@ -125,4 +125,9 @@ function Module:CreatePet()
 	self.Highlight:SetVertexColor(.6, .6, .6)
 	self.Highlight:SetBlendMode("ADD")
 	self.Highlight:Hide()
+
+	self.SpellRange = {
+		insideAlpha = 1,
+		outsideAlpha = 0.4
+	}
 end

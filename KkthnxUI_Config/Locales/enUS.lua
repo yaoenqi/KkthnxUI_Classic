@@ -199,44 +199,58 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Fade Bagbar",
 		},
 
-		["BagColumns"] = {
-			["Name"] = "Number of Columns In Bags",
-		},
-
-		["BankColumns"] = {
-			["Name"] = "Number of Columns In Bank",
-		},
-
-		["ButtonSize"] = {
-			["Name"] = "Bag Button Size",
-		},
-
-		["ButtonSpace"] = {
-			["Name"] = "Bag Button Spacing",
-		},
-
-		["DetailedReport"] = {
-			["Name"] = "Vendor Gray Detailed Report",
-			["Desc"] = "Displays a detailed report of every item sold when enabled.",
-		},
-
 		["Enable"] = {
 			["Name"] = "Enable",
 			["Desc"] = "Enable/Disable the Inventory Module.",
 		},
 
-		["ItemLevel"] = {
+		["ClassRelatedFilter"] = {
+			["Name"] = "Filter Class Items",
+		},
+
+		["QuestItemFilter"] = {
+			["Name"] = "Filter Quest Items",
+		},
+
+		["TradeGoodsFilter"] = {
+			["Name"] = "Filter Trade/Goods Items",
+		},
+
+		["BagsWidth"] = {
+			["Name"] = "Bags Width",
+		},
+
+		["BankWidth"] = {
+			["Name"] = "Bank Width",
+		},
+
+		["DeleteButton"] = {
+			["Name"] = "Bags Delete Button",
+		},
+
+		["GatherEmpty"] = {
+			["Name"] = "Gather Empty Slots Into One Button",
+		},
+
+		["IconSize"] = {
+			["Name"] = "Slot Icon Size",
+		},
+
+		["ItemFilter"] = {
+			["Name"] = "Item Filtering",
+		},
+
+		["ItemSetFilter"] = {
+			["Name"] = "Use ItemSet Filter",
+		},
+
+		["ReverseSort"] = {
+			["Name"] = "Bags Reverse Sorting",
+		},
+
+		["BagsiLvl"] = {
 			["Name"] = "Display Item Level",
 			["Desc"] = "Displays item level on equippable items.",
-		},
-
-		["JunkIcon"] = {
-			["Name"] = "Show Junk Icon",
-			["Desc"] = "Display the junk icon on all grey items that can be vendored.",
-		},
-
-		["PulseNewItem"] = {
-			["Name"] = "Show New Item Glow",
 		},
 
 		["AutoRepair"] = {

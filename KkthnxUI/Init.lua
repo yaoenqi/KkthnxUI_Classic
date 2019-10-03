@@ -42,6 +42,9 @@ local K = unpack(Engine)
 K.LibClassicDurations = LibStub("LibClassicDurations")
 K.LibClassicDurations:RegisterFrame("KkthnxUI")
 
+K.oUF = Engine.oUF
+K.cargBags = Engine.cargBags
+
 K.Title = GetAddOnMetadata(AddOnName, "Title")
 K.Version = GetAddOnMetadata(AddOnName, "Version")
 K.Credits = GetAddOnMetadata(AddOnName, "X-Credits")
@@ -57,7 +60,6 @@ K.Faction, K.LocalizedFaction = UnitFactionGroup("player")
 K.Level = UnitLevel("player")
 K.Client = GetLocale()
 K.Realm = GetRealmName()
-K.oUF = Engine.oUF
 K.Media = "Interface\\AddOns\\KkthnxUI\\Media\\"
 K.LSM = LibStub and LibStub:GetLibrary("LibSharedMedia-3.0", true)
 K.Resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution")
@@ -72,7 +74,11 @@ K.ScanTooltip = CreateFrame("GameTooltip", "KkthnxUI_ScanTooltip", _G.UIParent, 
 K.WowPatch, K.WowBuild, K.WowRelease, K.TocVersion = GetBuildInfo()
 K.WowBuild = tonumber(K.WowBuild)
 K.InfoColor = "|cff4488ff"
+K.SystemColor = "|cffffcc00"
 K.CodeDebug = false -- Don't touch this, unless you know what you are doing?
+
+BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_POOR] = {r = 0.62, g = 0.62, b = 0.62}
+BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_COMMON] = {r = 1, g = 1, b = 1}
 
 K.ClassList = {}
 for k, v in pairs(LOCALIZED_CLASS_NAMES_MALE) do
