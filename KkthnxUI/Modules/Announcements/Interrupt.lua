@@ -13,10 +13,14 @@ local UnitGUID = _G.UnitGUID
 
 function Module:SetupInterruptAnnounce()
 	local inGroup, inRaid = IsInGroup(), IsInRaid()
-	if not inGroup then return end -- not in group, exit.
+	if not inGroup then
+		return
+	end
 
 	local _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, _, spellName = CombatLogGetCurrentEventInfo()
-	if not (event == "SPELL_INTERRUPT" and (sourceGUID == K.GUID or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
+	if not (event == "SPELL_INTERRUPT" and (sourceGUID == K.GUID or sourceGUID == UnitGUID("pet"))) then
+		return
+	end
 
 	local interruptAnnounce, msg = C["Announcements"].Interrupt.Value, string_format(InterruptMessage, destName or UNKNOWN, spellName or UNKNOWN)
 	if interruptAnnounce == "PARTY" then

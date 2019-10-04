@@ -2,7 +2,6 @@ local K, C = unpack(select(2, ...))
 if C["Skins"].ChatBubbles ~= true or K.CheckAddOnState("NiceBubbles") then
 	return
 end
--- local Module = K:GetModule("Miscellaneous")
 
 local function getBackdrop(scale)
 	return {

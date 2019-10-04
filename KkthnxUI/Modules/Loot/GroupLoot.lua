@@ -273,36 +273,31 @@ function Module.START_LOOT_ROLL(_, rollID, time)
 	f.greed:SetText(0)
 	f.pass:SetText(0)
 
-	local texture, name, _, quality, bop, canNeed, canGreed = GetLootRollItemInfo(rollID)
+	local texture, name, _, quality, bop, canNeed, canGreed, _, reasonNeed, reasonGreed = GetLootRollItemInfo(rollID)
 
 	f.button.icon:SetTexture(texture)
 	f.button.link = GetLootRollItemLink(rollID)
-
-	if canNeed then
-		f.needbutt:Enable()
-	else
-		f.needbutt:Disable()
-	end
-
-	if canGreed then
-		f.greedbutt:Enable()
-	else
-		f.greedbutt:Disable()
-	end
 
 	SetDesaturation(f.needbutt:GetNormalTexture(), not canNeed)
 	SetDesaturation(f.greedbutt:GetNormalTexture(), not canGreed)
 
 	if canNeed then
+		f.needbutt:Enable()
 		f.needbutt:SetAlpha(1)
+		f.needbutt.tiptext = NEED
 	else
+		f.needbutt:Disable()
 		f.needbutt:SetAlpha(0.2)
+		f.needbutt.tiptext = _G["LOOT_ROLL_INELIGIBLE_REASON"..reasonNeed]
 	end
-
 	if canGreed then
+		f.greedbutt:Enable()
 		f.greedbutt:SetAlpha(1)
+		f.greedbutt.tiptext = GREED
 	else
+		f.greedbutt:Disable()
 		f.greedbutt:SetAlpha(0.2)
+		f.greedbutt.tiptext = _G["LOOT_ROLL_INELIGIBLE_REASON"..reasonGreed]
 	end
 
 	f.fsbind:SetText(bop and "BoP" or "BoE")
@@ -383,37 +378,37 @@ function Module:CreateGroupLoot()
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 end
 
-SlashCmdList.TESTROLL = function()
-	local f = GetFrame()
-	local items = {19019, 22811, 20530, 19972}
-	if f:IsShown() then
-		f:Hide()
-	else
-		local item = items[math.random(1, #items)]
-		local _, _, quality, _, _, _, _, _, _, texture = GetItemInfo(item)
-		local r, g, b = GetItemQualityColor(quality or 1)
+-- SlashCmdList.TESTROLL = function()
+-- 	local f = GetFrame()
+-- 	local items = {19019, 22811, 20530, 19972}
+-- 	if f:IsShown() then
+-- 		f:Hide()
+-- 	else
+-- 		local item = items[math.random(1, #items)]
+-- 		local _, _, quality, _, _, _, _, _, _, texture = GetItemInfo(item)
+-- 		local r, g, b = GetItemQualityColor(quality or 1)
 
-		f.button.icon:SetTexture(texture)
-		f.button.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+-- 		f.button.icon:SetTexture(texture)
+-- 		f.button.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
-		f.fsloot:SetText(GetItemInfo(item))
-		f.fsloot:SetVertexColor(r, g, b)
+-- 		f.fsloot:SetText(GetItemInfo(item))
+-- 		f.fsloot:SetVertexColor(r, g, b)
 
-		f.status:SetMinMaxValues(0, 100)
-		f.status:SetValue(math.random(50, 90))
-		f.status:SetStatusBarColor(r, g, b, 0.7)
-		f.status.bg:SetColorTexture(r, g, b)
+-- 		f.status:SetMinMaxValues(0, 100)
+-- 		f.status:SetValue(math.random(50, 90))
+-- 		f.status:SetStatusBarColor(r, g, b, 0.7)
+-- 		f.status.bg:SetColorTexture(C["Media"].BackdropColor[1], C["Media"].BackdropColor[2], C["Media"].BackdropColor[3], C["Media"].BackdropColor[4])
 
-		f:SetBackdropBorderColor(r, g, b, 0.7)
-		f.button:SetBackdropBorderColor(r, g, b, 0.7)
+-- 		f:SetBackdropBorderColor(r, g, b, 0.7)
+-- 		f.button:SetBackdropBorderColor(r, g, b, 0.7)
 
-		f.need:SetText(0)
-		f.greed:SetText(0)
-		f.pass:SetText(0)
+-- 		f.need:SetText(0)
+-- 		f.greed:SetText(0)
+-- 		f.pass:SetText(0)
 
-		f.button.link = "item:"..item..":0:0:0:0:0:0:0"
-		f:Show()
-	end
-end
-SLASH_TESTROLL1 = "/testroll"
-SLASH_TESTROLL2 = "/еуыекщдд"
+-- 		f.button.link = "item:"..item..":0:0:0:0:0:0:0"
+-- 		f:Show()
+-- 	end
+-- end
+-- SLASH_TESTROLL1 = "/testroll"
+-- SLASH_TESTROLL2 = "/еуыекщдд"

@@ -105,7 +105,7 @@ end
 local function createSlot(id)
 	local iconsize = (iconSize - 4)
 
-	local frame = CreateFrame("Button", "KkthnxLootSlot"..id, lootFrame)
+	local frame = CreateFrame("Button", "KKUI_LootSlot"..id, lootFrame)
 	frame:SetPoint("LEFT", 8, 0)
 	frame:SetPoint("RIGHT", -8, 0)
 	frame:SetHeight(iconsize)
@@ -150,7 +150,7 @@ local function createSlot(id)
 	drop:SetPoint("LEFT", icon, "RIGHT", 0, 0)
 	drop:SetPoint("RIGHT", frame)
 	drop:SetAllPoints(frame)
-	drop:SetAlpha(.3)
+	drop:SetAlpha(0.3)
 	frame.drop = drop
 
 	local questTexture = iconFrame:CreateTexture(nil, "OVERLAY")
@@ -188,7 +188,7 @@ end
 function Module.LOOT_OPENED(_, autoloot)
 	lootFrame:Show()
 
-	if (not lootFrame:IsShown()) then
+	if not lootFrame:IsShown() then
 		CloseLoot(not autoloot)
 	end
 
@@ -243,6 +243,7 @@ function Module.LOOT_OPENED(_, autoloot)
 			end
 
 			slot.quality = quality
+
 			slot.name:SetText(item)
 			if color then
 				slot.name:SetTextColor(color.r, color.g, color.b)
@@ -314,12 +315,12 @@ function Module:OnEnable()
 		return
 	end
 
-	lootFrameHolder = CreateFrame("Frame", "KkthnxLootFrameHolder", UIParent)
+	lootFrameHolder = CreateFrame("Frame", "KKUI_LootFrameHolder", UIParent)
 	lootFrameHolder:SetPoint("TOPLEFT", 36, -195)
 	lootFrameHolder:SetWidth(150)
 	lootFrameHolder:SetHeight(22)
 
-	lootFrame = CreateFrame("Button", "KkthnxLootFrame", lootFrameHolder)
+	lootFrame = CreateFrame("Button", "KKUI_LootFrame", lootFrameHolder)
 	lootFrame:Hide()
 	lootFrame:SetClampedToScreen(true)
 	lootFrame:SetPoint("TOPLEFT")
@@ -347,7 +348,7 @@ function Module:OnEnable()
 	end
 
 	LootFrame:UnregisterAllEvents()
-	table_insert(UISpecialFrames, "KkthnxLootFrame")
+	table_insert(UISpecialFrames, "KKUI_LootFrame")
 
 	function _G.GroupLootDropDown_GiveLoot()
 		if LootFrame.selectedQuality >= MASTER_LOOT_THREHOLD then
