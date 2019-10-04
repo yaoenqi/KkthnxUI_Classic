@@ -7,4 +7,5 @@ if GetLocale() == "deDE" then
 	L["Whisper"] = "Flüstern"
 	L["Trade"] = "Handel"
 	L["Loot"] = "Beute"
+	L["ConfigPerAccount"] = "Globales Profil ist aktiv. Beende."
 end
