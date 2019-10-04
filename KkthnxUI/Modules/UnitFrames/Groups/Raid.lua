@@ -61,7 +61,7 @@ end
 function Module:CreateRaid()
 	local RaidframeFont = K.GetFont(C["UIFonts"].UnitframeFonts)
 	local RaidframeTexture = K.GetTexture(C["UITextures"].UnitframeTextures)
-	local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)
+	-- local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)
 
 	Module.CreateHeader(self)
 
@@ -189,11 +189,6 @@ function Module:CreateRaid()
 	self.Name:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -3, -15)
 	self.Name:SetFontObject(RaidframeFont)
 	self.Name:SetWordWrap(false)
-	-- if C["Raid"].ShowRolePrefix then
-	-- 	self:Tag(self.Name, "[KkthnxUI:Role][KkthnxUI:NameShort]")
-	-- else
-	-- 	self:Tag(self.Name, "[KkthnxUI:NameShort]")
-	-- end
 	self:Tag(self.Name, "[name]")
 
 	self.Overlay = CreateFrame("Frame", nil, self)
@@ -261,10 +256,6 @@ function Module:CreateRaid()
 		self.RaidDebuffs.count:SetPoint("BOTTOMRIGHT", self.RaidDebuffs, "BOTTOMRIGHT", 2, 0)
 		self.RaidDebuffs.count:SetTextColor(1, .9, 0)
 	end
-
-	-- self.ThreatIndicator = {}
-	-- self.ThreatIndicator.IsObjectType = function() end
-	-- self.ThreatIndicator.Override = UpdateThreat
 
 	if C["Raid"].TargetHighlight then
 		self.OverlayFrame = CreateFrame("Frame", nil, self)
