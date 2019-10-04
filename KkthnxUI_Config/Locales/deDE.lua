@@ -242,6 +242,15 @@ _G.KkthnxUIConfig["deDE"] = {
 		["AutoRepair"] = {
 			["Name"] = "Ausrüstung automatisch reparieren",
 		},
+		
+		["ReverseSort"] = {
+			["Name"] = "Sortierungsrichtung umkehren",
+		},
+		
+		["BagsiLvl"] = {
+			["Name"] = "Zeige Gegenstandsstufe",
+			["Desc"] = "Zeigt Gegenstandsstufe an ausrüstbaren Gegenständen.",
+		},
 	},
 
 	-- Auras Local
@@ -275,7 +284,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		},
 
 		["ReverseDebuffs"] = {
-			["Name"] = "Schwächungszauber erweitern nach Links",
+			["Name"] = "Schwächungszauber erweitern nach Rechts",
 		},
 	},
 
@@ -503,6 +512,10 @@ _G.KkthnxUIConfig["deDE"] = {
 		["PortraitStyle"] = {
 			["Name"] = "Portraitstil für Einheitenfenster",
 		},
+		
+		["UIScale"] = {
+			["Name"] = "Interface Skalierung",
+		},
 	},
 
 	-- Loot Local
@@ -581,7 +594,11 @@ _G.KkthnxUIConfig["deDE"] = {
 		["GemEnchantInfo"] = {
 			["Name"] = "Charakter/Betrachten Edelsteine-/Verzauberungsinfo",
 		},
-
+		
+		["ImprovedProfessionWindow"] = {
+			["Name"] = "Verbessert das aussehen der Berufefenster",
+		},
+		
 		["ImprovedQuestLog"] = {
 			["Name"] = "Verbessere das Aussehen des Questlogs",
 		},
@@ -648,6 +665,10 @@ _G.KkthnxUIConfig["deDE"] = {
 
 		["HealthValue"] = {
 			["Name"] = "Zeige Werte für Lebenspunkte",
+		},
+
+		["HealthbarColor"] = {
+			["Name"] = "Einfärbung der Lebensleiste",
 		},
 
 		["Height"] = {
@@ -800,6 +821,10 @@ _G.KkthnxUIConfig["deDE"] = {
 			["Name"] = "Zeige die Globale Abklingzeit",
 		},
 
+		["HealthbarColor"] = {
+			["Name"] = "Einfärbung der Lebensleiste",
+		},
+
 		["HideTargetofTarget"] = {
 			["Name"] = "Verstecke das Ziel des Zieles",
 		},
@@ -925,6 +950,10 @@ _G.KkthnxUIConfig["deDE"] = {
 			["Name"] = "Aktiviere Gruppen-Modul",
 		},
 
+		["HealthbarColor"] = {
+			["Name"] = "Einfärbung der Lebensleiste",
+		},
+
 		["PortraitTimers"] = {
 			["Name"] = "Zauberzeiten im Portrait anzeigen",
 		},
@@ -995,6 +1024,10 @@ _G.KkthnxUIConfig["deDE"] = {
 
 		["Height"] = {
 			["Name"] = "Höhe des Schlachtzuges",
+		},
+
+		["HealthbarColor"] = {
+			["Name"] = "Einfärbung der Lebensleiste",
 		},
 
 		["MainTankFrames"] = {
@@ -1152,6 +1185,10 @@ _G.KkthnxUIConfig["deDE"] = {
 
 		["DataTextFonts"] = {
 			["Name"] = "Datentexte",
+		},
+
+		["FilgerFonts"] = {
+			["Name"] = "Filger Schriftart",
 		},
 
 		["GeneralFonts"] = {

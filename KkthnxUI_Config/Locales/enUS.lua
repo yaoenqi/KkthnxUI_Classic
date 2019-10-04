@@ -1194,6 +1194,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["DataTextFonts"] = {
 			["Name"] = "DataTexts",
+		},		
+		
+		["FilgerFonts"] = {
+			["Name"] = "Filger Fonts",
 		},
 
 		["GeneralFonts"] = {
