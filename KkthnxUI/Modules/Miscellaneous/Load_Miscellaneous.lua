@@ -618,7 +618,7 @@ function Module:OnEnable()
 	end)
 
 	-- Auto chatBubbles
-	if C["Skins"].ChatBubbles then
+	if C["Automation"].AutoBubbles then
 		local function updateBubble()
 			local name, instType = GetInstanceInfo()
 			if name and instType == "raid" or instType == "party" then
@@ -626,10 +626,6 @@ function Module:OnEnable()
 			else
 				SetCVar("chatBubbles", 1)
 			end
-		end
-
-		if InCombatLockdown() or C["Automation"].AutoBubbles ~= true then
-			return
 		end
 
 		K:RegisterEvent("PLAYER_ENTERING_WORLD", updateBubble)

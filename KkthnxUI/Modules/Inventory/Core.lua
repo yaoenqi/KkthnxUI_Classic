@@ -30,6 +30,7 @@ local PickupContainerItem = _G.PickupContainerItem
 local SortBags = _G.SortBags
 local SortBankBags = _G.SortBankBags
 
+local bagsFont = K.GetFont(C["UIFonts"].InventoryFonts)
 local goldProfit, goldSpent, sortCache, deleteEnable, favouriteEnable = 0, 0, {}
 
 function Module:ReverseSort()
@@ -104,7 +105,7 @@ function Module:CreateInfoFrame()
 
 		gold.text = infoFrame:CreateFontString(nil, "OVERLAY")
 		gold.text:SetPoint("RIGHT", -5, 0)
-		gold.text:SetFontObject(K.GetFont(C["UIFonts"].InventoryFonts))
+		gold.text:SetFontObject(bagsFont)
 		gold.text:SetFont(select(1, gold.text:GetFont()), 12, select(3, gold.text:GetFont()))
 
 		gold:SetAllPoints(gold.text)
@@ -497,8 +498,8 @@ function Module:CreateFreeSlots()
 	slot.__name = name
 
 	local tag = self:SpawnPlugin("TagDisplay", "[space]", slot)
-	tag:SetFont(C.Media.Font, 12, "OUTLINE")
-	tag:SetShadowOffset(0, 0)
+	tag:SetFontObject(bagsFont)
+	tag:SetFont(select(1, tag:GetFont()), 16, select(3, tag:GetFont()))
 	tag:SetPoint("CENTER", 1, 0)
 	tag.__name = name
 
@@ -597,7 +598,7 @@ function Module:OnEnable()
 		self.Icon:SetAllPoints()
 		self.Icon:SetTexCoord(unpack(K.TexCoords))
 		self.Count:SetPoint("BOTTOMRIGHT", 1, 1)
-		self.Count:SetFont(C.Media.Font, 12, "OUTLINE")
+		self.Count:SetFontObject(bagsFont)
 
 		self:CreateBorder()
 		self:CreateInnerShadow()
@@ -620,6 +621,8 @@ function Module:OnEnable()
 
 		if showItemLevel then
 			self.iLvl = K.CreateFontString(self, 12, "", "OUTLINE", false, "BOTTOMLEFT", 1, 1)
+			self.iLvl:SetFontObject(bagsFont)
+			self.iLvl:SetFont(select(1, self.iLvl:GetFont()), 12, select(3, self.iLvl:GetFont()))
 		end
 
 		self.glowFrame = self:CreateTexture(nil, "OVERLAY")
@@ -782,6 +785,8 @@ function Module:OnEnable()
 
 		if label then
 			K.CreateFontString(self, 13, label, "OUTLINE", true, "TOPLEFT", 5, -8)
+			-- self:SetFontObject(bagsFont)
+			-- self:SetFont(select(1, self:GetFont()), 18, select(3, self:GetFont()))
 			return
 		end
 
@@ -869,27 +874,4 @@ function Module:OnEnable()
 
 	SetSortBagsRightToLeft(not C["Inventory"].ReverseSort)
 	SetInsertItemsLeftToRight(false)
-
-	-- SHIFT KEY DETECT
-	local function onUpdate(self, elapsed)
-		if IsShiftKeyDown() then
-			self.elapsed = self.elapsed + elapsed
-			if self.elapsed > 3 then
-				-- UIErrorsFrame:AddMessage(K.InfoColor.."StupidShiftKey")
-				self:Hide()
-			end
-		end
-	end
-	local shiftUpdater = CreateFrame("Frame")
-	shiftUpdater:SetScript("OnUpdate", onUpdate)
-	shiftUpdater:Hide()
-
-	f.main:HookScript("OnShow", function()
-		shiftUpdater.elapsed = 0
-		shiftUpdater:Show()
-	end)
-
-	f.main:HookScript("OnHide", function()
-		shiftUpdater:Hide()
-	end)
 end
