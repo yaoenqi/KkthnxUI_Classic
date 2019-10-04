@@ -260,10 +260,10 @@ SlashCmdList["KKUI_KEYBINDS"] = function()
 
 		function bind:Deactivate(save)
 			if save then
-				AttemptToSaveBindings(2)
+				AttemptToSaveBindings(KkthnxUIData[GetRealmName()][UnitName("player")].BindType)
 				print("|cffffff00"..KEY_BOUND.."|r")
 			else
-				LoadBindings(2)
+				LoadBindings(KkthnxUIData[GetRealmName()][UnitName("player")].BindType)
 				print("|cffffff00"..UNCHECK_ALL.."|r")
 			end
 
