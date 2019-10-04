@@ -353,9 +353,11 @@ function Module:CreateDeleteButton()
 		deleteEnable = not deleteEnable
 		if deleteEnable then
 			self:SetBackdropBorderColor(1, .8, 0)
+			self.Icon:SetDesaturated(true)
 			self.text = enabledText
 		else
 			self:SetBackdropBorderColor()
+			self.Icon:SetDesaturated(false)
 			self.text = nil
 		end
 		self:GetScript("OnEnter")(self)
@@ -396,9 +398,11 @@ function Module:CreateFavouriteButton()
 		favouriteEnable = not favouriteEnable
 		if favouriteEnable then
 			self:SetBackdropBorderColor(1, .8, 0)
+			self.Icon:SetDesaturated(true)
 			self.text = enabledText
 		else
 			self:SetBackdropBorderColor()
+			self.Icon:SetDesaturated(false)
 			self.text = nil
 		end
 		self:GetScript("OnEnter")(self)
