@@ -199,20 +199,39 @@ _G.KkthnxUIConfig["deDE"] = {
 			["Name"] = "Taschenleiste ausblenden",
 		},
 
-		["BagColumns"] = {
-			["Name"] = "Anzahl von Spalten in den Taschen",
-		},
-
-		["BankColumns"] = {
-			["Name"] = "Anzahl von Spalten in der Bank",
-		},
-
 		["ButtonSize"] = {
 			["Name"] = "Größe der einzelnen Taschenknöpfe",
 		},
 
 		["ButtonSpace"] = {
 			["Name"] = "Abstand der Taschenknöpfe zueinander",
+		},		
+		["ClassRelatedFilter"] = {
+			["Name"] = "Filter für Klassenspezifische Gegenstände",
+		},
+
+		["QuestItemFilter"] = {
+			["Name"] = "Filter für Questgegendstände",
+		},
+
+		["TradeGoodsFilter"] = {
+			["Name"] = "Filter für Handwerkswaren",
+		},
+
+		["BagsWidth"] = {
+			["Name"] = "Breite der Taschen",
+		},
+
+		["BankWidth"] = {
+			["Name"] = "Breite der Bank",
+		},
+
+		["DeleteButton"] = {
+			["Name"] = "Zeige 'Löschen' Knopf im Inventar",
+		},
+
+		["GatherEmpty"] = {
+			["Name"] = "Leere Slots als einen Button aufsummieren",
 		},
 
 		["DetailedReport"] = {
@@ -223,6 +242,16 @@ _G.KkthnxUIConfig["deDE"] = {
 		["Enable"] = {
 			["Name"] = "Aktivieren",
 			["Desc"] = "(De-)Aktivieren des Taschenmoduls.",
+		},
+		
+		
+		["IconSize"] = {
+			["Name"] = "Größe der Slots im Inventar",
+		},
+
+		
+		["ItemFilter"] = {
+			["Name"] = "Aktiviere Filterung im Inventar",
 		},
 
 		["ItemLevel"] = {
