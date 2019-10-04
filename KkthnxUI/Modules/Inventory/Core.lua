@@ -535,7 +535,7 @@ function Module:OnEnable()
 	local f = {}
 	Module.AmmoBags = {}
 	Module.SpecialBags = {}
-	local onlyBags, bagAmmo, bagEquipment, bagConsumble, bagsJunk, onlyBank, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite = self:GetFilters()
+	local onlyBags, bagAmmo, bagEquipment, bagConsumble, bagTradeGoods, bagQuestItem, bagsJunk, onlyBank, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite = self:GetFilters()
 	function Backpack:OnInit()
 		local MyContainer = self:GetContainerClass()
 
@@ -557,6 +557,12 @@ function Module:OnEnable()
 
 		f.consumble = MyContainer:New("Consumble", {Columns = bagsWidth, Parent = f.main})
 		f.consumble:SetFilter(bagConsumble, true)
+
+		f.tradegoods = MyContainer:New("TradeGoods", {Columns = bagsWidth, Parent = f.main})
+		f.tradegoods:SetFilter(bagTradeGoods, true)
+
+		f.questitem = MyContainer:New("QuestItem", {Columns = bagsWidth, Parent = f.main})
+		f.questitem:SetFilter(bagQuestItem, true)
 
 		f.bank = MyContainer:New("Bank", {Columns = bankWidth, Bags = "bank"})
 		f.bank:SetFilter(onlyBank, true)
@@ -752,7 +758,7 @@ function Module:OnEnable()
 		end
 		self:SetSize(width + xOffset * 2, height + offset)
 
-		Module:UpdateAnchors(f.main, {f.ammoItem, f.equipment, f.bagFavourite, f.consumble, f.junk})
+		Module:UpdateAnchors(f.main, {f.ammoItem, f.equipment, f.bagFavourite, f.consumble, f.tradegoods, f.questitem, f.junk})
 		Module:UpdateAnchors(f.bank, {f.bankAmmoItem, f.bankEquipment, f.bankLegendary, f.bankFavourite, f.bankConsumble})
 	end
 
@@ -777,6 +783,10 @@ function Module:OnEnable()
 			label = LOOT_JOURNAL_LEGENDARIES
 		elseif strmatch(name, "Consumble$") then
 			label = BAG_FILTER_CONSUMABLES
+		elseif strmatch(name, "TradeGoods$") then
+			label = BAG_FILTER_TRADE_GOODS
+		elseif strmatch(name, "QuestItem$") then
+			label = AUCTION_CATEGORY_QUEST_ITEMS
 		elseif name == "Junk" then
 			label = BAG_FILTER_JUNK
 		elseif strmatch(name, "Favourite") then

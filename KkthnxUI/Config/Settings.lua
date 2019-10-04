@@ -71,6 +71,7 @@ C["Automation"] = {
 }
 
 C["Inventory"] = {
+	-- ["ItemSetFilter"] = false,
 	["AutoSell"] = true,
 	["BagBar"] = true,
 	["BagBarMouseover"] = false,
@@ -82,8 +83,9 @@ C["Inventory"] = {
 	["GatherEmpty"] = false,
 	["IconSize"] = 34,
 	["ItemFilter"] = true,
-	-- ["ItemSetFilter"] = false,
+	["QuestItemFilter"] = false,
 	["ReverseSort"] = false,
+	["TradeGoodsFilter"] = false,
 	["AutoRepair"] = {
 		["Options"] = {
 			[NONE] = "NONE",

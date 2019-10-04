@@ -88,6 +88,30 @@ local function isItemFavourite(item)
 	return item.id and KkthnxUIData[K.Realm][K.Name].FavouriteItems[item.id]
 end
 
+local function isItemTrade(item)
+	if not C["Inventory"].ItemFilter then
+		return
+	end
+
+	if not C["Inventory"].TradeGoodsFilter then
+		return
+	end
+
+	return item.classID == LE_ITEM_CLASS_TRADEGOODS
+end
+
+local function isItemQuest(item)
+	if not C["Inventory"].ItemFilter then
+		return
+	end
+
+	if not C["Inventory"].QuestItemFilter then
+		return
+	end
+
+	return item.classID == LE_ITEM_CLASS_QUESTITEM
+end
+
 local function isEmptySlot(item)
 	if not C["Inventory"].GatherEmpty then
 		return
@@ -98,7 +122,7 @@ end
 
 function Module:GetFilters()
 	local onlyBags = function(item)
-		return isItemInBag(item) and not isItemEquipment(item) and not isItemConsumble(item) and not isItemAmmo(item) and not isItemJunk(item) and not isItemFavourite(item) and not isEmptySlot(item)
+		return isItemInBag(item) and not isItemEquipment(item) and not isItemConsumble(item) and not isItemTrade(item) and not isItemQuest(item) and not isItemAmmo(item) and not isItemJunk(item) and not isItemFavourite(item) and not isEmptySlot(item)
 	end
 
 	local bagAmmo = function(item)
@@ -111,6 +135,14 @@ function Module:GetFilters()
 
 	local bagConsumble = function(item)
 		return isItemInBag(item) and isItemConsumble(item)
+	end
+
+	local bagTradeGoods = function(item)
+		return isItemInBag(item) and isItemTrade(item)
+	end
+
+	local bagQuestItem = function(item)
+		return isItemInBag(item) and isItemQuest(item)
 	end
 
 	local bagsJunk = function(item)
@@ -149,5 +181,5 @@ function Module:GetFilters()
 		return isItemInBank(item) and isItemFavourite(item)
 	end
 
-	return onlyBags, bagAmmo, bagEquipment, bagConsumble, bagsJunk, onlyBank, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite
+	return onlyBags, bagAmmo, bagEquipment, bagConsumble, bagTradeGoods, bagQuestItem, bagsJunk, onlyBank, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite
 end
