@@ -1,16 +1,23 @@
 local _, ns = ...
 local oUF = ns.oUF
+
+local _G = _G
+
+local GetTime = _G.GetTime
+local InCombatLockdown = _G.InCombatLockdown
+local UnitPower = _G.UnitPower
+local UnitPowerType = _G.UnitPowerType
+local UnitPowerMax = _G.UnitPowerMax
+
 local LastTickTime = GetTime()
 local TickValue = 2
-local CurrentValue = UnitPower('player')
+local CurrentValue = UnitPower("player")
 local LastValue = CurrentValue
 local allowPowerEvent = true
 
 local Update = function(self, elapsed)
 	local element = self.EnergyManaRegen
-
 	element.sinceLastUpdate = (element.sinceLastUpdate or 0) + (tonumber(elapsed) or 0)
-
 	if element.sinceLastUpdate > 0.01 then
 		local powerType = UnitPowerType("player")
 
@@ -18,9 +25,8 @@ local Update = function(self, elapsed)
 			return
 		end
 
-		CurrentValue = UnitPower('player', powerType)
-
-		if powerType == Enum.PowerType.Mana and (not CurrentValue or CurrentValue >= UnitPowerMax('player', Enum.PowerType.Mana)) then
+		CurrentValue = UnitPower("player", powerType)
+		if powerType == Enum.PowerType.Mana and (not CurrentValue or CurrentValue >= UnitPowerMax("player", Enum.PowerType.Mana)) then
 			element:SetValue(0)
 			element.Spark:Hide()
 			return
@@ -48,12 +54,11 @@ end
 
 local EventHandler = function(self, event, _, _, spellID)
 	local powerType = UnitPowerType("player")
-
 	if powerType ~= Enum.PowerType.Mana then
 		return
 	end
 
-	if event == 'UNIT_POWER_UPDATE' and allowPowerEvent then
+	if event == "UNIT_POWER_UPDATE" and allowPowerEvent then
 		local Time = GetTime()
 
 		TickValue = Time - LastTickTime
@@ -69,11 +74,12 @@ local EventHandler = function(self, event, _, _, spellID)
 		LastTickTime = Time
 	end
 
-	if event == 'UNIT_SPELLCAST_SUCCEEDED' then
+	if event == "UNIT_SPELLCAST_SUCCEEDED" then
 		if spellID == 75 or spellID == 5019 then
 			return
 		end
 
+		self.EnergyManaRegen.Spark:Hide()
 		LastTickTime = GetTime() + 5
 		allowPowerEvent = false
 	end
@@ -90,18 +96,18 @@ local Enable = function(self, unit)
 	if (unit == "player") and element and Power then
 		element.__owner = self
 
-		if(element:IsObjectType('StatusBar')) then
+		if (element:IsObjectType("StatusBar")) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 			element:GetStatusBarTexture():SetAlpha(0)
 			element:SetMinMaxValues(0, 2)
 		end
 
 		local spark = element.Spark
-		if(spark and spark:IsObjectType('Texture')) then
+		if (spark and spark:IsObjectType("Texture")) then
 			spark:SetTexture([[Interface\AddOns\KkthnxUI\Media\Textures\Spark_128]])
 			spark:SetHeight(Power:GetHeight() - 2)
-			spark:SetBlendMode('ADD')
-			spark:SetPoint('CENTER', element:GetStatusBarTexture(), 'RIGHT')
+			spark:SetBlendMode("ADD")
+			spark:SetPoint("CENTER", element:GetStatusBarTexture(), "RIGHT")
 			spark:SetAlpha(0.6)
 		end
 
@@ -110,7 +116,9 @@ local Enable = function(self, unit)
 		self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", EventHandler)
 		self:RegisterEvent("UNIT_POWER_UPDATE", EventHandler)
 
-		element:SetScript('OnUpdate', function(_, elapsed) Path(self, elapsed) end)
+		element:SetScript("OnUpdate", function(_, elapsed)
+			Path(self, elapsed)
+		end)
 
 		return true
 	end
