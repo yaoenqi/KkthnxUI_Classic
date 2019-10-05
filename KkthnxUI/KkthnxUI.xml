@@ -6,8 +6,6 @@
 	<Script file="Init.lua" />
 	<!-- Settings -->
 	<Script file="Config\Settings.lua" />
-	<!-- Compatibility -->
-	<Include file="Compatibility\Load_Compatibility.xml" />
 	<!-- Media -->
 	<Script file="Media\Media.lua" />
 	<!-- Locales -->

@@ -1,6 +1,5 @@
 local K, C = unpack(select(2, ...))
 local Module = K:NewModule("Unitframes", "AceEvent-3.0")
-local LibBanzai = LibStub("LibBanzai-2.0", true)
 local LCD = K.LibClassicDurations
 
 local oUF = oUF or K.oUF
@@ -155,39 +154,6 @@ function Module:PostUpdatePvPIndicator(unit, status)
 			self:SetTexCoord(0.00390625, 0.136719, 0.511719, 0.671875)
 		else
 			self:SetTexCoord(0.00390625, 0.136719, 0.679688, 0.839844)
-		end
-	end
-end
-
-function Module:UpdateThreat(_, unit)
-	if (unit ~= self.unit) then
-		return
-	end
-
-	if not LibBanzai then
-		return
-	end
-
-	local Status = LibBanzai:GetUnitAggroByUnitId(unit)
-	if C["General"].PortraitStyle.Value == "ThreeDPortraits" then
-		if not self.Portrait then
-			return
-		end
-
-		if (Status) then
-			self.Portrait:SetBackdropBorderColor(1, 0, 0)
-		else
-			self.Portrait:SetBackdropBorderColor()
-		end
-	elseif C["General"].PortraitStyle.Value ~= "ThreeDPortraits" then
-		if not self.Portrait.Border then
-			return
-		end
-
-		if (Status) then
-			self.Portrait.Border:SetBackdropBorderColor(1, 0, 0)
-		else
-			self.Portrait.Border:SetBackdropBorderColor()
 		end
 	end
 end
