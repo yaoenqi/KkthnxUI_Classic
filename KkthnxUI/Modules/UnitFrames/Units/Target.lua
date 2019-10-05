@@ -224,7 +224,7 @@ function Module:CreateTarget(unit)
 
 	if C["Unitframe"].ShowHealPrediction then
 		local myBar = CreateFrame("StatusBar", nil, self)
-		myBar:SetWidth(self:GetWidth())
+		myBar:SetWidth(156)
 		myBar:SetPoint("TOP", self.Health, "TOP")
 		myBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
 		myBar:SetPoint("LEFT", self.Health:GetStatusBarTexture(), "RIGHT")
@@ -232,7 +232,7 @@ function Module:CreateTarget(unit)
 		myBar:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 		local otherBar = CreateFrame("StatusBar", nil, self)
-		otherBar:SetWidth(self:GetWidth())
+		otherBar:SetWidth(156)
 		otherBar:SetPoint("TOP", self.Health, "TOP")
 		otherBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
 		otherBar:SetPoint("LEFT", myBar:GetStatusBarTexture(), "RIGHT")

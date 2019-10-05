@@ -83,20 +83,9 @@ local function PostUpdateNameplateClassPower(element, _, max, diff)
 	end
 end
 
--- Post Update Classpower Texture
-local function UpdateClassPowerColor(element)
-	local r, g, b = 195/255, 202/255, 217/255
-
-	for index = 1, #element do
-		local Bar = element[index]
-		Bar:SetStatusBarColor(r, g, b)
-	end
-end
-
 -- Create Class Power Bars (Combo Points...)
 function Module:CreateClassPower()
 	local ClassPower = {}
-	ClassPower.UpdateColor = UpdateClassPowerColor
 	ClassPower.PostUpdate = PostUpdateClassPower
 
 	for index = 1, 11 do
@@ -123,9 +112,8 @@ end
 
 -- Create Class Power Bars For Nameplates (Combo Points...)
 function Module:CreateNamePlateClassPower()
-	local ClassPower = CreateFrame("Frame", nil, self)
+	local ClassPower = CreateFrame("Frame", "oUF_KkthnxNameplateClassPower", self)
 	ClassPower:SetSize(C["Nameplates"].Width, C["Nameplates"].Height - 2)
-	ClassPower.UpdateColor = UpdateClassPowerColor
 	ClassPower.PostUpdate = PostUpdateNameplateClassPower
 
 	for index = 1, 11 do

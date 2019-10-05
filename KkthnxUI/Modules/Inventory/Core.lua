@@ -536,9 +536,11 @@ function Module:OnEnable()
 		PlaySound(SOUNDKIT.IG_BACKPACK_CLOSE)
 	end)
 
+	Module.BagsType = {}
+	Module.BagsType[0] = 0
+	Module.BagsType[-1] = 0
+
 	local f = {}
-	Module.AmmoBags = {}
-	Module.SpecialBags = {}
 	local onlyBags, bagAmmo, bagEquipment, bagConsumble, bagTradeGoods, bagQuestItem, bagsJunk, onlyBank, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite = self:GetFilters()
 	function Backpack:OnInit()
 		local MyContainer = self:GetContainerClass()
@@ -776,7 +778,7 @@ function Module:OnEnable()
 
 		local label
 		if strmatch(name, "AmmoItem$") then
-			label = INVTYPE_AMMO
+			label = K.Class == "HUNTER" and INVTYPE_AMMO or SOUL_SHARDS
 		elseif strmatch(name, "Equipment$") then
 			--if itemSetFilter then
 			--	label = L["Equipement Set"]
@@ -858,7 +860,7 @@ function Module:OnEnable()
 			return
 		end
 
-		local _, _, quality, _, _, _, _, _, _, _, _, classID = GetItemInfo(id)
+		local _, _, quality, _, _, _, _, _, _, _, _, classID, subClassID = GetItemInfo(id)
 		quality = quality or 0
 		if quality == 1 then
 			quality = 0
@@ -871,10 +873,12 @@ function Module:OnEnable()
 			self:SetBackdropBorderColor()
 		end
 
-		Module.AmmoBags[self.bagID] = (classID == LE_ITEM_CLASS_QUIVER)
-		local bagFamily = select(2, GetContainerNumFreeSlots(self.bagID))
-		if bagFamily then
-			Module.SpecialBags[self.bagID] = bagFamily ~= 0
+		if classID == LE_ITEM_CLASS_CONTAINER then
+			Module.BagsType[self.bagID] = subClassID or 0
+		elseif classID == LE_ITEM_CLASS_QUIVER then
+			Module.BagsType[self.bagID] = -1
+		else
+			Module.BagsType[self.bagID] = 0
 		end
 	end
 

@@ -214,7 +214,7 @@ function Module:CreatePlayer(unit)
 
 	if C["Unitframe"].ShowHealPrediction then
 		local myBar = CreateFrame("StatusBar", nil, self)
-		myBar:SetWidth(self:GetWidth())
+		myBar:SetWidth(156)
 		myBar:SetPoint("TOP", self.Health, "TOP")
 		myBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
 		myBar:SetPoint("LEFT", self.Health:GetStatusBarTexture(), "RIGHT")
@@ -222,7 +222,7 @@ function Module:CreatePlayer(unit)
 		myBar:SetStatusBarColor(0, 1, 0.5, 0.25)
 
 		local otherBar = CreateFrame("StatusBar", nil, self)
-		otherBar:SetWidth(self:GetWidth())
+		otherBar:SetWidth(156)
 		otherBar:SetPoint("TOP", self.Health, "TOP")
 		otherBar:SetPoint("BOTTOM", self.Health, "BOTTOM")
 		otherBar:SetPoint("LEFT", myBar:GetStatusBarTexture(), "RIGHT")
@@ -239,7 +239,7 @@ function Module:CreatePlayer(unit)
 	if C["Unitframe"].ShowPlayerName then
 		self.Name = self:CreateFontString(nil, "OVERLAY")
 		self.Name:SetPoint("TOP", self.Health, 0, 16)
-		self.Name:SetWidth(self.Health:GetWidth())
+		self.Name:SetWidth(156)
 		self.Name:SetFontObject(UnitframeFont)
 		self:Tag(self.Name, " [color][name]")
 	end

@@ -408,7 +408,7 @@ function Module:CreateNameplates(unit)
 
 	-- Classbars
 	if C["Nameplates"].ClassResource then
-		Module.CreateNamePlateClassPower(self)
+		-- Module.CreateNamePlateClassPower(self)
 	end
 
 	local function ThreatLibCallback()

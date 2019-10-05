@@ -19,7 +19,6 @@ local unpack = _G.unpack
 
 local CLASS_ICON_TCOORDS = _G.CLASS_ICON_TCOORDS
 local COOLDOWN_Anchor = _G.COOLDOWN_Anchor
-local C_NamePlate_GetNamePlateForUnit = _G.C_NamePlate.GetNamePlateForUnit
 local CreateFrame = _G.CreateFrame
 local DebuffTypeColor = _G.DebuffTypeColor
 local GetCVarDefault = _G.GetCVarDefault
@@ -58,7 +57,6 @@ local UnitIsFriend = _G.UnitIsFriend
 local UnitIsGhost = _G.UnitIsGhost
 local UnitIsPVP = _G.UnitIsPVP
 local UnitIsPVPFreeForAll = _G.UnitIsPVPFreeForAll
-local UnitIsPVPSanctuary = _G.UnitIsPVPSanctuary
 local UnitIsPlayer = _G.UnitIsPlayer
 local UnitIsUnit = _G.UnitIsUnit
 local UnitReaction = _G.UnitReaction
@@ -927,9 +925,10 @@ function Module:AddPlateInterruptInfo()
 end
 
 function Module:NameplatesCallback(nameplate, event, unit)
-	if not nameplate then return end
+	if not nameplate then
+		return
+	end
 
-	local Point, Relpoint, xOffset, yOffset = "TOP", "BOTTOM", 0, 8
 	if event == "NAME_PLATE_UNIT_ADDED" then
 		unit = unit or nameplate.unit
 
@@ -939,76 +938,9 @@ function Module:NameplatesCallback(nameplate, event, unit)
 			Module.guidToPlate[nameplate.unitGUID] = nameplate
 		end
 		nameplate.npcID = K.GetNPCID(nameplate.unitGUID)
-
-		if UnitIsUnit(unit, "player") then
-			nameplate.frameType = "PLAYER"
-		elseif
-		UnitIsPVPSanctuary(unit) or
-		(nameplate.isPlayer and UnitIsFriend("player", unit) and nameplate.reaction and nameplate.reaction >= 5)
-		then
-			nameplate.frameType = "FRIENDLY_PLAYER"
-		elseif
-		not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction >= 5) or UnitFactionGroup(unit) == "Neutral"
-		then
-			nameplate.frameType = "FRIENDLY_NPC"
-		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction <= 4) then
-			nameplate.frameType = "ENEMY_NPC"
-		else
-			nameplate.frameType = "ENEMY_PLAYER"
-		end
-
-		if UnitIsUnit(unit, "player") then
-			nameplate:DisableElement("Castbar")
-			nameplate:DisableElement("RaidTargetIndicator")
-			nameplate.Name:Hide()
-
-			if nameplate.ClassPower then
-				nameplate.ClassPower:Show()
-				nameplate:EnableElement("ClassPower")
-				nameplate.ClassPower:ForceUpdate()
-			end
-		else
-			nameplate:EnableElement("Castbar")
-			nameplate:EnableElement("RaidTargetIndicator")
-			nameplate.Name:Show()
-
-			if nameplate.ClassPower then
-				nameplate.ClassPower:Hide()
-				nameplate:DisableElement("ClassPower")
-			end
-		end
 	elseif event == "NAME_PLATE_UNIT_REMOVED" then
 		if nameplate.unitGUID then
 			Module.guidToPlate[nameplate.unitGUID] = nil
-		end
-
-		nameplate:DisableElement("ClassPower")
-
-		nameplate:EnableElement("Castbar")
-		nameplate:EnableElement("RaidTargetIndicator")
-		nameplate.Name:Show()
-
-		if nameplate.ClassPower then
-			nameplate.ClassPower:Hide()
-			nameplate.ClassPower:ClearAllPoints()
-			nameplate.ClassPower:SetParent(nameplate)
-			nameplate.ClassPower:SetPoint(Point, nameplate.Health, Relpoint, xOffset, yOffset)
-		end
-	end
-
-	if _G.GetCVarBool("nameplateResourceOnTarget") then
-		local Player, Target = C_NamePlate_GetNamePlateForUnit("player"), UnitExists("target") and C_NamePlate_GetNamePlateForUnit("target")
-		if Target and Target:IsForbidden() then
-			Target = nil
-		end
-
-		if Player then
-			local Anchor = Target and Target.unitFrame or Player.unitFrame
-			if Player.unitFrame.ClassPower then
-				Player.unitFrame.ClassPower:ClearAllPoints()
-				Player.unitFrame.ClassPower:SetParent(Anchor)
-				Player.unitFrame.ClassPower:SetPoint(Point, Anchor.Castbar, Relpoint, xOffset, yOffset)
-			end
 		end
 	end
 
@@ -1118,20 +1050,20 @@ function Module:CreateStyle(unit)
 	local Parent = self:GetParent():GetName()
 
 	if (unit == "player") then
-		Module.CreatePlayer(self, unit)
+		Module.CreatePlayer(self)
 	elseif (unit == "target") then
-		Module.CreateTarget(self, unit)
+		Module.CreateTarget(self)
 	elseif (unit == "targettarget") then
 		Module.CreateTargetOfTarget(self)
 	elseif (unit == "pet") then
 		Module.CreatePet(self)
-	elseif (string_find(unit, "raid") or string_find(unit, "maintank")) then
-		if string_match(Parent, "Party") then
-			Module.CreateParty(self, unit)
+	elseif (unit:find("raid")) or (unit:find("maintank")) then
+		if Parent:match("Party") then
+			Module.CreateParty(self)
 		else
 			Module.CreateRaid(self)
 		end
-	elseif string_match(unit, "nameplate") and C["Nameplates"].Enable then
+	elseif unit:match("nameplate") then
 		Module.CreateNameplates(self, unit)
 	end
 
@@ -1188,11 +1120,11 @@ function Module:CreateUnits()
 
 				K.Mover(HealerRaid, "HealRaid", "HealRaid", {"TOPLEFT", "oUF_Player", "BOTTOMRIGHT", 8, 48}, C["Raid"].Width, C["Raid"].Height)
 			elseif C["Raid"].RaidLayout.Value == "Damage" then
-				DamageRaid:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 4, -30)
+				DamageRaid:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 4, -60)
 
 				Module.Headers.Raid = DamageRaid
 
-				K.Mover(DamageRaid, "DpsRaid", "DpsRaid", {"TOPLEFT", UIParent, "TOPLEFT", 4, -30}, C["Raid"].Width, C["Raid"].Height)
+				K.Mover(DamageRaid, "DpsRaid", "DpsRaid", {"TOPLEFT", UIParent, "TOPLEFT", 4, -60}, C["Raid"].Width, C["Raid"].Height)
 			end
 
 			if C["Raid"].MainTankFrames then

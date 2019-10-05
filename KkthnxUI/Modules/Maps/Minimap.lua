@@ -6,16 +6,10 @@ local string_sub = string.sub
 
 local C_Timer_After = _G.C_Timer.After
 local CreateFrame = _G.CreateFrame
-local GameTimeFrame = _G.GameTimeFrame
-local GarrisonLandingPageMinimapButton = _G.GarrisonLandingPageMinimapButton
-local GuildInstanceDifficulty = _G.GuildInstanceDifficulty
 local hooksecurefunc = _G.hooksecurefunc
 local InCombatLockdown = _G.InCombatLockdown
 local Minimap = _G.Minimap
-local MiniMapChallengeMode = _G.MiniMapChallengeMode
-local MiniMapInstanceDifficulty = _G.MiniMapInstanceDifficulty
 local MiniMapMailFrame = _G.MiniMapMailFrame
-local QueueStatusMinimapButton = _G.QueueStatusMinimapButton
 local UIParent = _G.UIParent
 
 function Module:OnMouseWheelScroll(d)
@@ -42,10 +36,6 @@ local function SetupZoomReset()
 end
 hooksecurefunc(Minimap, "SetZoom", SetupZoomReset)
 
-if(C["Minimap"].Enable) then
-	function GetMinimapShape() return "SQUARE" end
-end
-
 function Module:UpdateSettings()
 	if InCombatLockdown() then
 		return self:RegisterEvent("PLAYER_REGEN_ENABLED", "OnEvent")
@@ -68,78 +58,32 @@ function Module:UpdateSettings()
 		return
 	end
 
-	if GarrisonLandingPageMinimapButton then
-		if not C["Minimap"].GarrisonLandingPage then
-			-- ugly hack to keep the keybind functioning
-			GarrisonLandingPageMinimapButton:SetParent(K.UIFrameHider)
-			GarrisonLandingPageMinimapButton:UnregisterAllEvents()
-			GarrisonLandingPageMinimapButton:Show()
-			GarrisonLandingPageMinimapButton.Hide = GarrisonLandingPageMinimapButton.Show
-		else
-			GarrisonLandingPageMinimapButton:ClearAllPoints()
-			GarrisonLandingPageMinimapButton:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 0, 0)
-			GarrisonLandingPageMinimapButton:SetScale(0.8)
-			if GarrisonLandingPageTutorialBox then
-				GarrisonLandingPageTutorialBox:SetScale(0.8)
-				GarrisonLandingPageTutorialBox:SetClampedToScreen(true)
-			end
-		end
-	end
-
-	if GameTimeFrame then
-		if not C["Minimap"].Calendar then
-			GameTimeFrame:Hide()
-		else
-			GameTimeFrame:ClearAllPoints()
-			GameTimeFrame:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", 0, 0)
-			GameTimeFrame:SetScale(0.6)
-			GameTimeFrame:Show()
-		end
-	end
-
 	if MiniMapMailFrame then
 		MiniMapMailFrame:ClearAllPoints()
 		MiniMapMailFrame:SetPoint("BOTTOM", Minimap, "BOTTOM", 0, 4)
 		MiniMapMailFrame:SetScale(1.2)
 	end
 
-	-- QueueStatus Button
-	if QueueStatusMinimapButton then
-		QueueStatusMinimapButton:ClearAllPoints()
-		QueueStatusMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, -2)
+	if MiniMapTrackingFrame then
+		MiniMapTrackingFrame:ClearAllPoints()
+		MiniMapTrackingFrame:SetPoint("BOTTOMLEFT", Minimap, -4, -6)
 
-		local queueIcon = Minimap:CreateTexture(nil, "ARTWORK")
-		queueIcon:SetPoint("CENTER", QueueStatusMinimapButton)
-		queueIcon:SetSize(22, 22)
-		queueIcon:SetTexture("Interface\\Minimap\\ObjectIconsAtlas")
-		queueIcon:SetTexCoord(0.8125, 0.833984, 0.0683594, 0.111328)
+		if (MiniMapTrackingBorder) then
+			MiniMapTrackingBorder:Hide()
+		end
 
-		local anim = queueIcon:CreateAnimationGroup()
-		anim:SetLooping("REPEAT")
-		anim.rota = anim:CreateAnimation("Rotation")
-		anim.rota:SetDuration(3)
-		anim.rota:SetDegrees(360)
+		if (MiniMapTrackingIcon) then
+			MiniMapTrackingIcon:SetDrawLayer("ARTWORK")
+			MiniMapTrackingIcon:SetTexCoord(unpack(K.TexCoords))
+			MiniMapTrackingIcon:SetSize(18, 18)
+		end
 
-		hooksecurefunc("QueueStatusFrame_Update", function()
-			queueIcon:SetShown(QueueStatusMinimapButton:IsShown())
-		end)
-
-		hooksecurefunc("EyeTemplate_StartAnimating", function() anim:Play() end)
-		hooksecurefunc("EyeTemplate_StopAnimating", function() anim:Stop() end)
-	end
-
-	if MiniMapInstanceDifficulty and GuildInstanceDifficulty then
-		MiniMapInstanceDifficulty:ClearAllPoints()
-		MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
-		MiniMapInstanceDifficulty:SetScale(0.9)
-		GuildInstanceDifficulty:ClearAllPoints()
-		GuildInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
-		GuildInstanceDifficulty:SetScale(0.9)
-	end
-
-	if MiniMapChallengeMode then
-		MiniMapChallengeMode:ClearAllPoints()
-		MiniMapChallengeMode:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 8, -8)
+		MiniMapTrackingFrame:CreateBackdrop()
+		MiniMapTrackingFrame.Backdrop:SetFrameLevel(MiniMapTrackingFrame:GetFrameLevel())
+		MiniMapTrackingFrame.Backdrop:SetAllPoints(MiniMapTrackingIcon)
+		MiniMapTrackingFrame.Backdrop:CreateBorder()
+		MiniMapTrackingFrame.Backdrop:CreateInnerShadow()
+		MiniMapTrackingFrame.Backdrop:SetBackdropBorderColor(K.r, K.g, K.b)
 	end
 
 	if StreamingIcon then
@@ -207,6 +151,17 @@ function Module:WhoPingedMyMap()
 	K:RegisterEvent("MINIMAP_PING", self.MINIMAP_PING)
 end
 
+function Module:GetMinimapShape()
+	--Support for other mods
+	if C["Minimap"].Enable then
+		function GetMinimapShape()
+			return "SQUARE"
+		end
+
+		Minimap:SetSize(C["Minimap"].Size, C["Minimap"].Size)
+	end
+end
+
 function Module:OnEnable()
 	self:UpdateSettings()
 
@@ -216,12 +171,7 @@ function Module:OnEnable()
 		return
 	end
 
-	local UIHider = K.UIFrameHider
-
-	-- Support for other mods
-	function GetMinimapShape()
-		return "SQUARE"
-	end
+	self:GetMinimapShape()
 
 	local MinimapFrameHolder = CreateFrame("Frame", "MinimapFrameHolder", Minimap)
 	MinimapFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -4, -4)
@@ -236,55 +186,28 @@ function Module:OnEnable()
 	Minimap:SetScale(1.0)
 	Minimap:SetBlipTexture("Interface\\AddOns\\KkthnxUI\\Media\\MiniMap\\Classic-Nandini-New")
 
-	_G.MinimapBorder:SetParent(UIHider)
-	_G.MinimapBorderTop:SetParent(UIHider)
-	_G.MiniMapMailBorder:SetParent(UIHider)
-	_G.MinimapNorthTag:SetParent(UIHider)
-	_G.MinimapZoneTextButton:SetParent(UIHider)
-	_G.MinimapZoomIn:SetParent(UIHider)
-	_G.MinimapZoomOut:SetParent(UIHider)
+	_G.GameTimeFrame:Hide()
+	_G.MiniMapMailBorder:Hide()
 	_G.MiniMapMailIcon:SetTexture("Interface\\Addons\\KkthnxUI\\Media\\Textures\\Mail")
+	_G.MinimapBorder:Hide()
+	_G.MinimapNorthTag:Kill()
+	_G.MinimapBorderTop:Hide()
 	_G.MinimapToggleButton:Hide()
+	_G.MinimapZoneTextButton:Hide()
+	_G.MinimapZoomIn:Hide()
+	_G.MinimapZoomOut:Hide()
 
-	MinimapCluster:EnableMouse(false)
+	_G.MiniMapWorldMapButton:Hide()
 
-	if (MiniMapTrackingFrame) then
-		MiniMapTrackingFrame:ClearAllPoints()
-		MiniMapTrackingFrame:SetPoint("BOTTOMLEFT", Minimap, -4, -6)
-
-		if (MiniMapTrackingBorder) then
-			MiniMapTrackingBorder:Hide()
-		end
-
-		if (MiniMapTrackingIcon) then
-			MiniMapTrackingIcon:SetDrawLayer("ARTWORK")
-			MiniMapTrackingIcon:SetTexCoord(unpack(K.TexCoords))
-			MiniMapTrackingIcon:SetSize(18, 18)
-		end
-
-		MiniMapTrackingFrame:CreateBackdrop()
-		MiniMapTrackingFrame.Backdrop:SetFrameLevel(MiniMapTrackingFrame:GetFrameLevel())
-		MiniMapTrackingFrame.Backdrop:SetAllPoints(MiniMapTrackingIcon)
-		MiniMapTrackingFrame.Backdrop:CreateBorder()
-		MiniMapTrackingFrame.Backdrop:CreateInnerShadow()
-		MiniMapTrackingFrame.Backdrop:SetBackdropBorderColor(K.r, K.g, K.b)
+	if _G.TimeManagerClockButton then
+		_G.TimeManagerClockButton:Kill()
 	end
 
-	if QueueStatusMinimapButtonBorder then
-		QueueStatusMinimapButtonBorder:SetAlpha(0)
-		QueueStatusMinimapButtonBorder:SetTexture(nil)
-		QueueStatusMinimapButtonIconTexture:SetTexture(nil)
+	if _G.FeedbackUIButton then
+		_G.FeedbackUIButton:Kill()
 	end
 
-	_G.MiniMapWorldMapButton:SetParent(K.UIFrameHider)
-
-	if TimeManagerClockButton then
-		TimeManagerClockButton:Kill()
-	end
-
-	if FeedbackUIButton then
-		FeedbackUIButton:Kill()
-	end
+	_G.MinimapCluster:EnableMouse(false)
 
 	K.Mover(MinimapFrameHolder, "Minimap", "Minimap", {"TOPRIGHT", UIParent, "TOPRIGHT", -4, -4}, Minimap:GetWidth(), Minimap:GetHeight())
 

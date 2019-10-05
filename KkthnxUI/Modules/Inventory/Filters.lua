@@ -41,11 +41,11 @@ local function isItemAmmo(item)
 		return
 	end
 
-	if K.Class ~= "HUNTER" then
-		return
+	if K.Class == "HUNTER" then
+		return item.equipLoc == "INVTYPE_AMMO" or Module.BagsType[item.bagID] == -1
+	elseif K.Class == "WARLOCK" then
+		return item.id == 6265 or Module.BagsType[item.bagID] == 1
 	end
-
-	return item.equipLoc == "INVTYPE_AMMO" or Module.AmmoBags[item.bagID]
 end
 
 local function isItemEquipment(item)
@@ -117,7 +117,7 @@ local function isEmptySlot(item)
 		return
 	end
 
-	return not item.texture and not Module.SpecialBags[item.bagID]
+	return not item.texture and Module.BagsType[item.bagID] == 0
 end
 
 function Module:GetFilters()
