@@ -2,11 +2,9 @@ local K, C = unpack(select(2, ...))
 if C["Party"].Enable ~= true then
 	return
 end
+
 local Module = K:GetModule("Unitframes")
-
 local oUF = oUF or K.oUF
-local LibBanzai = LibStub("LibBanzai-2.0", true)
-
 if not oUF then
 	K.Print("Could not find a vaild instance of oUF. Stopping Party.lua code!")
 	return
@@ -292,17 +290,6 @@ function Module:CreateParty(unit)
 		self.DebuffHighlightAlpha = 0.45
 		self.DebuffHighlightFilter = true
 		self.DebuffHighlightFilterTable = K.DebuffHighlightColors
-	end
-
-	-- Agro border
-	table.insert(self.__elements, Module.UpdateThreat)
-	self:RegisterEvent("PLAYER_TARGET_CHANGED", Module.UpdateThreat, true)
-	if LibBanzai then
-		LibBanzai:RegisterCallback(function()
-			Module.UpdateThreat(self, "UNIT_THREAT_LIST_UPDATE", unit)
-		end)
-		self:RegisterEvent("PLAYER_REGEN_ENABLED", Module.UpdateThreat, true)
-		self:RegisterEvent("PLAYER_REGEN_DISABLED", Module.UpdateThreat, true)
 	end
 
 	self.SpellRange = {

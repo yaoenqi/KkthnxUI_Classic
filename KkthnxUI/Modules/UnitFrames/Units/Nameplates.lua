@@ -1,7 +1,6 @@
 local K, C = unpack(select(2, ...))
 local Module = K:GetModule("Unitframes")
 local oUF = oUF or K.oUF
-local ThreatLib = LibStub:GetLibrary("ThreatClassic-1.0")
 
 if not oUF then
 	K.Print("Could not find a vaild instance of oUF. Stopping Nameplates.lua code!")
@@ -26,80 +25,6 @@ local UnitIsUnit = _G.UnitIsUnit
 local UnitPower = _G.UnitPower
 local UnitReaction = _G.UnitReaction
 local UnitSelectionColor = _G.UnitSelectionColor
-
--- Threat Update Color For Health
-local function threatColor(self, forced)
-	if UnitIsPlayer(self.unit) then
-		return
-	end
-
-	local combat = UnitAffectingCombat("player")
-	local _, threatStatus = UnitDetailedThreatSituation("player", self.unit)
-
-	if UnitAffectingCombat(self.unit) then
-		local maxThreat = ThreatLib:GetMaxThreatOnTarget(UnitGUID(self.unit))
-		if not maxThreat or maxThreat <= 0 then
-			threatStatus = 3
-		else
-			self.Health:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		end
-	end
-
-	if C["Nameplates"].TankMode ~= true then
-		self.Health.Shadow:SetBackdropBorderColor(0, 0, 0, 0.8)
-	end
-	if UnitIsTapDenied(self.unit) then
-		self.Health:SetStatusBarColor(0.6, 0.6, 0.6)
-	elseif combat then
-		if threatStatus == 3 then	-- securely tanking, highest threat
-			if K.Role == "Tank" then
-				if C["Nameplates"].TankMode == true then
-					self.Health:SetStatusBarColor(unpack(C["Nameplates"].GoodColor))
-				else
-					self.Health.Shadow:SetBackdropBorderColor(unpack(C["Nameplates"].BadColor))
-				end
-			else
-				if C["Nameplates"].TankMode == true then
-					self.Health:SetStatusBarColor(unpack(C["Nameplates"].BadColor))
-				else
-					self.Health.Shadow:SetBackdropBorderColor(unpack(C["Nameplates"].BadColor))
-				end
-			end
-		elseif threatStatus == 2 then	-- insecurely tanking, another unit have higher threat but not tanking
-			if C["Nameplates"].TankMode == true then
-				self.Health:SetStatusBarColor(unpack(C["Nameplates"].NearColor))
-			else
-				self.Health.Shadow:SetBackdropBorderColor(unpack(C["Nameplates"].NearColor))
-			end
-		elseif threatStatus == 1 then	-- not tanking, higher threat than tank
-			if C["Nameplates"].TankMode == true then
-				self.Health:SetStatusBarColor(unpack(C["Nameplates"].NearColor))
-			else
-				self.Health.Shadow:SetBackdropBorderColor(unpack(C["Nameplates"].NearColor))
-			end
-		elseif threatStatus == 0 then	-- not tanking, lower threat than tank
-			if C["Nameplates"].TankMode == true then
-				if K.Role == "Tank" then
-					self.Health:SetStatusBarColor(unpack(C["Nameplates"].BadColor))
-					if IsInGroup() or IsInRaid() then
-						for i = 1, GetNumGroupMembers() do
-							if UnitExists("raid"..i) and not UnitIsUnit("raid"..i, "player") then
-								local isTanking = UnitDetailedThreatSituation("raid"..i, self.unit)
-								if isTanking and UnitGroupRolesAssigned("raid"..i) == "TANK" then
-									self.Health:SetStatusBarColor(unpack(C["Nameplates"].OffTankColor))
-								end
-							end
-						end
-					end
-				else
-					self.Health:SetStatusBarColor(unpack(C["Nameplates"].GoodColor))
-				end
-			end
-		end
-	elseif not forced then
-		self.Health:ForceUpdate()
-	end
-end
 
 function Module:DisplayNameplatePowerAndCastBar(unit, cur)
 	if not unit then
@@ -409,65 +334,6 @@ function Module:CreateNameplates(unit)
 	-- Classbars
 	if C["Nameplates"].ClassResource then
 		-- Module.CreateNamePlateClassPower(self)
-	end
-
-	local function ThreatLibCallback()
-		return threatColor(main)
-	end
-
-	if ThreatLib then
-		if not UnitIsPlayer(unit) and not UnitIsFriend("player", unit) then
-			self.Health:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		end
-		ThreatLib.RegisterCallback(self.Health, "ThreatUpdated", ThreatLibCallback)
-	end
-
-	self.Health:SetScript("OnEvent", function(self, event)
-		if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-			local unitGUID = UnitGUID(unit)
-			local _, _, _, srcGUID, _, _, _, dstGUID = CombatLogGetCurrentEventInfo()
-			if unitGUID ~= srcGUID and unitGUID ~= dstGUID then
-				return
-			end
-		end
-		threatColor(main)
-	end)
-
-	self.Health.PostUpdate = function(self, unit, min, max)
-		local perc = 0
-		if max and max > 0 then
-			perc = min / max
-		end
-
-		local r, g, b
-		local unitReaction = UnitReaction(unit, "player")
-		if not UnitIsUnit("player", unit) and UnitIsPlayer(unit) and (unitReaction and unitReaction >= 5) then
-			r, g, b = unpack(K.Colors.power["MANA"])
-			self:SetStatusBarColor(r, g, b)
-		elseif not UnitIsTapDenied(unit) and not UnitIsPlayer(unit) then
-			local reaction = K.Colors.reaction[unitReaction]
-			if reaction then
-				r, g, b = reaction[1], reaction[2], reaction[3]
-			else
-				r, g, b = UnitSelectionColor(unit, true)
-			end
-
-			self:SetStatusBarColor(r, g, b)
-		end
-
-		if UnitIsPlayer(unit) then
-			if perc <= 0.5 and perc >= 0.2 then
-				self.Shadow:SetBackdropBorderColor(1, 1, 0)
-			elseif perc < 0.2 then
-				self.Shadow:SetBackdropBorderColor(1, 0, 0)
-			else
-				self.Shadow:SetBackdropBorderColor(0, 0, 0, 0.8)
-			end
-		elseif not UnitIsPlayer(unit) and C["Nameplates"].TankMode == true then
-			self.Shadow:SetBackdropBorderColor(0, 0, 0, 0.8)
-		end
-
-		threatColor(main, true)
 	end
 
 	-- Register Events For Functions As Needed.

@@ -1,7 +1,6 @@
 local K, C = unpack(select(2, ...))
 local Module = K:GetModule("Unitframes")
 local oUF = oUF or K.oUF
-local LibBanzai = LibStub("LibBanzai-2.0", true)
 
 if (not oUF) then
 	K.Print("Could not find a vaild instance of oUF. Stopping Player.lua code!")
@@ -441,17 +440,6 @@ function Module:CreatePlayer(unit)
 	self.Highlight:SetVertexColor(.6, .6, .6)
 	self.Highlight:SetBlendMode("ADD")
 	self.Highlight:Hide()
-
-	-- Agro border
-	table.insert(self.__elements, Module.UpdateThreat)
-	self:RegisterEvent("PLAYER_TARGET_CHANGED", Module.UpdateThreat, true)
-	if LibBanzai then
-		LibBanzai:RegisterCallback(function()
-			Module.UpdateThreat(self, "UNIT_THREAT_LIST_UPDATE", unit)
-		end)
-		self:RegisterEvent("PLAYER_REGEN_ENABLED", Module.UpdateThreat, true)
-		self:RegisterEvent("PLAYER_REGEN_DISABLED", Module.UpdateThreat, true)
-	end
 
 	self.CombatFade = C["Unitframe"].CombatFade
 end
