@@ -2,10 +2,9 @@ local K, C = unpack(select(2, ...))
 if C["Raid"].Enable ~= true then
 	return
 end
+
 local Module = K:GetModule("Unitframes")
-
 local oUF = oUF or K.oUF
-
 if not oUF then
 	K.Print("Could not find a vaild instance of oUF. Stopping Raid.lua code!")
 	return
@@ -15,24 +14,8 @@ local _G = _G
 local select = select
 
 local CreateFrame = _G.CreateFrame
-local GetThreatStatusColor = _G.GetThreatStatusColor
 local UnitIsUnit = _G.UnitIsUnit
 local UnitPowerType = _G.UnitPowerType
-local UnitThreatSituation = _G.UnitThreatSituation
-
-local function UpdateThreat(self, _, unit)
-	if unit ~= self.unit then
-		return
-	end
-
-	local situation = UnitThreatSituation(unit)
-	if (situation and situation > 0) then
-		local r, g, b = GetThreatStatusColor(situation)
-		self:SetBackdropBorderColor(r, g, b)
-	else
-		self:SetBackdropBorderColor()
-	end
-end
 
 local function UpdateRaidPower(self, _, unit)
     if self.unit ~= unit then

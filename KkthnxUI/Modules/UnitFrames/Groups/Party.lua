@@ -16,7 +16,7 @@ local select = _G.select
 local CreateFrame = _G.CreateFrame
 local UnitIsUnit = _G.UnitIsUnit
 
-function Module:CreateParty(unit)
+function Module:CreateParty()
 	local UnitframeFont = K.GetFont(C["UIFonts"].UnitframeFonts)
 	local UnitframeTexture = K.GetTexture(C["UITextures"].UnitframeTextures)
 	local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)

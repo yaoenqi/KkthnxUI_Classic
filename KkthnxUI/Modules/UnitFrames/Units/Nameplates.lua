@@ -8,23 +8,11 @@ if not oUF then
 end
 
 local _G = _G
--- local unpack = _G.unpack
 
 local CreateFrame = _G.CreateFrame
-local GetNumGroupMembers = _G.GetNumGroupMembers
-local IsInGroup = _G.IsInGroup
-local IsInRaid = _G.IsInRaid
 local UIParent = _G.UIParent
-local UnitAffectingCombat = _G.UnitAffectingCombat
-local UnitDetailedThreatSituation = _G.UnitDetailedThreatSituation
-local UnitExists = _G.UnitExists
-local UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned
-local UnitIsPlayer = _G.UnitIsPlayer
-local UnitIsTapDenied = _G.UnitIsTapDenied
 local UnitIsUnit = _G.UnitIsUnit
 local UnitPower = _G.UnitPower
-local UnitReaction = _G.UnitReaction
-local UnitSelectionColor = _G.UnitSelectionColor
 
 function Module:DisplayNameplatePowerAndCastBar(unit, cur)
 	if not unit then
@@ -60,7 +48,6 @@ end
 
 -- Create The Plates. Where The Magic Happens
 function Module:CreateNameplates(unit)
-	local main = self
 	self.unit = unit
 
 	local NameplateTexture = K.GetTexture(C["UITextures"].NameplateTextures)
@@ -330,11 +317,6 @@ function Module:CreateNameplates(unit)
 	self.targetHightlightMark:SetTexture("Interface\\GLUES\\Models\\UI_Draenei\\GenericGlow64")
 	self.targetHightlightMark:SetVertexColor(0, .6, 1)
 	self.targetHightlightMark:Hide()
-
-	-- Classbars
-	if C["Nameplates"].ClassResource then
-		-- Module.CreateNamePlateClassPower(self)
-	end
 
 	-- Register Events For Functions As Needed.
 	self:RegisterEvent("PLAYER_TARGET_CHANGED", Module.UpdateNameplateTarget, true)
