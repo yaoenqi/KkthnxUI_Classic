@@ -29,6 +29,11 @@ Donations are welcome, but not required to use the UI at all. Donations help me 
 * [PayPal](https://www.paypal.me/kkthnx)
 * [Patreon](https://www.patreon.com/kkthnx)
 * [Steam Wishlist](https://www.curseforge.com/linkout?remoteUrl=http%253a%252f%252fstore.steampowered.com%252fwishlist%252fid%252fKkthnx)
+   
+## Suggested AddOns!
+* [Real Mob Health](https://www.curseforge.com/wow/addons/real-mob-health)   
+* [Questie](https://www.curseforge.com/wow/addons/questie)   
+* [ClassicLFG](https://www.curseforge.com/wow/addons/classiclfg)
 
 Regards
 Josh *"Kkthnx"* Russell
