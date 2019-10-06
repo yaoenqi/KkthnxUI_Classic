@@ -13,6 +13,7 @@ local function SpellName(id)
 end
 
 ns.PortraitTimerDB = {
+	[SpellName(1022)] = true,
 	[SpellName(1022)] = true, -- Hand of Protection
 	[SpellName(1044)] = true, -- Hand of Freedom
 	[SpellName(118)] = true, -- Polymorph
@@ -65,6 +66,7 @@ ns.PortraitTimerDB = {
 	[SpellName(8122)] = true, -- Psychic Scream
 	[SpellName(8377)] = true, -- Earthgrab
 	[SpellName(853)] = true, -- Hammer of Justice
+	[SpellName(8643)] = true, -- Kidney Shot(R2)
 	[SpellName(871)] = true, -- Shield Wall
 	[SpellName(9005)] = true, -- Pounce
 	[SpellName(9484)] = true, -- Shackle Undead
@@ -83,7 +85,7 @@ local Update = function(self, event, unit)
 		name, texture, _, _, duration, expirationTime, unitCaster, _, _, spellId = UnitBuff(unit, i)
 
 		if name then
-			results = ns.PortraitTimerDB[spellId]
+			results = ns.PortraitTimerDB[SpellName(spellId)]
 
 			if results then
 				local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
@@ -108,7 +110,7 @@ local Update = function(self, event, unit)
 		name, texture, _, _, duration, expirationTime, unitCaster, _, _, spellId = UnitDebuff(unit, i)
 
 		if name then
-			results = ns.PortraitTimerDB[spellId]
+			results = ns.PortraitTimerDB[SpellName(spellId)]
 
 			if results then
 				local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster, name)

@@ -184,7 +184,7 @@ function Module:OnEnable()
 	Minimap:CreateBorder()
 	Minimap:CreateInnerShadow(nil, 0.4)
 	Minimap:SetScale(1.0)
-	Minimap:SetBlipTexture("Interface\\AddOns\\KkthnxUI\\Media\\MiniMap\\Classic-Nandini-New")
+	Minimap:SetBlipTexture(C["Minimap"].BlipTexture.Value)
 
 	_G.GameTimeFrame:Hide()
 	_G.MiniMapMailBorder:Hide()

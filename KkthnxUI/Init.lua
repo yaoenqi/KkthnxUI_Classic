@@ -37,8 +37,9 @@ Engine[1] = {} -- K, Main
 Engine[2] = {} -- C, Config
 Engine[3] = {} -- L, Locales
 
-local K = unpack(Engine)
+local K, C, L = unpack(Engine)
 
+K.LibClassicCasterino = LibStub("LibClassicCasterino", true)
 K.LibClassicDurations = LibStub("LibClassicDurations")
 K.LibClassicDurations:RegisterFrame("KkthnxUI")
 

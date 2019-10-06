@@ -13,10 +13,8 @@ _G.KkthnxUIConfig["enUS"] = {
 		-- Let's Keep This In Alphabetical Order, Shall We?
 		["ActionBar"] = "Action Bar",
 		["Announcements"] = "Announcements",
-		["Arena"] = "Arena",
 		["Auras"] = "Auras",
 		["Automation"] = "Automation",
-		["Boss"] = "Boss",
 		["Chat"] = "Chat",
 		["DataBars"] = "Data Bars",
 		["DataText"] = "Data Text",
@@ -42,10 +40,12 @@ _G.KkthnxUIConfig["enUS"] = {
 	["ActionBar"] = {
 		["Cooldowns"] = {
 			["Name"] = "Show Cooldowns",
+			["Desc"] = "Display cooldowns on the actionbars and other elements.",
 		},
 
 		["Count"] = {
 			["Name"] = "Show Item Counts",
+			["Desc"] = "Show how many of the item you have in your bags on the actionbars.",
 		},
 
 		["DecimalCD"] = {
@@ -66,6 +66,7 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["EquipBorder"] = {
 			["Name"] = "Equiped Border Indicator",
+			["Desc"] = "Display a green border for items you have equipped and put onto your actionbar. |n|nFor example, on use trinkets you put onto your bars will show a green border.",
 		},
 
 		["FadeRightBar"] = {
@@ -1194,8 +1195,8 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["DataTextFonts"] = {
 			["Name"] = "DataTexts",
-		},		
-		
+		},
+
 		["FilgerFonts"] = {
 			["Name"] = "Filger Fonts",
 		},

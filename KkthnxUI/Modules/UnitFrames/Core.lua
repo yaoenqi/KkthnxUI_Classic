@@ -74,10 +74,9 @@ local classify = {
 	worldboss = {0, 1, 0},
 }
 
-local LibClassicCasterino = LibStub("LibClassicCasterino", true)
-if (LibClassicCasterino) then
+if (K.LibClassicCasterino) then
 	UnitChannelInfo = function(unit)
-		return LibClassicCasterino:UnitChannelInfo(unit)
+		return K.LibClassicCasterino:UnitChannelInfo(unit)
 	end
 end
 
@@ -554,6 +553,16 @@ function Module:PostCastFailed()
 	self:SetValue(self.max or 1)
 	self.fadeOut = true
 	self:Show()
+
+	local time = self.Time
+	if (time) then
+		time:SetText("")
+	end
+
+	local spark = self.Spark
+	if (spark) then
+		spark:SetPoint("CENTER", self, "RIGHT")
+	end
 end
 
 function Module:CreateAuraTimer(elapsed)

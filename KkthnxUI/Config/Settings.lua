@@ -199,12 +199,19 @@ C["Loot"] = {
 
 -- Minimap
 C["Minimap"] = {
-	["Calendar"] = true,
 	["Enable"] = true,
 	["ResetZoom"] = false,
 	["ResetZoomTime"] = 4,
 	["ShowRecycleBin"] = true,
 	["Size"] = 180,
+	["BlipTexture"] = {
+		["Options"] = {
+			["Nandini"] = "Interface\\AddOns\\KkthnxUI\\Media\\MiniMap\\Classic-Nandini-New",
+			["Charmed"] = "Interface\\AddOns\\KkthnxUI\\Media\\MiniMap\\Classic-Charmed",
+			["Blizzard"] = "Interface\\MiniMap\\ObjectIconsAtlas",
+		},
+		["Value"] = "Interface\\AddOns\\KkthnxUI\\Media\\MiniMap\\Classic-Charmed"
+	},
 }
 
 -- Miscellaneous
