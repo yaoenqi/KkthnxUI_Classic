@@ -1,6 +1,6 @@
 local K, C = unpack(select(2, ...))
 if C["Inventory"].Enable ~= true then
-    return
+	return
 end
 
 if IsAddOnLoaded("AdiBags")
@@ -11,7 +11,7 @@ or IsAddOnLoaded("Bagnon")
 or IsAddOnLoaded("Combuctor")
 or IsAddOnLoaded("TBag")
 or IsAddOnLoaded("BaudBag") then
-    return
+	return
 end
 
 local _G = _G
@@ -67,7 +67,7 @@ function _G.GetSortBagsRightToLeft(enabled)
 end
 
 function _G.SetSortBagsRightToLeft(enabled)
-	SortBagsRightToLeft = enabled and 1 or nil
+	_G.SortBagsRightToLeft = enabled and 1 or nil
 end
 
 local function set(...)
@@ -91,24 +91,24 @@ local function union(...)
 end
 
 local MOUNTS = set(
-	-- rams
-	5864, 5872, 5873, 18785, 18786, 18787, 18244, 19030, 13328, 13329,
-	-- horses
-	2411, 2414, 5655, 5656, 18778, 18776, 18777, 18241, 12353, 12354,
-	-- sabers
-	8629, 8631, 8632, 18766, 18767, 18902, 18242, 13086, 19902, 12302, 12303, 8628, 12326,
-	-- mechanostriders
-	8563, 8595, 13321, 13322, 18772, 18773, 18774, 18243, 13326, 13327,
-	-- kodos
-	15277, 15290, 18793, 18794, 18795, 18247, 15292, 15293,
-	-- wolves
-	1132, 5665, 5668, 18796, 18797, 18798, 18245, 12330, 12351,
-	-- raptors
-	8588, 8591, 8592, 18788, 18789, 18790, 18246, 19872, 8586, 13317,
-	-- undead horses
-	13331, 13332, 13333, 13334, 18791, 18248, 13335,
-	-- qiraji battle tanks
-	21218, 21321, 21323, 21324, 21176
+-- rams
+5864, 5872, 5873, 18785, 18786, 18787, 18244, 19030, 13328, 13329,
+-- horses
+2411, 2414, 5655, 5656, 18778, 18776, 18777, 18241, 12353, 12354,
+-- sabers
+8629, 8631, 8632, 18766, 18767, 18902, 18242, 13086, 19902, 12302, 12303, 8628, 12326,
+-- mechanostriders
+8563, 8595, 13321, 13322, 18772, 18773, 18774, 18243, 13326, 13327,
+-- kodos
+15277, 15290, 18793, 18794, 18795, 18247, 15292, 15293,
+-- wolves
+1132, 5665, 5668, 18796, 18797, 18798, 18245, 12330, 12351,
+-- raptors
+8588, 8591, 8592, 18788, 18789, 18790, 18246, 19872, 8586, 13317,
+-- undead horses
+13331, 13332, 13333, 13334, 18791, 18248, 13335,
+-- qiraji battle tanks
+21218, 21321, 21323, 21324, 21176
 )
 
 local SPECIAL = set(5462, 17696, 17117, 13347, 13289, 11511)
@@ -118,14 +118,14 @@ local KEYS = set(9240, 17191, 13544, 12324, 16309, 12384, 20402)
 local TOOLS = set(7005, 12709, 19727, 5956, 2901, 6219, 10498, 6218, 6339, 11130, 11145, 16207, 9149, 15846, 6256, 6365, 6367)
 
 local ENCHANTING_MATERIALS = set(
-	-- dust
-	10940, 11083, 11137, 11176, 16204,
-	-- essence
-	10938, 10939, 10998, 11082, 11134, 11135, 11174, 11175, 16202, 16203,
-	-- shard
-	10978, 11084, 11138, 11139, 11177, 11178, 14343, 14344,
-	-- crystal
-	20725
+-- dust
+10940, 11083, 11137, 11176, 16204,
+-- essence
+10938, 10939, 10998, 11082, 11134, 11135, 11174, 11175, 16202, 16203,
+-- shard
+10978, 11084, 11138, 11139, 11177, 11178, 14343, 14344,
+-- crystal
+20725
 )
 
 local HERBS = set(765, 785, 2447, 2449, 2450, 2452, 2453, 3355, 3356, 3357, 3358, 3369, 3818, 3819, 3820, 3821, 4625, 8153, 8831, 8836, 8838, 8839, 8845, 8846, 13463, 13464, 13465, 13466, 13467, 13468)
@@ -152,9 +152,9 @@ local CLASSES = {
 	{
 		containers = {22246, 22248, 22249},
 		items = union(
-			ENCHANTING_MATERIALS,
-			-- rods
-			set(6218, 6339, 11130, 11145, 16207)
+		ENCHANTING_MATERIALS,
+		-- rods
+		set(6218, 6339, 11130, 11145, 16207)
 		),
 	},
 	-- herb
@@ -167,13 +167,16 @@ local CLASSES = {
 local model, itemStacks, itemClasses, itemSortKeys
 
 do
-	local f = CreateFrame("Frame")
+	local f = CreateFrame"Frame"
 	f:Hide()
 
 	local timeout
 
 	function Start()
-		if f:IsShown() then return end
+		if f:IsShown() then
+			return
+		end
+
 		Initialize()
 		timeout = GetTime() + 7
 		f:Show()
@@ -185,6 +188,7 @@ do
 			f:Hide()
 			return
 		end
+
 		delay = delay - arg1
 		if delay <= 0 then
 			delay = .2
@@ -213,12 +217,12 @@ function LT(a, b)
 end
 
 function Move(src, dst)
-    local texture, _, srcLocked = GetContainerItemInfo(src.container, src.position)
-    local _, _, dstLocked = GetContainerItemInfo(dst.container, dst.position)
+	local texture, _, srcLocked = GetContainerItemInfo(src.container, src.position)
+	local _, _, dstLocked = GetContainerItemInfo(dst.container, dst.position)
 
 	if texture and not srcLocked and not dstLocked then
 		ClearCursor()
-       	PickupContainerItem(src.container, src.position)
+		PickupContainerItem(src.container, src.position)
 		PickupContainerItem(dst.container, dst.position)
 
 		if src.item == dst.item then
@@ -234,7 +238,7 @@ function Move(src, dst)
 		end
 
 		return true
-    end
+	end
 end
 
 function TooltipInfo(container, position)
@@ -282,9 +286,9 @@ function Sort()
 
 			for _, src in ipairs(model) do
 				if src.item == dst.targetItem
-					and src ~= dst
-					and not (dst.item and src.class and src.class ~= itemClasses[dst.item])
-					and not (src.targetItem and src.item == src.targetItem and src.count <= src.targetCount)
+				and src ~= dst
+				and not (dst.item and src.class and src.class ~= itemClasses[dst.item])
+				and not (src.targetItem and src.item == src.targetItem and src.count <= src.targetCount)
 				then
 					rank[src] = math_abs(src.count - dst.targetCount + (dst.item == dst.targetItem and dst.count or 0))
 					table_insert(sources, src)
@@ -368,6 +372,7 @@ do
 				free[itemClasses[item]] = (free[itemClasses[item]] or 0) + stacks
 			end
 		end
+
 		for _, slot in ipairs(model) do
 			if slot.class and free[slot.class] then
 				free[slot.class] = free[slot.class] - 1
@@ -378,9 +383,10 @@ do
 		for item in pairs(counts) do
 			table_insert(items, item)
 		end
-        table_sort(items, function(a, b)
-            return LT(itemSortKeys[a], itemSortKeys[b])
-        end)
+
+		table_sort(items, function(a, b)
+			return LT(itemSortKeys[a], itemSortKeys[b])
+		end)
 
 		for _, slot in ipairs(model) do
 			if slot.class then
@@ -432,63 +438,63 @@ function Item(container, position)
 		if itemID == 6948 then
 			table_insert(sortKey, 1)
 
-		-- mounts
+			-- mounts
 		elseif MOUNTS[itemID] then
 			table_insert(sortKey, 2)
 
-		-- special items
+			-- special items
 		elseif SPECIAL[itemID] then
 			table_insert(sortKey, 3)
 
-		-- key items
+			-- key items
 		elseif KEYS[itemID] then
 			table_insert(sortKey, 4)
 
-		-- tools
+			-- tools
 		elseif TOOLS[itemID] then
 			table_insert(sortKey, 5)
 
-		-- soul shards
+			-- soul shards
 		elseif itemID == 6265 then
 			table_insert(sortKey, 14)
 
-		-- conjured items
+			-- conjured items
 		elseif conjured then
 			table_insert(sortKey, 15)
 
-		-- soulbound items
+			-- soulbound items
 		elseif soulbound then
 			table_insert(sortKey, 6)
 
-		-- reagents
+			-- reagents
 		elseif classId == 9 then
 			table_insert(sortKey, 7)
 
-		-- quest items
+			-- quest items
 		elseif quest then
 			table_insert(sortKey, 9)
 
-		-- consumables
+			-- consumables
 		elseif usable and classId ~= 1 and classId ~= 2 and classId ~= 8 or classId == 4 then
 			table_insert(sortKey, 8)
 
-		-- enchanting materials
+			-- enchanting materials
 		elseif ENCHANTING_MATERIALS[itemID] then
 			table_insert(sortKey, 11)
 
-		-- herbs
+			-- herbs
 		elseif HERBS[itemID] then
 			table_insert(sortKey, 12)
 
-		-- higher quality
+			-- higher quality
 		elseif quality > 1 then
 			table_insert(sortKey, 10)
 
-		-- common quality
+			-- common quality
 		elseif quality == 1 then
 			table_insert(sortKey, 13)
 
-		-- junk
+			-- junk
 		elseif quality == 0 then
 			table_insert(sortKey, 14)
 		end
