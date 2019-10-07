@@ -66,7 +66,7 @@ function Module:UpdateSettings()
 
 	if MiniMapTrackingFrame then
 		MiniMapTrackingFrame:ClearAllPoints()
-		MiniMapTrackingFrame:SetPoint("BOTTOMLEFT", Minimap, -4, -6)
+		MiniMapTrackingFrame:SetPoint("BOTTOMLEFT", Minimap, -2, -2)
 
 		if (MiniMapTrackingBorder) then
 			MiniMapTrackingBorder:Hide()
@@ -75,15 +75,16 @@ function Module:UpdateSettings()
 		if (MiniMapTrackingIcon) then
 			MiniMapTrackingIcon:SetDrawLayer("ARTWORK")
 			MiniMapTrackingIcon:SetTexCoord(unpack(K.TexCoords))
-			MiniMapTrackingIcon:SetSize(18, 18)
+			MiniMapTrackingIcon:SetSize(20, 20)
 		end
 
 		MiniMapTrackingFrame:CreateBackdrop()
+		MiniMapTrackingFrame.Backdrop:CreateInnerShadow()
 		MiniMapTrackingFrame.Backdrop:SetFrameLevel(MiniMapTrackingFrame:GetFrameLevel())
 		MiniMapTrackingFrame.Backdrop:SetAllPoints(MiniMapTrackingIcon)
 		MiniMapTrackingFrame.Backdrop:CreateBorder()
 		MiniMapTrackingFrame.Backdrop:CreateInnerShadow()
-		MiniMapTrackingFrame.Backdrop:SetBackdropBorderColor(K.r, K.g, K.b)
+		MiniMapTrackingFrame.Backdrop:SetBackdropBorderColor(1, 1, 0)
 	end
 
 	if StreamingIcon then

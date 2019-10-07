@@ -946,6 +946,25 @@ function Module:GetPartyFramesAttributes()
 	"yOffset", C["Party"].ShowBuffs and -52 or -18
 end
 
+function Module:GetPartyPetFramesAttributes()
+	return "oUF_Party_Pet", "SecureGroupPetHeaderTemplate", "custom [@raid6,exists] hide;show",
+		"oUF-initialConfigFunction", [[
+			local header = self:GetParent()
+			self:SetWidth(header:GetAttribute("initial-width"))
+			self:SetHeight(header:GetAttribute("initial-height"))
+		]],
+		"initial-width", 180,
+		"initial-height", 24,
+		"showSolo", false,
+		"showParty", true,
+		"showPlayer", C["Party"].ShowPlayer,
+		"showRaid", true,
+		"groupFilter", "1,2,3,4,5,6,7,8",
+		"groupingOrder", "1,2,3,4,5,6,7,8",
+		"groupBy", "GROUP",
+		"yOffset", -50
+end
+
 function Module:GetDamageRaidFramesAttributes()
 	local DamageRaidProperties = C["Party"].Enable and "custom [@raid6,exists] show;hide" or "solo,party,raid"
 
@@ -1081,6 +1100,17 @@ function Module:CreateUnits()
 			Module.Headers.Party = Party
 
 			K.Mover(Party, "Party", "Party", {"TOPLEFT", UIParent, "TOPLEFT", 4, -180}, 164, 38)
+
+			local testShowPartyPets = false
+			if testShowPartyPets then
+				local PartyPet = oUF:SpawnHeader(Module:GetPartyPetFramesAttributes())
+				PartyPet:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 28, -28)
+
+				Module.Headers.PartyPet = Pet
+
+				K.Mover(Pet, "PartyPet", "PartyPet", {"TOPLEFT", UIParent, "TOPLEFT", 28, -28})
+			end
+
 		end
 
 		if C["Raid"].Enable then

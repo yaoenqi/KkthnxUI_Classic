@@ -1,10 +1,6 @@
 local K, C, L = unpack(select(2, ...))
 
 local _G = _G
-local tonumber = _G.tonumber
-local max = _G.max
-local min = _G.min
-local format = _G.format
 
 local APPLY = _G.APPLY
 local CLOSE = _G.CLOSE

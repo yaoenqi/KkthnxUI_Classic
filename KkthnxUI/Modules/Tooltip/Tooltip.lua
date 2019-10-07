@@ -201,20 +201,20 @@ function Module:OnTooltipSetUnit()
 				end
 			end
 
-			-- if C["Tooltip"].LFDRole then
-			-- 	local role = UnitGroupRolesAssigned(unit)
-			-- 	if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= "NONE") then
-			-- 		if role == "HEALER" then
-			-- 			role = "|CFF00FF96"..HEALER.."|r"
-			-- 		elseif role == "TANK" then
-			-- 			role = "|CFF294F9C"..TANK.."|r"
-			-- 		elseif role == "DAMAGER" then
-			-- 			role = "|CFFC41F3D"..DAMAGE.."|r"
-			-- 		end
+			if C["Tooltip"].LFDRole then
+				local role = UnitGroupRolesAssigned(unit)
+				if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= "NONE") then
+					if role == "HEALER" then
+						role = "|CFF00FF96"..HEALER.."|r"
+					elseif role == "TANK" then
+						role = "|CFF294F9C"..TANK.."|r"
+					elseif role == "DAMAGER" then
+						role = "|CFFC41F3D"..DAMAGE.."|r"
+					end
 
-			-- 		GameTooltip:AddLine(string_format("%s: %s", _G.ROLE, role))
-			-- 	end
-			-- end
+					GameTooltip:AddLine(string_format("%s: %s", _G.ROLE, role))
+				end
+			end
 
 			local guildName, rank, rankIndex, guildRealm = GetGuildInfo(unit)
 			local hasText = GameTooltipTextLeft2:GetText()
@@ -297,7 +297,7 @@ function Module:OnTooltipSetUnit()
 		GameTooltipStatusBar:SetStatusBarColor(0, .9, 0)
 	end
 
-	Module.InspectUnitSpecAndLevel(self)
+	-- Module.InspectUnitSpecAndLevel(self) -- I doubt this is something we will ever use...
 end
 
 function Module:StatusBar_OnValueChanged(value)

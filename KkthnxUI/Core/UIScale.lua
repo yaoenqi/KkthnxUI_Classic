@@ -9,19 +9,19 @@ local string_format = _G.string.format
 local UIParent = _G.UIParent
 
 local function clipScale(scale)
-	return tonumber(string_format('%.5f', scale))
+	return tonumber(string_format("%.5f", scale))
 end
 
 local function GetPerfectScale()
 	local scale = C["General"].UIScale
-	local bestScale = math_max(.4, math_min(1.15, 768 / K.ScreenHeight))
+	local bestScale = math_max(0.4, math_min(1.15, 768 / K.ScreenHeight))
 	local pixelScale = 768 / K.ScreenHeight
 
 	if C["General"].AutoScale then
-		if K.is4KRes then
+		if K.is4KResolution then
 			scale = clipScale(bestScale * 1.5)
-			--elseif K.is2KRes then
-			--	scale = clipScale(bestScale * 1.2)
+		-- elseif K.is2KResolution then
+			-- scale = clipScale(bestScale * 1.2)
 		else
 			scale = clipScale(bestScale)
 		end
@@ -35,7 +35,10 @@ GetPerfectScale()
 
 local isScaling = false
 function K:SetupUIScale()
-	if isScaling then return end
+	if isScaling then
+		return
+	end
+
 	isScaling = true
 
 	local scale = GetPerfectScale()

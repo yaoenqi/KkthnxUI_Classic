@@ -18,11 +18,10 @@ local GetAddOnInfo = _G.GetAddOnInfo
 local GetAddOnMetadata = _G.GetAddOnMetadata
 local GetBuildInfo = _G.GetBuildInfo
 local GetCVar = _G.GetCVar
-local GetCurrentResolution = _G.GetCurrentResolution
 local GetLocale = _G.GetLocale
 local GetNumAddOns = _G.GetNumAddOns
+local GetPhysicalScreenSize = _G.GetPhysicalScreenSize
 local GetRealmName = _G.GetRealmName
-local GetScreenResolutions = _G.GetScreenResolutions
 local LOCALIZED_CLASS_NAMES_MALE = _G.LOCALIZED_CLASS_NAMES_MALE
 local LibStub = _G.LibStub
 local RAID_CLASS_COLORS = _G.RAID_CLASS_COLORS
@@ -31,6 +30,9 @@ local UnitFactionGroup = _G.UnitFactionGroup
 local UnitLevel = _G.UnitLevel
 local UnitName = _G.UnitName
 local UnitRace = _G.UnitRace
+
+local Resolution = select(1, GetPhysicalScreenSize()).."x"..select(2, GetPhysicalScreenSize())
+local Windowed = Display_DisplayModeDropDown:windowedmode()
 
 -- Engine
 Engine[1] = {} -- K, Main
@@ -55,20 +57,21 @@ K.Noop = function()
 end
 
 K.Name = UnitName("player")
-K.LocalizedClass, K.Class, K.ClassID = UnitClass("player")
-K.LocalizedRace, K.Race = UnitRace("player")
-K.Faction, K.LocalizedFaction = UnitFactionGroup("player")
+K.Class = select(2, UnitClass("player"))
+K.Race = select(2, UnitRace("player"))
+K.Faction = select(2, UnitFactionGroup("player"))
 K.Level = UnitLevel("player")
 K.Client = GetLocale()
 K.Realm = GetRealmName()
 K.Media = "Interface\\AddOns\\KkthnxUI\\Media\\"
 K.LSM = LibStub and LibStub:GetLibrary("LibSharedMedia-3.0", true)
-K.Resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution")
-K.ScreenHeight = tonumber(string_match(K.Resolution, "%d+x(%d+)"))
-K.ScreenWidth = tonumber(string_match(K.Resolution, "(%d+)x+%d"))
-K.UIScale = math_min(2, math_max(0.01, 768 / string_match(K.Resolution, "%d+x(%d+)")))
-K.PriestColors = {r = 0.86, g = 0.92, b = 0.98, colorStr = "dbebfa"} -- Keep this until I convert the rest.
--- K.Color = K.Class == "PRIEST" and K.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[K.Class] or RAID_CLASS_COLORS[K.Class])
+K.Resolution = Resolution or (Windowed and GetCVar("gxWindowedResolution")) or GetCVar("gxFullscreenResolution")
+K.ScreenHeight = select(2, GetPhysicalScreenSize())
+K.ScreenWidth = select(1, GetPhysicalScreenSize())
+K.UIScale = math_min(1, math_max(0.64, 768 / string_match(Resolution, "%d+x(%d+)")))
+K.is2KResolution = K.ScreenHeight >= 1440
+K.is4KResolution = K.ScreenHeight >= 2160
+K.PriestColors = {r = 0.86, g = 0.92, b = 0.98, colorStr = "ffdbebfa"} -- Keep this until I convert the rest.
 K.TexCoords = {0.08, 0.92, 0.08, 0.92}
 K.Welcome = "|cff4488ffKkthnxUI "..K.Version.." "..K.Client.."|r - /helpui"
 K.ScanTooltip = CreateFrame("GameTooltip", "KkthnxUI_ScanTooltip", _G.UIParent, "GameTooltipTemplate")
@@ -76,6 +79,7 @@ K.WowPatch, K.WowBuild, K.WowRelease, K.TocVersion = GetBuildInfo()
 K.WowBuild = tonumber(K.WowBuild)
 K.InfoColor = "|cff4488ff"
 K.SystemColor = "|cffffcc00"
+
 K.CodeDebug = false -- Don't touch this, unless you know what you are doing?
 
 BAG_ITEM_QUALITY_COLORS[LE_ITEM_QUALITY_POOR] = {r = 0.62, g = 0.62, b = 0.62}

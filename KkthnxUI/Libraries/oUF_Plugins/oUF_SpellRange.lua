@@ -1,15 +1,15 @@
 --[[****************************************************************************
-* oUF_SpellRange by Saiket                                                   *
-* oUF_SpellRange.lua - Improved range element for oUF.                       *
-*                                                                            *
-* Elements handled: .SpellRange                                              *
-* Settings: (Either Update method or both alpha properties are required)     *
-*   - .SpellRange.Update( Frame, InRange ) - Callback fired when a unit      *
-*       either enters or leaves range. Overrides default alpha changing.     *
-*   OR                                                                       *
-*   - .SpellRange.insideAlpha - Frame alpha value for units in range.        *
-*   - .SpellRange.outsideAlpha - Frame alpha for units out of range.         *
-* Note that SpellRange will automatically disable Range elements of frames.  *
+* oUF_SpellRange by Saiket *
+* oUF_SpellRange.lua - Improved range element for oUF. *
+* *
+* Elements handled: .SpellRange *
+* Settings: (Either Update method or both alpha properties are required) *
+* - .SpellRange.Update( Frame, InRange ) - Callback fired when a unit *
+* either enters or leaves range. Overrides default alpha changing. *
+* OR *
+* - .SpellRange.insideAlpha - Frame alpha value for units in range. *
+* - .SpellRange.outsideAlpha - Frame alpha for units out of range. *
+* Note that SpellRange will automatically disable Range elements of frames. *
 ****************************************************************************]]
 
 local _, ns = ...
@@ -33,43 +33,43 @@ local _, playerClass = UnitClass('player')
 -- Note: Spells probably shouldn't have minimum ranges!
 
 local HelpIDs = ({
-	DRUID = { 2782,88423 },     -- Remove Corruption, Nature's Cure (40yd) - Lvl 18
+	DRUID = { 2782,88423 }, -- Remove Corruption, Nature's Cure (40yd) - Lvl 18
 	-- HUNTER = {},
-	-- MAGE = { },
-	MONK = { 116694 },          -- Effuse (40yd) - Lvl 8
-	PALADIN = { 19750 },        -- Flash of Light (40yd) - Lvl 9
-	PRIEST = { 213634 },        -- Purify Disease (40yd) - Lvl 14
+	MAGE = { 475 },
+	MONK = { 116694 }, -- Effuse (40yd) - Lvl 8
+	PALADIN = { 19750 }, -- Flash of Light (40yd) - Lvl 9
+	PRIEST = { 213634 }, -- Purify Disease (40yd) - Lvl 14
 	-- ROGUE = {},
-	SHAMAN = { 8004,188070 },   -- Healing Surge (40yd) - Lvl 7
-	WARLOCK = { 20707 },        -- Soulstone (40yd) - Lvl 18
+	SHAMAN = { 8004,188070 }, -- Healing Surge (40yd) - Lvl 7
+	WARLOCK = { 20707 }, -- Soulstone (40yd) - Lvl 18
 	-- WARRIOR = {},
 })[playerClass]
 
 local HarmIDs = ({
-	DRUID = { 5176 },           -- Moonfire (40yd) - Lvl 10
+	DRUID = { 5176 }, -- Moonfire (40yd) - Lvl 10
 	HUNTER = {
-		75,                     -- Auto Shot (40yd) - Starter
-		193265                  -- Hatchet Toss (30yd) - Lvl 19
+		75, -- Auto Shot (40yd) - Starter
+		193265 -- Hatchet Toss (30yd) - Lvl 19
 	},
-	MAGE = { 116,133,44425 },   -- Frostbolt, Fireball, Arcane Barrage (40yd)
-	MONK = { 115546 },          -- Provoke (40yd) - Lvl 13
-	PALADIN = { 62124 },        -- Hand of Reckoning (30yd) - Lvl 13
+	MAGE = { 116,133,44425 }, -- Frostbolt, Fireball, Arcane Barrage (40yd)
+	MONK = { 115546 }, -- Provoke (40yd) - Lvl 13
+	PALADIN = { 62124 }, -- Hand of Reckoning (30yd) - Lvl 13
 	PRIEST = {
-		589,                    -- Shadow Word: Pain (40yd) - Lvl 4
-		585                     -- Smite (40yd) - Starter
+		589, -- Shadow Word: Pain (40yd) - Lvl 4
+		585 -- Smite (40yd) - Starter
 	},
 	ROGUE = { 185565 },
-	SHAMAN = {                  -- Lightning Bolt (40yd)
-	403,
-	187837,
-	188196
+	SHAMAN = { -- Lightning Bolt (40yd)
+		403,
+		187837,
+		188196
 	},
-	WARLOCK = {                 -- Shadow Bolt (40yd)
-	686,
-	172,
-	196657,
+	WARLOCK = { -- Shadow Bolt (40yd)
+		686,
+		172,
+		196657,
 	},
-	WARRIOR = { 355 },          -- Taunt (30yd) - Lvl 14
+	WARRIOR = { 355 }, -- Taunt (30yd) - Lvl 14
 })[playerClass]
 
 local IsInRange
@@ -87,14 +87,14 @@ do
 
 	-- Uses an appropriate range check for the given unit.
 	-- Actual range depends on reaction, known spells, and status of the unit.
-	-- @param unit  Unit to check range for.
+	-- @param unit Unit to check range for.
 	-- @return True if in casting range
 	function IsInRange(unit)
 		if (UnitIsConnected(unit)) then
 			if (UnitCanAssist('player', unit)) then
 				if (HelpName and not UnitIsDead(unit)) then
 					return IsSpellInRange(HelpName, unit) == 1 and true or false
-				elseif (UnitOnTaxi('player')) then  -- UnitInRange always returns nil while on flightpaths
+				elseif (UnitOnTaxi('player')) then -- UnitInRange always returns nil while on flightpaths
 					return false
 				elseif (UnitIsUnit(unit, 'player') or UnitIsUnit(unit, 'pet') or UnitPlayerOrPetInParty(unit) or UnitPlayerOrPetInRaid(unit)) then
 					local inRange, checkedRange = UnitInRange(unit)
@@ -174,7 +174,7 @@ end
 
 
 -- Called by oUF when the unit frame's unit changes or otherwise needs a complete update.
--- @param Event  Reason for the update.  Can be a real event, nil, or a string defined by oUF.
+-- @param Event Reason for the update. Can be a real event, nil, or a string defined by oUF.
 local function Update (self, Event, UnitID)
 	if (Event ~= 'OnTargetUpdate') then -- OnTargetUpdate is fired on a timer for *target units that don't have real events
 		ObjectRanges[self] = nil -- Force update to fire
@@ -195,38 +195,39 @@ local function Enable(self, UnitID)
 		assert(type( SpellRange ) == 'table', 'oUF layout addon using invalid SpellRange element.')
 		assert(type(SpellRange.Update) == 'function' or (tonumber(SpellRange.insideAlpha) and tonumber(SpellRange.outsideAlpha)), 'oUF layout addon omitted required SpellRange properties.')
 
-			if (self.Range) then -- Disable default range checking
-				self:DisableElement('Range')
-				self.Range = nil -- Prevent range element from enabling, since enable order isn't stable
-			end
-
-			SpellRange.__owner = self
-			SpellRange.ForceUpdate = ForceUpdate
-			if (not UpdateFrame) then
-				UpdateFrame = CreateFrame('Frame')
-				UpdateFrame:SetScript('OnUpdate', OnUpdate)
-				UpdateFrame:SetScript('OnEvent', OnSpellsChanged)
-			end
-			if (not next(Objects)) then -- First object
-				UpdateFrame:Show()
-				UpdateFrame:RegisterEvent('SPELLS_CHANGED')
-				OnSpellsChanged() -- Recheck spells immediately
-			end
-
-			Objects[self] = true
-			return true
+		if (self.Range) then -- Disable default range checking
+			self:DisableElement('Range')
+			self.Range = nil -- Prevent range element from enabling, since enable order isn't stable
 		end
-	end
 
-	--- Called by oUF to disable range checking on a unit frame.
-	local function Disable(self)
-		Objects[self] = nil
-		ObjectRanges[self] = nil
-
-		if (not next(Objects))then -- Last object
-			UpdateFrame:Hide()
-			UpdateFrame:UnregisterEvent('SPELLS_CHANGED')
+		SpellRange.__owner = self
+		SpellRange.ForceUpdate = ForceUpdate
+		if (not UpdateFrame) then
+			UpdateFrame = CreateFrame('Frame')
+			UpdateFrame:SetScript('OnUpdate', OnUpdate)
+			UpdateFrame:SetScript('OnEvent', OnSpellsChanged)
 		end
-	end
 
-	oUF:AddElement('SpellRange', Update, Enable, Disable)
+		if (not next(Objects)) then -- First object
+			UpdateFrame:Show()
+			UpdateFrame:RegisterEvent('SPELLS_CHANGED')
+			OnSpellsChanged() -- Recheck spells immediately
+		end
+
+		Objects[self] = true
+		return true
+	end
+end
+
+--- Called by oUF to disable range checking on a unit frame.
+local function Disable(self)
+	Objects[self] = nil
+	ObjectRanges[self] = nil
+
+	if (not next(Objects))then -- Last object
+		UpdateFrame:Hide()
+		UpdateFrame:UnregisterEvent('SPELLS_CHANGED')
+	end
+end
+
+oUF:AddElement('SpellRange', Update, Enable, Disable)
