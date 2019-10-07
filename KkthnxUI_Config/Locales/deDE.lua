@@ -595,6 +595,11 @@ _G.KkthnxUIConfig["deDE"] = {
 		["Size"] = {
 			["Name"] = "Größe der Minikarte",
 		},
+		
+		["BlipTexture"] = {
+			["Name"] = "Stil der Blip Symbole",
+			["Desc"] = "Ändere die Blip Symbole der Minimap für Ressourcen, Gruppenmitglieder etc.",
+		},
 	},
 
 	-- Miscellaneous Local
