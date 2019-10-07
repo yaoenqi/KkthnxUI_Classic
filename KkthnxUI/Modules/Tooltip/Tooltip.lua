@@ -297,7 +297,7 @@ function Module:OnTooltipSetUnit()
 		GameTooltipStatusBar:SetStatusBarColor(0, .9, 0)
 	end
 
-	-- Module.InspectUnitSpecAndLevel(self)
+	Module.InspectUnitSpecAndLevel(self)
 end
 
 function Module:StatusBar_OnValueChanged(value)

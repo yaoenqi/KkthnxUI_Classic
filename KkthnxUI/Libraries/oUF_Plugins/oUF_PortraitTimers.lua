@@ -1,6 +1,8 @@
 local _, ns = ...
 local oUF = ns.oUF or oUF
+
 local LibClassicDurations = LibStub("LibClassicDurations")
+LibClassicDurations:Register("KkthnxUI")
 
 local function SpellName(id)
 	local name = GetSpellInfo(id)
@@ -13,7 +15,6 @@ local function SpellName(id)
 end
 
 ns.PortraitTimerDB = {
-	[SpellName(1022)] = true,
 	[SpellName(1022)] = true, -- Hand of Protection
 	[SpellName(1044)] = true, -- Hand of Freedom
 	[SpellName(118)] = true, -- Polymorph
@@ -70,6 +71,9 @@ ns.PortraitTimerDB = {
 	[SpellName(871)] = true, -- Shield Wall
 	[SpellName(9005)] = true, -- Pounce
 	[SpellName(9484)] = true, -- Shackle Undead
+	[SpellName(12494)] = true, -- Frostbite
+
+	-- [SpellName(1460)] = true, -- DEBUG
 }
 
 local Update = function(self, event, unit)
@@ -88,8 +92,8 @@ local Update = function(self, event, unit)
 			results = ns.PortraitTimerDB[SpellName(spellId)]
 
 			if results then
-				local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
-				if durationNew and durationNew > 0 then
+				local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster)
+				if duration == 0 and durationNew then
 					duration = durationNew
 					expirationTime = expirationTimeNew
 				end
@@ -113,8 +117,8 @@ local Update = function(self, event, unit)
 			results = ns.PortraitTimerDB[SpellName(spellId)]
 
 			if results then
-				local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
-				if durationNew and durationNew > 0 then
+				local durationNew, expirationTimeNew = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster)
+				if duration == 0 and durationNew then
 					duration = durationNew
 					expirationTime = expirationTimeNew
 				end

@@ -151,16 +151,16 @@ function Module:WhoPingedMyMap()
 	K:RegisterEvent("MINIMAP_PING", self.MINIMAP_PING)
 end
 
-function Module:GetMinimapShape()
-	--Support for other mods
-	if C["Minimap"].Enable then
-		function GetMinimapShape()
-			return "SQUARE"
-		end
-
-		Minimap:SetSize(C["Minimap"].Size, C["Minimap"].Size)
-	end
+local function GetMinimapShape()
+	return "SQUARE"
 end
+
+function Module:SetGetMinimapShape()
+	-- This is just to support for other mods
+	GetMinimapShape = GetMinimapShape
+	Minimap:SetSize(C["Minimap"].Size, C["Minimap"].Size)
+end
+
 
 function Module:OnEnable()
 	self:UpdateSettings()
@@ -171,7 +171,7 @@ function Module:OnEnable()
 		return
 	end
 
-	self:GetMinimapShape()
+	self:SetGetMinimapShape()
 
 	local MinimapFrameHolder = CreateFrame("Frame", "MinimapFrameHolder", Minimap)
 	MinimapFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -4, -4)

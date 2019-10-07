@@ -568,6 +568,11 @@ _G.KkthnxUIConfig["enUS"] = {
 		["Size"] = {
 			["Name"] = "Minimap Size",
 		},
+
+		["BlipTexture"] = {
+			["Name"] = "Blip Icon Styles",
+			["Desc"] = "Change the minimap blip icons for nodes, party and so on.",
+		},
 	},
 
 	-- Miscellaneous Local

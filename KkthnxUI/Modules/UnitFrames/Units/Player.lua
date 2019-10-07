@@ -304,10 +304,6 @@ function Module:CreatePlayer(unit)
 		self.FloatingCombatFeedback.showAutoAttack = true
 		self.FloatingCombatFeedback.showOverHealing = false
 		self.FloatingCombatFeedback.abbreviateNumbers = true
-
-		-- Default CombatText
-		if not _G.InCombatLockdown() then _G.SetCVar("enableFloatingCombatText", 0) end
-		K.HideInterfaceOption(_G.InterfaceOptionsCombatPanelEnableFloatingCombatText)
 	end
 
 	if C["Unitframe"].Swingbar then
@@ -317,7 +313,7 @@ function Module:CreatePlayer(unit)
 
 		self.Swing.Twohand = CreateFrame("StatusBar", nil, self.Swing)
 		self.Swing.Twohand:SetStatusBarTexture(UnitframeTexture)
-		self.Swing.Twohand:SetStatusBarColor(68/255, 136/255, 255/255)
+		self.Swing.Twohand:SetStatusBarColor(86/255, 150/255, 188/255)
 		self.Swing.Twohand:CreateBorder()
 		self.Swing.Twohand:Hide()
 		self.Swing.Twohand:SetAllPoints()
@@ -330,7 +326,7 @@ function Module:CreatePlayer(unit)
 
 		self.Swing.Mainhand = CreateFrame("StatusBar", nil, self.Swing)
 		self.Swing.Mainhand:SetStatusBarTexture(UnitframeTexture)
-		self.Swing.Mainhand:SetStatusBarColor(68/255, 136/255, 255/255)
+		self.Swing.Mainhand:SetStatusBarColor(86/255, 150/255, 188/255)
 		self.Swing.Mainhand:CreateBorder()
 		self.Swing.Mainhand:Hide()
 		self.Swing.Mainhand:SetAllPoints()
@@ -343,11 +339,11 @@ function Module:CreatePlayer(unit)
 
 		self.Swing.Offhand = CreateFrame("StatusBar", nil, self.Swing)
 		self.Swing.Offhand:SetStatusBarTexture(UnitframeTexture)
-		self.Swing.Offhand:SetStatusBarColor(68/255, 136/255, 255/255)
+		self.Swing.Offhand:SetStatusBarColor(224/255, 72/255, 54/255)
 		self.Swing.Offhand:CreateBorder()
 		self.Swing.Offhand:Hide()
-		self.Swing.Offhand:SetPoint("TOPLEFT", self.Swing, "BOTTOMLEFT", 0, -8)
-		self.Swing.Offhand:SetPoint("BOTTOMRIGHT", self.Swing, "BOTTOMRIGHT", 0, -10)
+		self.Swing.Offhand:SetPoint("TOPLEFT", self.Swing, "BOTTOMLEFT", 0, -6)
+		self.Swing.Offhand:SetPoint("BOTTOMRIGHT", self.Swing, "BOTTOMRIGHT", 0, -18)
 
 		self.Swing.Offhand.Spark = self.Swing.Offhand:CreateTexture(nil, "OVERLAY")
 		self.Swing.Offhand.Spark:SetTexture(C["Media"].Spark_16)
