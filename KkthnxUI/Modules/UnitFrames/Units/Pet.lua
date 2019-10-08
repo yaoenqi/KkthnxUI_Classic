@@ -113,7 +113,7 @@ function Module:CreatePet()
 	self.RaidTargetIndicator:SetSize(12, 12)
 
 	if C["Unitframe"].ShowPetHappinessIcon and K.Class == "HUNTER" then
-		self.PetHappinessIcon = self.Health:CreateFontString(nil, "OVERLAY")
+		self.PetHappinessIcon = self.Overlay:CreateFontString(nil, "OVERLAY")
 		self.PetHappinessIcon:SetPoint("TOPRIGHT", self.Portrait, 11, 6)
 		self.PetHappinessIcon:SetFontObject(UnitframeFont)
 		self:Tag(self.PetHappinessIcon, "[pethappiness]")
