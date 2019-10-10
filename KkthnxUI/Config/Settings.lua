@@ -234,8 +234,8 @@ C["Misc"] = {
 }
 
 C["Nameplates"] = {
-	["ShowFullHealth"] = true,
 	["Clamp"] = false,
+	["ClassIcons"] = false,
 	["Enable"] = true,
 	["HealthValue"] = true,
 	["Height"] = 13,
@@ -244,6 +244,7 @@ C["Nameplates"] = {
 	["OverlapV"] = 1.2,
 	["QuestInfo"] = true,
 	["SelectedScale"] = 1.2,
+	["ShowFullHealth"] = true,
 	["Smooth"] = false,
 	["TrackAuras"] = true,
 	["Width"] = 150,

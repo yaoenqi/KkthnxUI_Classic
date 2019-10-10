@@ -668,6 +668,11 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Desc"] = "Clamp nameplates to the top of the screen when outside of view."
 		},
 
+		["ClassIcons"] = {
+			["Name"] = "Show Enemy Class Icons",
+			["Desc"] = "Show Enemy Class Icons to help better determine what class they are. |n|nThis is helpful for people who are colorblind!"
+		},
+
 		["ClassResource"] = {
 			["Name"] = "Show Class Resources",
 		},
