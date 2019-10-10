@@ -476,6 +476,9 @@ _G.KkthnxUIConfig["enUS"] = {
 
 	-- General Local
 	["General"] = {
+		["AutoScale"] = {
+			["Name"] = "Auto Scale",
+		},
 		["ColorTextures"] = {
 			["Name"] = "Color 'Most' KkthnxUI Borders",
 		},
@@ -703,6 +706,10 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["SelectedScale"] = {
 			["Name"] = "Selected Nameplate Scale",
+		},
+
+		["ShowFullHealth"] = {
+			["Name"] = "Show full Health",
 		},
 
 		["Smooth"] = {

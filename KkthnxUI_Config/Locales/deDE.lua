@@ -499,6 +499,10 @@ _G.KkthnxUIConfig["deDE"] = {
 
 	-- General Local
 	["General"] = {
+		["AutoScale"] = {
+			["Name"] = "Automatische Skalierung",
+		},
+		
 		["ColorTextures"] = {
 			["Name"] = "Einfärben der 'meisten' KkthnxUI Ränder",
 		},
@@ -735,6 +739,10 @@ _G.KkthnxUIConfig["deDE"] = {
 		["SelectedScale"] = {
 			["Name"] = "Ausgewählte Skalierung für Namensplaketten",
 		},
+		
+		["ShowFullHealth"] = {
+			["Name"] = "Zeige Lebenspunkte an",
+		},
 
 		["Smooth"] = {
 			["Name"] = "Leisten flüssiger zeichnen",
@@ -893,6 +901,10 @@ _G.KkthnxUIConfig["deDE"] = {
 		["PvPIndicator"] = {
 			["Name"] = "Zeige PvP-Symbole am Spieler/Ziel",
 		},
+				
+		["ShowHealPrediction"] = {
+			["Name"] = "Zeige hereinkommende Heilung an",
+		},
 
 		["ShowPetHappinessIcon"] = {
 			["Name"] = "Zeige Symbol für Zufriedenheit des Begleiters (Jäger)"..CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 16, 14, 0, 0.1875, 0, 0.359375, 0, 0),
@@ -1001,6 +1013,10 @@ _G.KkthnxUIConfig["deDE"] = {
 
 		["ShowBuffs"] = {
 			["Name"] = "Zeige Stärkungszauber der Gruppe",
+		},
+
+		["ShowHealPrediction"] = {
+			["Name"] = "Zeige hereinkommende Heilung an",
 		},
 
 		["ShowPlayer"] = {
