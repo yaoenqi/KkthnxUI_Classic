@@ -97,7 +97,7 @@ function Module:UpdateSettings()
 
 	if MiniMapTrackingFrame then
 		MiniMapTrackingFrame:ClearAllPoints()
-		MiniMapTrackingFrame:SetPoint("BOTTOMLEFT", Minimap, -2, -2)
+		MiniMapTrackingFrame:SetPoint("BOTTOMRIGHT", Minimap, 2, -2)
 
 		if (MiniMapTrackingBorder) then
 			MiniMapTrackingBorder:Hide()
