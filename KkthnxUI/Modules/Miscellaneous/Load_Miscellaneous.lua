@@ -631,10 +631,10 @@ function Module:CreateWowHeadLinks()
 end
 
 function Module:OnEnable()
-	self:CreateKillingBlow()
+	-- self:CreateKillingBlow() -- Not Ready
+	-- self:CreateChatBubble() -- Place Holder
 
 	self:CreateAFKCam()
-	--self:CreateChatBubble()
 	self:CreateDismountStand()
 	self:CreateDurabilityFrame()
 	self:CreateEnhancedMenu()

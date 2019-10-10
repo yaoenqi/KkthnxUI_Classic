@@ -151,10 +151,10 @@ function Module:OnEnter()
 		local current, max = UnitXP("player"), UnitXPMax("player")
 		local rest = GetXPExhaustion()
 
-		GameTooltip:AddDoubleLine("Current XP:", string_format("%s/%s (%s%%)", K.ShortValue(current, 1), K.ShortValue(max, 1), K.Round(current / max * 100)), nil, nil, nil, 1, 1, 1)
-		GameTooltip:AddDoubleLine("To go:", K.CommaValue(max-current), nil, nil, nil, 1, 1, 1)
+		GameTooltip:AddDoubleLine("Experience:", string_format("%s/%s (%s%%)", K.ShortValue(current, 1), K.ShortValue(max, 1), K.Round(current / max * 100)), nil, nil, nil, 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["Remaining"], K.CommaValue(max-current), nil, nil, nil, 1, 1, 1)
 		if rest then
-			GameTooltip:AddDoubleLine("Rested:", string_format("%s (%s%%)", K.CommaValue(rest), K.Round(rest / max*100)), nil, nil, nil, 0, 0.6, 1)
+			GameTooltip:AddDoubleLine(L["Rested"], string_format("%s (%s%%)", K.CommaValue(rest), K.Round(rest / max*100)), nil, nil, nil, 0, 0.6, 1)
 		end
 	end
 
@@ -167,14 +167,12 @@ function Module:OnEnter()
 		local name, rank, minRep, maxRep, value = GetWatchedFactionInfo()
 		local current = value - minRep
 		local max = maxRep - minRep
-
 		local factionColor = FACTION_BAR_COLORS[rank]
 
 		GameTooltip:AddDoubleLine(name, _G["FACTION_STANDING_LABEL"..rank], nil, nil, nil, factionColor.r, factionColor.g, factionColor.b)
-
 		if max > 0 then
-			GameTooltip:AddDoubleLine("Current:", string_format("%s/%s (%d%%)", K.ShortValue(current, 1), K.ShortValue(max, 1), K.Round(current / max * 100)), nil, nil, nil, 1,1,1)
-			GameTooltip:AddDoubleLine("To go:", K.CommaValue(max-current), nil, nil, nil, 1,1,1)
+			GameTooltip:AddDoubleLine(REPUTATION..":", string_format("%s/%s (%d%%)", K.ShortValue(current, 1), K.ShortValue(max, 1), K.Round(current / max * 100)), nil, nil, nil, 1,1,1)
+			GameTooltip:AddDoubleLine(L["Remaining"], K.CommaValue(max-current), nil, nil, nil, 1,1,1)
 		end
 	end
 

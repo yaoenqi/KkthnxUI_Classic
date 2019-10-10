@@ -335,21 +335,6 @@ end
 SLASH_KKUI_DELETEQUESTITEMS1 = "/deletequestitems"
 SLASH_KKUI_DELETEQUESTITEMS2 = "/dqi"
 
-SlashCmdList["KKUI_DELETEHEIRLOOMS"] = function()
-	for bag = 0, 4 do
-		for slot = 1, GetContainerNumSlots(bag) do
-			local name = GetContainerItemLink(bag,slot)
-			if name and string.find(name,"00ccff") then
-				print(name)
-				PickupContainerItem(bag,slot)
-				DeleteCursorItem()
-			end
-		end
-	end
-end
-SLASH_KKUI_DELETEHEIRLOOMS1 = "/deleteheirlooms"
-SLASH_KKUI_DELETEHEIRLOOMS2 = "/deletelooms"
-
 SlashCmdList["KKUI_RESETINSTANCE"] = function()
 	ResetInstances()
 end
@@ -437,17 +422,6 @@ _G.SLASH_PARTYTORAID1 = "/toraid"
 _G.SLASH_PARTYTORAID2 = "/toparty"
 _G.SLASH_PARTYTORAID3 = "/convert"
 
--- Instance teleport
-SlashCmdList["INSTTELEPORT"] = function()
-	local inInstance = IsInInstance()
-	if inInstance then
-		LFGTeleport(true)
-	else
-		LFGTeleport()
-	end
-end
-_G.SLASH_INSTTELEPORT1 = "/teleport"
-
 SlashCmdList["VOLUME"] = function(value)
 	local numValue = tonumber(value)
 	if numValue and 0 <= numValue and numValue <= 1 then
@@ -482,32 +456,5 @@ SlashCmdList["CLEARCHAT"] = function(cmd)
 		end
 	end
 end
-
 _G.SLASH_CLEARCHAT1 = "/clearchat"
 _G.SLASH_CLEARCHAT2 = "/chatclear"
-
--- Show fishing levels per faction
-SlashCmdList["FISHINGZONES"] = function()
-	local playerFaction = UnitFactionGroup("player")
-	if playerFaction == "Alliance" then
-		K.Print("Fishing Levels for |cff162c57Alliance|r")
-		print(" ")
-		K.Print("Up to 55: All starting zones.")
-		K.Print("Up to 75: Darkshore, Darnassus, Ironforge, Loch Modan, Stormwind City, Westfall.")
-		K.Print("Up to 150: Ashenvale, Duskwood, Hillsbrad Foothills, Redridge Mountains, Wetlands.")
-		K.Print("Up to 225: Alterac Mountains, Arathi Highlands, Desolace, Dustwallow Marsh, Stranglethorn Vale, Swamp of Sorrows, Thousand Needles.")
-		K.Print("Up to 300: Felwood, Feralas, The Hinterlands, Moonglade, Tanaris, Un'Goro Crater, Western Plaguelands.")
-		print(" ")
-	else
-		K.Print("Fishing Levels for |cff8c1616Horde|r")
-		print(" ")
-		K.Print("Up to 55: All starting zones.")
-		K.Print("Up to 75: The Barrens, Orgrimmar, Silverpine Forest, Thunderbluff, Undercity.")
-		K.Print("Up to 150: Ashenvale, Stonetalon Mountains, Wetlands.")
-		K.Print("Up to 225: Alterac Mountains, Arathi Highlands, Desolace, Dustwallow Marsh, Stranglethorn Vale, Swamp of Sorrows, Thousand Needles.")
-		K.Print("Up to 300: Felwood, Feralas, The Hinterlands, Moonglade, Tanaris, Un'Goro Crater, Western Plaguelands.")
-		print(" ")
-	end
-end
-_G.SLASH_FISHINGZONES1 = "/fish"
-_G.SLASH_FISHINGZONES2 = "/fishing"

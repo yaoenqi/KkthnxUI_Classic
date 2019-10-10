@@ -75,8 +75,7 @@ or (IsAddOnLoaded("ConsolePortBar") and IsAddOnLoaded("ConsolePort")) then -- We
 	C["Inventory"].BagBar = false
 end
 
-if IsAddOnLoaded("Mapster")
-or IsAddOnLoaded("WorldQuestsList") then
+if IsAddOnLoaded("Mapster") then
 	C["WorldMap"].SmallWorldMap = false
 end
 
@@ -115,10 +114,6 @@ or IsAddOnLoaded("rTooltip") then
 	C["Tooltip"].Enable = false
 end
 
-if IsAddOnLoaded("TipTacTalents") then
-	C["Tooltip"].Talents = false
-end
-
 if IsAddOnLoaded("NiceBubbles") then
 	C["Skins"].ChatBubble = false
 end
@@ -129,7 +124,7 @@ end
 
 if IsAddOnLoaded("MBB")
 or IsAddOnLoaded("MinimapButtonFrame") then
-	C["Minimap"].CollectButtons = false
+	C["Minimap"].ShowRecycleBin = false
 end
 
 if IsAddOnLoaded("OmniCC")

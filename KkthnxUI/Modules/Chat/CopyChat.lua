@@ -16,7 +16,6 @@ local CreateFrame, UIParent = _G.CreateFrame, _G.UIParent
 local FCF_GetChatWindowInfo = _G.FCF_GetChatWindowInfo
 local FCF_SetChatWindowFontSize = _G.FCF_SetChatWindowFontSize
 local GameTooltip = _G.GameTooltip
-local HEIRLOOMS = _G.HEIRLOOMS
 local InCombatLockdown = _G.InCombatLockdown
 local IsAddOnLoaded = _G.IsAddOnLoaded
 local IsShiftKeyDown = _G.IsShiftKeyDown
@@ -98,14 +97,6 @@ local menuList = {
 						return
 					end
 					SlashCmdList["KKUI_ABANDONQUESTS"]()
-			end},
-
-			{text = "Delete |ccf00ccff"..HEIRLOOMS.."|r From Bags", notCheckable = true, func = function()
-					if InCombatLockdown() then
-						_G.UIErrorsFrame:AddMessage(K.InfoColor.._G.ERR_NOT_IN_COMBAT)
-						return
-					end
-					SlashCmdList["KKUI_DELETEHEIRLOOMS"]()
 			end},
 
 			{text = "Delete |cffffd200"..AUCTION_CATEGORY_QUEST_ITEMS.."|r From Bags", notCheckable = true, func = function()
