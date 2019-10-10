@@ -231,7 +231,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		},
 
 		["GatherEmpty"] = {
-			["Name"] = "Leere Slots als einen Button aufsummieren",
+			["Name"] = "Leere Slots als einen Slot aufsummieren",
 		},
 
 		["DetailedReport"] = {
@@ -274,6 +274,11 @@ _G.KkthnxUIConfig["deDE"] = {
 		
 		["ReverseSort"] = {
 			["Name"] = "Sortierungsrichtung umkehren",
+		},
+		
+		["SpecialBagsColor"] = {
+			["Name"] = "Spezialtaschen einfärben",
+			["Desc"] = "Spezielle Taschen einfärben:|n|n- |CFFABD473Jäger|r Köcher oder Munitionsbeutel|n- |CFF8787EDHexenmeister|r Seelenbeutel|n- Verzauberter Magiestoffbeutel|n- Kräuterbeutel"
 		},
 		
 		["BagsiLvl"] = {
@@ -623,6 +628,7 @@ _G.KkthnxUIConfig["deDE"] = {
 
 		["EnhancedMenu"] = {
 			["Name"] = "Füge Gildeneinladung und mehr zu Kontextmenüs hinzu",
+			["Desc"] = "Füge 'Gildeneinladung' und 'Freund hinzufügen' zum Kontextmenü des Zieles hinzu."
 		},
 
 		["GemEnchantInfo"] = {
@@ -635,6 +641,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		
 		["ImprovedQuestLog"] = {
 			["Name"] = "Verbessere das Aussehen des Questlogs",
+			["Desc"] = "Macht das QuestLog breiter.|n|nAddons wie ClassicQuestLog werden nicht mehr benötigt."
 		},
 
 		["ItemLevel"] = {
