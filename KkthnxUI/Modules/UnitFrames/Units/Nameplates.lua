@@ -257,19 +257,15 @@ function Module:CreateNameplates(unit)
 	self.RaidTargetIndicator:SetPoint("RIGHT", self, "LEFT", -6, 0)
 
 	if C["Nameplates"].ClassIcons then
-		local _, unitClass = UnitClass(unit)
-		local betterClassIcons = "Interface\\AddOns\\KkthnxUI\\Media\\Unitframes\\BetterClassIcons\\%s.tga"
-
 		self.Class = CreateFrame("Frame", nil, self)
 		self.Class.Icon = self.Class:CreateTexture(nil, "OVERLAY")
-		self.Class.Icon:SetSize(self:GetHeight() * 2 - 2, self:GetHeight() * 2 - 2)
+		self.Class.Icon:SetSize(self:GetHeight() * 2 - 3, self:GetHeight() * 2 - 3)
 		self.Class.Icon:SetPoint("TOPRIGHT", self.Health, "TOPLEFT", -5, 0)
-		self.Class.Icon:SetTexture(betterClassIcons:format(unitClass))
+		self.Class.Icon:SetTexture("Interface\\WorldStateFrame\\Icons-Classes")
 		self.Class.Icon:SetTexCoord(0, 0, 0, 0)
 
 		self.Class:SetAllPoints(self.Class.Icon)
-		self.Class:CreateShadow()
-		-- self.Class:CreateInnerShadow()
+		self.Class:CreateShadow(true)
 	end
 
 	if C["Nameplates"].QuestInfo then

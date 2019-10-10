@@ -835,10 +835,12 @@ function Module:CreateAuraWatch(frame)
 	frame.AuraWatch = Auras
 end
 
-function Module:UpdatePlateClassIcons()
+function Module:UpdatePlateClassIcons(unit)
 	if C["Nameplates"].ClassIcons then
-		if UnitIsPlayer(self.unit) then
-			self.Class.Icon:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+		if UnitIsPlayer(unit) then
+			local _, class = UnitClass(unit)
+			local texcoord = CLASS_ICON_TCOORDS[class]
+			self.Class.Icon:SetTexCoord(texcoord[1] + 0.015, texcoord[2] - 0.02, texcoord[3] + 0.018, texcoord[4] - 0.02)
 			self.Class:Show()
 		else
 			self.Class.Icon:SetTexCoord(0, 0, 0, 0)
@@ -931,7 +933,7 @@ function Module:NameplatesCallback(event, unit)
 
 	Module.UpdateQuestIndicator(self)
 	Module.UpdateNameplateTarget(self)
-	Module.UpdatePlateClassIcons(self)
+	Module.UpdatePlateClassIcons(self, unit)
 	Module.UpdateUnitClassify(self, unit)
 end
 
