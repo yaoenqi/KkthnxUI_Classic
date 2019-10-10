@@ -11,6 +11,24 @@ local InCombatLockdown = _G.InCombatLockdown
 local Minimap = _G.Minimap
 local MiniMapMailFrame = _G.MiniMapMailFrame
 local UIParent = _G.UIParent
+local GetZonePVPInfo = _G.GetZonePVPInfo
+
+function Module:GetLocTextColor()
+	local pvpType = GetZonePVPInfo()
+	if pvpType == "friendly" then
+		return 0.05, 0.85, 0.03
+	elseif pvpType == "contested" then
+		return 0.9, 0.85, 0.05
+	elseif pvpType == "hostile" then
+		return 0.84, 0.03, 0.03
+	elseif pvpType == "sanctuary" then
+		return 0.035, 0.58, 0.84
+	elseif pvpType == "combat" then
+		return 0.84, 0.03, 0.03
+	else
+		return 0.9, 0.85, 0.05
+	end
+end
 
 function Module:OnMouseWheelScroll(d)
 	if d > 0 then
@@ -36,17 +54,27 @@ local function SetupZoomReset()
 end
 hooksecurefunc(Minimap, "SetZoom", SetupZoomReset)
 
+function Module:UpdateZoneText()
+	if not C["Minimap"].Enable then
+		return
+	end
+
+	Minimap.Location:SetText(GetMinimapZoneText())
+	Minimap.Location:SetTextColor(Module:GetLocTextColor())
+	Minimap.Location:SetFontObject(K.GetFont(C["UIFonts"].DataTextFonts))
+	Minimap.Location:SetFont(select(1, Minimap.Location:GetFont()), 13, select(3, Minimap.Location:GetFont()))
+end
+
 function Module:UpdateSettings()
 	if InCombatLockdown() then
-		return self:RegisterEvent("PLAYER_REGEN_ENABLED", "OnEvent")
+		K:RegisterEvent("PLAYER_REGEN_ENABLED", self.PLAYER_REGEN_ENABLED)
+		return
 	end
 
 	K.MinimapSize = C["Minimap"].Enable and C["Minimap"].Size or Minimap:GetWidth() + 10
 	K.MinimapWidth, K.MinimapHeight = K.MinimapSize, K.MinimapSize
 
-	if C["Minimap"].Enable then
-		Minimap:SetSize(K.MinimapSize, K.MinimapSize)
-	end
+	Minimap:SetSize(K.MinimapSize, K.MinimapSize)
 
 	local MinimapFrameHolder = _G.MinimapFrameHolder
 	if MinimapFrameHolder then
@@ -57,6 +85,9 @@ function Module:UpdateSettings()
 	if not C["Minimap"].Enable then
 		return
 	end
+
+	Minimap.Location:SetWidth(K.MinimapSize)
+	Minimap.Location:Hide()
 
 	if MiniMapMailFrame then
 		MiniMapMailFrame:ClearAllPoints()
@@ -101,10 +132,9 @@ function Module.ADDON_LOADED(_, addon)
 	end
 end
 
-function Module.OnEvent(event)
-	if event == "PLAYER_REGEN_ENABLED" then
-		Module:UpdateSettings()
-	end
+function Module.PLAYER_REGEN_ENABLED()
+	K:UnregisterEvent("PLAYER_REGEN_ENABLED")
+	Module:UpdateSettings()
 end
 
 function Module:WhoPingedMyMap()
@@ -158,26 +188,20 @@ end
 
 function Module:SetGetMinimapShape()
 	-- This is just to support for other mods
-	GetMinimapShape = GetMinimapShape
+	_G.GetMinimapShape = GetMinimapShape
 	Minimap:SetSize(C["Minimap"].Size, C["Minimap"].Size)
 end
 
-
 function Module:OnEnable()
-	self:UpdateSettings()
-
 	if not C["Minimap"].Enable then
 		Minimap:SetMaskTexture([[Interface\CharacterFrame\TempPortraitAlphaMask]])
 		Minimap:SetBlipTexture("Interface\\MiniMap\\ObjectIconsAtlas")
 		return
 	end
 
-	self:SetGetMinimapShape()
-
 	local MinimapFrameHolder = CreateFrame("Frame", "MinimapFrameHolder", Minimap)
 	MinimapFrameHolder:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -4, -4)
-	MinimapFrameHolder:SetWidth(Minimap:GetWidth())
-	MinimapFrameHolder:SetHeight(Minimap:GetHeight())
+	MinimapFrameHolder:SetSize(C["Minimap"].Size, C["Minimap"].Size)
 
 	Minimap:ClearAllPoints()
 	Minimap:SetPoint("CENTER", MinimapFrameHolder, "CENTER", 0, 0)
@@ -186,6 +210,32 @@ function Module:OnEnable()
 	Minimap:CreateInnerShadow(nil, 0.4)
 	Minimap:SetScale(1.0)
 	Minimap:SetBlipTexture(C["Minimap"].BlipTexture.Value)
+
+	Minimap:HookScript("OnEnter", function(mm)
+		if not C["Minimap"].Enable then
+			return
+		end
+
+		mm.Location:Show()
+	end)
+
+	Minimap:HookScript("OnLeave", function(mm)
+		if not C["Minimap"].Enable then
+			return
+		end
+
+		mm.Location:Hide()
+	end)
+
+	Minimap.Location = Minimap:CreateFontString(nil, "OVERLAY")
+	Minimap.Location:SetFontObject(K.GetFont(C["UIFonts"].DataTextFonts))
+	Minimap.Location:SetFont(select(1, Minimap.Location:GetFont()), 13, select(3, Minimap.Location:GetFont()))
+	Minimap.Location:SetPoint("TOP", Minimap, "TOP", 0, -4)
+	Minimap.Location:SetJustifyH("CENTER")
+	Minimap.Location:SetJustifyV("MIDDLE")
+	if not C["Minimap"].Enable then
+		Minimap.Location:Hide()
+	end
 
 	_G.GameTimeFrame:Hide()
 	_G.MiniMapMailBorder:Hide()
@@ -210,16 +260,19 @@ function Module:OnEnable()
 
 	_G.MinimapCluster:EnableMouse(false)
 
-	K.Mover(MinimapFrameHolder, "Minimap", "Minimap", {"TOPRIGHT", UIParent, "TOPRIGHT", -4, -4}, Minimap:GetWidth(), Minimap:GetHeight())
+	K.Mover(MinimapFrameHolder, "Minimap", "Minimap", {"TOPRIGHT", UIParent, "TOPRIGHT", -4, -4})
 
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", Module.OnMouseWheelScroll)
 
-	K:RegisterEvent("PLAYER_ENTERING_WORLD", self.OnEvent)
+	K:RegisterEvent("PLAYER_ENTERING_WORLD", self.UpdateZoneText)
+	K:RegisterEvent("ZONE_CHANGED_NEW_AREA", self.UpdateZoneText)
+	K:RegisterEvent("ZONE_CHANGED", self.UpdateZoneText)
+	K:RegisterEvent("ZONE_CHANGED_INDOORS", self.UpdateZoneText)
 	K:RegisterEvent("ADDON_LOADED", self.ADDON_LOADED)
 
 	self:UpdateSettings()
-
+	self:SetGetMinimapShape()
 	self:WhoPingedMyMap()
 	self:CreateRecycleBin()
 end

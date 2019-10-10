@@ -201,20 +201,20 @@ function Module:OnTooltipSetUnit()
 				end
 			end
 
-			if C["Tooltip"].LFDRole then
-				local role = UnitGroupRolesAssigned(unit)
-				if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= "NONE") then
-					if role == "HEALER" then
-						role = "|CFF00FF96"..HEALER.."|r"
-					elseif role == "TANK" then
-						role = "|CFF294F9C"..TANK.."|r"
-					elseif role == "DAMAGER" then
-						role = "|CFFC41F3D"..DAMAGE.."|r"
-					end
+			-- if C["Tooltip"].LFDRole then
+			-- 	local role = UnitGroupRolesAssigned(unit) or K.Role(unit)
+			-- 	if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= "NONE") then
+			-- 		if role == "HEALER" then
+			-- 			role = "|CFF00FF96"..HEALER.."|r"
+			-- 		elseif role == "TANK" then
+			-- 			role = "|CFF294F9C"..TANK.."|r"
+			-- 		elseif role == "DAMAGER" then
+			-- 			role = "|CFFC41F3D"..DAMAGE.."|r"
+			-- 		end
 
-					GameTooltip:AddLine(string_format("%s: %s", _G.ROLE, role))
-				end
-			end
+			-- 		GameTooltip:AddLine(string_format("%s: %s", _G.ROLE, role))
+			-- 	end
+			-- end
 
 			local guildName, rank, rankIndex, guildRealm = GetGuildInfo(unit)
 			local hasText = GameTooltipTextLeft2:GetText()
@@ -497,22 +497,23 @@ K:RegisterEvent("ADDON_LOADED", addonStyled)
 
 Module:RegisterTooltips("KkthnxUI", function()
 	local tooltips = {
+		_G.AutoCompleteBox,
 		_G.ChatMenu,
-		_G.EmoteMenu,
-		_G.LanguageMenu,
-		_G.VoiceMacroMenu,
-		_G.GameTooltip,
 		_G.EmbeddedItemTooltip,
-		_G.ItemRefTooltip,
+		_G.EmoteMenu,
+		_G.FriendsTooltip,
+		_G.GameTooltip,
+		_G.GeneralDockManagerOverflowButtonList,
+		_G.IMECandidatesFrame,
 		_G.ItemRefShoppingTooltip1,
 		_G.ItemRefShoppingTooltip2,
+		_G.ItemRefTooltip,
+		_G.LanguageMenu,
+		_G.NamePlateTooltip,
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
-		_G.AutoCompleteBox,
-		_G.FriendsTooltip,
-		_G.GeneralDockManagerOverflowButtonList,
-		_G.NamePlateTooltip,
-		_G.IMECandidatesFrame
+		_G.VoiceMacroMenu,
+		_G.WorldMapTooltip
 	}
 	for _, f in pairs(tooltips) do
 		f:HookScript("OnShow", Module.ReskinTooltip)

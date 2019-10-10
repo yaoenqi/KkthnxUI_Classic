@@ -101,7 +101,7 @@ function Module:CreateAlertFrames()
 	AlertFrameMover:SetHeight(20)
 	AlertFrameMover:SetPoint("TOP", UIParent, "TOP", 0, -40)
 
-	K.Mover(AlertFrameMover, "AlertFrameMover", "AlertFrameMover", {"TOP", UIParent, 0, -40})
+	K.Mover(AlertFrameMover, "AlertFrame/GroupLoot", "AlertFrame/GroupLoot", {"TOP", UIParent, 0, -40})
 
 	GroupLootContainer:EnableMouse(false)
 	GroupLootContainer.ignoreFramePositionManager = true

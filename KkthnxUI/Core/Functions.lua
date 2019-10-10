@@ -94,6 +94,18 @@ function K.ShortValue(n)
 	end
 end
 
+function K.CommaValue(value)
+	local k
+	while true do
+		value, k = string.gsub(value, "^(-?%d+)(%d%d%d)", '%1,%2')
+		if (k == 0) then
+			break
+		end
+	end
+
+	return value
+end
+
 -- Return rounded number
 function K.Round(num, idp)
 	if (idp and idp > 0) then
@@ -315,30 +327,53 @@ function K.GetSpecialization(...)
 			primaryTree = i
 		end
 	end
+
 	return primaryTree
 end
 
+local isCaster = {
+	DRUID = {true},	 -- Balance
+	HUNTER = {nil, nil, nil},
+	MAGE = {true, true, true},
+	PALADIN = {nil, nil, nil},
+	PRIEST = {nil, nil, true}, -- Shadow
+	ROGUE = {nil, nil, nil},
+	SHAMAN = {true}, -- Elemental
+	WARLOCK = {true, true, true},
+	WARRIOR = {nil, nil, nil}
+}
+
 function K.GetSpecializationRole()
 	local tree = K.GetSpecialization()
-	local role
-	if ((K.Class == "PALADIN" and tree == 2) or (K.Class == "WARRIOR" and tree == 3)) or (K.Class == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
-		role = "TANK"
-	elseif ((K.Class == "PALADIN" and tree == 1) or (K.Class == "DRUID" and tree == 3) or (K.Class == "SHAMAN" and tree == 3) or (K.Class == "PRIEST" and tree ~= 3)) then
-		role = "HEALER"
+	-- eventually check for tank stats in case a tanking in a non-traditional spec (mostly for warriors)
+	if (K.Class == "PALADIN" and tree == 2) or (K.Class == "WARRIOR" and tree == 3) or (K.Class == "DRUID" and tree == 2 and GetBonusBarOffset() == 3) then
+		return "TANK"
+	elseif (K.Class == "PALADIN" and tree == 1) or (K.Class == "DRUID" and tree == 3) or (K.Class == "SHAMAN" and tree == 3) or (K.Class == "PRIEST" and tree ~= 3) then
+		return "HEALER"
 	else
-		local int = select(2, UnitStat("player", 4))
-		local agi = select(2, UnitStat("player", 2))
 		local base, posBuff, negBuff = UnitAttackPower("player")
-		local ap = base + posBuff + negBuff
 
-		if (((ap > int) or (agi > int)) and not (K.Class == "SHAMAN" and tree ~= 1 and tree ~= 3) and not AuraUtil.FindAuraByName(GetSpellInfo(24858), "player")) or K.Class == "ROGUE" or K.Class == "HUNTER" or (K.Class == "SHAMAN" and tree == 2) then
-			role = "MELEE" -- ordinarily "DAMAGER"
+		local current = {}
+		local best = 1
+		for i = 1, 7 do
+			 current[i] = GetSpellBonusDamage(i)
+			 if current[i] > current[best] then
+				best = i
+			end
+		end
+
+		local ap = base + posBuff + negBuff
+		local spell = GetSpellBonusDamage(best)
+		local heal = GetSpellBonusHealing()
+
+		if K.Class ~= "HUNTER" and heal >= ap and heal >= spell then
+			return "HEALER" -- healing gear without having the majority of talents in a healing tree
+		elseif K.Class ~= "HUNTER" and (isCaster[K.Class][tree] or spell >= ap) then
+			return "CASTER" -- ordinarily "DAMAGER"
 		else
-			role = "CASTER" -- ordinarily "DAMAGER"
+			return "MELEE" -- ordinarily "DAMAGER"
 		end
 	end
-
-	return role
 end
 
 UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned or function(unit) -- Needs work
@@ -353,18 +388,6 @@ UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned or function(unit) -- Needs wo
 		return role
 	end
 end
-
-local isCaster = {
-	DRUID = {true},					-- Balance
-	HUNTER = {nil, nil, nil},
-	MAGE = {true, true, true},
-	PALADIN = {nil, nil, nil},
-	PRIEST = {nil, nil, true},		-- Shadow
-	ROGUE = {nil, nil, nil},
-	SHAMAN = {true},				-- Elemental
-	WARLOCK = {true, true, true},
-	WARRIOR = {nil, nil, nil}
-}
 
 local function CheckRole()
 	local spec = K.GetSpecialization()

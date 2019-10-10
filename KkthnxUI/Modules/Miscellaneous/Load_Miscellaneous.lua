@@ -70,21 +70,6 @@ do
 	end
 end
 
--- Repoint Vehicle
-function Module:VehicleSeatMover()
-	local frame = CreateFrame("Frame", "KkthnxUIVehicleSeatMover", UIParent)
-	frame:SetSize(120, 120)
-	K.Mover(frame, "VehicleSeat", "VehicleSeat", {"BOTTOM", UIParent, -364, 4})
-
-	hooksecurefunc(_G.VehicleSeatIndicator, "SetPoint", function(self, _, parent)
-		if parent == "MinimapCluster" or parent == _G.MinimapCluster then
-			self:ClearAllPoints()
-			self:SetPoint("CENTER", frame)
-			self:SetScale(0.9)
-		end
-	end)
-end
-
 -- Grids
 do
 	local grid
@@ -174,21 +159,12 @@ function Module:CreateToggleHelmCloak()
 	local helmCheck = CreateFrame("CheckButton", "HelmCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
 	helmCheck:SetSize(14, 14)
 	helmCheck:SetPoint("BOTTOMLEFT", CharacterStatFrame1, "TOPLEFT", -2, 4)
-	helmCheck:SetScript("OnClick", function ()
+	helmCheck:SetScript("OnClick", function()
 		ShowHelm(not ShowingHelm())
 	end)
 
 	helmCheck.Text = K.CreateFontString(helmCheck, 11, SHOW_HELM)
 	helmCheck.Text:SetPoint("LEFT", helmCheck, "RIGHT", 2, 0)
-	helmCheck.Text:Hide()
-
-	helmCheck:SetScript("OnEnter", function ()
-		helmCheck.Text:Show()
-	end)
-
-	helmCheck:SetScript("OnLeave", function ()
-		helmCheck.Text:Hide()
-	end)
 
 	helmCheck:SetFrameStrata("HIGH")
 	helmCheck:SetHitRectInsets(0, 0, 0, 0)
@@ -197,21 +173,12 @@ function Module:CreateToggleHelmCloak()
 	local cloakCheck = CreateFrame("CheckButton", "CloakCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
 	cloakCheck:SetSize(14, 14)
 	cloakCheck:SetPoint("BOTTOMRIGHT", CharacterAttributesFrame, "TOPRIGHT", -2, 1)
-	cloakCheck:SetScript("OnClick", function ()
+	cloakCheck:SetScript("OnClick", function()
 		ShowCloak(not ShowingCloak())
 	end)
 
 	cloakCheck.Text = K.CreateFontString(cloakCheck, 11, SHOW_CLOAK)
 	cloakCheck.Text:SetPoint("RIGHT", cloakCheck, "LEFT", -2, 0)
-	cloakCheck.Text:Hide()
-
-	cloakCheck:SetScript("OnEnter", function ()
-		cloakCheck.Text:Show()
-	end)
-
-	cloakCheck:SetScript("OnLeave", function ()
-		cloakCheck.Text:Hide()
-	end)
 
 	cloakCheck:SetFrameStrata("HIGH")
 	cloakCheck:SetHitRectInsets(0, 0, 0, 0)
@@ -237,25 +204,99 @@ end
 function Module:FixQuestFrameIcons()
 	local titleLines = {}
 	local questIconTextures = {}
+	local completedActiveQuests = {}
+	local escapes = {
+		["|c%x%x%x%x%x%x%x%x"] = "", -- color start
+		["|r"] = "" -- color end
+	}
 
-	for i = 1, MAX_NUM_QUESTS do
-		local titleLine = _G["QuestTitleButton"..i]
-		table_insert(titleLines, titleLine)
-		table_insert(questIconTextures, _G[titleLine:GetName().."QuestIcon"])
+	do
+		for i = 1, MAX_NUM_QUESTS do
+			local titleLine = _G["QuestTitleButton"..i]
+			table_insert(titleLines, titleLine)
+			table_insert(questIconTextures, _G[titleLine:GetName().."QuestIcon"])
+		end
+
+		QuestFrameGreetingPanel:HookScript("OnShow", function()
+			for i, titleLine in ipairs(titleLines) do
+				if (titleLine:IsVisible()) then
+					local bulletPointTexture = questIconTextures[i]
+					if (titleLine.isActive == 1) then
+						bulletPointTexture:SetTexture(ACTIVE_QUEST_ICON_FILEID)
+					else
+						bulletPointTexture:SetTexture(AVAILABLE_QUEST_ICON_FILEID)
+					end
+				end
+			end
+		end)
 	end
 
-	QuestFrameGreetingPanel:HookScript("OnShow", function()
-		for i, titleLine in ipairs(titleLines) do
-			if (titleLine:IsVisible()) then
-				local bulletPointTexture = questIconTextures[i]
-				if (titleLine.isActive == 1) then
-					bulletPointTexture:SetTexture(ACTIVE_QUEST_ICON_FILEID)
-				else
-					bulletPointTexture:SetTexture(AVAILABLE_QUEST_ICON_FILEID)
+	do
+		local function unescape(str)
+			for k, v in pairs(escapes) do
+				str = gsub(str, k, v)
+			end
+
+			return str
+		end
+
+		local function getCompletedQuestsInLog()
+			table.wipe(completedActiveQuests)
+			local numEntries = GetNumQuestLogEntries()
+			local questLogTitleText, isComplete, questId, _
+			for i = 1, numEntries, 1 do
+				_, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(i)
+				if (isComplete == 1 or IsQuestComplete(questId)) then
+					questLogTitleText = C_QuestLog.GetQuestInfo(questId)
+					completedActiveQuests[questLogTitleText] = true
+				end
+			end
+
+			return completedActiveQuests
+		end
+
+		local function setDesaturation(maxLines, lineMap, iconMap, activePred)
+			local completedQuests = getCompletedQuestsInLog()
+			for i = 1, maxLines do
+				local line = lineMap[i]
+				local icon = iconMap[i]
+				icon:SetDesaturated(nil)
+				if (line:IsVisible() and activePred(line)) then
+					local questName = unescape(line:GetText())
+					if (not completedQuests[questName]) then
+						icon:SetDesaturated(1)
+					end
 				end
 			end
 		end
-	end)
+
+		local function getLineAndIconMaps(maxLines, titleIdent, iconIdent)
+			local lines = {}
+			local icons = {}
+			for i = 1, maxLines do
+				local titleLine = _G[titleIdent .. i]
+				table_insert(lines, titleLine)
+				table_insert(icons, _G[titleLine:GetName() .. iconIdent])
+			end
+
+			return lines, icons
+		end
+
+		local questFrameTitleLines, questFrameIconTextures = getLineAndIconMaps(MAX_NUM_QUESTS, "QuestTitleButton", "QuestIcon")
+		QuestFrameGreetingPanel:HookScript("OnShow",function()
+			setDesaturation(MAX_NUM_QUESTS, questFrameTitleLines, questFrameIconTextures, function(line)
+				return line.isActive == 1
+			end)
+		end)
+
+		local gossipFrameTitleLines, gossipFrameIconTextures =
+		getLineAndIconMaps(NUMGOSSIPBUTTONS, "GossipTitleButton", "GossipIcon")
+		hooksecurefunc("GossipFrameUpdate", function()
+			setDesaturation(NUMGOSSIPBUTTONS, gossipFrameTitleLines, gossipFrameIconTextures, function(line)
+				return line.type == "Active"
+			end)
+		end)
+	end
 end
 
 -- TradeFrame hook
@@ -590,8 +631,7 @@ function Module:CreateWowHeadLinks()
 end
 
 function Module:OnEnable()
-	-- self:CreateKillingBlow()
-	-- self:VehicleSeatMover()
+	self:CreateKillingBlow()
 
 	self:CreateAFKCam()
 	--self:CreateChatBubble()

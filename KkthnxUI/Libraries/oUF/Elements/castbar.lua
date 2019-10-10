@@ -86,6 +86,8 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 local _, ns = ...
 local oUF = ns.oUF
 
+local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
+
 local GetNetStats = GetNetStats
 local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo or CastingInfo
@@ -142,7 +144,7 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 	element:SetValue(0)
 
 	if(element.Text) then element.Text:SetText(LibClassicCasterino and name or text) end
-	if(element.Icon) then element.Icon:SetTexture(texture) end
+	if(element.Icon) then element.Icon:SetTexture(texture or FALLBACK_ICON) end
 	if(element.Time) then element.Time:SetText() end
 
 	local shield = element.Shield

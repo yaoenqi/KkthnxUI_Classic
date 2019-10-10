@@ -376,23 +376,25 @@ end
 
 function Module:CreateClassIcons()
 	local WorldMapUnitPin, WorldMapUnitPinSizes
-	local partyTexture = "Interface\\AddOns\\KkthnxUI\\Media\\Worldmap\\Leatrix_Maps_Icon.blp"
+	local partyTexture = "Interface\\OptionsFrame\\VoiceChat-Record"
+
+	local function setPinTexture(self)
+		self:SetPinTexture("raid", partyTexture)
+		self:SetPinTexture("party", partyTexture)
+	end
 
 	-- Set group icon textures
 	for pin in WorldMapFrame:EnumeratePinsByTemplate("GroupMembersPinTemplate") do
 		WorldMapUnitPin = pin
 		WorldMapUnitPinSizes = pin.dataProvider:GetUnitPinSizesTable()
-		WorldMapUnitPin:SetPinTexture("raid", partyTexture)
-		WorldMapUnitPin:SetPinTexture("party", partyTexture)
-		hooksecurefunc(WorldMapUnitPin, "UpdateAppearanceData", function(self)
-			self:SetPinTexture("raid", partyTexture)
-			self:SetPinTexture("party", partyTexture)
-		end)
+		setPinTexture(WorldMapUnitPin)
+		hooksecurefunc(WorldMapUnitPin, "UpdateAppearanceData", setPinTexture)
 		break
 	end
 
 	-- Set party icon size and enable class colors
-	WorldMapUnitPinSizes.party = 20
+	WorldMapUnitPinSizes.player = 24
+	WorldMapUnitPinSizes.party = 14
 	WorldMapUnitPin:SetAppearanceField("party", "useClassColor", true)
 	WorldMapUnitPin:SetAppearanceField("raid", "useClassColor", true)
 	WorldMapUnitPin:SynchronizePinSizes()

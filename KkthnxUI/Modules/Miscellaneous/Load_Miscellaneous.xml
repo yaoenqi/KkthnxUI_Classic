@@ -10,7 +10,7 @@
    <Script file="ImprovedMail.lua" />
    <Script file="ImprovedProfessionFrame.lua" />
    <Script file="ImprovedQuestLog.lua" />
-   <!-- <Script file="KillingBlow.lua" /> NEEDS A REWRITE TO NOT USE BANNER -->
+   <Script file="KillingBlow.lua" />
    <Script file="MerchantItemlevel.lua" />
    <Script file="MovableFrames.lua" />
    <Script file="PvPEmote.lua" />

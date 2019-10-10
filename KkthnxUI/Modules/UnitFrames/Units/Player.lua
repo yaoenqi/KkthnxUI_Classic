@@ -51,19 +51,19 @@ function Module:CreatePlayer(unit)
 	self.Health.frequentUpdates = true
 
 	if C["Unitframe"].HealthbarColor.Value == "Value" then
-        self.Health.colorSmooth = true
-        self.Health.colorClass = false
-        self.Health.colorReaction = false
-    elseif C["Unitframe"].HealthbarColor.Value == "Dark" then
-        self.Health.colorSmooth = false
-        self.Health.colorClass = false
-        self.Health.colorReaction = false
-        self.Health:SetStatusBarColor(0.31, 0.31, 0.31)
-    else
-        self.Health.colorSmooth = false
-        self.Health.colorClass = true
-        self.Health.colorReaction = true
-    end
+		self.Health.colorSmooth = true
+		self.Health.colorClass = false
+		self.Health.colorReaction = false
+	elseif C["Unitframe"].HealthbarColor.Value == "Dark" then
+		self.Health.colorSmooth = false
+		self.Health.colorClass = false
+		self.Health.colorReaction = false
+		self.Health:SetStatusBarColor(0.31, 0.31, 0.31)
+	else
+		self.Health.colorSmooth = false
+		self.Health.colorClass = true
+		self.Health.colorReaction = true
+	end
 
 	if C["Unitframe"].Smooth then
 		K.SmoothBar(self.Health)
@@ -258,24 +258,22 @@ function Module:CreatePlayer(unit)
 		self.EnergyManaRegen.Spark = self.EnergyManaRegen:CreateTexture(nil, 'OVERLAY')
 	end
 
-	if C["Unitframe"].AdditionalPower then
-		if K.Class == "DRUID" then
-			self.DruidMana = CreateFrame("StatusBar", nil, self)
-			self.DruidMana:SetHeight(14)
-			self.DruidMana:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, 6)
-			self.DruidMana:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", 0, 6)
-			self.DruidMana:SetStatusBarTexture(K.GetTexture(C["UITextures"].UnitframeTextures))
-			self.DruidMana:SetStatusBarColor(unpack(K.Colors.power["MANA"]))
-			self.DruidMana:CreateBorder()
+	if C["Unitframe"].AdditionalPower and K.Class == "DRUID" then
+		self.DruidMana = CreateFrame("StatusBar", nil, self)
+		self.DruidMana:SetHeight(14)
+		self.DruidMana:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, 6)
+		self.DruidMana:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", 0, 6)
+		self.DruidMana:SetStatusBarTexture(K.GetTexture(C["UITextures"].UnitframeTextures))
+		self.DruidMana:SetStatusBarColor(unpack(K.Colors.power["MANA"]))
+		self.DruidMana:CreateBorder()
 
-			K.SmoothBar(self.DruidMana)
+		K.SmoothBar(self.DruidMana)
 
-			self.DruidMana.Text = self.DruidMana:CreateFontString(nil, "OVERLAY")
-			self.DruidMana.Text:SetFontObject(K.GetFont(C["UIFonts"].UnitframeFonts))
-			self.DruidMana.Text:SetPoint("CENTER", self.DruidMana, "CENTER", 0, 0)
+		self.DruidMana.Text = self.DruidMana:CreateFontString(nil, "OVERLAY")
+		self.DruidMana.Text:SetFontObject(K.GetFont(C["UIFonts"].UnitframeFonts))
+		self.DruidMana.Text:SetPoint("CENTER", self.DruidMana, "CENTER", 0, 0)
 
-			self.DruidMana.PostUpdate = PostUpdateAddPower
-		end
+		self.DruidMana.PostUpdate = PostUpdateAddPower
 	end
 
 	self.LeaderIndicator = self.Overlay:CreateTexture(nil, "OVERLAY")
@@ -289,7 +287,7 @@ function Module:CreatePlayer(unit)
 
 	if C["Unitframe"].CombatText then
 		local parentFrame = CreateFrame("Frame", nil, UIParent)
-		self.FloatingCombatFeedback = CreateFrame("Frame", "oUF_CombatTextFrame", parentFrame)
+		self.FloatingCombatFeedback = CreateFrame("Frame", "oUF_Player_CombatTextFrame", parentFrame)
 		self.FloatingCombatFeedback:SetSize(32, 32)
 		K.Mover(self.FloatingCombatFeedback, "CombatText", "PlayerCombatText", {"BOTTOM", self, "TOPLEFT", 0, 120})
 
@@ -304,6 +302,22 @@ function Module:CreatePlayer(unit)
 		self.FloatingCombatFeedback.showAutoAttack = true
 		self.FloatingCombatFeedback.showOverHealing = false
 		self.FloatingCombatFeedback.abbreviateNumbers = true
+		self.FloatingCombatFeedback.colors = {
+			ABSORB = {0.84, 0.75, 0.65},
+			BLOCK = {0.84, 0.75, 0.65},
+			CRITENERGIZE = {0.31, 0.45, 0.63},
+			CRITHEAL = {0.33, 0.59, 0.33},
+			CRITICAL = {0.69, 0.31, 0.31},
+			CRUSHING = {0.69, 0.31, 0.31},
+			DAMAGE = {0.69, 0.31, 0.31},
+			ENERGIZE = {0.31, 0.45, 0.63},
+			GLANCING = {0.69, 0.31, 0.31},
+			HEAL = {0.33, 0.59, 0.33},
+			IMMUNE = {0.84, 0.75, 0.65},
+			MISS = {0.84, 0.75, 0.65},
+			RESIST = {0.84, 0.75, 0.65},
+			STANDARD = {0.84, 0.75, 0.65},
+		}
 	end
 
 	if C["Unitframe"].Swingbar then

@@ -16,7 +16,6 @@ local CreateFrame = _G.CreateFrame
 local DeleteCursorItem = _G.DeleteCursorItem
 local GetContainerItemID = _G.GetContainerItemID
 local GetContainerItemInfo = _G.GetContainerItemInfo
-local GetContainerNumFreeSlots = _G.GetContainerNumFreeSlots
 local GetContainerNumSlots = _G.GetContainerNumSlots
 local InCombatLockdown = _G.InCombatLockdown
 local IsAltKeyDown = _G.IsAltKeyDown
@@ -90,8 +89,8 @@ function Module:CreateInfoFrame()
 	search:SetPoint("LEFT", 0, 5)
 	search:DisableDrawLayer("BACKGROUND")
 	search:CreateBackdrop()
-	search.Backdrop:SetPoint("TOPLEFT", -5, -5)
-	search.Backdrop:SetPoint("BOTTOMRIGHT", 5, 5)
+	search.Backdrop:SetPoint("TOPLEFT", -5, -7)
+	search.Backdrop:SetPoint("BOTTOMRIGHT", 5, 7)
 
 	-- local tag = self:SpawnPlugin("TagDisplay", "[money]", infoFrame)
 	-- tag:SetFont(C.Media.Font, 12, "OUTLINE")
@@ -230,9 +229,10 @@ end
 
 function Module:CreateCloseButton()
 	local closeButton = CreateFrame("Button", nil, self)
-	closeButton:SetSize(20, 20)
+	closeButton:SetSize(18, 18)
 	closeButton:CreateBorder()
 	closeButton:CreateInnerShadow()
+	closeButton:StyleButton()
 
 	closeButton.Icon = closeButton:CreateTexture(nil, "ARTWORK")
 	closeButton.Icon:SetAllPoints()
@@ -248,9 +248,10 @@ end
 
 function Module:CreateRestoreButton(f)
 	local restoreButton = CreateFrame("Button", nil, self)
-	restoreButton:SetSize(20, 20)
+	restoreButton:SetSize(18, 18)
 	restoreButton:CreateBorder()
 	restoreButton:CreateInnerShadow()
+	restoreButton:StyleButton()
 
 	restoreButton.Icon = restoreButton:CreateTexture(nil, "ARTWORK")
 	restoreButton.Icon:SetAllPoints()
@@ -274,9 +275,10 @@ end
 
 function Module:CreateBagToggle()
 	local bagToggleButton = CreateFrame("Button", nil, self)
-	bagToggleButton:SetSize(20, 20)
+	bagToggleButton:SetSize(18, 18)
 	bagToggleButton:CreateBorder()
 	bagToggleButton:CreateInnerShadow()
+	bagToggleButton:StyleButton()
 
 	bagToggleButton.Icon = bagToggleButton:CreateTexture(nil, "ARTWORK")
 	bagToggleButton.Icon:SetAllPoints()
@@ -301,9 +303,10 @@ end
 
 function Module:CreateSortButton(name)
 	local sortButton = CreateFrame("Button", nil, self)
-	sortButton:SetSize(20, 20)
+	sortButton:SetSize(18, 18)
 	sortButton:CreateBorder()
 	sortButton:CreateInnerShadow()
+	sortButton:StyleButton()
 
 	sortButton.Icon = sortButton:CreateTexture(nil, "ARTWORK")
 	sortButton.Icon:SetAllPoints()
@@ -339,9 +342,10 @@ function Module:CreateDeleteButton()
 	local enabledText = K.SystemColor..L["Delete Mode Enabled"]
 
 	local deleteButton = CreateFrame("Button", nil, self)
-	deleteButton:SetSize(20, 20)
+	deleteButton:SetSize(18, 18)
 	deleteButton:CreateBorder()
 	deleteButton:CreateInnerShadow()
+	deleteButton:StyleButton()
 
 	deleteButton.Icon = deleteButton:CreateTexture(nil, "ARTWORK")
 	deleteButton.Icon:SetPoint("TOPLEFT", 3, -2)
@@ -384,9 +388,10 @@ function Module:CreateFavouriteButton()
 	local enabledText = K.SystemColor..L["Favourite Mode Enabled"]
 
 	local favouriteButton = CreateFrame("Button", nil, self)
-	favouriteButton:SetSize(20, 20)
+	favouriteButton:SetSize(18, 18)
 	favouriteButton:CreateBorder()
 	favouriteButton:CreateInnerShadow()
+	favouriteButton:StyleButton()
 
 	favouriteButton.Icon = favouriteButton:CreateTexture(nil, "ARTWORK")
 	favouriteButton.Icon:SetPoint("TOPLEFT", -5, 0)
@@ -483,10 +488,6 @@ local freeSlotContainer = {
 }
 
 function Module:CreateFreeSlots()
-	if not C["Inventory"].GatherEmpty then
-		return
-	end
-
 	local name = self.name
 	if not freeSlotContainer[name] then
 		return
@@ -628,7 +629,7 @@ function Module:OnEnable()
 
 		self.Favourite = self:CreateTexture(nil, "OVERLAY", nil, 2)
 		self.Favourite:SetAtlas("collections-icon-favorites")
-		self.Favourite:SetSize(30, 30)
+		self.Favourite:SetSize(24, 24)
 		self.Favourite:SetPoint("TOPLEFT", -12, 9)
 
 		if showItemLevel then
@@ -670,6 +671,14 @@ function Module:OnEnable()
 			C_NewItems_RemoveNewItem(self.bagID, self.slotID)
 		end
 	end
+
+	local bagTypeColor = {
+		[-1] = {.67, .83, .45, .25},
+		[0] = {0, 0, 0, .25},
+		[1] = {.53, .53, .93, .25},
+		[2] = {0, .5, 0, .25},
+		[3] = {0, .5, .8, .25},
+	}
 
 	function MyButton:OnUpdate(item)
 		if MerchantFrame:IsShown() then
@@ -714,6 +723,14 @@ function Module:OnEnable()
 				self.glowFrame:Hide()
 			end
 		end
+
+		if not C["Inventory"].SpecialBagsColor then
+			local bagType = Module.BagsType[item.bagID]
+			local color = bagTypeColor[bagType] or bagTypeColor[0]
+			self:SetBackdropColor(unpack(color))
+		else
+			self:SetBackdropColor(0.04, 0.04, 0.04, 0.9)
+		end
 	end
 
 	function MyButton:OnUpdateQuest(item)
@@ -743,23 +760,28 @@ function Module:OnEnable()
 		local yOffset = -offset + spacing
 		local width, height = self:LayoutButtons("grid", columns, spacing, xOffset, yOffset)
 		if self.freeSlot then
-			local numSlots = #self.buttons + 1
-			local row = ceil(numSlots / columns)
-			local col = numSlots % columns
-			if col == 0 then
-				col = columns
-			end
+			if C["Inventory"].GatherEmpty then
+				local numSlots = #self.buttons + 1
+				local row = ceil(numSlots / columns)
+				local col = numSlots % columns
+				if col == 0 then
+					col = columns
+				end
 
-			local xPos = (col - 1) * (iconSize + spacing)
-			local yPos = -1 * (row - 1) * (iconSize + spacing)
+				local xPos = (col-1) * (iconSize + spacing)
+				local yPos = -1 * (row-1) * (iconSize + spacing)
 
-			self.freeSlot:ClearAllPoints()
-			self.freeSlot:SetPoint("TOPLEFT", self, "TOPLEFT", xPos + xOffset, yPos + yOffset)
+				self.freeSlot:ClearAllPoints()
+				self.freeSlot:SetPoint("TOPLEFT", self, "TOPLEFT", xPos+xOffset, yPos+yOffset)
+				self.freeSlot:Show()
 
-			if height < 0 then
-				width, height = columns * (iconSize+spacing)-spacing, iconSize
-			elseif col == 1 then
-				height = height + iconSize + spacing
+				if height < 0 then
+					width, height = columns * (iconSize+spacing)-spacing, iconSize
+				elseif col == 1 then
+					height = height + iconSize + spacing
+				end
+			else
+				self.freeSlot:Hide()
 			end
 		end
 		self:SetSize(width + xOffset * 2, height + offset)

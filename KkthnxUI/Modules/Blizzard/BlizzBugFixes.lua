@@ -6,10 +6,8 @@ if not Module then
 end
 
 local _G = _G
-local pairs = _G.pairs
 
 local blizzardCollectgarbage = _G.collectgarbage
-local hooksecurefunc = _G.hooksecurefunc
 
 function Module:CreateBlizzBugFixes()
 	-- Fix blizz error
@@ -59,28 +57,5 @@ function Module:CreateBlizzBugFixes()
 		InterfaceOptionsFrameCancel:SetScript("OnClick", function()
 			InterfaceOptionsFrameOkay:Click()
 		end)
-	end
-
-	do
-		hooksecurefunc("ItemAnim_OnLoad", function(self)
-			self:UnregisterEvent("ITEM_PUSH")
-		end)
-
-		local BlizzardBags = {
-			_G.MainMenuBarBackpackButton,
-			_G.CharacterBag0Slot,
-			_G.CharacterBag1Slot,
-			_G.CharacterBag2Slot,
-			_G.CharacterBag3Slot,
-
-			_G.StuffingFBag0Slot,
-			_G.StuffingFBag1Slot,
-			_G.StuffingFBag2Slot,
-			_G.StuffingFBag3Slot,
-		}
-
-		for _, Button in pairs(BlizzardBags) do
-			Button:UnregisterEvent("ITEM_PUSH") -- Gets Rid Of The Animation
-		end
 	end
 end

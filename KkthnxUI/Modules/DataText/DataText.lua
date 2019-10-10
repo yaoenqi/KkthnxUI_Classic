@@ -10,7 +10,17 @@ function module:RegisterInfobar(name, point)
 	info.text:SetFontObject(K.GetFont(C["UIFonts"].DataTextFonts))
 	info.text:SetFont(select(1, info.text:GetFont()), 13, select(3, info.text:GetFont()))
 	info.text:SetPoint(unpack(point))
+
+	info.text.glow = info:CreateTexture(nil, "BACKGROUND", nil, -1)
+	info.text.glow:SetHeight(12)
+	info.text.glow:SetPoint("TOPLEFT", info.text, "TOPLEFT", -6, 6)
+	info.text.glow:SetPoint("BOTTOMRIGHT", info.text, "BOTTOMRIGHT", 6, -6)
+	info.text.glow:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Textures\\Shader")
+	info.text.glow:SetVertexColor(0, 0, 0, 0.5)
+
 	info:SetAllPoints(info.text)
+
+
 	info.name = name
 	tinsert(self.modules, info)
 

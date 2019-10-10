@@ -230,7 +230,7 @@ _G.KkthnxUIConfig["enUS"] = {
 		},
 
 		["GatherEmpty"] = {
-			["Name"] = "Gather Empty Slots Into One Button",
+			["Name"] = "Gather Empty Slots Into One Slot",
 		},
 
 		["IconSize"] = {
@@ -247,6 +247,11 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["ReverseSort"] = {
 			["Name"] = "Bags Reverse Sorting",
+		},
+
+		["SpecialBagsColor"] = {
+			["Name"] = "Show Special Bags Color",
+			["Desc"] = "Show color for special bags:|n|n- |CFFABD473Hunter|r quiver or ammo pouch|n- |CFF8787EDWarlock|r soul pouch|n- Enchanted mageweave pouch|n- Herb pouch"
 		},
 
 		["BagsiLvl"] = {
@@ -596,6 +601,7 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["EnhancedMenu"] = {
 			["Name"] = "Add guild invite and more to dropdowns",
+			["Desc"] = "Add 'Guild Invite' and 'Add Friend' options in target right-click menu."
 		},
 
 		["GemEnchantInfo"] = {
@@ -608,6 +614,7 @@ _G.KkthnxUIConfig["enUS"] = {
 
 		["ImprovedQuestLog"] = {
 			["Name"] = "Display A Better Questlog Style",
+			["Desc"] = "Expand default QuestLog.|n|nYou don't need addons like ClassicQuestLog any more."
 		},
 
 		["ItemLevel"] = {

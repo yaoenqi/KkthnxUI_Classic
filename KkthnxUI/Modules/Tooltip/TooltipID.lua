@@ -2,32 +2,58 @@ local K, C, L = unpack(select(2, ...))
 local Module = K:GetModule("Tooltip")
 
 local _G = _G
+local string_find = _G.string.find
 local string_format = _G.string.format
 local string_match = _G.string.match
 
-local ACHIEVEMENTS = _G.ACHIEVEMENTS
 local BAGSLOT = _G.BAGSLOT
 local BANK = _G.BANK
 local CURRENCY = _G.CURRENCY
---local C_TradeSkillUI_GetRecipeReagentItemLink = _G.C_TradeSkillUI.GetRecipeReagentItemLink
 local GetItemCount = _G.GetItemCount
 local GetItemInfo = _G.GetItemInfo
+local GetMouseFocus = _G.GetMouseFocus
 local GetUnitName = _G.GetUnitName
 local ITEMS = _G.ITEMS
 local QUESTS_LABEL = _G.QUESTS_LABEL
+local SELL_PRICE = _G.SELL_PRICE
 local SPELLS = _G.SPELLS
 local TALENT = _G.TALENT
 local UnitAura = _G.UnitAura
+
+local SELL_PRICE_TEXT = string_format("%s:", SELL_PRICE)
 
 local types = {
 	spell = SPELLS.."ID:",
 	item = ITEMS.."ID:",
 	quest = QUESTS_LABEL.."ID:",
 	talent = TALENT.."ID:",
-	achievement = ACHIEVEMENTS.."ID:",
 	currency = CURRENCY.."ID:",
-	azerite = L["Trait"].."ID:",
 }
+
+function Module:UpdateItemSellPrice()
+	local frame = GetMouseFocus()
+	if frame and frame.GetName then
+		local name = frame:GetName()
+		if not MerchantFrame:IsShown() or name and (string_find(name, "Character") or string_find(name, "TradeSkill")) then
+			local link = select(2, self:GetItem())
+			if link then
+				local price = select(11, GetItemInfo(link))
+				if price and price > 0 then
+					local object = frame:GetObjectType()
+					local count
+					if object == "Button" then -- ContainerFrameItem, QuestInfoItem, PaperDollItem
+						count = frame.count
+					elseif object == "CheckButton" then -- MailItemButton or ActionButton
+						count = frame.count or tonumber(frame.Count:GetText())
+					end
+
+					local cost = (tonumber(count) or 1) * price
+					self:AddDoubleLine(SELL_PRICE_TEXT, K.FormatMoney(cost), nil,nil,nil, 1,1,1)
+				end
+			end
+		end
+	end
+end
 
 function Module:AddLineForID(id, linkType, noadd)
 	for i = 1, self:NumLines() do
@@ -47,6 +73,8 @@ function Module:AddLineForID(id, linkType, noadd)
     end
 
 	if linkType == types.item then
+		Module.UpdateItemSellPrice(self)
+
 		local bagCount = GetItemCount(id)
 		local bankCount = GetItemCount(id, true) - GetItemCount(id)
 		local itemStackCount = select(8, GetItemInfo(id))
@@ -149,47 +177,7 @@ function Module:CreateTooltipID()
 	ShoppingTooltip2:HookScript("OnTooltipSetItem", Module.SetItemID)
 	ItemRefShoppingTooltip1:HookScript("OnTooltipSetItem", Module.SetItemID)
 	ItemRefShoppingTooltip2:HookScript("OnTooltipSetItem", Module.SetItemID)
-	-- hooksecurefunc(GameTooltip, "SetToyByItemID", function(self, id)
-	-- 	if id then
-	-- 		Module.AddLineForID(self, id, types.item)
-	-- 	end
-	-- end)
-
-	-- hooksecurefunc(GameTooltip, "SetRecipeReagentItem", function(self, recipeID, reagentIndex)
-	-- 	local link = C_TradeSkillUI_GetRecipeReagentItemLink(recipeID, reagentIndex)
-	-- 	local id = link and string_match(link, "item:(%d+):")
-	-- 	if id then
-	-- 		Module.AddLineForID(self, id, types.item)
-	-- 	end
-	-- end)
-
-	-- Currencies
-	-- hooksecurefunc(GameTooltip, "SetCurrencyToken", function(self, index)
-	-- 	local id = tonumber(string_match(GetCurrencyListLink(index), "currency:(%d+)"))
-	-- 	if id then
-	-- 		Module.AddLineForID(self, id, types.currency)
-	-- 	end
-	-- end)
-
-	-- hooksecurefunc(GameTooltip, "SetCurrencyByID", function(self, id)
-	-- 	if id then
-	-- 		Module.AddLineForID(self, id, types.currency)
-	-- 	end
-	-- end)
-
-	-- hooksecurefunc(GameTooltip, "SetCurrencyTokenByID", function(self, id)
-	-- 	if id then
-	-- 		Module.AddLineForID(self, id, types.currency)
-	-- 	end
-	-- end)
 
 	-- Spell caster
 	hooksecurefunc(GameTooltip, "SetUnitAura", Module.UpdateSpellCaster)
-
-	-- Azerite traits
-	-- hooksecurefunc(GameTooltip, "SetAzeritePower", function(self, _, _, id)
-	-- 	if id then
-	-- 		Module.AddLineForID(self, id, types.azerite, true)
-	-- 	end
-	-- end)
 end

@@ -253,7 +253,7 @@ function Module:CreateTarget(unit)
 
 	if C["Unitframe"].CombatText then
 		local parentFrame = CreateFrame("Frame", nil, UIParent)
-		self.FloatingCombatFeedback = CreateFrame("Frame", "oUF_CombatTextFrame", parentFrame)
+		self.FloatingCombatFeedback = CreateFrame("Frame", "oUF_Target_CombatTextFrame", parentFrame)
 		self.FloatingCombatFeedback:SetSize(32, 32)
 		K.Mover(self.FloatingCombatFeedback, "CombatText", "TargetCombatText", {"BOTTOM", self, "TOPRIGHT", 0, 120})
 
@@ -268,6 +268,22 @@ function Module:CreateTarget(unit)
 		self.FloatingCombatFeedback.showAutoAttack = true
 		self.FloatingCombatFeedback.showOverHealing = false
 		self.FloatingCombatFeedback.abbreviateNumbers = true
+		self.FloatingCombatFeedback.colors = {
+			ABSORB = {0.84, 0.75, 0.65},
+			BLOCK = {0.84, 0.75, 0.65},
+			CRITENERGIZE = {0.31, 0.45, 0.63},
+			CRITHEAL = {0.33, 0.59, 0.33},
+			CRITICAL = {0.69, 0.31, 0.31},
+			CRUSHING = {0.69, 0.31, 0.31},
+			DAMAGE = {0.69, 0.31, 0.31},
+			ENERGIZE = {0.31, 0.45, 0.63},
+			GLANCING = {0.69, 0.31, 0.31},
+			HEAL = {0.33, 0.59, 0.33},
+			IMMUNE = {0.84, 0.75, 0.65},
+			MISS = {0.84, 0.75, 0.65},
+			RESIST = {0.84, 0.75, 0.65},
+			STANDARD = {0.84, 0.75, 0.65},
+		}
 	end
 
 	if C["Unitframe"].PortraitTimers then

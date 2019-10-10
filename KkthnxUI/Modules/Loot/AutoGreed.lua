@@ -41,7 +41,7 @@ end
 function Module:CreateAutoGreed()
     if C["Loot"].AutoGreed ~= true or K.Level ~= MAX_PLAYER_LEVEL then
         return
-    end
+	end
 
     K:RegisterEvent("START_LOOT_ROLL", SetupAutoGreed)
 end

@@ -190,7 +190,7 @@ end
 function Module:UpdateUnitClassify(unit)
 	local class = _G.UnitClassification(unit)
 	if self.creatureIcon then
-		if class and classify[class] and (self.frameType == "FRIENDLY_NPC" or self.frameType == "ENEMY_NPC") then
+		if class and classify[class] then
 			local r, g, b, desature = unpack(classify[class])
 			self.creatureIcon:SetVertexColor(r, g, b)
 			self.creatureIcon:SetDesaturated(desature)
@@ -239,7 +239,7 @@ function Module:UpdateQuestUnit(_, unit)
 		if textLine and text then
 			local r, g, b = textLine:GetTextColor()
 			local unitName, progressText = string_match(text, "^ ([^ ]-) ?%- (.+)$")
-			if r > .99 and g > .82 and b == 0 then
+			if r > 0.99 and g > 0.82 and b == 0 then
 				isLootQuest = true
 			elseif unitName and progressText then
 				isLootQuest = false
@@ -299,6 +299,7 @@ function Module:UpdateForQuestie(name)
 				end
 			end
 		end
+
 		if foundObjective then
 			self.questIcon:Show()
 			self.questCount:SetText(progressText)
@@ -596,7 +597,7 @@ function Module:CreateAuraTimer(elapsed)
 	end
 end
 
-function Module:CancelPlayerBuff(index)
+function Module:CancelPlayerBuff()
 	if InCombatLockdown() then
 		return
 	end
@@ -689,11 +690,11 @@ end
 
 function Module:PostUpdateAura(unit, button, index)
 	local Name, _, _, DType, Duration, ExpirationTime, UnitCaster, IsStealable, _, SpellID = UnitAura(unit, index, button.filter)
+	local DurationNew, ExpirationNew = LCD:GetAuraDurationByUnit(unit, SpellID, UnitCaster, Name)
 
-	if Duration == 0 and ExpirationTime == 0 then
-		Duration, ExpirationTime = LCD:GetAuraDurationByUnit(unit, SpellID, UnitCaster, Name)
-
-		button.IsLibClassicDuration = true
+	if (Duration == 0 and DurationNew) then
+		Duration = DurationNew
+		ExpirationTime = ExpirationNew
 	end
 
 	local isPlayer = (UnitCaster == "player" or UnitCaster == "vehicle")
@@ -740,15 +741,14 @@ function Module:PostUpdateAura(unit, button, index)
 
 	if button.Remaining then
 		if (Duration and Duration > 0) then
+			button:SetScript("OnUpdate", Module.CreateAuraTimer)
 			button.Remaining:Show()
 		else
 			button.Remaining:Hide()
 		end
-
-		button:SetScript("OnUpdate", Module.CreateAuraTimer)
 	end
 
-	if (button.cd) and (button.IsLibClassicDuration) then
+	if button.cd then
 		if (Duration and Duration > 0) then
 			button.cd:SetCooldown(ExpirationTime - Duration, Duration)
 			button.cd:Show()
@@ -899,29 +899,27 @@ function Module:AddPlateInterruptInfo()
 	K:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", self.UpdatePlateCastbarInterrupt)
 end
 
-function Module:NameplatesCallback(nameplate, event, unit)
-	if not nameplate then
+function Module:NameplatesCallback(event, unit)
+	if not self then
 		return
 	end
 
 	if event == "NAME_PLATE_UNIT_ADDED" then
-		unit = unit or nameplate.unit
-
-		nameplate.unitName = UnitName(unit)
-		nameplate.unitGUID = UnitGUID(unit)
-		if nameplate.unitGUID then
-			Module.guidToPlate[nameplate.unitGUID] = nameplate
+		self.unitName = UnitName(unit)
+		self.unitGUID = UnitGUID(unit)
+		if self.unitGUID then
+			Module.guidToPlate[self.unitGUID] = self
 		end
-		nameplate.npcID = K.GetNPCID(nameplate.unitGUID)
+		self.npcID = K.GetNPCID(self.unitGUID)
 	elseif event == "NAME_PLATE_UNIT_REMOVED" then
-		if nameplate.unitGUID then
-			Module.guidToPlate[nameplate.unitGUID] = nil
+		if self.unitGUID then
+			Module.guidToPlate[self.unitGUID] = nil
 		end
 	end
 
-	Module.UpdateQuestIndicator(nameplate)
-	Module.UpdateNameplateTarget(nameplate)
-	Module.UpdateUnitClassify(nameplate, unit)
+	Module.UpdateQuestIndicator(self)
+	Module.UpdateNameplateTarget(self)
+	Module.UpdateUnitClassify(self, unit)
 end
 
 function Module:GetPartyFramesAttributes()
@@ -1144,9 +1142,7 @@ function Module:CreateUnits()
 	end
 
 	if C["Nameplates"].Enable then
-		oUF:SpawnNamePlates(" ", function(nameplate, event, unit)
-			Module:NameplatesCallback(nameplate, event, unit)
-		end)
+		oUF:SpawnNamePlates(" ", Module.NameplatesCallback)
 	end
 end
 

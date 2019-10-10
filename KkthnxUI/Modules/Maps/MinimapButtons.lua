@@ -26,6 +26,7 @@ function Module:CreateRecycleBin()
 	local blackList = {
 		["BattlefieldMinimap"] = true,
 		["ButtonCollectFrame"] = true,
+		["DA_Minimap"] = true,
 		["FeedbackUIButton"] = true,
 		["GameTimeFrame"] = true,
 		["HelpOpenTicketButton"] = true,
@@ -46,12 +47,13 @@ function Module:CreateRecycleBin()
 	}
 
 	local bu = CreateFrame("Button", "RecycleBinToggleButton", Minimap)
+	bu:SetAlpha(0.8)
 	bu:SetSize(24, 24)
-	bu:SetPoint("BOTTOMLEFT", -15, -15)
+	bu:SetPoint("BOTTOMLEFT", -11, -5)
 	bu.Icon = bu:CreateTexture(nil, "ARTWORK")
 	bu.Icon:SetAllPoints()
-	bu.Icon:SetTexture("Interface\\HelpFrame\\ReportLagIcon-Loot")
-	bu:SetHighlightTexture("Interface\\HelpFrame\\ReportLagIcon-Loot")
+	bu.Icon:SetTexture("Interface\\AddOns\\KkthnxUI\\Media\\Minimap\\RecycleButton")
+	bu:SetHighlightTexture("Interface\\AddOns\\KkthnxUI\\Media\\Minimap\\RecycleButton")
 	K.AddTooltip(bu, "ANCHOR_LEFT", "Minimap RecycleBin", "white")
 
 	local bin = CreateFrame("Frame", "RecycleBinFrame", UIParent)
@@ -79,9 +81,11 @@ function Module:CreateRecycleBin()
 	end
 
 	local secureAddons = {
-		["HANDYNOTES"] = true,
+		["GATHERMATE"] = true,
 		["GUIDELIME"] = true,
+		["HANDYNOTES"] = true,
 		["TOWNSFOLKTRACKER"] = true,
+        ["GATHERMATE2"] = true,
 	}
 
 	local function isButtonSecure(name)

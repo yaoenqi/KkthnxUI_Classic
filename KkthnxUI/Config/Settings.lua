@@ -85,6 +85,7 @@ C["Inventory"] = {
 	["ItemFilter"] = true,
 	["QuestItemFilter"] = false,
 	["ReverseSort"] = false,
+	["SpecialBagsColor"] = true,
 	["TradeGoodsFilter"] = false,
 	["AutoRepair"] = {
 		["Options"] = {
@@ -128,10 +129,10 @@ C["Chat"] = {
 -- DataBars
 C["DataBars"] = {
 	["Enable"] = true,
-	["ExperienceColor"] = {0, 0.4, 1, .8},
+	["ExperienceColor"] = {0.6, 0.3, 0.8, 1.0},
 	["Height"] = 12,
 	["MouseOver"] = false,
-	["RestedColor"] = {1, 0, 1, 0.2},
+	["RestedColor"] = {0.3, 0.6, 0.8, 1.0},
 	["Text"] = true,
 	["Width"] = 180,
 }

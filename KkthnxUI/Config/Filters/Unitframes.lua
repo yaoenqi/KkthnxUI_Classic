@@ -463,9 +463,24 @@ K.AuraBlackList = {
 }
 
 K.ChannelingTicks = {
-	[SpellName(12051)] = 3, -- Evocation
-	[SpellName(15407)] = 4, -- Mind Flay
-	[SpellName(5143)] = 5, -- Arcane Missiles
-	[SpellName(740)] = 4, -- Tranquility
-	[SpellName(755)] = 3 -- Health Funnel
+	-- Druid
+	[SpellName(740)] = 5, -- Tranquility
+	[SpellName(16914)] = 10, -- Hurricane
+	-- Hunter
+	[SpellName(136)] = 5, -- Mend Pet
+	[SpellName(1510)] = 6, -- Volley
+	-- Mage
+	[SpellName(10)] = 8, -- Blizzard
+	[SpellName(5143)] = 3, -- Arcane Missiles
+	[SpellName(12051)]  = 3,  -- Evocation
+	-- Priest
+	[SpellName(15407)] = 3, -- Mind Flay
+	[SpellName(10797)] = 6, -- Star Shards
+	-- Warlock
+	[SpellName(1949)] = 15, -- Hellfire
+	[SpellName(5740)] = 4, -- Rain of Fire
+	[SpellName(5138)] = 5, -- Drain Mana
+	[SpellName(689)] = 5, -- Drain Life
+	[SpellName(1120)] = 5, -- Drain Soul
+	[SpellName(755)] = 10, -- Health Funnel
 }
