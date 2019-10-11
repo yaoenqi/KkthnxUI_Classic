@@ -5,8 +5,6 @@ local ModuleNewFeature = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIc
 
 local _G = _G
 
-local REVERSE_NEW_LOOT_TEXT = _G.REVERSE_NEW_LOOT_TEXT
-
 _G.KkthnxUIConfig["deDE"] = {
 	-- Menu Groups Display Names
 	["GroupNames"] = {
@@ -205,7 +203,7 @@ _G.KkthnxUIConfig["deDE"] = {
 
 		["ButtonSpace"] = {
 			["Name"] = "Abstand der Taschenknöpfe zueinander",
-		},		
+		},
 		["ClassRelatedFilter"] = {
 			["Name"] = "Filter für Klassenspezifische Gegenstände",
 		},
@@ -243,13 +241,13 @@ _G.KkthnxUIConfig["deDE"] = {
 			["Name"] = "Aktivieren",
 			["Desc"] = "(De-)Aktivieren des Taschenmoduls.",
 		},
-		
-		
+
+
 		["IconSize"] = {
 			["Name"] = "Größe der Slots im Inventar",
 		},
 
-		
+
 		["ItemFilter"] = {
 			["Name"] = "Aktiviere Filterung im Inventar",
 		},
@@ -271,16 +269,16 @@ _G.KkthnxUIConfig["deDE"] = {
 		["AutoRepair"] = {
 			["Name"] = "Ausrüstung automatisch reparieren",
 		},
-		
+
 		["ReverseSort"] = {
 			["Name"] = "Sortierungsrichtung umkehren",
 		},
-		
+
 		["SpecialBagsColor"] = {
 			["Name"] = "Spezialtaschen einfärben",
 			["Desc"] = "Spezielle Taschen einfärben:|n|n- |CFFABD473Jäger|r Köcher oder Munitionsbeutel|n- |CFF8787EDHexenmeister|r Seelenbeutel|n- Verzauberter Magiestoffbeutel|n- Kräuterbeutel"
 		},
-		
+
 		["BagsiLvl"] = {
 			["Name"] = "Zeige Gegenstandsstufe",
 			["Desc"] = "Zeigt Gegenstandsstufe an ausrüstbaren Gegenständen.",
@@ -502,7 +500,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		["AutoScale"] = {
 			["Name"] = "Automatische Skalierung",
 		},
-		
+
 		["ColorTextures"] = {
 			["Name"] = "Einfärben der 'meisten' KkthnxUI Ränder",
 		},
@@ -550,7 +548,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		["PortraitStyle"] = {
 			["Name"] = "Portraitstil für Einheitenfenster",
 		},
-		
+
 		["UIScale"] = {
 			["Name"] = "Interface Skalierung",
 		},
@@ -604,7 +602,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		["Size"] = {
 			["Name"] = "Größe der Minikarte",
 		},
-		
+
 		["BlipTexture"] = {
 			["Name"] = "Stil der Blip Symbole",
 			["Desc"] = "Ändere die Blip Symbole der Minimap für Ressourcen, Gruppenmitglieder etc.",
@@ -638,11 +636,11 @@ _G.KkthnxUIConfig["deDE"] = {
 		["GemEnchantInfo"] = {
 			["Name"] = "Charakter/Betrachten Edelsteine-/Verzauberungsinfo",
 		},
-		
+
 		["ImprovedProfessionWindow"] = {
 			["Name"] = "Verbessert das aussehen der Berufefenster",
 		},
-		
+
 		["ImprovedQuestLog"] = {
 			["Name"] = "Verbessere das Aussehen des Questlogs",
 			["Desc"] = "Macht das QuestLog breiter.|n|nAddons wie ClassicQuestLog werden nicht mehr benötigt."
@@ -744,7 +742,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		["SelectedScale"] = {
 			["Name"] = "Ausgewählte Skalierung für Namensplaketten",
 		},
-		
+
 		["ShowFullHealth"] = {
 			["Name"] = "Zeige Lebenspunkte an",
 		},
@@ -906,7 +904,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		["PvPIndicator"] = {
 			["Name"] = "Zeige PvP-Symbole am Spieler/Ziel",
 		},
-				
+
 		["ShowHealPrediction"] = {
 			["Name"] = "Zeige hereinkommende Heilung an",
 		},

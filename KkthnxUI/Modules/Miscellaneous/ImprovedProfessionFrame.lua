@@ -179,7 +179,7 @@ function Module:CreateImprovedProfessionWindow()
 	else
 		local waitFrame = CreateFrame("FRAME")
 		waitFrame:RegisterEvent("ADDON_LOADED")
-		waitFrame:SetScript("OnEvent", function(self, event, arg1)
+		waitFrame:SetScript("OnEvent", function(_, _, arg1)
 			if arg1 == "Blizzard_TradeSkillUI" then
 				Module:SetupImprovedProfessionWindow("TradeSkill")
 				loadCount = loadCount + 1

@@ -620,6 +620,10 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Desc"] = "Expand default QuestLog.|n|nYou don't need addons like ClassicQuestLog any more."
 		},
 
+		["ImprovedTrainerWindow"] = {
+			["Name"] = "Display A Better Trainer Window Style",
+		},
+
 		["ItemLevel"] = {
 			["Name"] = "Show Character/Inspect ItemLevel Info",
 		},

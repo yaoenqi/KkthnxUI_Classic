@@ -10,6 +10,7 @@
    <Script file="ImprovedMail.lua" />
    <Script file="ImprovedProfessionFrame.lua" />
    <Script file="ImprovedQuestLog.lua" />
+   <Script file="ImprovedTrainerFrame.lua" />
    <Script file="KillingBlow.lua" />
    <Script file="MerchantItemlevel.lua" />
    <Script file="MovableFrames.lua" />

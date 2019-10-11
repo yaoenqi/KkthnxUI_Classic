@@ -7,6 +7,7 @@ if not Module then
 end
 
 function Module:OnEnable()
+    self:CreateAutoBuffThanksAnnounce()
     self:CreateAutoDeclineDuels()
     self:CreateAutoInvite()
     self:CreateAutoRelease()

@@ -6,12 +6,21 @@ local _G = _G
 local SendChatMessage = _G.SendChatMessage
 local CombatLogGetCurrentEventInfo = _G.CombatLogGetCurrentEventInfo
 
-function Module:SetupSaySapped()
-	local _, event, _, _, sourceName, _, _, _, destName, _, _, spellID = CombatLogGetCurrentEventInfo()
+-- Build Spell list (this ignores ranks)
+local SaySappedList = {
+	(GetSpellInfo(11297)), -- Sapped
+}
 
-	if ((spellID == 6770 or spellID == 2070 or spellID == 11297) and (destName == K.Name) and (event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH")) then
+function Module:SetupSaySapped()
+	local _, event, _, _, sourceName, _, _, _, destName, _, _, _, spellName = CombatLogGetCurrentEventInfo()
+
+	if not (event == "SPELL_AURA_APPLIED" or not event == "SPELL_AURA_REFRESH") then
+		return
+	end
+
+	if (SaySappedList[spellName]) and (destName == K.Name) then
 		SendChatMessage(L["Sapped"], "SAY")
-		K.Print(L["SappedBy"]..(sourceName or UNKNOWN))
+		UIErrorsFrame:AddMessage(L["SappedBy"]..(sourceName or UNKNOWN))
 	end
 end
 

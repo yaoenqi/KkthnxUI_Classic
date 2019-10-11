@@ -72,6 +72,7 @@ C["Automation"] = {
 
 C["Inventory"] = {
 	-- ["ItemSetFilter"] = false,
+
 	["AutoSell"] = true,
 	["BagBar"] = true,
 	["BagBarMouseover"] = false,
@@ -217,6 +218,8 @@ C["Minimap"] = {
 
 -- Miscellaneous
 C["Misc"] = {
+	-- ["KillingBlow"] = false, -- Not Ready
+
 	["AFKCamera"] = false,
 	["AutoDismountStand"] = true,
 	["ColorPicker"] = false,
@@ -225,8 +228,8 @@ C["Misc"] = {
 	["GemEnchantInfo"] = false,
 	["ImprovedProfessionWindow"] = true,
 	["ImprovedQuestLog"] = true,
+	["ImprovedTrainerWindow"] = true,
 	["ItemLevel"] = false,
-	-- ["KillingBlow"] = false, -- Not Ready
 	["PvPEmote"] = false,
 	["ShowHelmCloak"] = false,
 	["ShowWowHeadLinks"] = false,
@@ -287,6 +290,7 @@ C["Nameplates"] = {
 -- Skins
 C["Skins"] = {
 	--["BlizzardBags"] = false,
+
 	["ChatBubbles"] = true,
 	["DBM"] = false,
 	["Details"] = false,
@@ -345,6 +349,8 @@ C["UITextures"] = {
 
 -- Unitframe
 C["Unitframe"] = {
+	-- ["TotemBar"] = true,
+
 	["AdditionalPower"] = true,
 	["CastClassColor"] = true,
 	["CastReactionColor"] = true,
@@ -374,7 +380,6 @@ C["Unitframe"] = {
 	["SwingbarTimer"] = false,
 	["TargetCastbarHeight"] = 24,
 	["TargetCastbarWidth"] = 260,
-	-- ["TotemBar"] = true,
 	["HealthbarColor"] = {
         ["Options"] = {
             ["Dark"] = "Dark",
