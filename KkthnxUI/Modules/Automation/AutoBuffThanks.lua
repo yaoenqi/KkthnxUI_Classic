@@ -1,8 +1,5 @@
 local K, C, L = unpack(select(2, ...))
 local Module = K:GetModule("Automation")
-if IsAddOnLoaded("TFTB") or C["Automation"].BuffThanks ~= true then
-	return
-end
 
 local _G = _G
 local string_split = _G.string.split
@@ -53,5 +50,9 @@ function Module:SetupAutoBuffThanksAnnounce()
 end
 
 function Module:CreateAutoBuffThanksAnnounce()
+	if IsAddOnLoaded("TFTB") or C["Automation"].BuffThanks ~= true then
+		return
+	end
+
 	K:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", self.SetupAutoBuffThanksAnnounce)
 end
