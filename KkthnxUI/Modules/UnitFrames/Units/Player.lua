@@ -251,6 +251,34 @@ function Module:CreatePlayer(unit)
 		self:Tag(self.Level, "[fulllevel]")
 	end
 
+	if (K.Class == "SHAMAN") then
+		self.Totems = CreateFrame("Frame", self:GetName() .. "Totems", self)
+		self.Totems:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+		self.Totems:SetSize(156, 12)
+		self.Totems:CreateBorder()
+
+		local Width = (156 / 4) - 1
+		local Color
+
+		for i = 1, 4 do
+			Color = K.Color.totems[i]
+
+			self.Totems[i] = CreateFrame("StatusBar", self:GetName().."Totems"..i, self.Totems)
+			self.Totems[i]:SetSize(Width, 8)
+			self.Totems[i]:SetStatusBarTexture(UnitframeTexture)
+			self.Totems[i]:SetStatusBarColor(Color[1], Color[2], Color[3])
+			self.Totems[i]:SetMinMaxValues(0, 1)
+			self.Totems[i]:SetValue(0)
+
+			if (i == 1) then
+				self.Totems[i]:SetPoint("LEFT", self.Totems, 1, 0)
+			else
+				self.Totems[i]:SetPoint("TOPLEFT", self.Totems[i-1], "TOPRIGHT", 1, 0)
+				self.Totems[i]:SetWidth(Width - 1)
+			end
+		end
+	end
+
 	if C["Unitframe"].EnergyTick then
 		self.EnergyManaRegen = CreateFrame("StatusBar", nil, self.Power)
 		self.EnergyManaRegen:SetFrameLevel(self.Power:GetFrameLevel() + 3)

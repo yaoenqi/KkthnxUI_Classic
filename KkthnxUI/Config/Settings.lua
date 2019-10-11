@@ -73,6 +73,7 @@ C["Automation"] = {
 C["Inventory"] = {
 	-- ["ItemSetFilter"] = false,
 
+	["AutoRepair"] = true,
 	["AutoSell"] = true,
 	["BagBar"] = true,
 	["BagBarMouseover"] = false,
@@ -88,13 +89,6 @@ C["Inventory"] = {
 	["ReverseSort"] = false,
 	["SpecialBagsColor"] = true,
 	["TradeGoodsFilter"] = false,
-	["AutoRepair"] = {
-		["Options"] = {
-			[NONE] = "NONE",
-			[PLAYER] = "PLAYER",
-		},
-		["Value"] = "PLAYER"
-	},
 }
 
 -- Buffs & Debuffs

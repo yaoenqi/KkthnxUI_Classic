@@ -287,4 +287,3 @@ oUF.Tags.Methods["leadassist"] = function(unit)
 
 	return (Lead..Assist)
 end
-
