@@ -696,6 +696,11 @@ _G.KkthnxUIConfig["deDE"] = {
 			["Desc"] = "Behält die Namensplaketten am oberen Rand in Sicht wenn diese außerhalb des Sichtfeldes geraten würden."
 		},
 
+		["ClassIcons"] = {
+			["Name"] = "Zeige gegnerische Klassensymbole",
+			["Desc"] = "Zeige gegnerische Klassensymbole um die Klasse einfacher bestimmen zu können. |n|nDies ist sehr nützlich für Farbenblinde!"
+		},
+
 		["ClassResource"] = {
 			["Name"] = "Zeige Klassenressourcen",
 		},
