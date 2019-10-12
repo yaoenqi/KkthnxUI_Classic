@@ -125,7 +125,7 @@ C["Chat"] = {
 C["DataBars"] = {
 	["Enable"] = true,
 	["ExperienceColor"] = {0.6, 0.3, 0.8, 1.0},
-	["Height"] = 12,
+	["Height"] = 14,
 	["MouseOver"] = false,
 	["RestedColor"] = {0.3, 0.6, 0.8, 1.0},
 	["Text"] = true,
@@ -345,14 +345,14 @@ C["UITextures"] = {
 C["Unitframe"] = {
 	-- ["TotemBar"] = true,
 
-	["AdditionalPower"] = true,
+	["AdditionalPower"] = K.Class == "DRUID",
 	["CastClassColor"] = true,
 	["CastReactionColor"] = true,
 	["CastbarLatency"] = true,
 	["Castbars"] = true,
-	["ClassResource"] = true,
 	["CombatFade"] = false,
 	["CombatText"] = false,
+	["ComboPoints"] = K.Class == "DRUID" or K.Class == "ROGUE",
 	["DebuffHighlight"] = true,
 	["DebuffsOnTop"] = true,
 	["Enable"] = true,
@@ -374,6 +374,7 @@ C["Unitframe"] = {
 	["SwingbarTimer"] = false,
 	["TargetCastbarHeight"] = 24,
 	["TargetCastbarWidth"] = 260,
+	["Totems"] = K.Class == "SHAMAN",
 	["HealthbarColor"] = {
         ["Options"] = {
             ["Dark"] = "Dark",

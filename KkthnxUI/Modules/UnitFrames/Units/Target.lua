@@ -85,7 +85,7 @@ function Module:CreateTarget(unit)
 
 	self.Name = self:CreateFontString(nil, "OVERLAY")
 	self.Name:SetPoint("TOP", self.Health, 0, 16)
-	self.Name:SetWidth(156 * 0.80)
+	self.Name:SetWidth(156 * 0.90)
 	self.Name:SetFontObject(UnitframeFont)
 	self.Name:SetWordWrap(false)
 	self:Tag(self.Name, "[color][name][afkdnd]")

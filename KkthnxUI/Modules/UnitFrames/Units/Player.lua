@@ -240,7 +240,7 @@ function Module:CreatePlayer(unit)
 		self.Name:SetPoint("TOP", self.Health, 0, 16)
 		self.Name:SetWidth(156)
 		self.Name:SetFontObject(UnitframeFont)
-		self:Tag(self.Name, " [color][name]")
+		self:Tag(self.Name, "[color][name]")
 	end
 
 	-- Level
@@ -251,15 +251,16 @@ function Module:CreatePlayer(unit)
 		self:Tag(self.Level, "[fulllevel]")
 	end
 
-	local totemTesting = false
-	if (K.Class == "SHAMAN") and (totemTesting) then
-		self.Totems = CreateFrame("Frame", self:GetName() .. "Totems", self)
-		self.Totems:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, 6)
-		self.Totems:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", 0, 6)
-		self.Totems:SetHeight(14)
-		self.Totems:CreateBorder()
+	self.LeaderIndicator = self.Overlay:CreateTexture(nil, "OVERLAY")
+	self.LeaderIndicator:SetSize(14, 14)
+	self.LeaderIndicator:SetPoint("TOPLEFT", self.Overlay, "TOPLEFT", 0, 8)
 
-		local Width = (156 / 4) - 1
+	if (C["Unitframe"].Totems) and (K.Class == "SHAMAN") then
+		self.Totems = CreateFrame("Frame", self:GetName() .. "Totems", self)
+		self.Totems:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -6)
+		self.Totems:SetSize(156, 14)
+
+		local Width = (138 / 4) - 1
 		local Color
 
 		for i = 1, 4 do
@@ -267,6 +268,7 @@ function Module:CreatePlayer(unit)
 
 			self.Totems[i] = CreateFrame("StatusBar", self:GetName().."Totems"..i, self.Totems)
 			self.Totems[i]:SetSize(Width, 14)
+			self.Totems[i]:CreateBorder()
 			self.Totems[i]:SetStatusBarTexture(UnitframeTexture)
 			self.Totems[i]:SetStatusBarColor(Color[1], Color[2], Color[3])
 			self.Totems[i]:SetMinMaxValues(0, 1)
@@ -275,17 +277,35 @@ function Module:CreatePlayer(unit)
 			if (i == 1) then
 				self.Totems[i]:SetPoint("LEFT", self.Totems, 1, 0)
 			else
-				self.Totems[i]:SetPoint("TOPLEFT", self.Totems[i - 1], "TOPRIGHT", 1, 0)
+				self.Totems[i]:SetPoint("TOPLEFT", self.Totems[i - 1], "TOPRIGHT", 6, 0)
 				self.Totems[i]:SetWidth(Width - 1)
 			end
 		end
-	end
+	elseif (C["Unitframe"].ComboPoints) and (K.Class == "ROGUE" or K.Class == "DRUID") then
+		self.ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self)
+		self.ComboPoints:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -6)
+		self.ComboPoints:SetSize(156, 14)
 
-	if C["Unitframe"].EnergyTick then
-		self.EnergyManaRegen = CreateFrame("StatusBar", nil, self.Power)
-		self.EnergyManaRegen:SetFrameLevel(self.Power:GetFrameLevel() + 3)
-		self.EnergyManaRegen:SetAllPoints()
-		self.EnergyManaRegen.Spark = self.EnergyManaRegen:CreateTexture(nil, 'OVERLAY')
+		local Width = (138 / 5)
+		local Color
+
+		for i = 1, 5 do
+			Color = K.Colors.power.COMBO_POINTS[i]
+
+			self.ComboPoints[i] = CreateFrame("StatusBar", self:GetName() .. "ComboPoints" .. i, self.ComboPoints)
+			self.ComboPoints[i]:SetSize(Width, 14)
+			self.ComboPoints[i]:CreateBorder()
+			self.ComboPoints[i]:SetStatusBarTexture(UnitframeTexture)
+			self.ComboPoints[i]:SetStatusBarColor(Color[1], Color[2], Color[3])
+			self.ComboPoints[i]:SetAlpha(0.25)
+
+			if (i == 1) then
+				self.ComboPoints[i]:SetPoint("LEFT", self.ComboPoints, 1, 0)
+			else
+				self.ComboPoints[i]:SetPoint("TOPLEFT", self.ComboPoints[i - 1], "TOPRIGHT", 6, 0)
+				self.ComboPoints[i]:SetWidth(Width - 2)
+			end
+		end
 	end
 
 	if C["Unitframe"].AdditionalPower and K.Class == "DRUID" then
@@ -293,7 +313,7 @@ function Module:CreatePlayer(unit)
 		self.DruidMana:SetHeight(14)
 		self.DruidMana:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", 0, 6)
 		self.DruidMana:SetPoint("BOTTOMRIGHT", self.Health, "TOPRIGHT", 0, 6)
-		self.DruidMana:SetStatusBarTexture(K.GetTexture(C["UITextures"].UnitframeTextures))
+		self.DruidMana:SetStatusBarTexture(UnitframeTexture)
 		self.DruidMana:SetStatusBarColor(unpack(K.Colors.power["MANA"]))
 		self.DruidMana:CreateBorder()
 
@@ -306,13 +326,11 @@ function Module:CreatePlayer(unit)
 		self.DruidMana.PostUpdate = PostUpdateAddPower
 	end
 
-	self.LeaderIndicator = self.Overlay:CreateTexture(nil, "OVERLAY")
-	self.LeaderIndicator:SetSize(14, 14)
-	self.LeaderIndicator:SetPoint("TOPLEFT", self.Overlay, "TOPLEFT", 0, 8)
-
-	-- Class Power (Combo Points, etc...)
-	if C["Unitframe"].ClassResource then
-		Module.CreateClassPower(self)
+	if C["Unitframe"].EnergyTick then
+		self.EnergyManaRegen = CreateFrame("StatusBar", nil, self.Power)
+		self.EnergyManaRegen:SetFrameLevel(self.Power:GetFrameLevel() + 3)
+		self.EnergyManaRegen:SetAllPoints()
+		self.EnergyManaRegen.Spark = self.EnergyManaRegen:CreateTexture(nil, 'OVERLAY')
 	end
 
 	if C["Unitframe"].CombatText then

@@ -677,10 +677,6 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Desc"] = "Show Enemy Class Icons to help better determine what class they are. |n|nThis is helpful for people who are colorblind!"
 		},
 
-		["ClassResource"] = {
-			["Name"] = "Show Class Resources",
-		},
-
 		["Combat"] = {
 			["Name"] = "Show Nameplates In Combat",
 		},
@@ -800,7 +796,7 @@ _G.KkthnxUIConfig["enUS"] = {
 	-- Unitframe Local
 	["Unitframe"] = {
 		["AdditionalPower"] = {
-			["Name"] = "Show Druid Mana (Shapeshift Only)",
+			["Name"] = "Show Additional Mana Power (|CFFFF7D0ADruid|r)",
 		},
 
 		["CastClassColor"] = {
@@ -819,8 +815,12 @@ _G.KkthnxUIConfig["enUS"] = {
 			["Name"] = "Enable Castbars",
 		},
 
-		["ClassResource"] = {
-			["Name"] = "Show Class Resources",
+		["ComboPoints"] = {
+			["Name"] = "Show Combo Points (|CFFFFF569Rogue|r/|CFFFF7D0ADruid|r)",
+		},
+
+		["Totems"] = {
+			["Name"] = "Show Totems (|CFF0070DEShaman|r)",
 		},
 
 		["CombatFade"] = {
