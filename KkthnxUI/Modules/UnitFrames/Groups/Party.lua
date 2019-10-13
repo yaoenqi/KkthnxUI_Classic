@@ -54,7 +54,7 @@ function Module:CreateParty()
     end
 
 	if C["Party"].Smooth then
-		K.SmoothBar(self.Health)
+		self.Health.Smooth = true
 	end
 
 	self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")
@@ -73,7 +73,9 @@ function Module:CreateParty()
 	self.Power.colorPower = true
 	self.Power.SetFrequentUpdates = true
 
-	K.SmoothBar(self.Power)
+	if C["Party"].Smooth then
+		self.Power.Smooth = true
+	end
 
 	self.Name = self:CreateFontString(nil, "OVERLAY")
 	self.Name:SetPoint("TOP", self.Health, 0, 16)

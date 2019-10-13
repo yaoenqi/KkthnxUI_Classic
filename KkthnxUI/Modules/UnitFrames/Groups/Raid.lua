@@ -81,7 +81,7 @@ function Module:CreateRaid()
     end
 
 	if C["Raid"].Smooth then
-		K.SmoothBar(self.Health)
+		self.Health.Smooth = true
 	end
 
 	if C["Raid"].ManabarShow then
@@ -98,7 +98,7 @@ function Module:CreateRaid()
 		self.Power.frequentUpdates = false
 
 		if C["Raid"].Smooth then
-			K.SmoothBar(self.Power)
+			self.Power.Smooth = true
 		end
 
 		self.Power.Background = self.Power:CreateTexture(nil, "BORDER")

@@ -50,6 +50,10 @@ function Module:CreatePlayer(unit)
 	self.Health.colorDisconnected = true
 	self.Health.frequentUpdates = true
 
+	if C["Unitframe"].Smooth then
+		self.Health.Smooth = true
+	end
+
 	if C["Unitframe"].HealthbarColor.Value == "Value" then
 		self.Health.colorSmooth = true
 		self.Health.colorClass = false
@@ -63,10 +67,6 @@ function Module:CreatePlayer(unit)
 		self.Health.colorSmooth = false
 		self.Health.colorClass = true
 		self.Health.colorReaction = true
-	end
-
-	if C["Unitframe"].Smooth then
-		K.SmoothBar(self.Health)
 	end
 
 	self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")
@@ -85,7 +85,7 @@ function Module:CreatePlayer(unit)
 	self.Power.frequentUpdates = true
 
 	if C["Unitframe"].Smooth then
-		K.SmoothBar(self.Power)
+		self.Power.Smooth = true
 	end
 
 	self.Power.Value = self.Power:CreateFontString(nil, "OVERLAY")
@@ -317,7 +317,7 @@ function Module:CreatePlayer(unit)
 		self.DruidMana:SetStatusBarColor(unpack(K.Colors.power["MANA"]))
 		self.DruidMana:CreateBorder()
 
-		K.SmoothBar(self.DruidMana)
+		-- K.SmoothBar(self.DruidMana)
 
 		self.DruidMana.Text = self.DruidMana:CreateFontString(nil, "OVERLAY")
 		self.DruidMana.Text:SetFontObject(K.GetFont(C["UIFonts"].UnitframeFonts))

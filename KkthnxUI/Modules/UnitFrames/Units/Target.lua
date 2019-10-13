@@ -55,7 +55,7 @@ function Module:CreateTarget(unit)
     end
 
 	if C["Unitframe"].Smooth then
-		K.SmoothBar(self.Health)
+		self.Health.Smooth = true
 	end
 
 	self.Health.Value = self.Health:CreateFontString(nil, "OVERLAY")
@@ -74,7 +74,7 @@ function Module:CreateTarget(unit)
 	self.Power.frequentUpdates = true
 
 	if C["Unitframe"].Smooth then
-		K.SmoothBar(self.Power)
+		self.Power.Smooth = true
 	end
 
 	self.Power.Value = self.Power:CreateFontString(nil, "OVERLAY")

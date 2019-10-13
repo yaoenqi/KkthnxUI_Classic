@@ -5,7 +5,7 @@ local _, PlayerClass = UnitClass('player')
 
 local GetComboPoints = GetComboPoints
 
-local Update = function(self, event, unit)
+local Update = function(self, _, unit)
 	if (unit ~= self.unit) then
 		return
 	end
@@ -65,8 +65,8 @@ local Enable = function(self)
 		self:RegisterEvent("UNIT_POWER_FREQUENT", Path, true)
 
 		if (PlayerClass == "DRUID") then
-			self:RegisterEvent('PLAYER_TALENT_UPDATE', Visibility)
-			self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', Visibility)
+			self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', Visibility, true)
+			self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', Visibility, true)
 			self:RegisterEvent('PLAYER_ENTERING_WORLD', Visibility)
 		end
 
@@ -93,8 +93,8 @@ local Disable = function(self)
 		self:UnregisterEvent("UNIT_POWER_FREQUENT", Path)
 
 		if (PlayerClass == "DRUID") then
-			self:UnregisterEvent('PLAYER_TALENT_UPDATE', Visibility)
 			self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', Visibility)
+			self:UnregisterEvent('UPDATE_SHAPESHIFT_FORMS', Visibility)
 			self:UnregisterEvent('PLAYER_ENTERING_WORLD', Visibility)
 		end
 	end

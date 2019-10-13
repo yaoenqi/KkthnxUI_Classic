@@ -6,8 +6,6 @@ local DAMAGE = _G.DAMAGE
 local DISABLE = _G.DISABLE
 local HEALER = _G.HEALER
 local IsAddOnLoaded = _G.IsAddOnLoaded
-local NONE = _G.NONE
-local PLAYER = _G.PLAYER
 
 -- Actionbar
 C["ActionBar"] = {
@@ -127,7 +125,7 @@ C["DataBars"] = {
 	["ExperienceColor"] = {0.6, 0.3, 0.8, 1.0},
 	["Height"] = 14,
 	["MouseOver"] = false,
-	["RestedColor"] = {0.3, 0.6, 0.8, 1.0},
+	["RestedColor"] = {0.2, 0.5, 1.0, 1.0},
 	["Text"] = true,
 	["Width"] = 180,
 }

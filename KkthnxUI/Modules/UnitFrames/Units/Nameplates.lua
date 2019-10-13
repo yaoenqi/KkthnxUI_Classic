@@ -86,7 +86,7 @@ function Module:CreateNameplates(unit)
     end
 
 	if C["Nameplates"].Smooth then
-		K.SmoothBar(self.Health)
+		self.Health.Smooth = true
 	end
 
 	self.Power = CreateFrame("StatusBar", nil, self)
@@ -104,7 +104,7 @@ function Module:CreateNameplates(unit)
 	self.Power.PostUpdate = Module.DisplayNameplatePowerAndCastBar
 
 	if C["Nameplates"].Smooth then
-		K.SmoothBar(self.Power)
+		self.Power.Smooth = true
 	end
 
 	if C["Nameplates"].HealthValue == true then
