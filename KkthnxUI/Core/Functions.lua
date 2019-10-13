@@ -4,6 +4,7 @@ local _G = _G
 local math_abs = _G.math.abs
 local math_ceil = _G.math.ceil
 local math_floor = _G.math.floor
+local math_huge = _G.math.huge
 local mod = _G.mod
 local select = _G.select
 local string_format = _G.string.format
@@ -603,7 +604,7 @@ end
 function K.FormatTime(s)
 	local Day, Hour, Minute = 86400, 3600, 60
 
-	if s == math.huge then
+	if s == math_huge then
 		s = 0
 	end
 

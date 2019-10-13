@@ -574,7 +574,7 @@ function Module:CreateAuraTimer(elapsed)
 			self.TimeLeft = self.TimeLeft - self.Elapsed
 
 			if self.TimeLeft > 0 then
-				local Time = T.FormatTime(self.TimeLeft)
+				local Time = K.FormatTime(self.TimeLeft)
 				self.Remaining:SetText(Time)
 
 				if self.TimeLeft <= 5 then
