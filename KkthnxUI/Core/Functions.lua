@@ -600,8 +600,13 @@ function K.HideInterfaceOption(self)
 end
 
 -- Format seconds to min/hour/day
-local Day, Hour, Minute = 86400, 3600, 60
 function K.FormatTime(s)
+	local Day, Hour, Minute = 86400, 3600, 60
+
+	if s == math.huge then
+		s = 0
+	end
+
 	if s >= Day then
 		return string_format("%d"..K.MyClassColor.."d", s / Day), s % Day
 	elseif s >= Hour then

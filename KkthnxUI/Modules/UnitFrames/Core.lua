@@ -364,10 +364,10 @@ function Module:UpdateQuestIndicator()
 	self.questCount:SetText("")
 
 	local name = self.unitName
-	if QuestieTooltips then
-		Module.UpdateForQuestie(self, name)
-	elseif CodexMap then
+	if CodexMap then
 		Module.UpdateCodexQuestUnit(self, name)
+	elseif QuestieTooltips then
+		Module.UpdateForQuestie(self, name)
 	end
 end
 
@@ -571,15 +571,10 @@ function Module:CreateAuraTimer(elapsed)
 		self.Elapsed = (self.Elapsed or 0) + elapsed
 
 		if self.Elapsed >= 0.1 then
-			if not self.First then
-				self.TimeLeft = self.TimeLeft - self.Elapsed
-			else
-				self.TimeLeft = self.TimeLeft - GetTime()
-				self.First = false
-			end
+			self.TimeLeft = self.TimeLeft - self.Elapsed
 
 			if self.TimeLeft > 0 then
-				local Time = K.FormatTime(self.TimeLeft)
+				local Time = T.FormatTime(self.TimeLeft)
 				self.Remaining:SetText(Time)
 
 				if self.TimeLeft <= 5 then
@@ -741,11 +736,12 @@ function Module:PostUpdateAura(unit, button, index)
 
 	if button.Remaining then
 		if (Duration and Duration > 0) then
-			button:SetScript("OnUpdate", Module.CreateAuraTimer)
 			button.Remaining:Show()
 		else
 			button.Remaining:Hide()
 		end
+
+		button:SetScript("OnUpdate", Module.CreateAuraTimer)
 	end
 
 	if button.cd then
@@ -759,7 +755,7 @@ function Module:PostUpdateAura(unit, button, index)
 
 	button.Duration = Duration
 	button.TimeLeft = ExpirationTime
-	button.First = true
+	button.Elapsed = GetTime()
 end
 
 function Module:CreateAuraWatchIcon(icon)

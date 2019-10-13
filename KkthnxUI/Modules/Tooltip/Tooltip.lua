@@ -285,10 +285,11 @@ function Module:OnTooltipSetUnit()
 			GameTooltipStatusBar:SetStatusBarColor(r, g, b)
 
 			if GameTooltipStatusBar.text then
+				local value, max = UnitHealth(unit), UnitHealthMax(unit)
 				if RealMobHealth and RealMobHealth.UnitHasHealthData(unit) then
-					local value, max = RealMobHealth.GetUnitHealth(unit)
-					GameTooltipStatusBar.text:SetText(K.ShortValue(value).." / "..K.ShortValue(max))
+					value, max = RealMobHealth.GetUnitHealth(unit)
 				end
+				GameTooltipStatusBar.text:SetText(K.ShortValue(value).." / "..K.ShortValue(max))
 			end
 		else
 			GameTooltipStatusBar:Hide()
