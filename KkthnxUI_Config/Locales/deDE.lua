@@ -784,7 +784,7 @@ _G.KkthnxUIConfig["deDE"] = {
 		},
 
 		["ShowFriendlyCombat"] = {
-			["Name"] = "Zeige feindliche im Kampf",
+			["Name"] = "Zeige freundliche im Kampf",
 		},
 	},
 
