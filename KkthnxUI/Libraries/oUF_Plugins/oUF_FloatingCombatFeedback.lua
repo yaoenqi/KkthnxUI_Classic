@@ -202,10 +202,18 @@ local function getTexture(spellID)
 	return iconCache[spellID]
 end
 
-local function getFloatingIconTexture(iconType, spellID, isPet)
+local function getTextureForName(spellName)
+	if spellName and not iconCache[spellName] then
+		local texture = select(3, GetSpellInfo(spellName))
+		iconCache[spellName] = texture
+	end
+	return iconCache[spellName]
+end
+
+local function getFloatingIconTexture(iconType, spellName, isPet)
 	local texture
 	if iconType == "spell" then
-		texture = getTexture(spellID)
+		texture = getTextureForName(spellName)
 	elseif iconType == "swing" then
 		if isPet then
 			texture = PET_ATTACK_TEXTURE
@@ -215,7 +223,7 @@ local function getFloatingIconTexture(iconType, spellID, isPet)
 	elseif iconType == "range" then
 		texture = getTexture(75)
 	elseif iconType == "env" then
-		texture = envTexture[spellID] or "ability_creature_cursed_05"
+		texture = getTextureForName[spellName] or "ability_creature_cursed_05"
 		texture = "Interface\\Icons\\"..texture
 	end
 
@@ -280,7 +288,7 @@ local function onEvent(self, event, ...)
 				end
 
 				local amount, _, _, _, _, _, critical, _, crushing = select(value.index, ...)
-				texture = getFloatingIconTexture(value.iconType, spellID, isPet)
+				texture = getFloatingIconTexture(value.iconType, spellName, isPet)
 				text = "-"..formatNumber(self, amount)
 				name = spellName
 
@@ -294,7 +302,7 @@ local function onEvent(self, event, ...)
 				end
 
 				local amount, overhealing, _, critical = select(value.index, ...)
-				texture = getFloatingIconTexture(value.iconType, spellID)
+				texture = getFloatingIconTexture(value.iconType, spellName)
 				local overhealText = ""
 				if overhealing > 0 then
 					amount = amount - overhealing
@@ -314,7 +322,7 @@ local function onEvent(self, event, ...)
 				end
 			elseif value.suffix == "MISS" then
 				local missType = select(value.index, ...)
-				texture = getFloatingIconTexture(value.iconType, spellID, isPet)
+				texture = getFloatingIconTexture(value.iconType, spellName, isPet)
 				text = getMissText(missType)
 				name = ATTACK
 			elseif value.suffix == "ENVIRONMENT" then
