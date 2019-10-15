@@ -8,7 +8,7 @@ local CombatLogGetCurrentEventInfo = _G.CombatLogGetCurrentEventInfo
 
 -- Build Spell list (this ignores ranks)
 local SaySappedList = {
-	(GetSpellInfo(11297)), -- Sapped
+	[GetSpellInfo(11297)] = true, -- Sapped
 }
 
 function Module:SetupSaySapped()
