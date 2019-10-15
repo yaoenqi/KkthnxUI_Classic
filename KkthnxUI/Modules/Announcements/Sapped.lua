@@ -3,8 +3,10 @@ local Module = K:GetModule("Announcements")
 
 local _G = _G
 
-local SendChatMessage = _G.SendChatMessage
 local CombatLogGetCurrentEventInfo = _G.CombatLogGetCurrentEventInfo
+local GetSpellInfo = _G.GetSpellInfo
+local SendChatMessage = _G.SendChatMessage
+local UNKNOWN = _G.UNKNOWN
 
 -- Build Spell list (this ignores ranks)
 local SaySappedList = {
@@ -14,7 +16,7 @@ local SaySappedList = {
 function Module:SetupSaySapped()
 	local _, event, _, _, sourceName, _, _, _, destName, _, _, _, spellName = CombatLogGetCurrentEventInfo()
 
-	if not (event == "SPELL_AURA_APPLIED" or not event == "SPELL_AURA_REFRESH") then
+	if not (event == "SPELL_AURA_APPLIED") or not (event == "SPELL_AURA_REFRESH") then
 		return
 	end
 

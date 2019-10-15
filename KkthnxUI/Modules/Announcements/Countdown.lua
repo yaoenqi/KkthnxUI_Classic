@@ -16,8 +16,7 @@ local UnitIsGroupAssistant = _G.UnitIsGroupAssistant
 local LE_PARTY_CATEGORY_HOME = _G.LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = _G.LE_PARTY_CATEGORY_INSTANCE
 
--- Sourced: Pull Countdown (Dridzt)
-do
+do -- Sourced: Pull Countdown (Dridzt)
 	local PullCountdown = CreateFrame("Frame", "PullCountdown")
 	local PullCountdownHandler = CreateFrame("Frame")
 	local firstdone, delay, target

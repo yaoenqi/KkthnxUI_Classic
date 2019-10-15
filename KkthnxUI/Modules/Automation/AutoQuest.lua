@@ -10,10 +10,10 @@ local string_match = _G.string.match
 local table_wipe = _G.table.wipe
 local tonumber = _G.tonumber
 
-local IsShiftKeyDown = _G.IsShiftKeyDown
 local AcceptQuest = _G.AcceptQuest
-local C_Timer_After = _G.C_Timer.After
 local CompleteQuest = _G.CompleteQuest
+local CreateFrame = _G.CreateFrame
+local GameTooltip = _G.GameTooltip
 local GetActiveTitle = _G.GetActiveTitle
 local GetGossipActiveQuests = _G.GetGossipActiveQuests
 local GetGossipAvailableQuests = _G.GetGossipAvailableQuests
@@ -34,7 +34,9 @@ local GetQuestItemLink = _G.GetQuestItemLink
 local GetQuestLogTitle = _G.GetQuestLogTitle
 local GetQuestReward = _G.GetQuestReward
 local GetQuestTagInfo = _G.GetQuestTagInfo
+local GetRealmName = _G.GetRealmName
 local IsQuestCompletable = _G.IsQuestCompletable
+local IsShiftKeyDown = _G.IsShiftKeyDown
 local QuestInfoItem_OnClick = _G.QuestInfoItem_OnClick
 local SelectActiveQuest = _G.SelectActiveQuest
 local SelectAvailableQuest = _G.SelectAvailableQuest
@@ -42,7 +44,6 @@ local SelectGossipActiveQuest = _G.SelectGossipActiveQuest
 local SelectGossipAvailableQuest = _G.SelectGossipAvailableQuest
 local SelectGossipOption = _G.SelectGossipOption
 local UnitGUID = _G.UnitGUID
-local GetRealmName = _G.GetRealmName
 local UnitName = _G.UnitName
 
 local created

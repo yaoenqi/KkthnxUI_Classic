@@ -27,6 +27,9 @@ Install.CurrentStep = 0
 Install.Width = 500
 Install.Height = 200
 
+local charRealm = gsub(K.Realm, "[%s%-]", "")
+local charName = K.Name.."-"..charRealm
+
 function Install:ResetData()
 	_G.KkthnxUIData[GetRealmName()][UnitName("player")] = {}
 	_G.KkthnxUIData[GetRealmName()][UnitName("player")].RevealWorldMap = false
@@ -57,7 +60,7 @@ function Install:Step1()
 	SetCVar("autoQuestProgress", 1)
 	SetCVar("autoQuestWatch", 1)
 	SetCVar("buffDurations", 1)
-	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
+	SetCVar("cameraDistanceMaxZoomFactor", 4.0)
 	SetCVar("cameraSmoothStyle", 0)
 	SetCVar("chatClassColorOverride", 0)
 	SetCVar("chatMouseScroll", 1)
@@ -79,6 +82,15 @@ function Install:Step1()
 	SetCVar("showVKeyCastbar", 1)
 	SetCVar("spamFilter", 0)
 	SetCVar("violenceLevel", 5)
+
+	if charName == "Kkthnx-Herod" then
+		print(charName)
+		SetCVar("RAIDweatherDensity", 0)
+		SetCVar("WeatherDensity", 0)
+		SetCVar("ffxDeath", 0)
+		SetCVar("ffxGlow", 0)
+		SetCVar("ffxNether", 0)
+	end
 
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue("SHIFT")
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()

@@ -188,10 +188,15 @@ K.WorldMapPlusPinData = {
 		{"FlightH", 21.6, 74.1, L["Shadowprey Village"]..", "..L["Desolace"], nil, tHTex, nil, nil},
 	},
 	[1444] = {-- Feralas
-		-- {58.9, 41.5, L["Dire Maul"], L["Dungeon"], dnTex, 55, 60},
-		{"FlightA", 30.2, 43.2, L["Feathermoon Stronghold"]..", "..L["Feralas"], nil, tATex, nil, nil},
-		{"FlightH", 75.4, 44.4, L["Camp Mojache"]..", "..L["Feralas"], nil, tHTex, nil, nil},
-		{"FlightA", 89.5, 45.9, L["Lower Wilds"]..", "..L["Feralas"], nil, tATex, nil, nil},
+		{"FlightA", 30.2, 43.2, L["Feathermoon Stronghold"] .. ", " .. L["Feralas"], nil, tATex, nil, nil},
+		{"FlightH", 75.4, 44.4, L["Camp Mojache"] .. ", " .. L["Feralas"], nil, tHTex, nil, nil},
+		{"FlightA", 89.5, 45.9, L["Lower Wilds"] .. ", " .. L["Feralas"], nil, tATex, nil, nil},
+		{"Dungeon", 62.5, 24.9, L["Dire Maul (North)"], L["Dungeon"], dnTex, 56, 60},
+		{"Dungeon", 60.3, 30.2, L["Dire Maul (West)"], L["Dungeon"], dnTex, 56, 60},
+		{"Dungeon", 64.8, 30.2, L["Dire Maul (East)"], L["Dungeon"], dnTex, 56, 60},
+		{"TravelA", 43.3, 42.8, L["Boat to"] .. " " .. L["Feathermoon Stronghold"] .. ", " .. L["Feralas"], nil, fATex, nil, nil},
+		{"TravelA", 31.0, 39.8, L["Boat to"] .. " " .. L["The Forgotten Coast"] .. ", " .. L["Feralas"], nil, fATex, nil, nil},
+		-- {"Dungeon", 77.1, 36.9, L["Dire Maul (East)"], L["The Hidden Reach (requires Crescent Key)"], dnTex, 56, 60},
 	},
 	[1445] = {-- Dustwallow Marsh
 		{"Raid", 52.6, 76.8, L["Onyxia's Lair"], L["Raid"], rdTex, 60, 60},
@@ -285,4 +290,3 @@ K.WorldMapLevelZoneData = {
 	[1457] = {minFish = 1},
 	[1458] = {minFish = 1},
 }
-

@@ -11,18 +11,16 @@ local ShowUIPanel = _G.ShowUIPanel
 local SpellBookFrame = _G.SpellBookFrame
 
 function Module:OnEnable()
+    -- self:CreateUIWidgets() -- Do we still need to fix this? Or do they not longer exsit?
+
     ShowUIPanel(SpellBookFrame)
     HideUIPanel(SpellBookFrame)
 
     self:CreateAlertFrames()
-    -- self:CreateAltPowerbar()
     self:CreateBlizzBugFixes()
     self:CreateColorPicker()
     self:CreateErrorFilter()
     self:CreateMirrorBars()
-    -- self:CreateNoTutorials()
     self:CreateQuestTrackerMover()
     self:CreateRaidUtility()
-    -- self:CreateTimerTracker()
-    -- self:CreateUIWidgets()
 end

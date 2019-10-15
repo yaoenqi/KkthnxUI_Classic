@@ -18,7 +18,6 @@ local GetQuestLogTitle = _G.GetQuestLogTitle
 local IsShiftKeyDown = _G.IsShiftKeyDown
 local hooksecurefunc = _G.hooksecurefunc
 
-local LE_QUEST_FREQUENCY_DAILY = _G.LE_QUEST_FREQUENCY_DAILY or 2
 local MAX_QUESTLOG_QUESTS = _G.MAX_QUESTLOG_QUESTS or 20
 local MAX_WATCHABLE_QUESTS = _G.MAX_WATCHABLE_QUESTS or 5
 local headerString = _G.QUESTS_LABEL.." %s/%s"
@@ -31,8 +30,8 @@ function Module:QuestLogLevel()
 		local questIndex = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
 		local questLogTitle = _G["QuestLogTitle"..i]
 		local questCheck = _G["QuestLogTitle"..i.."Check"]
-
 		local questTitleTag = _G["QuestLogTitle"..i.."Tag"]
+
 		if questIndex <= numEntries then
 			local questLogTitleText, level, _, isHeader, _, isComplete = GetQuestLogTitle(questIndex)
 
@@ -46,6 +45,12 @@ function Module:QuestLogLevel()
 					questTitleTag:SetTextColor(1, .5, 1)
 				end
 			end
+		end
+
+		local questNumGroupMates = _G["QuestLogTitle"..i.."GroupMates"]
+		if not questNumGroupMates.anchored then
+			questNumGroupMates:SetPoint("LEFT")
+			questNumGroupMates.anchored = true
 		end
 	end
 end

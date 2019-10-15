@@ -5,6 +5,7 @@ local _G = _G
 local string_format = string.format
 
 local CancelDuel = _G.CancelDuel
+local InCombatLockdown = _G.InCombatLockdown
 local StaticPopup_Hide = _G.StaticPopup_Hide
 
 -- Auto decline duels

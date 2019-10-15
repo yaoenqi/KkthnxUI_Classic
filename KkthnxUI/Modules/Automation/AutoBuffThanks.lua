@@ -8,10 +8,10 @@ local CombatLogGetCurrentEventInfo = _G.CombatLogGetCurrentEventInfo
 local EMOTE98_TOKEN = _G.EMOTE98_TOKEN
 local UnitInParty = _G.UnitInParty
 local UnitInRaid = _G.UnitInRaid
-local GetTime = _G.GetTime
 local UnitGUID = _G.UnitGUID
-local CreateFrame = _G.CreateFrame
 local GetSpellInfo = _G.GetSpellInfo
+local DoEmote = _G.DoEmote
+local IsAddOnLoaded = _G.IsAddOnLoaded
 
 local playerGUID = UnitGUID("player")
 

@@ -24,7 +24,7 @@ function Module.WhisperInvite(event, arg1, arg2, ...)
 				if index then
 					local _, _, _, _, _, toonID = BNGetFriendInfo(index)
 					if toonID then
-						BNInviteFriend(toonID);
+						BNInviteFriend(toonID)
 					end
 				end
 			end

@@ -153,7 +153,6 @@ C["Filger"] = {
 C["General"] = {
 	["AutoScale"] = true,
 	["ColorTextures"] = false,
-	["DisableTutorialButtons"] = false,
 	["FixGarbageCollect"] = true,
 	["FontSize"] = 12,
 	["HideErrors"] = true,

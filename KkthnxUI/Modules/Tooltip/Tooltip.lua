@@ -50,7 +50,6 @@ local UnitIsUnit = _G.UnitIsUnit
 local UnitLevel = _G.UnitLevel
 local UnitName = _G.UnitName
 local UnitPVPName = _G.UnitPVPName
-local UnitPlayerControlled = _G.UnitPlayerControlled
 local UnitRace = _G.UnitRace
 local UnitRealmRelationship = _G.UnitRealmRelationship
 local YOU = _G.YOU
@@ -289,7 +288,7 @@ function Module:OnTooltipSetUnit()
 				if RealMobHealth and RealMobHealth.UnitHasHealthData(unit) then
 					value, max = RealMobHealth.GetUnitHealth(unit)
 				end
-				GameTooltipStatusBar.text:SetText(K.ShortValue(value).." / "..K.ShortValue(max))
+				GameTooltipStatusBar.text:SetText(K.ShortValue(value).." - "..K.ShortValue(max))
 			end
 		else
 			GameTooltipStatusBar:Hide()
@@ -323,7 +322,7 @@ function Module:StatusBar_OnValueChanged(value)
 			value, max = RealMobHealth.GetUnitHealth(unit)
 		end
 
-		self.text:SetText(K.ShortValue(value).." / "..K.ShortValue(max))
+		self.text:SetText(K.ShortValue(value).." - "..K.ShortValue(max))
 	end
 end
 

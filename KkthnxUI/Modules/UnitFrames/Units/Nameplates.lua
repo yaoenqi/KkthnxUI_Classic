@@ -54,9 +54,9 @@ function Module:CreateNameplates(unit)
 	local Font = K.GetFont(C["UIFonts"].NameplateFonts)
 	local HealPredictionTexture = K.GetTexture(C["UITextures"].HealPredictionTextures)
 
-	self:SetScale(UIParent:GetEffectiveScale())
 	self:SetSize(C["Nameplates"].Width, C["Nameplates"].Height)
-	self:SetPoint("CENTER")
+	self:SetPoint("CENTER", 0, 0)
+	self:SetScale(C["General"].UIScale)
 
 	self.Health = CreateFrame("StatusBar", nil, self)
 	self.Health:SetFrameStrata(self:GetFrameStrata())

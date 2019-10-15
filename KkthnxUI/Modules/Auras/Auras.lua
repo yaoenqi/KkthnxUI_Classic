@@ -1,5 +1,5 @@
 local K, C = unpack(select(2, ...))
-local Module = K:NewModule("Auras", "AceEvent-3.0")
+local Module = K:NewModule("Auras")
 
 -- Sourced: KkthnxUI (Siweia)
 

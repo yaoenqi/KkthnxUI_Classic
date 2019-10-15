@@ -1,5 +1,4 @@
-local _G = _G
-local K = _G.unpack(_G.select(2, ...))
+local K = unpack(select(2, ...))
 local Module = K:NewModule("Automation")
 
 function Module:OnEnable()
