@@ -40,7 +40,7 @@ function Module:SetupAutoBuffThanksAnnounce()
 		if AutoBuffThanksList[spellName] then
 			local sourceType = string_split("-", sourceGUID) -- `type` is a reserved word for a Lua function
 			-- Make sure the other source is a player
-			if sourceType == "player" then
+			if sourceType == "Player" then
 				K.Delay(1.0, function() -- Give this more time to say thanks, so we do not look like we are bots.
 					DoEmote(EMOTE98_TOKEN, sourceName)
 				end)
