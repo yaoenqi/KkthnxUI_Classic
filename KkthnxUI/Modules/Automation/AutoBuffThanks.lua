@@ -17,14 +17,14 @@ local playerGUID = UnitGUID("player")
 
 -- Build Spell list (this ignores ranks)
 local AutoBuffThanksList = {
-	(GetSpellInfo(1255)), -- Power Word: Fortitude
-	(GetSpellInfo(1459)), -- Arcane Intellect
-	(GetSpellInfo(19742)), -- Blessing Of Wisdom
-	(GetSpellInfo(19834)), -- Blessing Of Might
-	(GetSpellInfo(20217)), -- Blessing Of Kings
-	(GetSpellInfo(467)), -- Thorns
-	(GetSpellInfo(5231)), -- Mark of the Wild
-	(GetSpellInfo(5697)), -- Unending Breath
+	[GetSpellInfo(1255)] = true, -- Power Word: Fortitude
+	[GetSpellInfo(1459)] = true, -- Arcane Intellect
+	[GetSpellInfo(19742)] = true, -- Blessing Of Wisdom
+	[GetSpellInfo(19834)] = true, -- Blessing Of Might
+	[GetSpellInfo(20217)] = true, -- Blessing Of Kings
+	[GetSpellInfo(467)] = true, -- Thorns
+	[GetSpellInfo(5231)] = true, -- Mark of the Wild
+	[GetSpellInfo(5697)] = true, -- Unending Breath
 }
 
 function Module:SetupAutoBuffThanksAnnounce()
